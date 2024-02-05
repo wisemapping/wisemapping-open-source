@@ -48,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restfull/users")
+@RequestMapping("/api/restful/users")
 @CrossOrigin
 public class UserController extends BaseController {
 
@@ -99,7 +99,7 @@ public class UserController extends BaseController {
 
 		user.setAuthenticationType(AuthenticationType.DATABASE);
 		userService.createUser(user, false, true);
-		response.setHeader("Location", "/api/restfull/users/" + user.getId());
+		response.setHeader("Location", "/api/restful/users/" + user.getId());
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/resetPassword", produces = { "application/json" })

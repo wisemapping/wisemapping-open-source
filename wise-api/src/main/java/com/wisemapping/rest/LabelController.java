@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restfull/labels")
+@RequestMapping("/api/restful/labels")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class LabelController extends BaseController {
 
@@ -63,7 +63,7 @@ public class LabelController extends BaseController {
         final Label label = createLabel(restLabel);
 
         // Return the new created label ...
-        response.setHeader("Location", "/api/restfull/labels/" + label.getId());
+        response.setHeader("Location", "/api/restful/labels/" + label.getId());
         response.setHeader("ResourceId", Long.toString(label.getId()));
     }
 

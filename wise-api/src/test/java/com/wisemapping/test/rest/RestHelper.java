@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestHelper {
-    public static final String BASE_REST_URL = "/api/restfull";
+    public static final String BASE_REST_URL = "/api/restful";
 
     static HttpHeaders createHeaders(@NotNull MediaType mediaType) {
         List<MediaType> acceptableMediaTypes = new ArrayList<>();

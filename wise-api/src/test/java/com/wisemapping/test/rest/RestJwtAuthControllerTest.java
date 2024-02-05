@@ -71,7 +71,7 @@ public class RestJwtAuthControllerTest {
         final String userJson = objectMapper.writeValueAsString(user);
 
         final MvcResult result = mockMvc.perform(
-                        post("/api/restfull/authenticate").
+                        post("/api/restful/authenticate").
                                 contentType(MediaType.APPLICATION_JSON)
                                 .content(userJson))
                 .andExpect(status().isOk()).andReturn();
@@ -86,7 +86,7 @@ public class RestJwtAuthControllerTest {
         final String userJson = objectMapper.writeValueAsString(user);
 
         mockMvc.perform(
-                        post("/api/restfull/authenticate").
+                        post("/api/restful/authenticate").
                                 contentType(MediaType.APPLICATION_JSON)
                                 .content(userJson))
                 .andExpect(status().is4xxClientError());
@@ -99,7 +99,7 @@ public class RestJwtAuthControllerTest {
         final String userJson = objectMapper.writeValueAsString(user);
 
         mockMvc.perform(
-                        post("/api/restfull/authenticate").
+                        post("/api/restful/authenticate").
                                 contentType(MediaType.APPLICATION_JSON)
                                 .content(userJson))
                 .andExpect(status().is4xxClientError());

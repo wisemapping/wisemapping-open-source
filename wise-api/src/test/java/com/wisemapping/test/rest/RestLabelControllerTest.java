@@ -134,7 +134,7 @@ public class RestLabelControllerTest {
 
         // Create a new label ...
         final HttpEntity<RestLabel> createUserEntity = new HttpEntity<>(restLabel, requestHeaders);
-        final ResponseEntity<String> result = template.exchange("/api/restfull/labels", HttpMethod.POST, createUserEntity, String.class);
+        final ResponseEntity<String> result = template.exchange("/api/restful/labels", HttpMethod.POST, createUserEntity, String.class);
         if (!result.getStatusCode().is2xxSuccessful()) {
             throw new IllegalStateException(result.toString());
         }

@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restfull/account/")
+@RequestMapping("/api/restful/account/")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class AccountController extends BaseController {
     @Qualifier("userService")

@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/api/restfull/maps")
+@RequestMapping("/api/restful/maps")
 public class MindmapController extends BaseController {
     private final Logger logger = LogManager.getLogger();
 
@@ -548,7 +548,7 @@ public class MindmapController extends BaseController {
         mindmapService.addMindmap(mindmap, user);
 
         // Return the new created map ...
-        response.setHeader("Location", "/api/restfull/maps/" + mindmap.getId());
+        response.setHeader("Location", "/api/restful/maps/" + mindmap.getId());
         response.setHeader("ResourceId", Integer.toString(mindmap.getId()));
     }
 
@@ -576,7 +576,7 @@ public class MindmapController extends BaseController {
         mindmapService.addMindmap(clonedMap, user);
 
         // Return the new created map ...
-        response.setHeader("Location", "/api/restfull/maps/" + clonedMap.getId());
+        response.setHeader("Location", "/api/restful/maps/" + clonedMap.getId());
         response.setHeader("ResourceId", Integer.toString(clonedMap.getId()));
     }
 

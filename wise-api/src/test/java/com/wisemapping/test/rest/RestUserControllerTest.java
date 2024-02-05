@@ -66,7 +66,7 @@ public class RestUserControllerTest {
         final String userJson = objectMapper.writeValueAsString(result);
 
         mockMvc.perform(
-                        post("/api/restfull/admin/users").
+                        post("/api/restful/admin/users").
                                 contentType(MediaType.APPLICATION_JSON)
                                 .content(userJson)
                                 .with(user("test@wisemapping.org").roles("ADMIN")))
@@ -81,7 +81,7 @@ public class RestUserControllerTest {
     @Test
     void resetPasswordInvalidUser() throws Exception {
         this.mockMvc.perform
-                        (put("/api/restfull/users/resetPassword?email=doesnotexist@example.com"))
+                        (put("/api/restful/users/resetPassword?email=doesnotexist@example.com"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
                 .andExpect(content().string(containsString("The email provided is not a valid user account.")));
@@ -91,7 +91,7 @@ public class RestUserControllerTest {
     void resetPasswordValidUser() throws Exception {
         final RestUser user = createUser();
         this.mockMvc.perform
-                        (put("/api/restfull/users/resetPassword?email=" + user.getEmail()))
+                        (put("/api/restful/users/resetPassword?email=" + user.getEmail()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -104,7 +104,7 @@ public class RestUserControllerTest {
         final String userJson = objectMapper.writeValueAsString(user);
 
         mockMvc.perform(
-                        post("/api/restfull/users/").
+                        post("/api/restful/users/").
                                 contentType(MediaType.APPLICATION_JSON)
                                 .content(userJson))
                 .andExpect(status().isCreated());

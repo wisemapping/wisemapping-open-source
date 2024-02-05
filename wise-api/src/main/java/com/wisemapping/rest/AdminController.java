@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restfull/admin")
+@RequestMapping("/api/restful/admin")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
 public class AdminController extends BaseController {
     @Qualifier("userService")
@@ -101,7 +101,7 @@ public class AdminController extends BaseController {
         // Finally create the user ...
         delegated.setAuthenticationType(AuthenticationType.DATABASE);
         userService.createUser(delegated, false, true);
-        response.setHeader("Location", "/api/restfull/admin/users/" + user.getId());
+        response.setHeader("Location", "/api/restful/admin/users/" + user.getId());
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/password", consumes = {"text/plain"})

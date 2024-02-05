@@ -128,7 +128,7 @@ public class RestMindmapControllerTest {
 
         // Add map with same name ...
         HttpEntity<RestMindmap> createUserEntity = new HttpEntity<>(requestHeaders);
-        final ResponseEntity<String> response = restTemplate.exchange("/api/restfull/maps?title=" + title, HttpMethod.POST, createUserEntity, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange("/api/restful/maps?title=" + title, HttpMethod.POST, createUserEntity, String.class);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertTrue(Objects.requireNonNull(response.getBody()).contains("You have already a map with the same name"));
     }
@@ -254,7 +254,7 @@ public class RestMindmapControllerTest {
         addNewMap(secondTemplate, title2);
 
         final TestRestTemplate superadminTemplate = this.restTemplate.withBasicAuth("admin@wisemapping.org", "test");
-        final ResponseEntity<String> exchange = superadminTemplate.exchange("/api/restfull/admin/users/" + secondUser.getId(), HttpMethod.DELETE, null, String.class);
+        final ResponseEntity<String> exchange = superadminTemplate.exchange("/api/restful/admin/users/" + secondUser.getId(), HttpMethod.DELETE, null, String.class);
         assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status Code:" + exchange.getStatusCode() + "- " + exchange.getBody());
 
         // Validate that the two maps are there ...
@@ -490,15 +490,15 @@ public class RestMindmapControllerTest {
         // Create a sample map ...
         final String mapTitle = "removeLabelFromMindmap";
         final URI mindmapUri = addNewMap(restTemplate, mapTitle);
-        final String mapId = mindmapUri.getPath().replace("/api/restfull/maps/", "");
+        final String mapId = mindmapUri.getPath().replace("/api/restful/maps/", "");
 
         // Assign label to map ...
-        String labelId = labelUri.getPath().replace("/api/restfull/labels/", "");
+        String labelId = labelUri.getPath().replace("/api/restful/labels/", "");
         HttpEntity<String> labelEntity = new HttpEntity<>(labelId, requestHeaders);
-        restTemplate.postForLocation("/api/restfull/maps/" + mapId + "/labels", labelEntity);
+        restTemplate.postForLocation("/api/restful/maps/" + mapId + "/labels", labelEntity);
 
         // Remove label from map
-        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restfull//maps/" + mapId + "/labels/" + labelId, HttpMethod.DELETE, null, String.class);
+        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restful//maps/" + mapId + "/labels/" + labelId, HttpMethod.DELETE, null, String.class);
         assertTrue(exchange.getStatusCode().is2xxSuccessful());
 
 
@@ -535,12 +535,12 @@ public class RestMindmapControllerTest {
         // Create a sample map ...
         final String mapTitle = "Maps 1  - ";
         final URI mindmapUri = addNewMap(restTemplate, mapTitle);
-        final String mapId = mindmapUri.getPath().replace("/api/restfull/maps/", "");
+        final String mapId = mindmapUri.getPath().replace("/api/restful/maps/", "");
 
         // Assign label to map ...
-        String labelId = labelUri.getPath().replace("/api/restfull/labels/", "");
+        String labelId = labelUri.getPath().replace("/api/restful/labels/", "");
         HttpEntity<String> labelEntity = new HttpEntity<>(labelId, requestHeaders);
-        restTemplate.postForLocation("/api/restfull/maps/" + mapId + "/labels", labelEntity);
+        restTemplate.postForLocation("/api/restful/maps/" + mapId + "/labels", labelEntity);
 
         // Check that the label has been assigned ...
         Optional<RestMindmapInfo> mindmapInfo = fetchMap(requestHeaders, restTemplate, mapId);
@@ -636,7 +636,7 @@ public class RestMindmapControllerTest {
 
         final String maps = fetchMaps(requestHeaders, restTemplate).getMindmapsInfo().stream().map(map -> String.valueOf(map.getId())).collect(Collectors.joining(","));
 
-        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restfull/maps/batch?ids=" + maps, HttpMethod.DELETE, null, String.class);
+        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restful/maps/batch?ids=" + maps, HttpMethod.DELETE, null, String.class);
         assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status code:" + exchange.getStatusCode() + " - " + exchange.getBody());
 
         // Validate that the two maps are there ...
@@ -769,7 +769,7 @@ public class RestMindmapControllerTest {
     @NotNull
     private RestMindmapList fetchMaps(final HttpHeaders requestHeaders, final TestRestTemplate template) throws RestClientException {
         final HttpEntity<RestMindmapList> findMapEntity = new HttpEntity<>(requestHeaders);
-        final ResponseEntity<RestMindmapList> response = template.exchange("/api/restfull/maps/", HttpMethod.GET, findMapEntity, RestMindmapList.class);
+        final ResponseEntity<RestMindmapList> response = template.exchange("/api/restful/maps/", HttpMethod.GET, findMapEntity, RestMindmapList.class);
         assertTrue(response.getStatusCode().is2xxSuccessful(), response.toString());
 
         return Objects.requireNonNull(response.getBody());
@@ -804,7 +804,7 @@ public class RestMindmapControllerTest {
         // Create a new map ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_XML);
         HttpEntity<String> createUserEntity = new HttpEntity<>(xml, requestHeaders);
-        return template.postForLocation("/api/restfull/maps?title=" + title, createUserEntity);
+        return template.postForLocation("/api/restful/maps?title=" + title, createUserEntity);
     }
 
     private URI addNewMap(@NotNull TestRestTemplate template, @NotNull String title) {
