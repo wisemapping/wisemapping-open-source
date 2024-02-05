@@ -24,6 +24,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wisemapping.model.User;
 
+import java.awt.*;
+
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
         getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY,
@@ -45,6 +47,15 @@ public class RestUserRegistration {
         user.setEmail(email);
         user.setPassword(password);
         return user;
+    }
+
+    public static RestUserRegistration create(String email, String password, String firstname, String lastname) {
+        final RestUserRegistration result = new RestUserRegistration();
+        result.email = email;
+        result.password = password;
+        result.firstname = firstname;
+        result.lastname = lastname;
+        return result;
     }
 
     public String getEmail() {

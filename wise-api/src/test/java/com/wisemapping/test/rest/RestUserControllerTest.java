@@ -25,8 +25,10 @@ import com.wisemapping.config.rest.RestAppConfig;
 import com.wisemapping.model.User;
 import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestUser;
+import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,6 +39,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static com.wisemapping.test.rest.RestHelper.createDummyUser;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -71,7 +74,7 @@ public class RestUserControllerTest {
 
         // Check dao ...
         User userBy = userService.getUserBy(result.getEmail());
-        assertTrue(userBy!=null);
+        assertNotNull(userBy);
         return result;
     }
 
@@ -92,4 +95,24 @@ public class RestUserControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+
+    @Test
+    @Disabled
+    void registerNewUser() throws Exception {
+        final RestUserRegistration user = RestUserRegistration.create("some@example.com", "somepass", "Test", "registation");
+        final String userJson = objectMapper.writeValueAsString(user);
+
+        mockMvc.perform(
+                        post("/api/restfull/users/").
+                                contentType(MediaType.APPLICATION_JSON)
+                                .content(userJson))
+                .andExpect(status().isCreated());
+
+        // Check dao ...
+        User userBy = userService.getUserBy(user.getEmail());
+        assertNotNull(userBy);
+    }
+
+
 }
