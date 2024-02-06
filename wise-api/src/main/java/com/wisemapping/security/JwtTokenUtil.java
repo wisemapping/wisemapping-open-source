@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -37,15 +38,18 @@ public class JwtTokenUtil implements Serializable {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
+
+    @Nullable
     public String extractFromJwtToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(@NotNull String authToken) {
+        boolean result = false;
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
-            return true;
+            result = true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
@@ -56,6 +60,7 @@ public class JwtTokenUtil implements Serializable {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
 
-        return false;
+        logger.trace("Is JWT token valid:" + result);
+        return result;
     }
 }

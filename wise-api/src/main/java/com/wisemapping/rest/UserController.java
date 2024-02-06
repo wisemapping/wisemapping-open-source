@@ -49,7 +49,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/restful/users")
-@CrossOrigin
 public class UserController extends BaseController {
 
 	@Qualifier("userService")

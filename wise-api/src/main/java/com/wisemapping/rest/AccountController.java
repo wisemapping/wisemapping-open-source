@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restful/account/")
+@RequestMapping("/api/restful/account")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
 public class AccountController extends BaseController {
     @Qualifier("userService")
@@ -54,7 +54,7 @@ public class AccountController extends BaseController {
     @Autowired
     private LabelService labelService;
 
-    @RequestMapping(method = RequestMethod.PUT, value = "password", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody String password) throws PasswordTooLongException {
         if (password == null) {
@@ -76,7 +76,7 @@ public class AccountController extends BaseController {
         return new RestUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "firstname", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/firstname", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeFirstname(@RequestBody String firstname) {
         if (firstname == null) {
@@ -88,7 +88,7 @@ public class AccountController extends BaseController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "lastname", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/lastname", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeLastName(@RequestBody String lastname) {
         if (lastname == null) {
@@ -100,7 +100,7 @@ public class AccountController extends BaseController {
         userService.updateUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "locale", consumes = {"text/plain"})
+    @RequestMapping(method = RequestMethod.PUT, value = "/locale", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changeLanguage(@RequestBody String language) {
         if (language == null) {

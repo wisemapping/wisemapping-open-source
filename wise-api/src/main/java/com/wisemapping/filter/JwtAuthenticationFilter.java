@@ -34,9 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
             throws ServletException, IOException {
-
-
         final Optional<String> token = getJwtTokenFromRequest(request);
+
+
         if (token.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
             // Extract email from token ...
             final Optional<String> email = extractEmailFromToken(token.get());
@@ -65,6 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Handle token extraction/validation errors
             logger.debug("Error extracting email from token: " + e.getMessage());
         }
+        logger.trace("JWT token email:" + result);
         return result;
     }
 
@@ -74,7 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             if (authorizationHeader.startsWith(BEARER_TOKEN_PREFIX)) {
-                logger.trace("JWT Bearer token found");
+                logger.trace("JWT Bearer token found.");
                 final String token = authorizationHeader.substring(BEARER_TOKEN_PREFIX.length());
                 result = Optional.of(token);
             }
