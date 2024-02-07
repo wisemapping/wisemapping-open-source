@@ -12,6 +12,5 @@ import org.springframework.context.annotation.ImportResource;
 @ComponentScan(basePackageClasses = {AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class})
 @Import({JPAConfig.class, SecurityConfig.class})
 @EnableAutoConfiguration
-@ImportResource(value = {"classpath:spring/wisemapping-mail.xml"})
 public class CommonConfig {
 }

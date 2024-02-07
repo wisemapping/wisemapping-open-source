@@ -1,6 +1,17 @@
 # SpringBoot Configuration ...
 
 spring:
+  mail:
+    host: smtp.example.com
+    port: 25
+    username: setusername
+    password: setpassword
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
   output:
     ansi:
       enabled=always:
@@ -38,13 +49,20 @@ logging:
     root: TRACE
 
 # Application Configuration.
-
 app:
   jwt:
     secret: dlqxKAg685SaKhsQXIMeM=JWCw3bkl3Ei3Tb7LMlnd19oMd66burPNlJ0Po1qguyjgpakQTk2CN3
     expirationMin: 10080 # One week
   admin:
     user: admin@wisemapping.org
+  mail:
+    serverSendEmail: root@localhost
+    supportEmail: root@localhost
+
+
+
+
+
 
 google:
   ads:
@@ -56,18 +74,6 @@ google:
     enabled: true
     secretKey: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
     siteKey: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-mail:
-  password: ''
-  serverSendEmail: root@localhost
-  smtp:
-    auth: false
-    host: localhost
-    port: 25
-    quitwait: false
-    starttls:
-      enable: false
-  supportEmail: root@localhost
-  username: root
 security:
   oauth2:
     google:

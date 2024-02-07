@@ -38,20 +38,17 @@ public final class MailerService {
 
     //~ Instance fields ......................................................................................
 
-//    @Autowired
+    @Autowired
     private JavaMailSender mailSender;
 
     @Autowired
     private VelocityEngineWrapper velocityEngineWrapper;
 
-    @Value("${mail.serverSendEmail}")
+    @Value("${app.mail.serverSendEmail}")
     private String serverFromEmail;
 
-    @Value("${mail.supportEmail}")
+    @Value("${app.mail.supportEmail}")
     private String supportEmail;
-
-    @Value("${mail.errorReporterEmail:}")
-    private String errorReporterEmail;
 
     //~ Methods ..............................................................................................
 
@@ -85,9 +82,5 @@ public final class MailerService {
 
     public String getSupportEmail() {
         return supportEmail;
-    }
-
-    public String getErrorReporterEmail() {
-        return errorReporterEmail;
     }
 }

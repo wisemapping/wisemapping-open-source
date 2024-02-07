@@ -54,7 +54,7 @@ public class RestAppConfig {
                         }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .httpBasic(withDefaults())
+                .httpBasic(withDefaults())
                 .build();
     }
 }
