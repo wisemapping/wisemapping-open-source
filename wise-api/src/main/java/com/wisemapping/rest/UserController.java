@@ -51,100 +51,102 @@ import java.util.List;
 @RequestMapping("/api/restful/users")
 public class UserController extends BaseController {
 
-	@Qualifier("userService")
-	@Autowired
-	private UserService userService;
+    @Qualifier("userService")
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private RecaptchaService captchaService;
+    @Autowired
+    private RecaptchaService captchaService;
 
-	@Qualifier("authenticationManager")
-	@Autowired
-	private AuthenticationManager authManager;
+    @Qualifier("authenticationManager")
+    @Autowired
+    private AuthenticationManager authManager;
 
-	@Value("${google.recaptcha2.enabled:false}")
-	private Boolean recatchaEnabled;
+    @Value("${google.recaptcha2.enabled:false}")
+    private Boolean recatchaEnabled;
 
-	@Value("${accounts.exclusion.domain:''}")
-	private String domainBanExclusion;
+    @Value("${app.accounts.exclusion.domain:''}")
+    private String domainBanExclusion;
 
-	private static final Logger logger = LogManager.getLogger();
-	private static final String REAL_IP_ADDRESS_HEADER = "X-Real-IP";
+    private static final Logger logger = LogManager.getLogger();
+    private static final String REAL_IP_ADDRESS_HEADER = "X-Real-IP";
 
-	@RequestMapping(method = RequestMethod.POST, value = "/", produces = { "application/json" })
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public void registerUser(@RequestBody RestUserRegistration registration, @NotNull HttpServletRequest request,
-			@NotNull HttpServletResponse response) throws WiseMappingException, BindException {
-		logger.debug("Register new user:" + registration.getEmail());
+    @RequestMapping(method = RequestMethod.POST, value = "/", produces = {"application/json"})
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void registerUser(@RequestBody RestUserRegistration registration, @NotNull HttpServletRequest request,
+                             @NotNull HttpServletResponse response) throws WiseMappingException, BindException {
+        logger.debug("Register new user:" + registration.getEmail());
 
-		if (registration.getPassword().length() > User.MAX_PASSWORD_LENGTH_SIZE) {
-			throw new PasswordTooLongException();
-		}
+        if (registration.getPassword().length() > User.MAX_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooLongException();
+        }
 
-		// If tomcat is behind a reverse proxy, ip needs to be found in other header.
-		String remoteIp = request.getHeader(REAL_IP_ADDRESS_HEADER);
-		if (remoteIp == null || remoteIp.isEmpty()) {
-			remoteIp = request.getRemoteAddr();
-		}
-		logger.debug("Remote address" + remoteIp);
+        // If tomcat is behind a reverse proxy, ip needs to be found in other header.
+        String remoteIp = request.getHeader(REAL_IP_ADDRESS_HEADER);
+        if (remoteIp == null || remoteIp.isEmpty()) {
+            remoteIp = request.getRemoteAddr();
+        }
+        logger.debug("Remote address" + remoteIp);
 
-		verify(registration, remoteIp);
+        verify(registration, remoteIp);
 
-		final User user = new User();
-		user.setEmail(registration.getEmail().trim());
-		user.setFirstname(registration.getFirstname());
-		user.setLastname(registration.getLastname());
-		user.setPassword(registration.getPassword());
+        final User user = new User();
+        user.setEmail(registration.getEmail().trim());
+        user.setFirstname(registration.getFirstname());
+        user.setLastname(registration.getLastname());
+        user.setPassword(registration.getPassword());
 
-		user.setAuthenticationType(AuthenticationType.DATABASE);
-		userService.createUser(user, false, true);
-		response.setHeader("Location", "/api/restful/users/" + user.getId());
-	}
+        user.setAuthenticationType(AuthenticationType.DATABASE);
+        userService.createUser(user, false, true);
+        response.setHeader("Location", "/api/restful/users/" + user.getId());
+        response.setHeader("ResourceId", Integer.toString(user.getId()));
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/resetPassword", produces = { "application/json" })
-	@ResponseStatus(value = HttpStatus.OK)
-	public RestResetPasswordResponse resetPassword(@RequestParam String email) throws InvalidAuthSchemaException, EmailNotExistsException {
-		try {
-			return userService.resetPassword(email);
-		} catch (InvalidUserEmailException e) {
-			throw new EmailNotExistsException(e);
-		}
-	}
+    }
 
-	private void verify(@NotNull final RestUserRegistration registration, @NotNull String remoteAddress)
-			throws BindException {
+    @RequestMapping(method = RequestMethod.PUT, value = "/resetPassword", produces = {"application/json"})
+    @ResponseStatus(value = HttpStatus.OK)
+    public RestResetPasswordResponse resetPassword(@RequestParam String email) throws InvalidAuthSchemaException, EmailNotExistsException {
+        try {
+            return userService.resetPassword(email);
+        } catch (InvalidUserEmailException e) {
+            throw new EmailNotExistsException(e);
+        }
+    }
 
-		final BindException errors = new RegistrationException(registration, "registration");
-		final UserValidator validator = new UserValidator();
-		validator.setUserService(userService);
-		validator.validate(registration, errors);
+    private void verify(@NotNull final RestUserRegistration registration, @NotNull String remoteAddress)
+            throws BindException {
 
-		// If captcha is enabled, generate it ...
-		if (recatchaEnabled) {
-			final String recaptcha = registration.getRecaptcha();
-			if (recaptcha != null) {
-				final String reCaptchaResponse = captchaService.verifyRecaptcha(remoteAddress, recaptcha);
-				if (reCaptchaResponse != null && !reCaptchaResponse.isEmpty()) {
-					errors.rejectValue("recaptcha", reCaptchaResponse);
-				}
-			} else {
-				errors.rejectValue("recaptcha", Messages.CAPTCHA_LOADING_ERROR);
-			}
-		} else {
-			logger.warn("captchaEnabled is enabled.Recommend to enable it for production environments.");
-		}
+        final BindException errors = new RegistrationException(registration, "registration");
+        final UserValidator validator = new UserValidator();
+        validator.setUserService(userService);
+        validator.validate(registration, errors);
 
-		if (errors.hasErrors()) {
-			throw errors;
-		}
+        // If captcha is enabled, generate it ...
+        if (recatchaEnabled) {
+            final String recaptcha = registration.getRecaptcha();
+            if (recaptcha != null) {
+                final String reCaptchaResponse = captchaService.verifyRecaptcha(remoteAddress, recaptcha);
+                if (reCaptchaResponse != null && !reCaptchaResponse.isEmpty()) {
+                    errors.rejectValue("recaptcha", reCaptchaResponse);
+                }
+            } else {
+                errors.rejectValue("recaptcha", Messages.CAPTCHA_LOADING_ERROR);
+            }
+        } else {
+            logger.warn("captchaEnabled is enabled.Recommend to enable it for production environments.");
+        }
 
-		// Is excluded ?.
-		final List<String> excludedDomains = Arrays.asList(domainBanExclusion.split(","));
-		final String emailDomain = registration.getEmail().split("@")[1];
-		if (excludedDomains.contains(emailDomain)) {
-			throw new IllegalArgumentException(
-					"Email is part of ban exclusion list due to abuse. Please, contact site admin if you think this is an error."
-							+ emailDomain);
-		}
-	}
+        if (errors.hasErrors()) {
+            throw errors;
+        }
+
+        // Is excluded ?.
+        final List<String> excludedDomains = Arrays.asList(domainBanExclusion.split(","));
+        final String emailDomain = registration.getEmail().split("@")[1];
+        if (excludedDomains.contains(emailDomain)) {
+            throw new IllegalArgumentException(
+                    "Email is part of ban exclusion list due to abuse. Please, contact site admin if you think this is an error."
+                            + emailDomain);
+        }
+    }
 }

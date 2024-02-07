@@ -58,6 +58,9 @@ app:
   mail:
     serverSendEmail: root@localhost
     supportEmail: root@localhost
+#  accounts:
+#    exclusion:
+#      domain:
 
 
 
