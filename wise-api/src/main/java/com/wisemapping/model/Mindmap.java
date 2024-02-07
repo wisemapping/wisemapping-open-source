@@ -311,13 +311,10 @@ public class Mindmap implements Serializable {
     }
 
     public static String getDefaultMindmapXml(@NotNull final String title) {
-
-        final StringBuilder result = new StringBuilder();
-        result.append("<map version=\"tango\" theme=\"prism\">");
-        result.append("<topic central=\"true\" text=\"");
-        result.append(escapeXmlAttribute(title));
-        result.append("\"/></map>");
-        return result.toString();
+        return "<map version=\"tango\" theme=\"prism\">" +
+                "<topic central=\"true\" text=\"" +
+                escapeXmlAttribute(title) +
+                "\"/></map>";
     }
 
     static private String escapeXmlAttribute(String attValue) {

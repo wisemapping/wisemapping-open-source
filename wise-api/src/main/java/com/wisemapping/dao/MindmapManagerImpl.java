@@ -124,17 +124,16 @@ public class MindmapManagerImpl
 
     @Override
     public Mindmap getMindmapByTitle(final String title, final User user) {
-        final Mindmap result;
+
         final TypedQuery<Mindmap> query = entityManager.createQuery("from com.wisemapping.model.Mindmap wisemapping where title=:title and creator=:creator", Mindmap.class);
         query.setParameter("title", title);
         query.setParameter("creator", user);
 
         List<Mindmap> mindMaps = query.getResultList();
 
+        Mindmap result = null;
         if (mindMaps != null && !mindMaps.isEmpty()) {
             result = mindMaps.get(0);
-        } else {
-            result = null;
         }
         return result;
     }
