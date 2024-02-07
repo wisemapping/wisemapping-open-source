@@ -18,33 +18,39 @@
 
 package com.wisemapping.test.rest;
 
-
 import com.wisemapping.config.common.CommonConfig;
 import com.wisemapping.config.rest.RestAppConfig;
 import com.wisemapping.rest.AdminController;
 import com.wisemapping.rest.MindmapController;
 import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestUser;
+import com.wisemapping.security.UserDetailsService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.net.URI;
 
 import static com.wisemapping.test.rest.RestHelper.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 public class RestAccountControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "test";
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private UserDetailsService service;
 
     static public RestAccountControllerTest create(@NotNull TestRestTemplate restTemplate) {
         final RestAccountControllerTest result = new RestAccountControllerTest();
@@ -53,26 +59,39 @@ public class RestAccountControllerTest {
     }
 
     @Test
-    public void deleteUser() {    // Configure media types ...
+    public void deleteAccount() {
 
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate adminRestTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
 
-        final RestUser dummyUser = createDummyUser();
-        createUser(requestHeaders, adminRestTemplate, dummyUser);
+        final RestUser newUser = createDummyUser();
+        createUser(requestHeaders, adminRestTemplate, newUser);
 
         // Delete user ...
-        final TestRestTemplate dummyTemplate = this.restTemplate.withBasicAuth(dummyUser.getEmail(), "fooPassword");
-        dummyTemplate.delete(BASE_REST_URL + "/account");
+        final TestRestTemplate newUserTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
+        final ResponseEntity<String> exchange = newUserTemplate.exchange(BASE_REST_URL + "/account", HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), exchange.toString());
 
-        // Is the user there ?
-        // Check that the user has been created ...
-//        try {
-//            findUser(requestHeaders, adminTemplate, location);
-//            fail("User could not be deleted !");
-//        } catch (Exception e) {
-//        }
+        // Check that the account has been deleted ...
+        assertThrows(UsernameNotFoundException.class, () -> {
+            service.loadUserByUsername(newUser.getEmail());
+        });
     }
+
+    @Test
+    public void accessAccount() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate adminRestTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+
+        final RestUser newUser = createDummyUser();
+        createUser(requestHeaders, adminRestTemplate, newUser);
+
+        final TestRestTemplate newUserTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
+        final ResponseEntity<RestUser> exchange = newUserTemplate.exchange(BASE_REST_URL + "/account", HttpMethod.GET, null, RestUser.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), exchange.toString());
+        assertEquals(exchange.getBody().getEmail(), newUser.getEmail());
+    }
+
 
     @Test
     public RestUser createNewUser() {
