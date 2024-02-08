@@ -22,6 +22,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class RestMindmapControllerTest {
 
     private RestUser user;
 
-        @Autowired
+    @Autowired
     private TestRestTemplate restTemplate;
 
     @BeforeEach
@@ -52,7 +53,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void listMaps() {
+    public void listMaps() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -81,7 +82,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void deleteMap() {
+    public void deleteMap() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -103,7 +104,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void changeMapTitle() {
+    public void changeMapTitle() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -117,7 +118,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void validateMapsCreation() {    // Configure media types ...
+    public void validateMapsCreation() throws URISyntaxException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         requestHeaders.set(HttpHeaders.ACCEPT_LANGUAGE, "en");
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
@@ -135,7 +136,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void changeMapDescription() {
+    public void changeMapDescription() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -155,7 +156,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void updateMapXml() throws IOException {    // Configure media types ...
+    public void updateMapXml() throws IOException, URISyntaxException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -183,7 +184,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void cloneMap() throws IOException {
+    public void cloneMap() throws IOException, URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -211,7 +212,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void updateStarred() {    // Configure media types ...
+    public void updateStarred() throws URISyntaxException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -238,7 +239,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void verifyMapOwnership() {
+    public void verifyMapOwnership() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate firstUser = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -266,7 +267,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void updateMap() throws IOException, WiseMappingException {
+    public void updateMap() throws IOException, WiseMappingException, URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -303,7 +304,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void addCollabs() {
+    public void addCollabs() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -324,7 +325,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void updateCollabType() {
+    public void updateCollabType() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -361,7 +362,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void deleteCollabs() {
+    public void deleteCollabs() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -400,7 +401,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void deleteCollabsWithInvalidEmail() {
+    public void deleteCollabsWithInvalidEmail() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -418,7 +419,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void deleteCollabsWithoutOwnerPermission() {
+    public void deleteCollabsWithoutOwnerPermission() throws URISyntaxException {
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
         final URI resourceUri = addNewMap(restTemplate, "deleteWithoutOwnerPermission");
 
@@ -439,7 +440,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void deleteOwnerCollab() {
+    public void deleteOwnerCollab() throws URISyntaxException {
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
         // Create a sample map ...
@@ -458,7 +459,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void addCollabsInvalidOwner() {
+    public void addCollabsInvalidOwner() throws URISyntaxException {
 
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
@@ -479,7 +480,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void removeLabelFromMindmap() {    // Configure media types ...
+    public void removeLabelFromMindmap() throws URISyntaxException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -524,7 +525,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void addLabelToMindmap() {    // Configure media types ...
+    public void addLabelToMindmap() throws URISyntaxException {    // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -548,7 +549,23 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void updateCollabs() {
+    public void fetchMapMetadata() throws URISyntaxException {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final String mapTitle = "Maps 1 !";
+        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
+        final String mapId = mindmapUri.getPath().replace("/api/restful/maps/", "");
+
+        final ResponseEntity<RestMindmapMetadata> exchange = restTemplate.exchange(mindmapUri + "/metadata", HttpMethod.GET, null, RestMindmapMetadata.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful());
+        assertEquals(mapTitle, exchange.getBody().getTitle());
+
+    }
+
+    @Test
+    public void updateCollabs() throws URISyntaxException {
 
         // Create a sample map ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
@@ -592,7 +609,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void updateProperties() throws IOException, WiseMappingException {
+    public void updateProperties() throws IOException, WiseMappingException, URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -623,7 +640,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void batchDelete() {
+    public void batchDelete() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -646,7 +663,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void updatePublishState() {
+    public void updatePublishState() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -663,7 +680,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void fetchMapHistory() {
+    public void fetchMapHistory() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -681,7 +698,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void updateRevertMindmap() throws IOException {
+    public void updateRevertMindmap() throws IOException, URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -709,7 +726,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void addCollabWhitoutOwnerPermission() {
+    public void addCollabWhitoutOwnerPermission() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -736,7 +753,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
-    public void addCollabWhitOwnerRole() {
+    public void addCollabWhitOwnerRole() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -800,14 +817,19 @@ public class RestMindmapControllerTest {
     }
 
     //
-    private URI addNewMap(@NotNull TestRestTemplate template, @NotNull String title, @Nullable String xml) {
+    private URI addNewMap(@NotNull TestRestTemplate template, @NotNull String title, @Nullable String xml) throws URISyntaxException {
         // Create a new map ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_XML);
-        HttpEntity<String> createUserEntity = new HttpEntity<>(xml, requestHeaders);
-        return template.postForLocation("/api/restful/maps?title=" + title, createUserEntity);
+        final HttpEntity<String> createUserEntity = new HttpEntity<>(xml, requestHeaders);
+
+        final ResponseEntity<String> exchange = template.exchange("/api/restful/maps?title=" + title, HttpMethod.POST, createUserEntity, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful());
+
+        final List<String> locations = exchange.getHeaders().get(HttpHeaders.LOCATION);
+        return new URI(locations.stream().findFirst().get());
     }
 
-    private URI addNewMap(@NotNull TestRestTemplate template, @NotNull String title) {
+    private URI addNewMap(@NotNull TestRestTemplate template, @NotNull String title) throws URISyntaxException {
         return addNewMap(template, title, null);
     }
 

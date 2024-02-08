@@ -20,17 +20,9 @@ package com.wisemapping.rest.model;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.wisemapping.exceptions.InvalidMindmapException;
-import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.*;
-import com.wisemapping.util.TimeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
-import java.util.Calendar;
 
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
@@ -40,8 +32,49 @@ import java.util.Calendar;
 )
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RestMindmapMetadata {
+    private String jsonProps;
+    private boolean locked;
+    private String title;
 
-    public RestMindmapMetadata() throws WiseMappingException {
+    public String getJsonProps() {
+        return jsonProps;
+    }
+
+    public void setJsonProps(String jsonProps) {
+        this.jsonProps = jsonProps;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLockFullName() {
+        return lockFullName;
+    }
+
+    public void setLockFullName(String lockFullName) {
+        this.lockFullName = lockFullName;
+    }
+
+    private String lockFullName;
+
+    public RestMindmapMetadata(@NotNull String title, @NotNull String jsonProps, boolean locked, @Nullable String lockFullName) {
+        this.jsonProps = jsonProps;
+        this.title = title;
+        this.locked = locked;
+        this.lockFullName = lockFullName;
     }
 
 }

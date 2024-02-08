@@ -1,7 +1,6 @@
 package com.wisemapping;
 
 import com.wisemapping.config.common.CommonConfig;
-import com.wisemapping.config.mvc.MvcAppConfig;
 import com.wisemapping.config.rest.RestAppConfig;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;

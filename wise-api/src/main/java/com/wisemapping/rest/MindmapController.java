@@ -24,6 +24,7 @@ import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
 import com.wisemapping.validator.MapInfoValidator;
+import com.wisemapping.view.MindMapBean;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.logging.log4j.LogManager;
@@ -32,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -72,7 +74,7 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = {"application/json"})
     @ResponseBody
     public RestMindmap retrieve(@PathVariable int id) throws WiseMappingException {
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         final Mindmap mindMap = findMindmapById(id);
         return new RestMindmap(mindMap, user);
     }
@@ -80,17 +82,28 @@ public class MindmapController extends BaseController {
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/metadata", produces = {"application/json"})
     @ResponseBody
-    public RestMindmap retrieveMetadata(@PathVariable int id) throws WiseMappingException {
-        final User user = Utils.getUser();
-        
-        final Mindmap mindMap = findMindmapById(id);
-        return new RestMindmap(mindMap, user);
+    public RestMindmapMetadata retrieveMetadata(@PathVariable int id) throws WiseMappingException {
+        final User user = Utils.getUser(true);
+        final Mindmap mindmap = findMindmapById(id);
+        final MindMapBean mindMapBean = new MindMapBean(mindmap, user);
+
+        // Is the mindmap locked ?.
+        boolean isLocked = false;
+        final LockManager lockManager = this.mindmapService.getLockManager();
+        String lockFullName = null;
+        if (lockManager.isLocked(mindmap) && !lockManager.isLockedBy(mindmap, user)) {
+            final LockInfo lockInfo = lockManager.getLockInfo(mindmap);
+            isLocked = true;
+            lockFullName = lockInfo.getUser().getFullName();
+        }
+
+        return new RestMindmapMetadata(mindmap.getTitle(), mindMapBean.getProperties(), isLocked, lockFullName);
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/", produces = {"application/json"})
     public RestMindmapList retrieveList(@RequestParam(required = false) String q) {
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
 
         final MindmapFilter filter = MindmapFilter.parse(q);
         List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
@@ -119,7 +132,7 @@ public class MindmapController extends BaseController {
     public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws WiseMappingException, IOException {
 
         final Mindmap mindmap = findMindmapById(id);
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
 
         // Validate arguments ...
         final String properties = restMindmap.getProperties();
@@ -148,7 +161,7 @@ public class MindmapController extends BaseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateRevertMindmap(@PathVariable int id, @PathVariable String hid) throws WiseMappingException, IOException {
         final Mindmap mindmap = findMindmapById(id);
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
 
         if (LATEST_HISTORY_REVISION.equals(hid)) {
             // Revert to the latest stored version ...
@@ -178,7 +191,7 @@ public class MindmapController extends BaseController {
     @ResponseBody
     public void updateDocument(@PathVariable int id, @RequestBody String xmlDoc) throws WiseMappingException {
         final Mindmap mindmap = findMindmapById(id);
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         mindmap.setXmlStr(xmlDoc);
 
         saveMindmapDocument(false, mindmap, user);
@@ -203,7 +216,7 @@ public class MindmapController extends BaseController {
     public void updateProperties(@RequestBody RestMindmap restMindmap, @PathVariable int id, @RequestParam(required = false) boolean minor) throws IOException, WiseMappingException {
 
         final Mindmap mindmap = findMindmapById(id);
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
 
         final String xml = restMindmap.getXml();
         if (xml != null && !xml.isEmpty()) {
@@ -239,7 +252,7 @@ public class MindmapController extends BaseController {
     @NotNull
     private Mindmap findMindmapById(int id) throws MapCouldNotFoundException, AccessDeniedSecurityException {
         // Has enough permissions ?
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
         if (!mindmapService.hasPermissions(user, id, CollaborationRole.VIEWER)) {
             throw new AccessDeniedSecurityException(id, user);
         }
@@ -258,7 +271,7 @@ public class MindmapController extends BaseController {
     public void updateTitle(@RequestBody String title, @PathVariable int id) throws WiseMappingException {
 
         final Mindmap mindMap = findMindmapById(id);
-        final User user = Utils.getUser();
+        final User user = Utils.getUser(true);
 
         // Is there a map with the same name ?
         if (mindmapService.getMindmapByTitle(title, user) != null) {

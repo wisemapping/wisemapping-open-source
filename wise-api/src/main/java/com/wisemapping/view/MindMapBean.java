@@ -127,10 +127,6 @@ public class MindMapBean {
         mindmap.setDescription(d);
     }
 
-    public String getXmlAsJsLiteral() throws IOException {
-        return this.mindmap.getXmlAsJsLiteral();
-    }
-
     public String getProperties() throws WiseMappingException {
         String result = null;
 
