@@ -33,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -205,7 +204,6 @@ public class MindmapController extends BaseController {
         final MindMapHistory mindmapHistory = mindmapService.findMindmapHistory(id, hid);
         return mindmapHistory.getUnzipXml();
     }
-
 
     /**
      * The intention of this method is the update of several properties at once ...

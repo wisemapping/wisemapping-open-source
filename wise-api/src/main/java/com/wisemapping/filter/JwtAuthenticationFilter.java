@@ -25,6 +25,7 @@ import java.util.Optional;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -37,7 +38,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
             throws ServletException, IOException {
         final Optional<String> token = getJwtTokenFromRequest(request);
-
 
         if (token.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
             // Extract email from token ...
@@ -74,7 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static Optional<String> getJwtTokenFromRequest(@NotNull HttpServletRequest request) {
         Optional<String> result = Optional.empty();
 
-        final String authorizationHeader = request.getHeader("Authorization");
+        final String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
         if (authorizationHeader != null) {
             if (authorizationHeader.startsWith(BEARER_TOKEN_PREFIX)) {
                 logger.trace("JWT Bearer token found.");
