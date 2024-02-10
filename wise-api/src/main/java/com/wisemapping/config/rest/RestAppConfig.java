@@ -39,8 +39,9 @@ public class RestAppConfig {
                 .securityMatcher("/**")
                 .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(mvc.pattern("/api/restful/users/")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/authenticate")).permitAll()
+                        .requestMatchers(mvc.pattern("/api/restful/users/")).permitAll()
+                        .requestMatchers(mvc.pattern("/api/restful/maps/*/document/xml-pub")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/users/resetPassword")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/oauth2/googlecallback")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/oauth2/confirmaccountsync")).permitAll()
