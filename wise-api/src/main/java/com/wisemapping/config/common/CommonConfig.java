@@ -1,16 +1,48 @@
 package com.wisemapping.config.common;
 
 import com.wisemapping.dao.LabelManagerImpl;
+import com.wisemapping.model.User;
 import com.wisemapping.security.AuthenticationProvider;
+import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapServiceImpl;
 import com.wisemapping.util.VelocityEngineUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+
+import java.util.Locale;
 
 @ComponentScan(basePackageClasses = {AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class})
 @Import({JPAConfig.class, SecurityConfig.class})
 @EnableAutoConfiguration
 public class CommonConfig {
+    @Bean
+    public LocaleResolver localeResolver() {
+        final LocaleResolver localeResolver = new AcceptHeaderLocaleResolver() {
+            @Override
+            public Locale resolveLocale(@Nullable HttpServletRequest request) {
+                final User user = Utils.getUser();
+                Locale result;
+                String locale = user.getLocale();
+                if (user != null && locale != null) {
+                    final String locales[] = locale.split("_");
+                    Locale.Builder builder = new Locale.Builder().setLanguage(locales[0]);
+                    if (locales.length > 1) {
+                        builder.setVariant(locales[1]);
+                    }
+                    result = builder.build();
+                } else {
+                    result = super.resolveLocale(request);
+                }
+                return result;
+            }
+        };
+        return localeResolver;
+    }
 }
+

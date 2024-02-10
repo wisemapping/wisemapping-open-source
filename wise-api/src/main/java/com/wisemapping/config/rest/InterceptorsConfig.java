@@ -18,7 +18,6 @@
 package com.wisemapping.config.rest;
 
 import com.wisemapping.filter.RequestPropertiesInterceptor;
-import com.wisemapping.filter.UserLocaleInterceptor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,17 +26,14 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@ComponentScan(basePackageClasses = UserLocaleInterceptor.class)
+@ComponentScan(basePackageClasses = RequestPropertiesInterceptor.class)
 public class InterceptorsConfig implements WebMvcConfigurer {
-    @Autowired
-    private UserLocaleInterceptor userLocaleInterceptor;
-
     @Autowired
     private RequestPropertiesInterceptor requestPropertiesInterceptor;
 
     @Override
     public void addInterceptors(@NotNull final InterceptorRegistry registry) {
-        registry.addInterceptor(userLocaleInterceptor);
         registry.addInterceptor(requestPropertiesInterceptor);
     }
+
 }
