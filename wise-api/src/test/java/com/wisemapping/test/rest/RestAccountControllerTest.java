@@ -40,7 +40,11 @@ import static com.wisemapping.test.rest.RestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        properties = {"app.api.http-basic-enabled=true"}
+)
 @AutoConfigureMockMvc
 public class RestAccountControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";

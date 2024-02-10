@@ -45,7 +45,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, UserController.class})
+@SpringBootTest(
+        classes = {RestAppConfig.class, CommonConfig.class, UserController.class},
+        properties = {"app.api.http-basic-enabled=true"}
+)
 @AutoConfigureMockMvc
 public class RestUserControllerTest {
 

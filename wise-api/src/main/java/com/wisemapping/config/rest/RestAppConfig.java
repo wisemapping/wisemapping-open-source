@@ -5,6 +5,7 @@ import com.wisemapping.rest.MindmapController;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -25,6 +26,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class RestAppConfig {
 
+    @Value("${app.api.http-basic-enabled:false}")
+    private boolean enableHttpBasic;
+
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -35,7 +39,7 @@ public class RestAppConfig {
 
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http, @NotNull final MvcRequestMatcher.Builder mvc) throws Exception {
-        return http
+        http
                 .securityMatcher("/**")
                 .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
@@ -54,8 +58,13 @@ public class RestAppConfig {
                             response.setStatus(HttpServletResponse.SC_OK);
                         }))
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(withDefaults())
-                .build();
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // Http basic is mainly used by automation tests.
+        if (enableHttpBasic) {
+            http.httpBasic(withDefaults());
+        }
+
+        return http.build();
     }
 }

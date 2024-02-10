@@ -7,7 +7,7 @@ import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapServiceImpl;
 import com.wisemapping.util.VelocityEngineUtils;
 import jakarta.servlet.http.HttpServletRequest;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,14 +23,15 @@ import java.util.Locale;
 public class CommonConfig {
     @Bean
     public LocaleResolver localeResolver() {
-        final LocaleResolver localeResolver = new AcceptHeaderLocaleResolver() {
+        return new AcceptHeaderLocaleResolver() {
             @Override
-            public Locale resolveLocale(@Nullable HttpServletRequest request) {
+            public Locale resolveLocale(@NotNull HttpServletRequest request) {
                 final User user = Utils.getUser();
                 Locale result;
-                String locale = user.getLocale();
-                if (user != null && locale != null) {
+                if (user != null && user.getLocale() != null) {
+                    String locale = user.getLocale();
                     final String locales[] = locale.split("_");
+
                     Locale.Builder builder = new Locale.Builder().setLanguage(locales[0]);
                     if (locales.length > 1) {
                         builder.setVariant(locales[1]);
@@ -42,7 +43,6 @@ public class CommonConfig {
                 return result;
             }
         };
-        return localeResolver;
     }
 }
 

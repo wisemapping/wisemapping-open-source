@@ -28,7 +28,10 @@ import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, LabelController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        classes = {RestAppConfig.class, CommonConfig.class, LabelController.class, AdminController.class, UserController.class},
+        properties = {"app.api.http-basic-enabled=true"},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RestLabelControllerTest {
     private static final String COLOR = "#000000";
 

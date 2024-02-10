@@ -38,7 +38,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, JwtAuthController.class})
+@SpringBootTest(
+        classes = {RestAppConfig.class, CommonConfig.class, JwtAuthController.class},
+        properties = {"app.api.http-basic-enabled=true"}
+)
 @AutoConfigureMockMvc
 public class RestJwtAuthControllerTest {
 

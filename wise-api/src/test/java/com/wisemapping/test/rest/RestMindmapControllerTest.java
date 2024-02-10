@@ -31,7 +31,10 @@ import java.util.stream.Collectors;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        properties = {"app.api.http-basic-enabled=true"})
 public class RestMindmapControllerTest {
 
     private RestUser user;

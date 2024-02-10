@@ -18,7 +18,6 @@
 
 package com.wisemapping.service;
 
-import com.wisemapping.filter.SupportedUserAgent;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.User;
@@ -202,7 +201,7 @@ final public class NotificationService {
         final String userEmail = user != null ? user.getEmail() : "'anonymous'";
 
         model.put("email", userEmail);
-        model.put("userAgent", request.getHeader(SupportedUserAgent.USER_AGENT_HEADER));
+        model.put("userAgent", request.getHeader("User-Agent"));
         model.put("server", request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort());
         model.put("requestURI", request.getRequestURI());
         model.put("method", request.getMethod());

@@ -50,6 +50,8 @@ logging:
 
 # Application Configuration.
 app:
+  api:
+    http-basic-enabled: false
   jwt:
     secret: dlqxKAg685SaKhsQXIMeM=JWCw3bkl3Ei3Tb7LMlnd19oMd66burPNlJ0Po1qguyjgpakQTk2CN3
     expirationMin: 10080 # One week

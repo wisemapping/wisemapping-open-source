@@ -225,7 +225,7 @@ public class MindmapController extends BaseController {
         final String title = restMindmap.getTitle();
         if (title != null && !title.equals(mindmap.getTitle())) {
             if (mindmapService.getMindmapByTitle(title, user) != null) {
-                throw buildValidationException("title", "You already have a map with this title");
+                throw buildValidationException("You already have a map with this title");
             }
             mindmap.setTitle(title);
         }
@@ -273,7 +273,7 @@ public class MindmapController extends BaseController {
 
         // Is there a map with the same name ?
         if (mindmapService.getMindmapByTitle(title, user) != null) {
-            throw buildValidationException("title", "You already have a mindmap with this title");
+            throw buildValidationException("You already have a mindmap with this title");
         }
 
         // Update map ...
@@ -497,7 +497,7 @@ public class MindmapController extends BaseController {
         // Update map status ...
         final boolean starred = Boolean.parseBoolean(value);
         final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
-        if (!collaboration.isPresent()) {
+        if (collaboration.isEmpty()) {
             throw new WiseMappingException("No enough permissions.");
         }
         collaboration.get().getCollaborationProperties().setStarred(starred);
@@ -512,7 +512,7 @@ public class MindmapController extends BaseController {
         final User user = Utils.getUser();
 
         final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
-        if (!collaboration.isPresent()) {
+        if (collaboration.isEmpty()) {
             throw new WiseMappingException("No enough permissions.");
         }
         boolean result = collaboration.get().getCollaborationProperties().getStarred();
@@ -659,9 +659,9 @@ public class MindmapController extends BaseController {
         mindmapService.updateMindmap(mindMap, !minor);
     }
 
-    private ValidationException buildValidationException(@NotNull String fieldName, @NotNull String message) throws WiseMappingException {
+    private ValidationException buildValidationException(@NotNull String message) throws WiseMappingException {
         final BindingResult result = new BeanPropertyBindingResult(new RestMindmap(), "");
-        result.rejectValue(fieldName, "error.not-specified", null, message);
+        result.rejectValue("title", "error.not-specified", null, message);
         return new ValidationException(result);
     }
 
