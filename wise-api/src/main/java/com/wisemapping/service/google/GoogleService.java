@@ -34,15 +34,15 @@ import com.wisemapping.service.google.http.HttpInvokerException;
 public class GoogleService {
 	@Autowired
 	private HttpInvoker httpInvoker;
-	@Value("${security.oauth2.google.confirmUrl:}")
+	@Value("${app.security.oauth2.google.confirmUrl:}")
 	private String optinConfirmUrl;
-	@Value("${security.oauth2.google.userinfoUrl:}")
+	@Value("${app.security.oauth2.google.userinfoUrl:}")
 	private String accountBasicDataUrl;
-	@Value("${security.oauth2.google.clientId:}")
+	@Value("${app.security.oauth2.google.clientId:}")
 	private String clientId;
-	@Value("${security.oauth2.google.clientSecret:}")
+	@Value("${app.security.oauth2.google.clientSecret:}")
 	private String clientSecret;
-	@Value("${security.oauth2.google.callbackUrl:}")
+	@Value("${app.security.oauth2.google.callbackUrl:}")
 	private String callbackUrl;
 
 	public void setHttpInvoker(HttpInvoker httpInvoker) {
@@ -108,8 +108,9 @@ public class GoogleService {
 
 	public GoogleAccountBasicData processCallback(final String code)
 			throws HttpInvokerException {
-		Map<String, String> body = this.getOptinConfirmBody(code);
-		JsonNode optionConfirmResponse = httpInvoker.invoke(
+
+		final Map<String, String> body = this.getOptinConfirmBody(code);
+		final JsonNode optionConfirmResponse = httpInvoker.invoke(
 				optinConfirmUrl,
 				HttpInvokerContentType.FORM_ENCODED,
 				HttpMethod.POST,
@@ -120,7 +121,7 @@ public class GoogleService {
 		final String accessToken = getNodeAsString(optionConfirmResponse, "access_token");
 		final String refreshToken = getNodeAsString(optionConfirmResponse, "refresh_token");
 
-		GoogleAccountBasicData data = this.getAccountBasicData(accessToken);
+		final GoogleAccountBasicData data = this.getAccountBasicData(accessToken);
 		data.setAccessToken(accessToken);
 		data.setRefreshToken(refreshToken);
 		return data;

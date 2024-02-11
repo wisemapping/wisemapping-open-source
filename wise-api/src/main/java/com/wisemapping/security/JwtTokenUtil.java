@@ -3,11 +3,14 @@ package com.wisemapping.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +21,18 @@ import java.util.Date;
 @Component
 public class JwtTokenUtil implements Serializable {
     final private Logger logger = LogManager.getLogger();
+    public final static String BEARER_TOKEN_PREFIX = "Bearer ";
+
 
     @Value("${app.jwt.secret}")
     private String jwtSecret;
 
     @Value("${app.jwt.expirationMin}")
     private int jwtExpirationMin;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
 
     public String generateJwtToken(@NotNull final UserDetails user) {
         return Jwts.builder()
@@ -62,5 +71,16 @@ public class JwtTokenUtil implements Serializable {
 
         logger.trace("Is JWT token valid:" + result);
         return result;
+    }
+
+    @NotNull
+    public String doLogin(@NotNull HttpServletResponse response, @NotNull String email) {
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+        // Add JWT in the HTTP header ...
+        final String token = generateJwtToken(userDetails);
+        response.addHeader(HttpHeaders.AUTHORIZATION, BEARER_TOKEN_PREFIX + token);
+
+        return token;
     }
 }

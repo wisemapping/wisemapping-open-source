@@ -164,7 +164,7 @@ public class User
     }
 
     public Boolean getGoogleSync() {
-        return googleSync;
+        return googleSync!=null && googleSync;
     }
 
     public void setGoogleSync(Boolean googleSync) {

@@ -30,7 +30,7 @@ public interface UserService {
 
     User createUser(@NotNull User user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException;
 
-	User createUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException;
+	User createAndAuthUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException;
 
 	User confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException;
 

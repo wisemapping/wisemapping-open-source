@@ -60,13 +60,26 @@ app:
   mail:
     serverSendEmail: root@localhost
     supportEmail: root@localhost
+
+  #######################################################################################
+  # Google OAuth Authentication
+  #######################################################################################
+  # OAuth Client id
+  #security.oauth2.google.clientId=<config settings>
+  # OAuth Client secret
+  #security.oauth2.google.clientSecret=<oauth client>
+  # Redirect to this url, this url must be configured in the google app {baseurl}/c/registration-google
+  #security.oauth2.google.callbackUrl=<oauth callback url>
+  security:
+    oauth2:
+      google:
+        confirmUrl: https://oauth2.googleapis.com/token
+        userinfoUrl: https://www:googleapis.com/oauth2/v3/userinfo
+        url: https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${app.security.oauth2.google.callbackUrl}&prompt=consent&response_type=code&client_id=${app.security.oauth2.google.clientId}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&state=wisemapping&include_granted_scopes=true
+
 #  accounts:
 #    exclusion:
 #      domain:
-
-
-
-
 
 
 google:
@@ -79,12 +92,6 @@ google:
     enabled: true
     secretKey: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
     siteKey: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-security:
-  oauth2:
-    google:
-      confirmUrl: https://oauth2.googleapis.com/token
-      url: https//review
-      userinfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
 site:
   homepage: c/login
   static:

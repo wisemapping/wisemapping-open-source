@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,8 +20,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
-@SpringBootApplication(scanBasePackageClasses = MindmapController.class)
-@Import({InterceptorsConfig.class})
+@SpringBootApplication(scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class})
 @EnableWebSecurity
 public class RestAppConfig {
 
@@ -43,12 +41,13 @@ public class RestAppConfig {
                 .securityMatcher("/**")
                 .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(mvc.pattern("/error")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/authenticate")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/users/")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/maps/*/document/xml-pub")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/users/resetPassword")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/oauth2/googlecallback")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/oauth2/confirmaccountsync")).permitAll()
+                        .requestMatchers(mvc.pattern("/api/oauth2/googlecallback")).permitAll()
+                        .requestMatchers(mvc.pattern("/api/oauth2/confirmaccountsync")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/admin/**")).hasAnyRole("ADMIN")
                         .requestMatchers(mvc.pattern("/**")).hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()

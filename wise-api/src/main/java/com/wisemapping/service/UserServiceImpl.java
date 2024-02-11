@@ -161,7 +161,6 @@ public class UserServiceImpl
         final Mindmap mindMap = buildTutorialMindmap(user.getFirstname());
         mindmapService.addMindmap(mindMap, user);
 
-
         // Send registration email.
         if (emailConfirmEnabled) {
             notificationService.sendRegistrationEmail(user);
@@ -174,7 +173,7 @@ public class UserServiceImpl
     }
 
     @NotNull
-    public User createUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException {
+    public User createAndAuthUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException {
         GoogleAccountBasicData data;
         try {
             data = googleService.processCallback(callbackCode);
@@ -185,7 +184,7 @@ public class UserServiceImpl
         User existingUser = userManager.getUserBy(data.getEmail());
         if (existingUser == null) {
             User newUser = new User();
-            // new registrations from google starts synched
+            // new registrations from google starts sync
             newUser.setGoogleSync(true);
             newUser.setEmail(data.getEmail());
             newUser.setFirstname(data.getName());
@@ -208,7 +207,7 @@ public class UserServiceImpl
     }
 
     public User confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
-        User existingUser = userManager.getUserBy(email);
+        final User existingUser = userManager.getUserBy(email);
         // additional security check
         if (existingUser == null || !existingUser.getSyncCode().equals(code)) {
             throw new WiseMappingException("User not found / incorrect code");

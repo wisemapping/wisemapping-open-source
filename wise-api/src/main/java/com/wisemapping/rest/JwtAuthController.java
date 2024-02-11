@@ -18,64 +18,44 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.security.JwtTokenUtil;
-import com.wisemapping.security.UserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/restful")
 public class JwtAuthController {
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    public ResponseEntity<String> createAuthenticationToken(@RequestBody RestJwtUser user, @NotNull HttpServletResponse response) throws WiseMappingException {
+        // Is a valid user ?
+        authenticate(user.getEmail(), user.getPassword());
+        final String result = jwtTokenUtil.doLogin(response, user.getEmail());
 
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody RestJwtUser user, @NotNull HttpServletResponse response) throws Exception {
+        return ResponseEntity.ok(result);
+    }
 
-		// Is a valid user ?
-		authenticate(user.getEmail(), user.getPassword());
-
-		// Create token ...
-		final UserDetails userDetails = userDetailsService
-				.loadUserByUsername(user.getEmail());
-
-		final String token = jwtTokenUtil.generateJwtToken(userDetails);
-
-		// Add token in the header ...
-		response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-
-		return ResponseEntity.ok(token);
-	}
-
-	private void authenticate(@NotNull String username, @NotNull String password) throws Exception {
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
-		}
-	}
+    private void authenticate(@NotNull String username, @NotNull String password) throws WiseMappingException {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException | BadCredentialsException e) {
+            throw new WiseMappingException(e.getMessage(), e);
+        }
+    }
 }
