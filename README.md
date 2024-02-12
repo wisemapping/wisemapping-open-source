@@ -40,7 +40,7 @@ Password: test
 
 In order to reduce the life-cycle to develop UI backend testing, you can do the following hack:
 
-* Clone [wisemapping-open-source](https://bitbucket.org/wisemapping/wisemapping-open-source/) and [wisemapping-frontend](https://bitbucket.org/wisemapping/wisemapping-frontend/) at the same top level directory
+* Clone [wisemapping-open-source](https://github.com/wisemapping/wisemapping-open-source/) and [wisemapping-frontend](https://github.com/wisemapping/wisemapping-frontend/) at the same top level directory
 * Compile `wisemapping-frontend`. Details for compilation can be found in the `wisemapping-frontend` readme.
 * Compile `wisemapping-open-source`
 
