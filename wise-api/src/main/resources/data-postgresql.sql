@@ -7,7 +7,7 @@ CREATE TABLE COLLABORATOR (
 CREATE TABLE "USER" (
   authentication_type TEXT         NOT NULL,
   authenticator_uri   VARCHAR(255),
-  colaborator_id      INTEGER      NOT NULL PRIMARY KEY,
+  collaborator_id      INTEGER      NOT NULL PRIMARY KEY,
   firstname           VARCHAR(255) NOT NULL,
   lastname            VARCHAR(255) NOT NULL,
   password            VARCHAR(255) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE "USER" (
   google_sync         BOOLEAN,
   sync_code           VARCHAR(255),
   google_token        VARCHAR(255),
-  FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id) ON DELETE CASCADE ON UPDATE NO ACTION
+  FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 CREATE TABLE "LABEL" (
@@ -27,7 +27,7 @@ CREATE TABLE "LABEL" (
   creator_id      INTEGER            NOT NULL,
   parent_label_id INTEGER,
   color           VARCHAR(7)         NOT NULL,
-  FOREIGN KEY (creator_id) REFERENCES "USER" (colaborator_id)
+  FOREIGN KEY (creator_id) REFERENCES "USER" (collaborator_id)
 );
 
 CREATE TABLE MINDMAP (
@@ -40,7 +40,7 @@ CREATE TABLE MINDMAP (
   edition_date   TIMESTAMP,
   creator_id     INTEGER      NOT NULL,
   last_editor_id INTEGER      NOT NULL --,
---FOREIGN KEY(creator_id) REFERENCES "USER"(colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
+--FOREIGN KEY(creator_id) REFERENCES "USER"(collaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 CREATE TABLE R_LABEL_MINDMAP (
@@ -69,11 +69,11 @@ CREATE TABLE COLLABORATION_PROPERTIES (
 
 CREATE TABLE COLLABORATION (
   id             SERIAL  NOT NULL PRIMARY KEY,
-  colaborator_id INTEGER NOT NULL,
+  collaborator_id INTEGER NOT NULL,
   properties_id  INTEGER NOT NULL,
   mindmap_id     INTEGER NOT NULL,
   role_id        INTEGER NOT NULL,
-  FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id),
+  FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id),
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id) ON DELETE CASCADE ON UPDATE NO ACTION,
   FOREIGN KEY (properties_id) REFERENCES COLLABORATION_PROPERTIES (id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
@@ -82,5 +82,5 @@ CREATE TABLE ACCESS_AUDITORY (
   id         SERIAL  NOT NULL PRIMARY KEY,
   login_date DATE,
   user_id    INTEGER NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES "USER" (colaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
+  FOREIGN KEY (user_id) REFERENCES "USER" (collaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
 );

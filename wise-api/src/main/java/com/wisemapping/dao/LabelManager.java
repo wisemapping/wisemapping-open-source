@@ -1,7 +1,7 @@
 package com.wisemapping.dao;
 
-import com.wisemapping.model.Label;
-import com.wisemapping.model.User;
+import com.wisemapping.model.MindmapLabel;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface LabelManager {
 
-    void addLabel(@NotNull final Label label);
+    void addLabel(@NotNull final MindmapLabel label);
 
-    void saveLabel(@NotNull final Label label);
+    void saveLabel(@NotNull final MindmapLabel label);
 
     @NotNull
-    List<Label> getAllLabels(@NotNull final User user);
+    List<MindmapLabel> getAllLabels(@NotNull final Account user);
 
     @Nullable
-    Label getLabelById(int id, @NotNull final User user);
+    MindmapLabel getLabelById(int id, @NotNull final Account user);
 
     @Nullable
-    Label getLabelByTitle(@NotNull final String title, @NotNull final User user);
+    MindmapLabel getLabelByTitle(@NotNull final String title, @NotNull final Account user);
 
-    void removeLabel(@NotNull final Label label);
+    void removeLabel(@NotNull final MindmapLabel label);
 }

@@ -24,7 +24,6 @@ import com.wisemapping.model.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +78,7 @@ public class MindMapBean {
     }
 
     public String getLastEditor() {
-        final User lastEditor = mindmap.getLastEditor();
+        final Account lastEditor = mindmap.getLastEditor();
         return lastEditor != null ? lastEditor.getFullName() : "";
     }
 
@@ -147,7 +146,7 @@ public class MindMapBean {
         return result;
     }
 
-    public User getCreator() {
+    public Account getCreator() {
         return mindmap.getCreator();
     }
 

@@ -2,7 +2,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import jakarta.validation.constraints.NotNull;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +36,7 @@ public class MapAccessPermissionEvaluation implements PermissionEvaluator {
         }
 
         boolean result;
-        final User user = Utils.getUser();
+        final Account user = Utils.getUser();
         final MapAccessPermission perm = MapAccessPermission.valueOf((permission.toString().toUpperCase()));
         if (targetDomainObject instanceof Integer) {
             // Checking permissions by mapId ...
@@ -69,7 +69,7 @@ public class MapAccessPermissionEvaluation implements PermissionEvaluator {
 
     private boolean hasPrivilege(@NotNull int mapId, @NotNull MapAccessPermission permission) {
         boolean result;
-        final User user = Utils.getUser();
+        final Account user = Utils.getUser();
         if (MapAccessPermission.READ == permission) {
             result = readAdvice.isAllowed(user, mapId);
         } else {
@@ -80,7 +80,7 @@ public class MapAccessPermissionEvaluation implements PermissionEvaluator {
 
     private boolean hasPrivilege(@NotNull Mindmap map, @NotNull MapAccessPermission permission) {
         boolean result;
-        final User user = Utils.getUser();
+        final Account user = Utils.getUser();
         if (MapAccessPermission.READ == permission) {
             result = readAdvice.isAllowed(user, map);
         } else {

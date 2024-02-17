@@ -84,7 +84,7 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public List<Mindmap> findMindmapByUser(@NotNull User user) {
+    public List<Mindmap> findMindmapByUser(@NotNull Account user) {
 
         final TypedQuery<Mindmap> query = entityManager
                 .createQuery("from com.wisemapping.model.Mindmap m where m.id in (select c.mindMap.id from com.wisemapping.model.Collaboration as c where c.collaborator.id=:collabId )", Mindmap.class);
@@ -123,7 +123,7 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public Mindmap getMindmapByTitle(final String title, final User user) {
+    public Mindmap getMindmapByTitle(final String title, final Account user) {
 
         final TypedQuery<Mindmap> query = entityManager.createQuery("from com.wisemapping.model.Mindmap wisemapping where title=:title and creator=:creator", Mindmap.class);
         query.setParameter("title", title);
@@ -139,7 +139,7 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public void addMindmap(User user, Mindmap mindMap) {
+    public void addMindmap(Account user, Mindmap mindMap) {
         saveMindmap(mindMap);
     }
 

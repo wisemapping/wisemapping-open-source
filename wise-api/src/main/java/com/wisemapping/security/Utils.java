@@ -18,8 +18,7 @@
 
 package com.wisemapping.security;
 
-import com.wisemapping.model.User;
-import org.jetbrains.annotations.NotNull;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,12 +29,12 @@ final public class Utils {
 
     @SuppressWarnings({"ConstantConditions"})
     @Nullable
-    public static User getUser() {
+    public static Account getUser() {
         return getUser(false);
     }
 
-    public static User getUser(boolean forceCheck) {
-        User result = null;
+    public static Account getUser(boolean forceCheck) {
+        Account result = null;
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getDetails() != null)
         {

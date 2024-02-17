@@ -17,8 +17,8 @@
  */
 package com.wisemapping.dao;
 
-import com.wisemapping.model.Label;
-import com.wisemapping.model.User;
+import com.wisemapping.model.MindmapLabel;
+import com.wisemapping.model.Account;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.jetbrains.annotations.NotNull;
@@ -35,51 +35,51 @@ public class LabelManagerImpl
     private EntityManager entityManager;
 
     @Override
-    public void addLabel(@NotNull final Label label) {
+    public void addLabel(@NotNull final MindmapLabel label) {
         saveLabel(label);
     }
 
     @Override
-    public void saveLabel(@NotNull final Label label) {
+    public void saveLabel(@NotNull final MindmapLabel label) {
         entityManager.persist(label);
     }
 
     @NotNull
     @Override
-    public List<Label> getAllLabels(@NotNull final User user) {
-        final TypedQuery<Label> query = entityManager.createQuery("from com.wisemapping.model.Label wisemapping where creator=:creatorId", Label.class);
+    public List<MindmapLabel> getAllLabels(@NotNull final Account user) {
+        final TypedQuery<MindmapLabel> query = entityManager.createQuery("from com.wisemapping.model.MindmapLabel wisemapping where creator=:creatorId", MindmapLabel.class);
         query.setParameter("creatorId", user);
         return query.getResultList();
     }
 
     @Nullable
     @Override
-    public Label getLabelById(int id, @NotNull final User user) {
-        final TypedQuery<Label> query = entityManager.createQuery("from com.wisemapping.model.Label wisemapping where id=:id and creator=:creator", Label.class);
+    public MindmapLabel getLabelById(int id, @NotNull final Account user) {
+        final TypedQuery<MindmapLabel> query = entityManager.createQuery("from com.wisemapping.model.MindmapLabel wisemapping where id=:id and creator=:creator", MindmapLabel.class);
         query.setParameter("id", id);
         query.setParameter("creator", user);
 
-        final List<Label> resultList = query.getResultList();
+        final List<MindmapLabel> resultList = query.getResultList();
         return getFirst(resultList);
     }
 
     @Nullable
     @Override
-    public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
-        final TypedQuery<Label> query = entityManager.createQuery("from com.wisemapping.model.Label wisemapping where title=:title and creator=:creator", Label.class);
+    public MindmapLabel getLabelByTitle(@NotNull String title, @NotNull final Account user) {
+        final TypedQuery<MindmapLabel> query = entityManager.createQuery("from com.wisemapping.model.MindmapLabel wisemapping where title=:title and creator=:creator", MindmapLabel.class);
         query.setParameter("title", title);
         query.setParameter("creator", user);
         return query.getResultList().stream().findFirst().orElse(null);
     }
 
     @Override
-    public void removeLabel(@NotNull Label label) {
+    public void removeLabel(@NotNull MindmapLabel label) {
         entityManager.remove(label);
     }
 
     @Nullable
-    private Label getFirst(final List<Label> labels) {
-        Label result = null;
+    private MindmapLabel getFirst(final List<MindmapLabel> labels) {
+        MindmapLabel result = null;
         if (labels != null && !labels.isEmpty()) {
             result = labels.get(0);
         }

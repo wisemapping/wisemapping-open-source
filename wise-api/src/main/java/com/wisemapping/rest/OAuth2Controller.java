@@ -19,7 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestOath2CallbackResponse;
 import com.wisemapping.security.JwtTokenUtil;
 import com.wisemapping.service.UserService;
@@ -52,7 +52,7 @@ public class OAuth2Controller extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "googlecallback", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public RestOath2CallbackResponse processGoogleCallback(@NotNull @RequestParam String code, @NotNull HttpServletResponse response, @NotNull HttpServletRequest request) throws WiseMappingException {
-        User user = userService.createAndAuthUserFromGoogle(code);
+        Account user = userService.createAndAuthUserFromGoogle(code);
         if (user.getGoogleSync()) {
             jwtTokenUtil.doLogin(response, user.getEmail());
         }

@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.wisemapping.model.AuthenticationType;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
@@ -38,14 +38,14 @@ import java.util.Calendar;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestUser {
 
-    private final User user;
+    private final Account user;
     private String password;
 
     public RestUser() {
-        this(new User());
+        this(new Account());
     }
 
-    public RestUser(@NotNull User user) {
+    public RestUser(@NotNull Account user) {
         this.user = user;
     }
 
@@ -99,7 +99,7 @@ public class RestUser {
     }
 
     @JsonIgnore
-    public User getDelegated() {
+    public Account getDelegated() {
         return this.user;
     }
 

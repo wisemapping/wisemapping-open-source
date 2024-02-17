@@ -22,7 +22,7 @@ import com.wisemapping.exceptions.EmailNotExistsException;
 import com.wisemapping.exceptions.PasswordTooLongException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.AuthenticationType;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
 import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.*;
@@ -35,9 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,7 +75,7 @@ public class UserController extends BaseController {
                              @NotNull HttpServletResponse response) throws WiseMappingException, BindException {
         logger.debug("Register new user:" + registration.getEmail());
 
-        if (registration.getPassword().length() > User.MAX_PASSWORD_LENGTH_SIZE) {
+        if (registration.getPassword().length() > Account.MAX_PASSWORD_LENGTH_SIZE) {
             throw new PasswordTooLongException();
         }
 
@@ -90,7 +88,7 @@ public class UserController extends BaseController {
 
         verify(registration, remoteIp);
 
-        final User user = new User();
+        final Account user = new Account();
         user.setEmail(registration.getEmail().trim());
         user.setFirstname(registration.getFirstname());
         user.setLastname(registration.getLastname());

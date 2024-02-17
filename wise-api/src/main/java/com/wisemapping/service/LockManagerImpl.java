@@ -22,7 +22,7 @@ import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.LockException;
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,7 +50,7 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
-    public void unlockAll(@NotNull final User user) throws LockException, AccessDeniedSecurityException {
+    public void unlockAll(@NotNull final Account user) throws LockException, AccessDeniedSecurityException {
         final Set<Integer> mapIds = lockInfoByMapId.keySet();
         for (final Integer mapId : mapIds) {
             final LockInfo lockInfo = lockInfoByMapId.get(mapId);
@@ -61,7 +61,7 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
-    public void unlock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException {
+    public void unlock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException, AccessDeniedSecurityException {
         verifyHasLock(mindmap, user);
         this.unlock(mindmap.getId());
     }
@@ -72,7 +72,7 @@ class LockManagerImpl implements LockManager {
     }
 
     @Override
-    public boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull User collaborator) {
+    public boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull Account collaborator) {
         boolean result = false;
         final LockInfo lockInfo = this.getLockInfo(mindmap);
         if (lockInfo != null && lockInfo.getUser().identityEquality(collaborator)) {
@@ -89,7 +89,7 @@ class LockManagerImpl implements LockManager {
 
     @NotNull
     @Override
-    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException {
+    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException {
         if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
             throw LockException.createLockLost(mindmap, user, this);
         }
@@ -109,7 +109,7 @@ class LockManagerImpl implements LockManager {
         return result;
     }
 
-    private void verifyHasLock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException {
+    private void verifyHasLock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException, AccessDeniedSecurityException {
         // Only editor can have lock ...
         if (!mindmap.hasPermissions(user, CollaborationRole.EDITOR)) {
             throw new AccessDeniedSecurityException(mindmap.getId(), user);

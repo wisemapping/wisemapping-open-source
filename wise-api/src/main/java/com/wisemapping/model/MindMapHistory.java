@@ -38,7 +38,7 @@ public class MindMapHistory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "editor_id", nullable = true,unique = false)
-    private User editor;
+    private Account editor;
 
     @Column(name = "xml")
     private byte[] zippedXml;
@@ -76,11 +76,11 @@ public class MindMapHistory {
     }
 
     @Nullable
-    public User getEditor() {
+    public Account getEditor() {
         return editor;
     }
 
-    public void setEditor(@Nullable User editor) {
+    public void setEditor(@Nullable Account editor) {
         this.editor = editor;
     }
 

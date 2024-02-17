@@ -48,19 +48,19 @@ public class UserManagerImpl
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> getAllUsers() {
-        return entityManager.createQuery("from com.wisemapping.model.User user", User.class).getResultList();
+    public List<Account> getAllUsers() {
+        return entityManager.createQuery("from com.wisemapping.model.Account user", Account.class).getResultList();
     }
 
     @Override
     @Nullable
-    public User getUserBy(@NotNull final String email) {
-        User user = null;
+    public Account getUserBy(@NotNull final String email) {
+        Account user = null;
 
-        TypedQuery<User> query = entityManager.createQuery("from com.wisemapping.model.User colaborator where email=:email", User.class);
+        TypedQuery<Account> query = entityManager.createQuery("from com.wisemapping.model.Account colaborator where email=:email", Account.class);
         query.setParameter("email", email);
 
-        final List<User> users = query.getResultList();
+        final List<Account> users = query.getResultList();
         if (users != null && !users.isEmpty()) {
             assert users.size() == 1 : "More than one user with the same email!";
             user = users.get(0);
@@ -89,12 +89,12 @@ public class UserManagerImpl
 
     @Nullable
     @Override
-    public User getUserBy(int id) {
-        return entityManager.find(User.class, id);
+    public Account getUserBy(int id) {
+        return entityManager.find(Account.class, id);
     }
 
     @Override
-    public void createUser(User user) {
+    public void createUser(Account user) {
         assert user != null : "Trying to store a null user";
         if (!AuthenticationType.GOOGLE_OAUTH2.equals(user.getAuthenticationType())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -105,7 +105,7 @@ public class UserManagerImpl
     }
 
     @Override
-    public User createUser(@NotNull User user, @NotNull Collaborator collaborator) {
+    public Account createUser(@NotNull Account user, @NotNull Collaborator collaborator) {
         assert user != null : "Trying to store a null user";
 
         // Migrate from previous temporal collab to new user ...
@@ -128,7 +128,7 @@ public class UserManagerImpl
     }
 
     @Override
-    public void removeUser(@NotNull final User user) {
+    public void removeUser(@NotNull final Account user) {
         entityManager.remove(user);
     }
 
@@ -137,7 +137,7 @@ public class UserManagerImpl
         entityManager.persist(accessAuditory);
     }
 
-    public void updateUser(@NotNull User user) {
+    public void updateUser(@NotNull Account user) {
         assert user != null : "user is null";
 
         // Does the password need to be encrypted ?
@@ -149,14 +149,14 @@ public class UserManagerImpl
         entityManager.merge(user);
     }
 
-    public User getUserByActivationCode(long code) {
-        final User user;
+    public Account getUserByActivationCode(long code) {
+        final Account user;
 
-        final TypedQuery<User> query = entityManager.createQuery("from com.wisemapping.model.User user where " +
-                "activationCode=:activationCode", User.class);
+        final TypedQuery<Account> query = entityManager.createQuery("from com.wisemapping.model.User user where " +
+                "activationCode=:activationCode", Account.class);
         query.setParameter("activationCode", code);
 
-        final List<User> users = query.getResultList();
+        final List<Account> users = query.getResultList();
         if (users != null && !users.isEmpty()) {
 
             assert users.size() == 1 : "More than one user with the same username!";

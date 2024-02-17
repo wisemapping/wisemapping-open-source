@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS COLLABORATOR (
 )
 CHARACTER SET UTF8MB4;
 
-CREATE TABLE IF NOT EXISTS USER (
-  colaborator_id   INTEGER            NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS ACCOUNT (
+  collaborator_id   INTEGER            NOT NULL PRIMARY KEY,
   authentication_type CHAR(1)
                       CHARACTER SET UTF8MB4 NOT NULL,
   authenticator_uri   VARCHAR(255)
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS USER (
   google_sync	   BOOL,
   sync_code        VARCHAR(255),
   google_token     VARCHAR(255),
-  FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id)
+  FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
 ) CHARACTER SET UTF8MB4;
@@ -38,21 +38,21 @@ CREATE TABLE IF NOT EXISTS MINDMAP (
   edition_date   DATETIME,
   creator_id     INTEGER            NOT NULL,
   last_editor_id INTEGER            NOT NULL,
-  FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id)
+  FOREIGN KEY (creator_id) REFERENCES ACCOUNT (collaborator_id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
 )
   CHARACTER SET UTF8MB4;
 
-CREATE TABLE IF NOT EXISTS  LABEL (
+CREATE TABLE IF NOT EXISTS  MINDMAP_LABEL (
   id              INTEGER            NOT NULL PRIMARY KEY AUTO_INCREMENT,
   title           VARCHAR(30)
                   CHARACTER SET UTF8MB4 NOT NULL,
   creator_id      INTEGER            NOT NULL,
   parent_label_id INTEGER,
   color           VARCHAR(7)         NOT NULL,
-  FOREIGN KEY (creator_id) REFERENCES USER (colaborator_id),
-  FOREIGN KEY (parent_label_id) REFERENCES LABEL (id)
+  FOREIGN KEY (creator_id) REFERENCES ACCOUNT (collaborator_id),
+  FOREIGN KEY (parent_label_id) REFERENCES MINDMAP_LABEL (id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
 )
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS R_LABEL_MINDMAP (
   label_id         INTEGER            NOT NULL,
   PRIMARY KEY (mindmap_id, label_id),
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
-  FOREIGN KEY (label_id) REFERENCES LABEL (id)
+  FOREIGN KEY (label_id) REFERENCES MINDMAP_LABEL (id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
 )
@@ -91,12 +91,12 @@ CREATE TABLE IF NOT EXISTS COLLABORATION_PROPERTIES (
 
 CREATE TABLE IF NOT EXISTS COLLABORATION (
   id             INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  colaborator_id INTEGER NOT NULL,
+  collaborator_id INTEGER NOT NULL,
   properties_id  INTEGER NOT NULL,
   mindmap_id     INTEGER NOT NULL,
   role_id        INTEGER NOT NULL,
-  UNIQUE KEY UC_ROLE (mindmap_id,colaborator_id),
-  FOREIGN KEY (colaborator_id) REFERENCES COLLABORATOR (id),
+  UNIQUE KEY UC_ROLE (mindmap_id,collaborator_id),
+  FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id),
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS ACCESS_AUDITORY (
   id         INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
   login_date DATE,
   user_id    INTEGER NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES USER (colaborator_id)
+  FOREIGN KEY (user_id) REFERENCES ACCOUNT (collaborator_id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
 )

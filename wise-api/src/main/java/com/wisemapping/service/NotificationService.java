@@ -20,7 +20,7 @@ package com.wisemapping.service;
 
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestLogItem;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
@@ -56,7 +56,7 @@ final public class NotificationService {
     @Value("${site.baseurl:http://localhost:8080/}")
     private String baseUrl;
 
-    public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull User user, @Nullable String message) {
+    public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull Account user, @Nullable String message) {
         final Locale locale = LocaleContextHolder.getLocale();
 
         try {
@@ -91,7 +91,7 @@ final public class NotificationService {
 
     }
 
-    public void resetPassword(@NotNull User user, @NotNull String temporalPassword) {
+    public void resetPassword(@NotNull Account user, @NotNull String temporalPassword) {
         final Locale locale = LocaleContextHolder.getLocale();
 
         final String mailSubject = messageSource.getMessage("CHANGE_PASSWORD.EMAIL_SUBJECT", null, locale);
@@ -102,7 +102,7 @@ final public class NotificationService {
     }
 
 
-    public void passwordChanged(@NotNull User user) {
+    public void passwordChanged(@NotNull Account user) {
         final Locale locale = LocaleContextHolder.getLocale();
 
         final String mailSubject = messageSource.getMessage("PASSWORD_CHANGED.EMAIL_SUBJECT", null, locale);
@@ -112,7 +112,7 @@ final public class NotificationService {
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
 
-    public void newAccountCreated(@NotNull User user) {
+    public void newAccountCreated(@NotNull Account user) {
         final Locale locale = LocaleContextHolder.getLocale();
 
         final String mailSubject = messageSource.getMessage("REGISTRATION.EMAIL_SUBJECT", null, locale);
@@ -121,7 +121,7 @@ final public class NotificationService {
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
 
-    private void sendTemplateMail(@NotNull User user, @NotNull String mailSubject, @NotNull String messageTitle, @NotNull String messageBody) {
+    private void sendTemplateMail(@NotNull Account user, @NotNull String mailSubject, @NotNull String messageTitle, @NotNull String messageBody) {
         final Locale locale = LocaleContextHolder.getLocale();
 
         try {
@@ -150,13 +150,13 @@ final public class NotificationService {
     }
 
 
-    public void activateAccount(@NotNull User user) {
+    public void activateAccount(@NotNull Account user) {
         final Map<String, Object> model = new HashMap<>();
         model.put("user", user);
         mailerService.sendEmail(mailerService.getServerSenderEmail(), user.getEmail(), "[WiseMapping] Active account", model, "activationAccountMail.vm");
     }
 
-    public void sendRegistrationEmail(@NotNull User user) {
+    public void sendRegistrationEmail(@NotNull Account user) {
 //        throw new UnsupportedOperationException("Not implemented yet");
 //        try {
 //            final Map<String, String> model = new HashMap<String, String>();
@@ -170,7 +170,7 @@ final public class NotificationService {
 //        }
     }
 
-    public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable User user, @NotNull RestLogItem errorItem, @NotNull HttpServletRequest request) {
+    public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable Account user, @NotNull RestLogItem errorItem, @NotNull HttpServletRequest request) {
 
         final Map<String, String> summary = new HashMap<>();
         summary.put("JS-MSG", errorItem.getJsErrorMsg());
@@ -190,7 +190,7 @@ final public class NotificationService {
         logger.error("Unexpected editor JS Stack => " + errorItem.getJsErrorMsg() + "-" + errorItem.getJsStack());
     }
 
-    private void logError(@NotNull Map<String, String> model, @Nullable User user, @NotNull HttpServletRequest request) {
+    private void logError(@NotNull Map<String, String> model, @Nullable Account user, @NotNull HttpServletRequest request) {
         model.put("fullName", (user != null ? user.getFullName() : "'anonymous'"));
         final String userEmail = user != null ? user.getEmail() : "'anonymous'";
 
@@ -208,7 +208,7 @@ final public class NotificationService {
         logger.error("Unexpected editor info => " + errorAsString);
     }
 
-    public void reportJavaException(@NotNull Throwable exception, @Nullable User user, @NotNull HttpServletRequest request) {
+    public void reportJavaException(@NotNull Throwable exception, @Nullable Account user, @NotNull HttpServletRequest request) {
         final Map<String, String> model = new HashMap<>();
         model.put("errorMsg", stackTraceToString(exception));
 

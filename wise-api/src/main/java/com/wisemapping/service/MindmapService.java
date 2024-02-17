@@ -32,28 +32,28 @@ public interface MindmapService {
     Mindmap findMindmapById(int id);
 
     @NotNull
-    List<Mindmap> findMindmapsByUser(@NotNull User user);
+    List<Mindmap> findMindmapsByUser(@NotNull Account user);
 
-    Mindmap getMindmapByTitle(@NotNull  String title, User user);
+    Mindmap getMindmapByTitle(@NotNull  String title, Account user);
 
-    List<Collaboration> findCollaborations(@NotNull User user);
+    List<Collaboration> findCollaborations(@NotNull Account user);
 
     void updateMindmap(Mindmap mindMap, boolean saveHistory) throws WiseMappingException;
 
-    void addMindmap(Mindmap map, User user) throws WiseMappingException;
+    void addMindmap(Mindmap map, Account user) throws WiseMappingException;
 
     void addCollaboration(@NotNull Mindmap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
             throws CollaborationException;
 
     void removeCollaboration(@NotNull Mindmap mindmap, @NotNull Collaboration collaboration) throws CollaborationException;
 
-    void removeMindmap(@NotNull final Mindmap mindmap, @NotNull final User user) throws WiseMappingException;
+    void removeMindmap(@NotNull final Mindmap mindmap, @NotNull final Account user) throws WiseMappingException;
 
     List<MindMapHistory> findMindmapHistory(int mindmapId);
 
-    boolean hasPermissions(@Nullable User user, Mindmap map, CollaborationRole allowedRole);
+    boolean hasPermissions(@Nullable Account user, Mindmap map, CollaborationRole allowedRole);
 
-    boolean hasPermissions(@Nullable User user, int mapId, CollaborationRole allowedRole);
+    boolean hasPermissions(@Nullable Account user, int mapId, CollaborationRole allowedRole);
 
     boolean isMindmapPublic(int mapId);
 
@@ -65,5 +65,5 @@ public interface MindmapService {
 
     LockManager getLockManager();
 
-    boolean isAdmin(@Nullable User user);
+    boolean isAdmin(@Nullable Account user);
 }

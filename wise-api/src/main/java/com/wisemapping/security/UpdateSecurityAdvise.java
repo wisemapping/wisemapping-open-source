@@ -20,7 +20,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
@@ -30,7 +30,7 @@ public class UpdateSecurityAdvise
         extends MapPermissionsSecurityAdvice {
 
     @Override
-    protected boolean isAllowed(@Nullable User user, @NotNull Mindmap map) {
+    protected boolean isAllowed(@Nullable Account user, @NotNull Mindmap map) {
         boolean result;
         if (map.getCreator() == null) {
             // This means that the map is new and  is an add operation.
@@ -42,7 +42,7 @@ public class UpdateSecurityAdvise
     }
 
     @Override
-    protected boolean isAllowed(@Nullable User user, int mapId) {
+    protected boolean isAllowed(@Nullable Account user, int mapId) {
         return getMindmapService().hasPermissions(user, mapId, CollaborationRole.EDITOR);
     }
 }

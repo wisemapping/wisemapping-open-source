@@ -62,7 +62,7 @@ public class UserServiceImpl
     @Override
     public void activateAccount(long code)
             throws InvalidActivationCodeException {
-        final User user = userManager.getUserByActivationCode(code);
+        final Account user = userManager.getUserByActivationCode(code);
         if (user == null || user.isActive()) {
             throw new InvalidActivationCodeException("Invalid Activation Code");
         } else {
@@ -76,7 +76,7 @@ public class UserServiceImpl
     @Override
     public RestResetPasswordResponse resetPassword(@NotNull String email)
             throws InvalidUserEmailException, InvalidAuthSchemaException {
-        final User user = userManager.getUserBy(email);
+        final Account user = userManager.getUserBy(email);
         if (user != null) {
             RestResetPasswordResponse response = new RestResetPasswordResponse();
             if (user.getAuthenticationType().equals(AuthenticationType.GOOGLE_OAUTH2)) {
@@ -121,14 +121,14 @@ public class UserServiceImpl
     }
 
     @Override
-    public void removeUser(@NotNull User user) {
+    public void removeUser(@NotNull Account user) {
         // Force object reload before removing....
-        final User userBy = userManager.getUserBy(user.getEmail());
+        final Account userBy = userManager.getUserBy(user.getEmail());
         userManager.removeUser(userBy);
     }
 
     @Override
-    public void auditLogin(@NotNull User user) {
+    public void auditLogin(@NotNull Account user) {
         if (user == null) {
             throw new IllegalArgumentException("User can not be null");
         }
@@ -139,7 +139,7 @@ public class UserServiceImpl
     }
 
     @NotNull
-    public User createUser(@NotNull User user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException {
+    public Account createUser(@NotNull Account user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException {
         final UUID uuid = UUID.randomUUID();
         user.setCreationDate(Calendar.getInstance());
         user.setActivationCode(uuid.getLeastSignificantBits());
@@ -173,7 +173,7 @@ public class UserServiceImpl
     }
 
     @NotNull
-    public User createAndAuthUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException {
+    public Account createAndAuthUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException {
         GoogleAccountBasicData data;
         try {
             data = googleService.processCallback(callbackCode);
@@ -181,9 +181,9 @@ public class UserServiceImpl
             throw new OAuthAuthenticationException(e);
         }
 
-        User existingUser = userManager.getUserBy(data.getEmail());
+        Account existingUser = userManager.getUserBy(data.getEmail());
         if (existingUser == null) {
-            User newUser = new User();
+            Account newUser = new Account();
             // new registrations from google starts sync
             newUser.setGoogleSync(true);
             newUser.setEmail(data.getEmail());
@@ -206,8 +206,8 @@ public class UserServiceImpl
 
     }
 
-    public User confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
-        final User existingUser = userManager.getUserBy(email);
+    public Account confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
+        final Account existingUser = userManager.getUserBy(email);
         // additional security check
         if (existingUser == null || !existingUser.getSyncCode().equals(code)) {
             throw new WiseMappingException("User not found / incorrect code");
@@ -244,24 +244,24 @@ public class UserServiceImpl
     }
 
     @Override
-    public void changePassword(@NotNull User user) {
+    public void changePassword(@NotNull Account user) {
         notificationService.passwordChanged(user);
         userManager.updateUser(user);
     }
 
     @Override
-    public User getUserBy(String email) {
+    public Account getUserBy(String email) {
         return userManager.getUserBy(email);
     }
 
     @Override
     @Nullable
-    public User getUserBy(int id) {
+    public Account getUserBy(int id) {
         return userManager.getUserBy(id);
     }
 
     @Override
-    public void updateUser(@NotNull User user) {
+    public void updateUser(@NotNull Account user) {
         userManager.updateUser(user);
     }
 
@@ -290,7 +290,7 @@ public class UserServiceImpl
     }
 
     @Override
-    public User getCasUserBy(String uid) {
+    public Account getCasUserBy(String uid) {
         // TODO Auto-generated method stub
         return null;
     }

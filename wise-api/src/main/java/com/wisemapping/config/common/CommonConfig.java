@@ -1,7 +1,7 @@
 package com.wisemapping.config.common;
 
 import com.wisemapping.dao.LabelManagerImpl;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.security.AuthenticationProvider;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.MindmapServiceImpl;
@@ -26,7 +26,7 @@ public class CommonConfig {
         return new AcceptHeaderLocaleResolver() {
             @Override
             public Locale resolveLocale(@NotNull HttpServletRequest request) {
-                final User user = Utils.getUser();
+                final Account user = Utils.getUser();
                 Locale result;
                 if (user != null && user.getLocale() != null) {
                     String locale = user.getLocale();

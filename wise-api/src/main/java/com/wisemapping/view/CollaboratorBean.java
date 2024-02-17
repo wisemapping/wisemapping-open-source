@@ -20,7 +20,7 @@ package com.wisemapping.view;
 
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 
 public class CollaboratorBean {
     private final CollaborationRole collaborationRole;
@@ -33,7 +33,7 @@ public class CollaboratorBean {
         this.isUser = false;
     }
 
-    public CollaboratorBean(User user, CollaborationRole role) {
+    public CollaboratorBean(Account user, CollaborationRole role) {
         this.collaborator = user;
         this.collaborationRole = role;
         this.isUser = true;
@@ -48,7 +48,7 @@ public class CollaboratorBean {
     }
 
     public String getUsername() {
-        return isUser ? ((User) collaborator).getFullName() : collaborator.getEmail();
+        return isUser ? ((Account) collaborator).getFullName() : collaborator.getEmail();
     }
 
     public String getEmail() {

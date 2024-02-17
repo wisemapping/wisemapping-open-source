@@ -20,8 +20,8 @@ package com.wisemapping.rest;
 import com.wisemapping.exceptions.LabelCouldNotFoundException;
 import com.wisemapping.exceptions.ValidationException;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.Label;
-import com.wisemapping.model.User;
+import com.wisemapping.model.MindmapLabel;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestLabel;
 import com.wisemapping.rest.model.RestLabelList;
 import com.wisemapping.security.Utils;
@@ -60,7 +60,7 @@ public class LabelController extends BaseController {
         // Validate ...
         validate(restLabel);
 
-        final Label label = createLabel(restLabel);
+        final MindmapLabel label = createLabel(restLabel);
 
         // Return the new created label ...
         response.setHeader("Location", "/api/restful/labels/" + label.getId());
@@ -69,17 +69,17 @@ public class LabelController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/", produces = {"application/json"})
     public RestLabelList retrieveList() {
-        final User user = Utils.getUser();
+        final Account user = Utils.getUser();
         assert user != null;
-        final List<Label> all = labelService.getAll(user);
+        final List<MindmapLabel> all = labelService.getAll(user);
         return new RestLabelList(all);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteLabelById(@PathVariable int id) throws WiseMappingException {
-        final User user = Utils.getUser();
-        final Label label = labelService.findLabelById(id, user);
+        final Account user = Utils.getUser();
+        final MindmapLabel label = labelService.findLabelById(id, user);
         if (label == null) {
             throw new LabelCouldNotFoundException("Label could not be found. Id: " + id);
         }
@@ -87,10 +87,10 @@ public class LabelController extends BaseController {
         labelService.removeLabel(label, user);
     }
 
-    @NotNull private Label createLabel(@NotNull final RestLabel restLabel) throws WiseMappingException {
-        final Label label = restLabel.getDelegated();
+    @NotNull private MindmapLabel createLabel(@NotNull final RestLabel restLabel) throws WiseMappingException {
+        final MindmapLabel label = restLabel.getDelegated();
         // Add new label ...
-        final User user = Utils.getUser();
+        final Account user = Utils.getUser();
         assert user != null;
         labelService.addLabel(label, user);
         return label;

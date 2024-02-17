@@ -21,7 +21,7 @@ package com.wisemapping.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.service.LockInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +40,7 @@ public class RestLockInfo {
 
     }
 
-    public RestLockInfo(@Nullable LockInfo lockInfo, @NotNull User user) {
+    public RestLockInfo(@Nullable LockInfo lockInfo, @NotNull Account user) {
         this.email = user.getEmail();
     }
 

@@ -26,9 +26,9 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 @Entity
-@Table(name = "USER")
-@PrimaryKeyJoinColumn(name = "colaborator_id")
-public class User
+@Table(name = "ACCOUNT")
+@PrimaryKeyJoinColumn(name = "collaborator_id")
+public class Account
         extends Collaborator
         implements Serializable {
 
@@ -63,7 +63,7 @@ public class User
     @Column(name = "google_token")
     private String googleToken;
 
-    public User() {
+    public Account() {
     }
 
     public String getFullName() {

@@ -22,9 +22,7 @@ package com.wisemapping.rest.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.wisemapping.model.User;
-
-import java.awt.*;
+import com.wisemapping.model.Account;
 
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
@@ -40,8 +38,8 @@ public class RestUserRegistration {
     private String recaptcha;
 
     @JsonIgnore
-    public User build() {
-        final User user = new User();
+    public Account build() {
+        final Account user = new Account();
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setEmail(email);

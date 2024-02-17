@@ -63,7 +63,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public boolean hasPermissions(@Nullable User user, int mapId, @NotNull CollaborationRole grantedRole) {
+    public boolean hasPermissions(@Nullable Account user, int mapId, @NotNull CollaborationRole grantedRole) {
         final Mindmap map = mindmapManager.getMindmapById(mapId);
         return hasPermissions(user, map, grantedRole);
     }
@@ -75,7 +75,7 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public boolean hasPermissions(@Nullable User user, @Nullable Mindmap map, @NotNull CollaborationRole role) {
+    public boolean hasPermissions(@Nullable Account user, @Nullable Mindmap map, @NotNull CollaborationRole role) {
         boolean result = false;
         if (map != null) {
             if ((map.isPublic() && role == CollaborationRole.VIEWER) || isAdmin(user)) {
@@ -93,13 +93,13 @@ public class MindmapServiceImpl
         return result;
     }
 
-    public boolean isAdmin(@Nullable User user) {
+    public boolean isAdmin(@Nullable Account user) {
         return user != null && user.getEmail() != null && user.getEmail().equals(adminUser);
     }
 
     @Override
     @PreAuthorize("hasPermission(#user, 'READ')")
-    public Mindmap getMindmapByTitle(String title, User user) {
+    public Mindmap getMindmapByTitle(String title, Account user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }
 
@@ -113,13 +113,13 @@ public class MindmapServiceImpl
     @NotNull
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
-    public List<Mindmap> findMindmapsByUser(@NotNull User user) {
+    public List<Mindmap> findMindmapsByUser(@NotNull Account user) {
         return mindmapManager.findMindmapByUser(user);
     }
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
-    public List<Collaboration> findCollaborations(@NotNull User user) {
+    public List<Collaboration> findCollaborations(@NotNull Account user) {
         return mindmapManager.findCollaboration(user.getId());
     }
 
@@ -150,7 +150,7 @@ public class MindmapServiceImpl
     public void removeCollaboration(@NotNull Mindmap mindmap, @NotNull Collaboration collaboration) throws CollaborationException {
         // remove collaborator association
         final Mindmap mindMap = collaboration.getMindMap();
-        final User creator = mindMap.getCreator();
+        final Account creator = mindMap.getCreator();
         if (creator.identityEquality(collaboration.getCollaborator())) {
             throw new CollaborationException("User is the creator and must have ownership permissions.Creator Email:" + mindMap.getCreator().getEmail() + ",Collaborator:" + collaboration.getCollaborator().getEmail());
         }
@@ -162,7 +162,7 @@ public class MindmapServiceImpl
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'READ')")
-    public void removeMindmap(@NotNull Mindmap mindmap, @NotNull User user) throws WiseMappingException {
+    public void removeMindmap(@NotNull Mindmap mindmap, @NotNull Account user) throws WiseMappingException {
         if (mindmap.getCreator().identityEquality(user)) {
             mindmapManager.removeMindmap(mindmap);
         } else {
@@ -175,7 +175,7 @@ public class MindmapServiceImpl
 
     @Override
     @PreAuthorize("hasPermission(#mindmap, 'WRITE')")
-    public void addMindmap(@NotNull Mindmap mindmap, @NotNull User user) {
+    public void addMindmap(@NotNull Mindmap mindmap, @NotNull Account user) {
 
         final String title = mindmap.getTitle();
 
@@ -195,7 +195,7 @@ public class MindmapServiceImpl
         mindmap.setCreator(user);
 
         // Add map creator with owner permissions ...
-        final User dbUser = userService.getUserBy(user.getId());
+        final Account dbUser = userService.getUserBy(user.getId());
         final Collaboration collaboration = new Collaboration(CollaborationRole.OWNER, dbUser, mindmap);
         mindmap.getCollaborations().add(collaboration);
 
@@ -227,7 +227,7 @@ public class MindmapServiceImpl
             mindmapManager.saveMindmap(mindmap);
 
             // Notify by email ...
-            final User user = Utils.getUser();
+            final Account user = Utils.getUser();
             notificationService.newCollaboration(collaboration, mindmap, user, message);
 
         } else if (collaboration.getRole() != role) {

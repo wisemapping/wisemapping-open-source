@@ -33,11 +33,11 @@ public interface MindmapManager {
     @Nullable
     Mindmap getMindmapById(int mindmapId);
 
-    Mindmap getMindmapByTitle(final String name, final User user);
+    Mindmap getMindmapByTitle(final String name, final Account user);
 
     void addCollaborator(Collaborator collaborator);
 
-    void addMindmap(User user, Mindmap mindmap);
+    void addMindmap(Account user, Mindmap mindmap);
 
     void saveMindmap(Mindmap mindmap);
 
@@ -55,5 +55,5 @@ public interface MindmapManager {
 
     void updateCollaboration(@NotNull Collaboration collaboration);
 
-    List<Mindmap> findMindmapByUser(User user);
+    List<Mindmap> findMindmapByUser(Account user);
 }

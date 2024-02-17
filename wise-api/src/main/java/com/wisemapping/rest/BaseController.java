@@ -18,7 +18,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.*;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.NotificationService;
@@ -124,7 +124,7 @@ public class BaseController {
     @ResponseBody
     public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
         logger.error(ex.getMessage(), ex);
-        final User user = Utils.getUser(false);
+        final Account user = Utils.getUser(false);
         notificationService.reportJavaException(ex, user, request);
         return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }

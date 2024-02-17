@@ -27,10 +27,10 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "LABEL")
+@Table(name = "MINDMAP_LABEL")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Label implements Serializable {
+public class MindmapLabel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -43,28 +43,28 @@ public class Label implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = true, unique = true)
     @NotNull
-    private User creator;
+    private Account creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_label_id", nullable = true)
     @Nullable
-    private Label parent;
+    private MindmapLabel parent;
 
-    public void setParent(@Nullable Label parent) {
+    public void setParent(@Nullable MindmapLabel parent) {
         this.parent = parent;
     }
 
     @Nullable
-    public Label getParent() {
+    public MindmapLabel getParent() {
         return parent;
     }
 
-    public void setCreator(@NotNull User creator) {
+    public void setCreator(@NotNull Account creator) {
         this.creator = creator;
     }
 
     @NotNull
-    public User getCreator() {
+    public Account getCreator() {
         return creator;
     }
 
@@ -98,9 +98,9 @@ public class Label implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Label)) return false;
+        if (!(o instanceof MindmapLabel)) return false;
 
-        final Label label = (Label) o;
+        final MindmapLabel label = (MindmapLabel) o;
         return id == label.id && creator.getId() == label.creator.getId()
                 && Objects.equals(parent, label.parent);
     }

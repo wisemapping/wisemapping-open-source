@@ -21,7 +21,7 @@ package com.wisemapping.rest.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.wisemapping.model.Label;
+import com.wisemapping.model.MindmapLabel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,22 +38,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class RestLabel {
 
     @JsonIgnore
-    private final Label label;
+    private final MindmapLabel label;
 
     public RestLabel() {
-        this(new Label());
+        this(new MindmapLabel());
     }
 
-    public RestLabel(@NotNull final Label label) {
+    public RestLabel(@NotNull final MindmapLabel label) {
         this.label = label;
     }
 
-    public void setParent(final Label parent) {
+    public void setParent(final MindmapLabel parent) {
         this.label.setParent(parent);
     }
 
     @Nullable
-    public Label getParent() {
+    public MindmapLabel getParent() {
         return this.label.getParent();
     }
 
@@ -83,7 +83,7 @@ public class RestLabel {
     }
 
     @JsonIgnore
-    public Label getDelegated() {
+    public MindmapLabel getDelegated() {
         return label;
     }
 }

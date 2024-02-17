@@ -20,31 +20,31 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.AccessAuditory;
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface UserManager {
 
-    List<User> getAllUsers();
+    List<Account> getAllUsers();
 
-    User getUserBy(String email);
+    Account getUserBy(String email);
 
-    User getUserBy(int id);
+    Account getUserBy(int id);
 
-    void createUser(User user);
+    void createUser(Account user);
 
     void auditLogin(@NotNull AccessAuditory accessAuditory);
 
-    void updateUser(User user);
+    void updateUser(Account user);
 
-    User getUserByActivationCode(long code);
+    Account getUserByActivationCode(long code);
 
     Collaborator getCollaboratorBy(String email);
 
-    User createUser(User user, Collaborator col);
+    Account createUser(Account user, Collaborator col);
 
-    void removeUser(@NotNull User user);
+    void removeUser(@NotNull Account user);
 
 }

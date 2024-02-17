@@ -20,7 +20,7 @@ package com.wisemapping.validator;
 
 import com.wisemapping.model.Constants;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.view.MindMapInfoBean;
 import org.jetbrains.annotations.NotNull;
@@ -72,7 +72,7 @@ public class MapInfoValidator implements Validator {
             } else {
                 // Map already exists ?
                 final MindmapService service = this.getMindmapService();
-                final User user = com.wisemapping.security.Utils.getUser();
+                final Account user = com.wisemapping.security.Utils.getUser();
                 final Mindmap mindMap = service.getMindmapByTitle(title, user);
                 if (mindMap != null) {
                     errors.rejectValue("title", Messages.MAP_TITLE_ALREADY_EXISTS);

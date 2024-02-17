@@ -19,7 +19,7 @@
 package com.wisemapping.security;
 
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.service.MindmapService;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class MapPermissionsSecurityAdvice {
     @Autowired private MindmapService mindmapService;
 
-    protected abstract boolean isAllowed(@Nullable User user, Mindmap map);
+    protected abstract boolean isAllowed(@Nullable Account user, Mindmap map);
 
-    protected abstract boolean isAllowed(@Nullable User user, int mapId);
+    protected abstract boolean isAllowed(@Nullable Account user, int mapId);
 
     protected MindmapService getMindmapService() {
         return mindmapService;

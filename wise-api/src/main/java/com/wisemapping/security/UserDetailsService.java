@@ -19,7 +19,7 @@
 package com.wisemapping.security;
 
 
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,7 +41,7 @@ public class UserDetailsService
 
     @Override
     public UserDetails loadUserByUsername(@NotNull String email) throws UsernameNotFoundException, DataAccessException {
-        final User user = userService.getUserBy(email);
+        final Account user = userService.getUserBy(email);
 
         if (user != null) {
             return new UserDetails(user, isAdmin(email));

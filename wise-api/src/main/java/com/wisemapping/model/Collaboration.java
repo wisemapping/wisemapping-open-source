@@ -42,7 +42,7 @@ public class Collaboration implements Serializable {
     private Mindmap mindMap;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "colaborator_id", nullable = false)
+    @JoinColumn(name = "collaborator_id", nullable = false)
     private Collaborator collaborator;
 
     @ManyToOne(cascade = CascadeType.ALL)

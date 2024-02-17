@@ -20,7 +20,7 @@ package com.wisemapping.listener;
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.LockException;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
@@ -51,7 +51,7 @@ public class UnlockOnExpireListener implements HttpSessionListener {
         final MindmapService mindmapService = (MindmapService) wc.getBean("mindmapService");
 
         final LockManager lockManager = mindmapService.getLockManager();
-        final User user = Utils.getUser(false);
+        final Account user = Utils.getUser(false);
         if (user != null) {
             synchronized (mindmapService.getLockManager()) {
                 try {

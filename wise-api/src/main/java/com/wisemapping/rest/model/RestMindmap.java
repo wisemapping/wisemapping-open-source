@@ -29,9 +29,6 @@ import com.wisemapping.util.TimeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -103,7 +100,7 @@ public class RestMindmap {
     }
 
     public String getCreator() {
-        final User creator = mindmap.getCreator();
+        final Account creator = mindmap.getCreator();
         return creator != null ? creator.getEmail() : null;
     }
 
@@ -112,7 +109,7 @@ public class RestMindmap {
 
 
     public RestCollaborator getLastModifierUser() {
-        final User lastEditor = mindmap.getLastEditor();
+        final Account lastEditor = mindmap.getLastEditor();
 
         RestCollaborator result = null;
         if (lastEditor != null && mindmap.hasPermissions(collaborator, CollaborationRole.EDITOR)) {
@@ -155,7 +152,7 @@ public class RestMindmap {
     }
 
     public String getOwner() {
-        final User owner = mindmap.getCreator();
+        final Account owner = mindmap.getCreator();
         return owner != null ? owner.getEmail() : null;
     }
 

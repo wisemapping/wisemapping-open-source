@@ -22,7 +22,7 @@ package com.wisemapping.test.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.common.CommonConfig;
 import com.wisemapping.config.rest.RestAppConfig;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.rest.model.RestUserRegistration;
@@ -74,7 +74,7 @@ public class RestUserControllerTest {
                 .andExpect(status().isCreated());
 
         // Check dao ...
-        User userBy = userService.getUserBy(result.getEmail());
+        Account userBy = userService.getUserBy(result.getEmail());
         assertNotNull(userBy);
         return result;
     }
@@ -111,7 +111,7 @@ public class RestUserControllerTest {
                 .andExpect(status().isCreated());
 
         // Check dao ...
-        User userBy = userService.getUserBy(user.getEmail());
+        Account userBy = userService.getUserBy(user.getEmail());
         assertNotNull(userBy);
     }
 

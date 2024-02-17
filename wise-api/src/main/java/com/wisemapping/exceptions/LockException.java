@@ -19,7 +19,7 @@
 package com.wisemapping.exceptions;
 
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.service.LockManager;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +32,7 @@ public class LockException
         super(message, Severity.INFO);
     }
 
-    public static LockException createLockLost(@NotNull Mindmap mindmap, @NotNull User user, @NotNull LockManager manager) {
+    public static LockException createLockLost(@NotNull Mindmap mindmap, @NotNull Account user, @NotNull LockManager manager) {
         return new LockException("Lock can not be granted to " + user.getEmail() + ". The lock is assigned to " + manager.getLockInfo(mindmap));
     }
 

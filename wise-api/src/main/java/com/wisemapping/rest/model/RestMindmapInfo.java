@@ -92,7 +92,7 @@ public class RestMindmapInfo {
         // Support test deserialization...
         Set<RestLabel> result = this.restLabels;
         if (result == null) {
-            final User me = Utils.getUser();
+            final Account me = Utils.getUser();
             result = mindmap.getLabels().
                     stream()
                     .filter(l -> l.getCreator().equals(me))
@@ -119,7 +119,7 @@ public class RestMindmapInfo {
     }
 
     public String getCreator() {
-        final User creator = mindmap.getCreator();
+        final Account creator = mindmap.getCreator();
         return creator != null ? creator.getFullName() : null;
     }
 
@@ -132,7 +132,7 @@ public class RestMindmapInfo {
     }
 
     public String getRole() {
-        final User user = Utils.getUser();
+        final Account user = Utils.getUser();
         String result;
         final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
         return  collaboration.map(value -> value.getRole().getLabel()).orElse(ROLE_NONE);
@@ -143,7 +143,7 @@ public class RestMindmapInfo {
     }
 
     public String getLastModifierUser() {
-        final User user = mindmap.getLastEditor();
+        final Account user = mindmap.getLastEditor();
         return user != null ? user.getFullName() : "unknown";
     }
 

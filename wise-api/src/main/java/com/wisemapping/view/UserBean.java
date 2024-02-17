@@ -18,10 +18,10 @@
 
 package com.wisemapping.view;
 
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 
 public class UserBean
-        extends User {
+        extends Account {
     private String retypePassword;
     private String captcha;
 
@@ -29,7 +29,7 @@ public class UserBean
 
     }
 
-    public UserBean(User model) {
+    public UserBean(Account model) {
         this.setFirstname(model.getFirstname());
         this.setLastname(model.getLastname());
         this.setEmail(model.getEmail());

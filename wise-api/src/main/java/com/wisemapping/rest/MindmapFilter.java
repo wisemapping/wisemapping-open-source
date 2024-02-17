@@ -21,7 +21,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,35 +29,35 @@ public abstract class MindmapFilter {
 
     public static final MindmapFilter ALL = new MindmapFilter("all") {
         @Override
-        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull Account user) {
             return true;
         }
     };
 
     public static final MindmapFilter MY_MAPS = new MindmapFilter("my_maps") {
         @Override
-        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull Account user) {
             return mindmap.getCreator().identityEquality(user);
         }
     };
 
     public static final MindmapFilter STARRED = new MindmapFilter("starred") {
         @Override
-        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull Account user) {
             return mindmap.isStarred(user);
         }
     };
 
     public static final MindmapFilter SHARED_WITH_ME = new MindmapFilter("shared_with_me") {
         @Override
-        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull Account user) {
             return !MY_MAPS.accept(mindmap, user);
         }
     };
 
     public static final MindmapFilter PUBLIC = new MindmapFilter("public") {
         @Override
-        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull Account user) {
             return mindmap.isPublic();
         }
     };
@@ -88,7 +88,7 @@ public abstract class MindmapFilter {
         return result;
     }
 
-    abstract boolean accept(@NotNull Mindmap mindmap, @NotNull User user);
+    abstract boolean accept(@NotNull Mindmap mindmap, @NotNull Account user);
 
     private static final class LabelFilter extends MindmapFilter {
 
@@ -97,7 +97,7 @@ public abstract class MindmapFilter {
         }
 
         @Override
-        boolean accept(@NotNull Mindmap mindmap, @NotNull User user) {
+        boolean accept(@NotNull Mindmap mindmap, @NotNull Account user) {
             return mindmap.hasLabel(this.id);
         }
     }

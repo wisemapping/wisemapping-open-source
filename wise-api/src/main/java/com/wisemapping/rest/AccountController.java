@@ -21,9 +21,9 @@ package com.wisemapping.rest;
 import com.wisemapping.exceptions.PasswordTooLongException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Collaboration;
-import com.wisemapping.model.Label;
+import com.wisemapping.model.MindmapLabel;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.LabelService;
@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,18 +60,18 @@ public class AccountController extends BaseController {
             throw new IllegalArgumentException("Password can not be null");
         }
 
-        if (password.length() > User.MAX_PASSWORD_LENGTH_SIZE) {
+        if (password.length() > Account.MAX_PASSWORD_LENGTH_SIZE) {
             throw new PasswordTooLongException();
         }
 
-        final User user = Utils.getUser(true);
+        final Account user = Utils.getUser(true);
         user.setPassword(password);
         userService.changePassword(user);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "", produces = {"application/json"})
     public RestUser fetchAccount() {
-        final User user = Utils.getUser(true);
+        final Account user = Utils.getUser(true);
         return new RestUser(user);
     }
 
@@ -83,7 +82,7 @@ public class AccountController extends BaseController {
             throw new IllegalArgumentException("Firstname can not be null");
         }
 
-        final User user = Utils.getUser(true);
+        final Account user = Utils.getUser(true);
         user.setFirstname(firstname);
         userService.updateUser(user);
     }
@@ -95,7 +94,7 @@ public class AccountController extends BaseController {
             throw new IllegalArgumentException("lastname can not be null");
 
         }
-        final User user = Utils.getUser(true);
+        final Account user = Utils.getUser(true);
         user.setLastname(lastname);
         userService.updateUser(user);
     }
@@ -108,7 +107,7 @@ public class AccountController extends BaseController {
 
         }
 
-        final User user = Utils.getUser(true);
+        final Account user = Utils.getUser(true);
         user.setLocale(language);
         userService.updateUser(user);
     }
@@ -117,7 +116,7 @@ public class AccountController extends BaseController {
     @RequestMapping(method = RequestMethod.DELETE, value = "")
     public void deleteUser() throws WiseMappingException {
         // Delete collaborations ...
-        final User user = Utils.getUser(true);
+        final Account user = Utils.getUser(true);
         final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
         for (Collaboration collaboration : collaborations) {
             final Mindmap mindmap = collaboration.getMindMap();
@@ -125,7 +124,7 @@ public class AccountController extends BaseController {
         }
 
         // Delete labels ....
-        final List<Label> labels = labelService.getAll(user);
+        final List<MindmapLabel> labels = labelService.getAll(user);
         labels.forEach(l -> {
             try {
                 labelService.removeLabel(l, user);

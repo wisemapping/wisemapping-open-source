@@ -38,7 +38,7 @@ public class AccessAuditory
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true)
-    private User user = null;
+    private Account user = null;
 
     public AccessAuditory() {
     }
@@ -59,11 +59,11 @@ public class AccessAuditory
         return loginDate;
     }
 
-    public void setUser(@NotNull User user) {
+    public void setUser(@NotNull Account user) {
         this.user = user;
     }
 
-    public User getUser() {
+    public Account getUser() {
         return this.user;
     }
 }

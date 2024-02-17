@@ -47,6 +47,9 @@ public final class MailerService {
     @Value("${app.mail.serverSendEmail}")
     private String serverFromEmail;
 
+    @Value("${app.mail.enabled:true}")
+    private boolean isEnabled;
+
     @Value("${app.mail.supportEmail}")
     private String supportEmail;
 
@@ -58,18 +61,20 @@ public final class MailerService {
 
     public void sendEmail(final String from, final String to, final String subject, final Map<String, Object> model,
                           @NotNull final String templateMail) {
-        final MimeMessagePreparator preparator =
-                mimeMessage -> {
-                    final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, StandardCharsets.UTF_8.name());
-                    message.setTo(to);
-                    message.setFrom(from);
-                    message.setSubject(subject);
+        if (isEnabled) {
+            final MimeMessagePreparator preparator =
+                    mimeMessage -> {
+                        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, StandardCharsets.UTF_8.name());
+                        message.setTo(to);
+                        message.setFrom(from);
+                        message.setSubject(subject);
 
-                    final String messageBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngineWrapper.getVelocityEngine(), "/mail/" + templateMail, model);
-                    message.setText(messageBody, true);
-                };
+                        final String messageBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngineWrapper.getVelocityEngine(), "/mail/" + templateMail, model);
+                        message.setText(messageBody, true);
+                    };
 
-        this.mailSender.send(preparator);
+            this.mailSender.send(preparator);
+        }
     }
 
     public void setMailSender(JavaMailSender mailer) {

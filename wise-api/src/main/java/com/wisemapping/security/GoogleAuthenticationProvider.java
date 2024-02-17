@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 
 public class GoogleAuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
 
@@ -31,7 +31,7 @@ public class GoogleAuthenticationProvider implements org.springframework.securit
             throw new BadCredentialsException("No pre-authenticated principal found in request.");
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(inputToken.getName());
-        final User user = userDetails.getUser();
+        final Account user = userDetails.getUser();
 
         if (!user.isActive()) {
             throw new BadCredentialsException("User has been disabled for login " + inputToken.getName());

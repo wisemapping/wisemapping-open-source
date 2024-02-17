@@ -22,7 +22,6 @@ import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.util.ZipUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
@@ -54,12 +53,12 @@ public class Mindmap implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "creator_id", unique = true)
-    private User creator;
+    private Account creator;
 
     @ManyToOne
     @JoinColumn(name = "last_editor_id", nullable = false)
     @NotFound(action = NotFoundAction.IGNORE)
-    private User lastEditor;
+    private Account lastEditor;
 
     private String description;
 
@@ -76,7 +75,7 @@ public class Mindmap implements Serializable {
             name = "R_LABEL_MINDMAP",
             joinColumns = @JoinColumn(name = "mindmap_id"),
             inverseJoinColumns = @JoinColumn(name = "label_id"))
-    private Set<Label> labels = new LinkedHashSet<>();
+    private Set<MindmapLabel> labels = new LinkedHashSet<>();
 
     private String title;
 
@@ -153,15 +152,15 @@ public class Mindmap implements Serializable {
     }
 
     @NotNull
-    public Set<Label> getLabels() {
+    public Set<MindmapLabel> getLabels() {
         return labels;
     }
 
-    public void setLabels(@NotNull final Set<Label> labels) {
+    public void setLabels(@NotNull final Set<MindmapLabel> labels) {
         this.labels = labels;
     }
 
-    public void addLabel(@NotNull final Label label) {
+    public void addLabel(@NotNull final MindmapLabel label) {
         this.labels.add(label);
     }
 
@@ -184,7 +183,7 @@ public class Mindmap implements Serializable {
         return result;
     }
 
-    public boolean isCreator(@NotNull User user) {
+    public boolean isCreator(@NotNull Account user) {
         return this.getCreator() != null && this.getCreator().identityEquality(user);
     }
 
@@ -206,11 +205,11 @@ public class Mindmap implements Serializable {
     }
 
     @Nullable
-    public User getLastEditor() {
+    public Account getLastEditor() {
         return lastEditor;
     }
 
-    public void setLastEditor(@Nullable User lastEditor) {
+    public void setLastEditor(@Nullable Account lastEditor) {
         this.lastEditor = lastEditor;
     }
 
@@ -264,11 +263,11 @@ public class Mindmap implements Serializable {
         this.creationTime = creationTime;
     }
 
-    public void setCreator(@NotNull User creator) {
+    public void setCreator(@NotNull Account creator) {
         this.creator = creator;
     }
 
-    public User getCreator() {
+    public Account getCreator() {
         return creator;
     }
 
@@ -348,7 +347,7 @@ public class Mindmap implements Serializable {
     }
 
     public boolean hasLabel(@NotNull final String name) {
-        for (Label label : this.labels) {
+        for (MindmapLabel label : this.labels) {
             if (label.getTitle().equals(name)) {
                 return true;
             }
@@ -356,7 +355,7 @@ public class Mindmap implements Serializable {
         return false;
     }
 
-    public void removeLabel(@NotNull final Label label) {
+    public void removeLabel(@NotNull final MindmapLabel label) {
         this.labels.remove(label);
     }
 }

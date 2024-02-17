@@ -20,9 +20,8 @@ package com.wisemapping.service;
 
 import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.LockException;
-import com.wisemapping.exceptions.SessionExpiredException;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 
 public interface LockManager {
@@ -30,14 +29,14 @@ public interface LockManager {
 
     LockInfo getLockInfo(@NotNull Mindmap mindmap);
 
-    void unlock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException, AccessDeniedSecurityException;
+    void unlock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException, AccessDeniedSecurityException;
 
-    void unlockAll(@NotNull User user) throws LockException, AccessDeniedSecurityException;
+    void unlockAll(@NotNull Account user) throws LockException, AccessDeniedSecurityException;
 
-    boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull User user);
+    boolean isLockedBy(@NotNull Mindmap mindmap, @NotNull Account user);
 
     long generateSession();
 
     @NotNull
-    LockInfo lock(@NotNull Mindmap mindmap, @NotNull User user) throws LockException;
+    LockInfo lock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException;
 }

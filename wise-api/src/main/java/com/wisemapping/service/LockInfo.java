@@ -19,13 +19,13 @@
 package com.wisemapping.service;
 
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 
 public class LockInfo {
-    final private User user;
+    final private Account user;
     private Calendar timeout;
     private static final int EXPIRATION_MIN = 30;
 
@@ -39,13 +39,13 @@ public class LockInfo {
 
     private int mapId;
 
-    public LockInfo(@NotNull User user, @NotNull Mindmap mindmap) {
+    public LockInfo(@NotNull Account user, @NotNull Mindmap mindmap) {
         this.user = user;
         this.mapId = mindmap.getId();
         this.updateTimeout();
     }
 
-    public User getUser() {
+    public Account getUser() {
         return user;
     }
 

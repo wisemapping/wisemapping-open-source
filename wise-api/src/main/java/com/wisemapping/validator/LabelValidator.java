@@ -18,8 +18,8 @@
 package com.wisemapping.validator;
 
 import com.wisemapping.model.Constants;
-import com.wisemapping.model.Label;
-import com.wisemapping.model.User;
+import com.wisemapping.model.MindmapLabel;
+import com.wisemapping.model.Account;
 import com.wisemapping.service.LabelService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,12 +37,12 @@ public class LabelValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(Label.class);
+        return clazz.equals(MindmapLabel.class);
     }
 
     @Override
     public void validate(@Nullable final Object target, @NotNull final Errors errors) {
-        final Label label = (Label) target;
+        final MindmapLabel label = (MindmapLabel) target;
         if (label == null) {
             errors.rejectValue("map", "error.not-specified", null, "Value required.");
         } else {
@@ -51,7 +51,7 @@ public class LabelValidator implements Validator {
         }
     }
 
-    private void validateLabel(@NotNull final Label label, @NotNull final Errors errors) {
+    private void validateLabel(@NotNull final MindmapLabel label, @NotNull final Errors errors) {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", Messages.FIELD_REQUIRED);
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "color", Messages.FIELD_REQUIRED);
         final String title = label.getTitle();
@@ -63,9 +63,9 @@ public class LabelValidator implements Validator {
                 title,
                 Constants.MAX_LABEL_NAME_LENGTH);
 
-        final User user = com.wisemapping.security.Utils.getUser();
+        final Account user = com.wisemapping.security.Utils.getUser();
         if (user != null && title != null) {
-            final Label foundLabel = service.getLabelByTitle(title, user);
+            final MindmapLabel foundLabel = service.getLabelByTitle(title, user);
             if (foundLabel != null) {
                 errors.rejectValue("title", Messages.LABEL_TITLE_ALREADY_EXISTS);
             }

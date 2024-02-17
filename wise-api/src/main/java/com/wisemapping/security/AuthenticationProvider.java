@@ -19,7 +19,7 @@
 package com.wisemapping.security;
 
 
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +39,7 @@ public class AuthenticationProvider implements org.springframework.security.auth
         final String email = auth.getName();
 
         final UserDetails userDetails = getUserDetailsService().loadUserByUsername(email);
-        final User user = userDetails.getUser();
+        final Account user = userDetails.getUser();
         final String credentials = (String) auth.getCredentials();
 
         if (user == null || credentials == null || !encoder.matches(user.getPassword(), credentials)) {

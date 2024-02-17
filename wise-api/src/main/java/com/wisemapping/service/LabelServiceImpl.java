@@ -19,8 +19,8 @@ package com.wisemapping.service;
 
 import com.wisemapping.dao.LabelManager;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.Label;
-import com.wisemapping.model.User;
+import com.wisemapping.model.MindmapLabel;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'WRITE')")
-    public void addLabel(@NotNull final Label label, @NotNull final User user) {
+    public void addLabel(@NotNull final MindmapLabel label, @NotNull final Account user) {
 
         label.setCreator(user);
         labelManager.addLabel(label);
@@ -49,26 +49,26 @@ public class LabelServiceImpl implements LabelService {
     @NotNull
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
-    public List<Label> getAll(@NotNull final User user) {
+    public List<MindmapLabel> getAll(@NotNull final Account user) {
         return labelManager.getAllLabels(user);
     }
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
-    public Label findLabelById(int id, @NotNull final User user) {
+    public MindmapLabel findLabelById(int id, @NotNull final Account user) {
         return labelManager.getLabelById(id, user);
     }
 
     @Nullable
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
-    public Label getLabelByTitle(@NotNull String title, @NotNull final User user) {
+    public MindmapLabel getLabelByTitle(@NotNull String title, @NotNull final Account user) {
         return labelManager.getLabelByTitle(title, user);
     }
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'WRITE')")
-    public void removeLabel(@NotNull Label label, @NotNull User user) throws WiseMappingException {
+    public void removeLabel(@NotNull MindmapLabel label, @NotNull Account user) throws WiseMappingException {
         if (label.getCreator().equals(user)) {
             labelManager.removeLabel(label);
         } else {

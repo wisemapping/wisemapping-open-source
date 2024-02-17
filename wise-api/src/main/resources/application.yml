@@ -60,7 +60,7 @@ app:
   mail:
     serverSendEmail: root@localhost
     supportEmail: root@localhost
-
+    enabled: false
   #######################################################################################
   # Google OAuth Authentication
   #######################################################################################

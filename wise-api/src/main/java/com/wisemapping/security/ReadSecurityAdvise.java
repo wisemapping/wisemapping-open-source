@@ -20,7 +20,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +28,11 @@ import org.springframework.stereotype.Component;
 public class ReadSecurityAdvise
         extends MapPermissionsSecurityAdvice {
 
-    protected boolean isAllowed(@Nullable User user, Mindmap map) {
+    protected boolean isAllowed(@Nullable Account user, Mindmap map) {
         return getMindmapService().hasPermissions(user, map, CollaborationRole.VIEWER);
     }
 
-    protected boolean isAllowed(@Nullable User user, int mapId) {
+    protected boolean isAllowed(@Nullable Account user, int mapId) {
         return getMindmapService().hasPermissions(user, mapId, CollaborationRole.VIEWER);
     }
 }

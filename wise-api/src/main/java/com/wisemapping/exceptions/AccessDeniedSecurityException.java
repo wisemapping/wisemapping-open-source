@@ -19,7 +19,6 @@
 package com.wisemapping.exceptions;
 
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.User;
 import org.jetbrains.annotations.NotNull;
 
 public class AccessDeniedSecurityException

@@ -1,7 +1,7 @@
 package com.wisemapping.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.wisemapping.model.Label;
+import com.wisemapping.model.MindmapLabel;
 import org.jetbrains.annotations.NotNull;
 
 import jakarta.xml.bind.annotation.XmlElement;
@@ -20,9 +20,9 @@ public class RestLabelList {
         this.restLabels = new ArrayList<>();
     }
 
-    public RestLabelList(@NotNull final List<Label> labels) {
+    public RestLabelList(@NotNull final List<MindmapLabel> labels) {
         this.restLabels = new ArrayList<>(labels.size());
-        for (Label label : labels) {
+        for (MindmapLabel label : labels) {
             this.restLabels.add(new RestLabel(label));
         }
     }

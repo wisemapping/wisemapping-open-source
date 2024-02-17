@@ -18,8 +18,8 @@
 package com.wisemapping.service;
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.Label;
-import com.wisemapping.model.User;
+import com.wisemapping.model.MindmapLabel;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,14 +27,14 @@ import java.util.List;
 
 public interface LabelService {
 
-    void addLabel(@NotNull final Label label, @NotNull final User user) throws WiseMappingException;
+    void addLabel(@NotNull final MindmapLabel label, @NotNull final Account user) throws WiseMappingException;
 
-    @NotNull List<Label> getAll(@NotNull final User user);
+    @NotNull List<MindmapLabel> getAll(@NotNull final Account user);
 
     @Nullable
-    Label findLabelById(int id, @NotNull final User user);
+    MindmapLabel findLabelById(int id, @NotNull final Account user);
 
-    Label getLabelByTitle(@NotNull String title, @NotNull final User user);
+    MindmapLabel getLabelByTitle(@NotNull String title, @NotNull final Account user);
 
-    void removeLabel(@NotNull final Label label, @NotNull final User user) throws WiseMappingException;
+    void removeLabel(@NotNull final MindmapLabel label, @NotNull final Account user) throws WiseMappingException;
 }

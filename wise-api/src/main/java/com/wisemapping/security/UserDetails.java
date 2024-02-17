@@ -18,7 +18,7 @@
 
 package com.wisemapping.security;
 
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
-	private final com.wisemapping.model.User user;
+	private final Account user;
     private final boolean isAdmin;
 
-    public  UserDetails(@NotNull final com.wisemapping.model.User user, boolean isAdmin) {
+    public  UserDetails(@NotNull final Account user, boolean isAdmin) {
         this.user = user;
         this.isAdmin = isAdmin;
     }
@@ -77,7 +77,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     }
 
-    public User getUser() {
+    public Account getUser() {
         return user;
     }
 }

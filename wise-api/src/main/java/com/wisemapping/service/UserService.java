@@ -19,7 +19,7 @@
 package com.wisemapping.service;
 
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,25 +28,25 @@ public interface UserService {
 
     void activateAccount(long code) throws InvalidActivationCodeException;
 
-    User createUser(@NotNull User user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException;
+    Account createUser(@NotNull Account user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException;
 
-	User createAndAuthUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException;
+	Account createAndAuthUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException;
 
-	User confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException;
+	Account confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException;
 
-    void changePassword(@NotNull User user);
+    void changePassword(@NotNull Account user);
 
-    User getUserBy(String email);
+    Account getUserBy(String email);
 
-    User getUserBy(int id);
+    Account getUserBy(int id);
 
-    void updateUser(User user);
+    void updateUser(Account user);
 
     RestResetPasswordResponse resetPassword(@NotNull String email) throws InvalidUserEmailException, InvalidAuthSchemaException;
 
-    void removeUser(@NotNull User user);
+    void removeUser(@NotNull Account user);
 
-    void auditLogin(@NotNull User user);
+    void auditLogin(@NotNull Account user);
     
-    User getCasUserBy(String uid);
+    Account getCasUserBy(String uid);
 }

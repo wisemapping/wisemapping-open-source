@@ -22,7 +22,7 @@ package com.wisemapping.rest.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wisemapping.model.MindMapHistory;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
@@ -55,7 +55,7 @@ public class RestMindmapHistory {
     public RestMindmapHistory(@NotNull MindMapHistory history) {
         this.id = history.getId();
         this.creation = history.getCreationTime();
-        final User editor = history.getEditor();
+        final Account editor = history.getEditor();
         this.creator = editor != null ? editor.getFullName() : "";
     }
 

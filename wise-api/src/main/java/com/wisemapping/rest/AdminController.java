@@ -22,7 +22,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
@@ -50,7 +50,7 @@ public class AdminController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
     @ResponseBody
     public RestUser getUserById(@PathVariable int id) {
-        final User userBy = userService.getUserBy(id);
+        final Account userBy = userService.getUserBy(id);
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
         }
@@ -60,7 +60,7 @@ public class AdminController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/users/email/{email:.+}", produces = {"application/json"})
     @ResponseBody
     public RestUser getUserByEmail(@PathVariable String email) {
-        final User user = userService.getUserBy(email);
+        final Account user = userService.getUserBy(email);
         if (user == null) {
             throw new IllegalArgumentException("User '" + email + "' could not be found");
         }
@@ -81,7 +81,7 @@ public class AdminController extends BaseController {
         }
 
         // Run some other validations ...
-        final User delegated = user.getDelegated();
+        final Account delegated = user.getDelegated();
         final String lastname = delegated.getLastname();
         if (lastname == null || lastname.isEmpty()) {
             throw new IllegalArgumentException("lastname can not be null");
@@ -111,7 +111,7 @@ public class AdminController extends BaseController {
             throw new IllegalArgumentException("Password can not be null");
         }
 
-        final User user = userService.getUserBy(id);
+        final Account user = userService.getUserBy(id);
         if (user == null) {
             throw new IllegalArgumentException("User '" + id + "' could not be found");
         }
@@ -122,7 +122,7 @@ public class AdminController extends BaseController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUserByEmail(@PathVariable int id) throws WiseMappingException {
-        final User user = userService.getUserBy(id);
+        final Account user = userService.getUserBy(id);
         if (user == null) {
             throw new IllegalArgumentException("User '" + id + "' could not be found");
         }

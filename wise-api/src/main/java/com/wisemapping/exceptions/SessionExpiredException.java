@@ -18,15 +18,15 @@
 
 package com.wisemapping.exceptions;
 
-import com.wisemapping.model.User;
+import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 
 public class SessionExpiredException
         extends ClientException {
     private static final String MSG_KEY = "MINDMAP_TIMESTAMP_OUTDATED";
-    private final User lastUpdater;
+    private final Account lastUpdater;
 
-    public SessionExpiredException(@NotNull String debugInfo, @NotNull User lastUpdater) {
+    public SessionExpiredException(@NotNull String debugInfo, @NotNull Account lastUpdater) {
         super(debugInfo, Severity.FATAL);
         this.lastUpdater = lastUpdater;
     }
