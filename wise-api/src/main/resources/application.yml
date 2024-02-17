@@ -46,7 +46,7 @@ logging:
     org:
       apache:
         tomcat: INFO
-    root: TRACE
+    root: INFO
 
 # Application Configuration.
 app:

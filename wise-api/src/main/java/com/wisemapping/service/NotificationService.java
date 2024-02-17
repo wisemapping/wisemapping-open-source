@@ -86,7 +86,7 @@ final public class NotificationService {
 
             mailerService.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");
         } catch (Exception e) {
-            handleException(e);
+            logger.info(e.getMessage(), e);
         }
 
     }
@@ -141,14 +141,8 @@ final public class NotificationService {
             logger.debug("Email properties->" + model);
             mailerService.sendEmail(mailerService.getServerSenderEmail(), user.getEmail(), mailSubject, model, "baseLayout.vm");
         } catch (Exception e) {
-            handleException(e);
+            logger.info(e.getMessage(), e);
         }
-    }
-
-    private void handleException(Exception e) {
-        System.err.println("An expected error has occurred trying to send an email notification. Usually, the main reason for this is that the SMTP server properties has not been configured properly. Edit the WEB-INF/app.properties file and verify the SMTP server configuration properties.");
-        System.err.println("Cause:" + e.getMessage());
-
     }
 
     public void setMailer(MailerService mailerService) {
