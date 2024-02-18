@@ -40,6 +40,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/restful/account")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+@CrossOrigin
 public class AccountController extends BaseController {
     @Qualifier("userService")
     @Autowired
