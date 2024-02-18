@@ -71,6 +71,7 @@ app:
   # Redirect to this url, this url must be configured in the google app {baseurl}/c/registration-google
   #security.oauth2.google.callbackUrl=<oauth callback url>
   security:
+    corsAllowedOrigins: https://dev.wisemapping.com
     oauth2:
       google:
         confirmUrl: https://oauth2.googleapis.com/token

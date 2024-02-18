@@ -48,7 +48,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/restful/maps")
-@CrossOrigin
 public class MindmapController extends BaseController {
     private final Logger logger = LogManager.getLogger();
 
