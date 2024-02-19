@@ -18,11 +18,9 @@
 
 package com.wisemapping.service;
 
+import com.wisemapping.model.Account;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.Account;
-import com.wisemapping.rest.model.RestLogItem;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -31,18 +29,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
-
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 final public class NotificationService {
@@ -53,7 +44,7 @@ final public class NotificationService {
     @Autowired
     private MailerService mailerService;
 
-    @Value("${site.baseurl:http://localhost:8080/}")
+    @Value("${app.site.baseurl:http://localhost:8080/}")
     private String baseUrl;
 
     public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull Account user, @Nullable String message) {
@@ -145,10 +136,6 @@ final public class NotificationService {
         }
     }
 
-    public void setMailer(MailerService mailerService) {
-        this.mailerService = mailerService;
-    }
-
 
     public void activateAccount(@NotNull Account user) {
         final Map<String, Object> model = new HashMap<>();
@@ -168,64 +155,6 @@ final public class NotificationService {
 //        } catch (Exception e) {
 //            handleException(e);
 //        }
-    }
-
-    public void reportJavascriptException(@Nullable Mindmap mindmap, @Nullable Account user, @NotNull RestLogItem errorItem, @NotNull HttpServletRequest request) {
-
-        final Map<String, String> summary = new HashMap<>();
-        summary.put("JS-MSG", errorItem.getJsErrorMsg());
-        summary.put("JS-STACK", errorItem.getJsStack());
-
-        String mindmapXML = "";
-        try {
-            mindmapXML = StringEscapeUtils.escapeXml(mindmap == null ? "map not found" : mindmap.getXmlStr());
-        } catch (UnsupportedEncodingException e) {
-            // Ignore ...
-        }
-        summary.put("mapId", Integer.toString(mindmap.getId()));
-        summary.put("mapTitle", mindmap.getTitle());
-
-        logError(summary, user, request);
-        logger.error("Unexpected editor mindmap => " + mindmapXML);
-        logger.error("Unexpected editor JS Stack => " + errorItem.getJsErrorMsg() + "-" + errorItem.getJsStack());
-    }
-
-    private void logError(@NotNull Map<String, String> model, @Nullable Account user, @NotNull HttpServletRequest request) {
-        model.put("fullName", (user != null ? user.getFullName() : "'anonymous'"));
-        final String userEmail = user != null ? user.getEmail() : "'anonymous'";
-
-        model.put("email", userEmail);
-        model.put("userAgent", request.getHeader("User-Agent"));
-        model.put("server", request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort());
-        model.put("requestURI", request.getRequestURI());
-        model.put("method", request.getMethod());
-        model.put("remoteAddress", request.getRemoteAddr());
-
-        String errorAsString = model.keySet().stream()
-                .map(key -> key + "=" + model.get(key))
-                .collect(Collectors.joining(", ", "{", "}"));
-
-        logger.error("Unexpected editor info => " + errorAsString);
-    }
-
-    public void reportJavaException(@NotNull Throwable exception, @Nullable Account user, @NotNull HttpServletRequest request) {
-        final Map<String, String> model = new HashMap<>();
-        model.put("errorMsg", stackTraceToString(exception));
-
-        logError(model, user, request);
-    }
-
-    public String stackTraceToString(@NotNull Throwable e) {
-        String retValue = "";
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        try (sw; pw) {
-            e.printStackTrace(pw);
-            retValue = sw.toString();
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
-        return retValue;
     }
 
     public String getBaseUrl() {

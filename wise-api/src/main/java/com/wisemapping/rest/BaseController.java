@@ -50,7 +50,7 @@ public class BaseController {
     private ResourceBundleMessageSource messageSource;
 
     @Autowired
-    ServletContext context;
+    private ServletContext context;
 
     @Autowired
     private NotificationService notificationService;
@@ -125,7 +125,6 @@ public class BaseController {
     public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
         logger.error(ex.getMessage(), ex);
         final Account user = Utils.getUser(false);
-        notificationService.reportJavaException(ex, user, request);
         return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 
