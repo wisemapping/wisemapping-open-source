@@ -47,14 +47,13 @@ public class RecaptchaService {
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
     public static final String CATCH_ERROR_CODE_TIMEOUT_OR_DUPLICATE = "timeout-or-duplicate";
-    public static final String CATCHA_ERROR_CODE_INPUT_RESPONSE = "invalid-input-response";
 
-    @Value("${google.recaptcha2.secretKey}")
+    @Value("${app.registration.captcha.secretKey:''}")
     private String recaptchaSecret;
 
     @Nullable
     public String verifyRecaptcha(@NotNull String ip, @NotNull String recaptcha) {
-
+        String result = StringUtils.EMPTY;
         final List<NameValuePair> build = Form.form()
                 .add("secret", recaptchaSecret)
                 .add("response", recaptcha)
@@ -66,7 +65,6 @@ public class RecaptchaService {
         logger.debug("Response from recaptchaSecret: " + recaptchaSecret);
         logger.debug("Response from recaptcha: " + recaptcha);
 
-        String result = StringUtils.EMPTY;
         try {
             final byte[] body = Request
                     .Post(GOOGLE_RECAPTCHA_VERIFY_URL)
@@ -100,9 +98,5 @@ public class RecaptchaService {
         logger.debug("Captcha Result:" + result);
         return result;
 
-    }
-
-    public void setRecaptchaSecret(String recaptchaSecret) {
-        this.recaptchaSecret = recaptchaSecret;
     }
 }

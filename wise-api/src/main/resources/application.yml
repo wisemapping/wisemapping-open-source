@@ -86,10 +86,9 @@ app:
 #  accounts:
 #    exclusion:
 #      domain:
-
-google:
-  recaptcha2:
-    enabled: true
-    secretKey: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
-    siteKey: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+  registration:
+    enabled: false
+    captcha:
+      enabled: false
+      secretKey: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
 

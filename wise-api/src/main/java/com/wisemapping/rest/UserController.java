@@ -60,8 +60,11 @@ public class UserController extends BaseController {
     @Autowired
     private AuthenticationManager authManager;
 
-    @Value("${google.recaptcha2.enabled:false}")
-    private Boolean recatchaEnabled;
+    @Value("${app.registration.enabled:true}")
+    private Boolean registrationEnabled;
+
+    @Value("${app.registration.captcha.enabled:true}")
+    private Boolean registrationCaptchaEnabled;
 
     @Value("${app.accounts.exclusion.domain:''}")
     private String domainBanExclusion;
@@ -74,6 +77,9 @@ public class UserController extends BaseController {
     public void registerUser(@RequestBody RestUserRegistration registration, @NotNull HttpServletRequest request,
                              @NotNull HttpServletResponse response) throws WiseMappingException, BindException {
         logger.debug("Register new user:" + registration.getEmail());
+        if (!registrationEnabled) {
+            throw new WiseMappingException("Registration is disabled. You can enable it using app.registration.enabled");
+        }
 
         if (registration.getPassword().length() > Account.MAX_PASSWORD_LENGTH_SIZE) {
             throw new PasswordTooLongException();
@@ -85,7 +91,6 @@ public class UserController extends BaseController {
             remoteIp = request.getRemoteAddr();
         }
         logger.debug("Remote address" + remoteIp);
-
         verify(registration, remoteIp);
 
         final Account user = new Account();
@@ -120,7 +125,7 @@ public class UserController extends BaseController {
         validator.validate(registration, errors);
 
         // If captcha is enabled, generate it ...
-        if (recatchaEnabled) {
+        if (registrationCaptchaEnabled) {
             final String recaptcha = registration.getRecaptcha();
             if (recaptcha != null) {
                 final String reCaptchaResponse = captchaService.verifyRecaptcha(remoteAddress, recaptcha);
