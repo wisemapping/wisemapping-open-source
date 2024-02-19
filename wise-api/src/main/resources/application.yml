@@ -1,8 +1,8 @@
 # SpringBoot Configuration ...
 server:
   tomcat:
-  remote-ip-header: x-forwarded-for
-  protocol-header: x-forwarded-proto
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
 
 spring:
   mail:
