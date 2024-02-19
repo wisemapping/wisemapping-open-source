@@ -44,7 +44,7 @@ final public class NotificationService {
     @Autowired
     private MailerService mailerService;
 
-    @Value("${app.site.baseurl:http://localhost:8080/}")
+    @Value("${app.site.ui-base-url:http://localhost:8080/}")
     private String baseUrl;
 
     public void newCollaboration(@NotNull Collaboration collaboration, @NotNull Mindmap mindmap, @NotNull Account user, @Nullable String message) {
@@ -121,7 +121,7 @@ final public class NotificationService {
             model.put("messageTitle", messageTitle);
             model.put("messageBody", messageBody);
             model.put("baseUrl", getBaseUrl());
-            model.put("supportEmail", mailerService.getSupportEmail());
+            model.put("support-email", mailerService.getSupportEmail());
             model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailerService.getSupportEmail()}, locale));
 
             // To resolve resources on templates ...

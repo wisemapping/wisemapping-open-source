@@ -48,7 +48,6 @@ public class LabelController extends BaseController {
     @Autowired
     private LabelService labelService;
 
-
     @RequestMapping(method = RequestMethod.POST, value = "", consumes = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createLabel(@RequestBody RestLabel restLabel, @NotNull HttpServletResponse response, @RequestParam(required = false) String title) throws WiseMappingException {

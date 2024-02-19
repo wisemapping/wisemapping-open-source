@@ -65,7 +65,7 @@ public class MindmapController extends BaseController {
     @Autowired
     private UserService userService;
 
-    @Value("${accounts.maxInactive:20}")
+    @Value("${app.accounts.max-inactive:20}")
     private int maxAccountsInactive;
 
 

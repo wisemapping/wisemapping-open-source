@@ -44,13 +44,13 @@ public final class MailerService {
     @Autowired
     private VelocityEngineWrapper velocityEngineWrapper;
 
-    @Value("${app.mail.serverSendEmail}")
+    @Value("${app.mail.sender-email}")
     private String serverFromEmail;
 
     @Value("${app.mail.enabled:true}")
     private boolean isEnabled;
 
-    @Value("${app.mail.supportEmail}")
+    @Value("${app.mail.support-email}")
     private String supportEmail;
 
     //~ Methods ..............................................................................................
