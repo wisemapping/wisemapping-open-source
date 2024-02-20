@@ -96,7 +96,7 @@ public class MindmapController extends BaseController {
             lockFullName = lockInfo.getUser().getFullName();
         }
 
-        return new RestMindmapMetadata(mindmap.getTitle(), mindmap.getCreator().getFullName(), mindMapBean.getProperties(), isLocked, lockFullName);
+        return new RestMindmapMetadata(mindmap.getTitle(), mindMapBean.getProperties(), mindmap.getCreator().getFullName(), isLocked, lockFullName);
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
