@@ -57,6 +57,9 @@ public class AppController extends BaseController {
     @Value("${app.analytics.account:}")
     private String analyticsAccount;
 
+    @Value("${app.jwt.expirationMin:10080}")
+    private int jwtExpirationMin;
+
     @RequestMapping(method = RequestMethod.GET, value = "/config")
     @ResponseStatus(value = HttpStatus.OK)
     public RestAppConfig appConfig() {
@@ -66,6 +69,7 @@ public class AppController extends BaseController {
                 .setGoogleOauth2Url(googleOauth2Url)
                 .setAnalyticsAccount(analyticsAccount)
                 .setRegistrationEnabled(isRegistrationEnabled)
+                .setJwtExpirationMin(jwtExpirationMin)
                 .build();
     }
 

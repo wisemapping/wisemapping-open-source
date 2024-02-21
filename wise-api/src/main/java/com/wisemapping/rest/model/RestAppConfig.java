@@ -39,6 +39,8 @@ public class RestAppConfig {
     private String recaptcha2SiteKey;
     private String analyticsAccount;
 
+    private int jwtExpirationMin = 10080;
+
     RestAppConfig() {
 
     }
@@ -91,6 +93,14 @@ public class RestAppConfig {
         this.analyticsAccount = analyticsAccount;
     }
 
+    public int getJwtExpirationMin() {
+        return jwtExpirationMin;
+    }
+
+    public void setJwtExpirationMin(int jwtExpirationMin) {
+        this.jwtExpirationMin = jwtExpirationMin;
+    }
+
     public static class RestAppConfigBuilder {
         private String apiBaseUrl;
         private String googleOauth2Url;
@@ -98,6 +108,8 @@ public class RestAppConfig {
         private boolean isCatchaEnabled = false;
         private String captchaSiteKey;
         private String analyticsAccount;
+
+        private int jwtExpirationMin;
 
         public RestAppConfigBuilder setCaptchaSiteKey(@NotNull String captchaSiteKey) {
             this.captchaSiteKey = captchaSiteKey;
@@ -107,6 +119,11 @@ public class RestAppConfig {
 
         public RestAppConfigBuilder setApiUrl(@NotNull String apiBaseUrl) {
             this.apiBaseUrl = apiBaseUrl;
+            return this;
+        }
+
+        public RestAppConfigBuilder setJwtExpirationMin(@NotNull int value) {
+            this.jwtExpirationMin = value;
             return this;
         }
 
@@ -141,5 +158,4 @@ public class RestAppConfig {
             return result;
         }
     }
-
 }
