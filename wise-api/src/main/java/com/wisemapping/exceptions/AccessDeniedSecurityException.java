@@ -30,7 +30,7 @@ public class AccessDeniedSecurityException
     }
 
     public AccessDeniedSecurityException(@NotNull long mapId, Collaborator user) {
-        super("No enough permissions to access map. Id: " + mapId + ", User: " + user, Severity.FATAL);
+        super("You do not have enough right access to see this map. This map has been changed to private or deleted.", Severity.FATAL);
     }
 
     @NotNull

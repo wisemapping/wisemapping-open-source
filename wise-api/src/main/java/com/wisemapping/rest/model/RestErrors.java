@@ -30,9 +30,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 
 @JsonAutoDetect(
@@ -47,13 +44,13 @@ public class RestErrors {
     private Errors errors;
 
     @JsonIgnore
-    private List<String> gErrors;
+    private List<String> globalError;
 
     @JsonIgnore
-    MessageSource messageSource;
+    private  MessageSource messageSource;
 
     @JsonIgnore
-    Severity gSeverity;
+    private Severity globalSeverity;
 
     @Nullable
     @JsonIgnore
@@ -67,8 +64,8 @@ public class RestErrors {
 
         this.errors = errors;
         this.messageSource = messageSource;
-        this.gErrors = this.processGlobalErrors(errors);
-        this.gSeverity = Severity.WARNING;
+        this.globalError = this.processGlobalErrors(errors);
+        this.globalSeverity = Severity.WARNING;
     }
 
     public RestErrors(@NotNull String errorMsg, @NotNull Severity severity) {
@@ -78,9 +75,9 @@ public class RestErrors {
 
     public RestErrors(@NotNull String errorMsg, @NotNull Severity severity, @Nullable String debugInfo) {
         this._debugInfo = debugInfo;
-        this.gErrors = new ArrayList<>();
-        this.gErrors.add(errorMsg);
-        this.gSeverity = severity;
+        this.globalError = new ArrayList<>();
+        this.globalError.add(errorMsg);
+        this.globalSeverity = severity;
     }
 
     private List<String> processGlobalErrors(@NotNull Errors errors) {
@@ -123,7 +120,7 @@ public class RestErrors {
 
     @Nullable
     public String getGlobalSeverity() {
-        return this.gSeverity.toString();
+        return this.globalSeverity.toString();
     }
 
     @Nullable
@@ -132,16 +129,16 @@ public class RestErrors {
     }
 
     public List<String> getGlobalErrors() {
-        return gErrors;
+        return globalError;
     }
 
     @Override
     public String toString() {
         return "RestErrors{" +
                 "errors=" + errors +
-                ", gErrors=" + gErrors +
+                ", gErrors=" + globalError +
                 ", messageSource=" + messageSource +
-                ", gSeverity=" + gSeverity +
+                ", gSeverity=" + globalSeverity +
                 ", _debugInfo='" + _debugInfo + '\'' +
                 '}';
     }
