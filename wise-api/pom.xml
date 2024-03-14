@@ -16,8 +16,8 @@
 
     <properties>
         <com.wisemapping.version>5.1.0-SNAPSHOT</com.wisemapping.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -166,7 +166,7 @@
             <artifactId>fluent-hc</artifactId>
             <version>4.5.14</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
