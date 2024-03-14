@@ -54,6 +54,9 @@ public class AppController extends BaseController {
     @Value("${app.site.api-base-url:}")
     private String apiBaseUrl;
 
+    @Value("${app.site.ui-base-url:}")
+    private String uiBaseUrl;
+
     @Value("${app.analytics.account:}")
     private String analyticsAccount;
 
@@ -65,6 +68,7 @@ public class AppController extends BaseController {
     public RestAppConfig appConfig() {
         return new RestAppConfig.RestAppConfigBuilder()
                 .setApiUrl(apiBaseUrl)
+                .setUiUrl(uiBaseUrl)
                 .setCaptchaSiteKey(captchaSiteKey)
                 .setGoogleOauth2Url(googleOauth2Url)
                 .setAnalyticsAccount(analyticsAccount)

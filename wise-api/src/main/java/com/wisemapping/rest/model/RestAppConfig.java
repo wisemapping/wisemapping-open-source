@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestAppConfig {
     private String apiBaseUrl;
+    private String uiBaseUrl;
     private String googleOauth2Url;
     private boolean registrationEnabled;
     private boolean recaptcha2Enabled;
@@ -101,8 +102,17 @@ public class RestAppConfig {
         this.jwtExpirationMin = jwtExpirationMin;
     }
 
+    public String getUiBaseUrl() {
+        return uiBaseUrl;
+    }
+
+    public void setUiBaseUrl(String uiBaseUrl) {
+        this.uiBaseUrl = uiBaseUrl;
+    }
+
     public static class RestAppConfigBuilder {
         private String apiBaseUrl;
+        private String uiBaseUrl;
         private String googleOauth2Url;
         private boolean registrationEnabled;
         private boolean isCatchaEnabled = false;
@@ -117,8 +127,13 @@ public class RestAppConfig {
             return this;
         }
 
-        public RestAppConfigBuilder setApiUrl(@NotNull String apiBaseUrl) {
-            this.apiBaseUrl = apiBaseUrl;
+        public RestAppConfigBuilder setApiUrl(@NotNull String url) {
+            this.apiBaseUrl = url;
+            return this;
+        }
+
+        public RestAppConfigBuilder setUiUrl(@NotNull String url) {
+            this.uiBaseUrl = url;
             return this;
         }
 
@@ -152,6 +167,7 @@ public class RestAppConfig {
             result.googleOauth2Url = googleOauth2Url;
             result.recaptcha2SiteKey = captchaSiteKey;
             result.recaptcha2Enabled = isCatchaEnabled;
+            result.uiBaseUrl = uiBaseUrl;
             result.apiBaseUrl = apiBaseUrl;
             result.registrationEnabled = registrationEnabled;
             result.analyticsAccount = analyticsAccount;
