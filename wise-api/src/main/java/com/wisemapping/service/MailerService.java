@@ -77,14 +77,6 @@ public final class MailerService {
         }
     }
 
-    public void setMailSender(JavaMailSender mailer) {
-        this.mailSender = mailer;
-    }
-
-    public void setVelocityEngineWrapper(VelocityEngineWrapper engine) {
-        this.velocityEngineWrapper = engine;
-    }
-
     public String getSupportEmail() {
         return supportEmail;
     }
