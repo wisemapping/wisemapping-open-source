@@ -85,6 +85,7 @@ app:
     #    corsAllowedOrigins: https://dev.wisemapping.com
     oauth2:
       google:
+        clientSecret: <google-oath>
         confirmUrl: https://oauth2.googleapis.com/token
         userinfoUrl: https://www:googleapis.com/oauth2/v3/userinfo
         callbackUrl: https://app.wisemapping.com/c/registration-google
