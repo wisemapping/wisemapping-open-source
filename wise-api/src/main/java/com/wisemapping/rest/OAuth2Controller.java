@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/oauth2/")
+@RequestMapping("/api/restful/oauth2/")
 @CrossOrigin
 public class OAuth2Controller extends BaseController {
     @Qualifier("userService")
