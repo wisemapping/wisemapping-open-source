@@ -25,6 +25,8 @@ import com.wisemapping.security.JwtTokenUtil;
 import com.wisemapping.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,6 +39,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/restful/oauth2/")
 @CrossOrigin
 public class OAuth2Controller extends BaseController {
+    final private static Logger logger = LogManager.getLogger();
+
     @Qualifier("userService")
     @Autowired
     private UserService userService;
@@ -68,6 +72,8 @@ public class OAuth2Controller extends BaseController {
     @RequestMapping(method = RequestMethod.PUT, value = "confirmaccountsync", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public void confirmAccountSync(@NotNull @RequestParam String email, @NotNull @RequestParam String code, @NotNull HttpServletResponse response) throws WiseMappingException {
+        logger.debug("confirmAccountSync:" + email + "-" + code);
+
         // Authenticate ...
         userService.createAndAuthUserFromGoogle(code);
 

@@ -30,6 +30,8 @@ import com.wisemapping.service.google.GoogleService;
 import com.wisemapping.service.google.http.HttpInvokerException;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,7 @@ import java.util.*;
 public class UserServiceImpl
         implements UserService {
 
+
     @Autowired
     private UserManager userManager;
     @Autowired
@@ -58,6 +61,8 @@ public class UserServiceImpl
     private VelocityEngineWrapper velocityEngineWrapper;
     @Autowired
     private GoogleService googleService;
+
+    final private static Logger logger = LogManager.getLogger();
 
     @Override
     public void activateAccount(long code)
@@ -178,11 +183,12 @@ public class UserServiceImpl
         try {
             data = googleService.processCallback(callbackCode);
         } catch (HttpInvokerException e) {
+            logger.debug(e.getMessage(), e);
             throw new OAuthAuthenticationException(e);
         }
 
-        Account existingUser = userManager.getUserBy(data.getEmail());
-        if (existingUser == null) {
+        Account result = userManager.getUserBy(data.getEmail());
+        if (result == null) {
             Account newUser = new Account();
             // new registrations from google starts sync
             newUser.setGoogleSync(true);
@@ -191,18 +197,18 @@ public class UserServiceImpl
             newUser.setLastname(data.getLastName());
             newUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
             newUser.setGoogleToken(data.getAccessToken());
-            existingUser = this.createUser(newUser, false, true);
+            result = this.createUser(newUser, false, true);
         } else {
             // user exists and doesn't have confirmed account linking, I must wait for confirmation
-            if (existingUser.getGoogleSync() == null) {
-                existingUser.setGoogleSync(false);
-                existingUser.setSyncCode(callbackCode);
-                existingUser.setGoogleToken(data.getAccessToken());
-                userManager.updateUser(existingUser);
+            if (result.getGoogleSync() == null) {
+                result.setGoogleSync(false);
+                result.setSyncCode(callbackCode);
+                result.setGoogleToken(data.getAccessToken());
+                userManager.updateUser(result);
             }
 
         }
-        return existingUser;
+        return result;
 
     }
 
