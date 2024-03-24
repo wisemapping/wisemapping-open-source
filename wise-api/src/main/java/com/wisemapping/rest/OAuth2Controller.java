@@ -67,7 +67,7 @@ public class OAuth2Controller extends BaseController {
         final RestOath2CallbackResponse result = new RestOath2CallbackResponse();
         result.setEmail(user.getEmail());
         result.setGoogleSync(user.getGoogleSync());
-        result.setSyncCode(user.getSyncCode());
+        result.setSyncCode(code);
         result.setJwtToken(jwtToken);
         return result;
     }
@@ -75,7 +75,10 @@ public class OAuth2Controller extends BaseController {
     @RequestMapping(method = RequestMethod.PUT, value = "confirmaccountsync", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public RestOath2CallbackResponse confirmAccountSync(@NotNull @RequestParam String email, @NotNull @RequestParam String code, @NotNull HttpServletResponse response) throws WiseMappingException {
-        logger.debug("confirmAccountSync:" + email + "-" + code);
+        logger.debug("confirmAccountSync:" + email + " - " + code);
+        if (email == null || code == null) {
+            throw new WiseMappingException("Illegal argument exception: " + email + " - " + code);
+        }
 
         // Authenticate ...
         final Account user = userService.createAndAuthUserFromGoogle(code);
