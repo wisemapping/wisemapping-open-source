@@ -74,16 +74,24 @@ public class OAuth2Controller extends BaseController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "confirmaccountsync", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
-    public void confirmAccountSync(@NotNull @RequestParam String email, @NotNull @RequestParam String code, @NotNull HttpServletResponse response) throws WiseMappingException {
+    public RestOath2CallbackResponse confirmAccountSync(@NotNull @RequestParam String email, @NotNull @RequestParam String code, @NotNull HttpServletResponse response) throws WiseMappingException {
         logger.debug("confirmAccountSync:" + email + "-" + code);
 
         // Authenticate ...
-        userService.createAndAuthUserFromGoogle(code);
+        final Account user = userService.createAndAuthUserFromGoogle(code);
 
         // Update login
         userService.confirmAccountSync(email, code);
 
         // Add header ...
-        jwtTokenUtil.doLogin(response, email);
+        final String jwtToken = jwtTokenUtil.doLogin(response, email);
+
+        // Response ...
+        final RestOath2CallbackResponse result = new RestOath2CallbackResponse();
+        result.setEmail(user.getEmail());
+        result.setGoogleSync(false);
+        result.setSyncCode(user.getSyncCode());
+        result.setJwtToken(jwtToken);
+        return result;
     }
 }

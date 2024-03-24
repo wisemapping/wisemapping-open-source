@@ -26,15 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
-//  "config": {
-//        "apiBaseUrl": "http://localhost:3000",
-//        "analyticsAccount": "G-RSDEJH16YM",
-//        "clientType": "mock",
-//        "recaptcha2Enabled": false,
-//        "recaptcha2SiteKey": "6Lcat08kAAAAAIP-HjhzIa-Yq21PHgGa_ADWc-Ro",
-//        "googleOauth2Url": "https: //accounts.google.com/o/oauth2/v2/auth?redirect_uri=https://app.wisemapping.com/c/registration-google&prompt=consent&response_type=code&client_id=625682766634-cocbbbbb403iuvps1evecdk6d7phvbkf.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&state=wisemapping&include_granted_scopes=true"
-//    }
 @RestController
 @RequestMapping("/api/restful/app")
 public class AppController extends BaseController {
