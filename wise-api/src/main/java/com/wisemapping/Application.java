@@ -14,7 +14,6 @@ public class Application {
         new SpringApplicationBuilder()
                 .parent(CommonConfig.class).web(WebApplicationType.NONE)
                 .child(RestAppConfig.class, WebConfig.class).web(WebApplicationType.SERVLET)
-//                .sibling(MvcAppConfig.class).web(WebApplicationType.SERVLET)
                 .run(args);
     }
 

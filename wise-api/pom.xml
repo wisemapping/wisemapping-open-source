@@ -9,13 +9,13 @@
 
     <groupId>org.wisemapping</groupId>
     <artifactId>wise-api</artifactId>
-    <version>5.1.0-SNAPSHOT</version>
+    <version>6.0.0-SNAPSHOT</version>
 
     <name>WiseMapping API</name>
     <url>https://www.wisemapping.org</url>
 
     <properties>
-        <com.wisemapping.version>5.1.0-SNAPSHOT</com.wisemapping.version>
+        <com.wisemapping.version>6.0.0-SNAPSHOT</com.wisemapping.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
