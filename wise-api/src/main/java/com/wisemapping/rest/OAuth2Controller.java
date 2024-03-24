@@ -57,8 +57,10 @@ public class OAuth2Controller extends BaseController {
     @ResponseStatus(value = HttpStatus.OK)
     public RestOath2CallbackResponse processGoogleCallback(@NotNull @RequestParam String code, @NotNull HttpServletResponse response, @NotNull HttpServletRequest request) throws WiseMappingException {
         final Account user = userService.createAndAuthUserFromGoogle(code);
+
+        String jwtToken = null;
         if (user.getGoogleSync()) {
-            jwtTokenUtil.doLogin(response, user.getEmail());
+            jwtToken = jwtTokenUtil.doLogin(response, user.getEmail());
         }
 
         // Response ...
@@ -66,6 +68,7 @@ public class OAuth2Controller extends BaseController {
         result.setEmail(user.getEmail());
         result.setGoogleSync(user.getGoogleSync());
         result.setSyncCode(user.getSyncCode());
+        result.setJwtToken(jwtToken);
         return result;
     }
 
