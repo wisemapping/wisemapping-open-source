@@ -16,9 +16,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 21
@@ -29,6 +27,8 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B clean package --file wise-api/pom.xml -DskipTests
+    - name: Build the Docker image
+      run: docker build wise-api/ --file Dockerfile -t wisemapping/wisemapping-api:latest
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
