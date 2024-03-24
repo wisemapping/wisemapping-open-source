@@ -75,6 +75,7 @@ public class JwtTokenUtil implements Serializable {
 
     @NotNull
     public String doLogin(@NotNull HttpServletResponse response, @NotNull String email) {
+        logger.debug("Performing login:" + email);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
         // Add JWT in the HTTP header ...

@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -164,7 +165,7 @@ public class Account
     }
 
     public Boolean getGoogleSync() {
-        return googleSync!=null && googleSync;
+        return googleSync != null && googleSync;
     }
 
     public void setGoogleSync(Boolean googleSync) {

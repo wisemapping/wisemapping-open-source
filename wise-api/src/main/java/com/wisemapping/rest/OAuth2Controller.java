@@ -56,7 +56,7 @@ public class OAuth2Controller extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "googlecallback", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public RestOath2CallbackResponse processGoogleCallback(@NotNull @RequestParam String code, @NotNull HttpServletResponse response, @NotNull HttpServletRequest request) throws WiseMappingException {
-        Account user = userService.createAndAuthUserFromGoogle(code);
+        final Account user = userService.createAndAuthUserFromGoogle(code);
         if (user.getGoogleSync()) {
             jwtTokenUtil.doLogin(response, user.getEmail());
         }
