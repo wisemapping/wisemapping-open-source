@@ -2,6 +2,9 @@ package com.wisemapping.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.wisemapping.model.Account;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
@@ -16,6 +19,13 @@ public class RestOath2CallbackResponse {
     private Boolean googleSync;
     private String syncCode;
     private String jwtToken;
+
+    public RestOath2CallbackResponse(@NotNull Account user, @Nullable String jwtToken) {
+        this.setEmail(user.getEmail());
+        this.setGoogleSync(user.getGoogleSync());
+        this.setSyncCode(user.getSyncCode());
+        this.setJwtToken(jwtToken);
+    }
 
     public String getEmail() {
         return email;

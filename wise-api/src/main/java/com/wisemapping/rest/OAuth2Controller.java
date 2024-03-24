@@ -56,7 +56,7 @@ public class OAuth2Controller extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "googlecallback", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public RestOath2CallbackResponse processGoogleCallback(@NotNull @RequestParam String code, @NotNull HttpServletResponse response, @NotNull HttpServletRequest request) throws WiseMappingException {
-        logger.debug("processGoogleCallback:" + code);
+        logger.debug("ProcessGoogleCallback:" + code);
         if (code == null) {
             throw new WiseMappingException("Illegal argument exception: " + code);
         }
@@ -68,12 +68,7 @@ public class OAuth2Controller extends BaseController {
         }
 
         // Response ...
-        final RestOath2CallbackResponse result = new RestOath2CallbackResponse();
-        result.setEmail(user.getEmail());
-        result.setGoogleSync(user.getGoogleSync());
-        result.setSyncCode(code);
-        result.setJwtToken(jwtToken);
-        return result;
+        return new RestOath2CallbackResponse(user, jwtToken);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "confirmaccountsync", produces = {"application/json"})
@@ -84,21 +79,13 @@ public class OAuth2Controller extends BaseController {
             throw new WiseMappingException("Illegal argument exception: " + email + " - " + code);
         }
 
-        // Authenticate ...
-        final Account user = userService.createAndAuthUserFromGoogle(code);
-
         // Update login
-        userService.confirmAccountSync(user.getEmail(), code);
+        final Account user = userService.confirmGoogleAccountSync(email, code);
 
         // Add header ...
         final String jwtToken = jwtTokenUtil.doLogin(response, email);
 
         // Response ...
-        final RestOath2CallbackResponse result = new RestOath2CallbackResponse();
-        result.setEmail(user.getEmail());
-        result.setGoogleSync(user.getGoogleSync());
-        result.setSyncCode(user.getSyncCode());
-        result.setJwtToken(jwtToken);
-        return result;
+        return new RestOath2CallbackResponse(user, jwtToken);
     }
 }

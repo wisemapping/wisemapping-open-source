@@ -32,7 +32,7 @@ public interface UserService {
 
 	Account createAndAuthUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException;
 
-	Account confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException;
+	Account confirmGoogleAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException;
 
     void changePassword(@NotNull Account user);
 

@@ -212,7 +212,7 @@ public class UserServiceImpl
         return result;
     }
 
-    public Account confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
+    public Account confirmGoogleAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
         final Account existingUser = userManager.getUserBy(email);
         // additional security check
         if (existingUser == null || !existingUser.getSyncCode().equals(code)) {
