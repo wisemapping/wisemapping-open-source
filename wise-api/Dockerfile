@@ -1,4 +1,4 @@
-FROM amazoncorretto:17.0.10
+FROM amazoncorretto:21.0.2
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 VOLUME /tmp
