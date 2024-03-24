@@ -187,6 +187,7 @@ public class UserServiceImpl
             throw new OAuthAuthenticationException(e);
         }
 
+        // Callback is successful, the email of the user exits. Is an existing account ?
         Account result = userManager.getUserBy(data.getEmail());
         if (result == null) {
             Account newUser = new Account();
@@ -198,18 +199,17 @@ public class UserServiceImpl
             newUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
             newUser.setGoogleToken(data.getAccessToken());
             result = this.createUser(newUser, false, true);
-        } else {
-            // user exists and doesn't have confirmed account linking, I must wait for confirmation
-            if (result.getGoogleSync() == null) {
-                result.setGoogleSync(false);
-                result.setSyncCode(callbackCode);
-                result.setGoogleToken(data.getAccessToken());
-                userManager.updateUser(result);
-            }
+            logger.debug("Google account successfully created");
+        }
 
+        // Is the user a non-oauth user ?
+        if (result.getGoogleSync() == null || !result.getGoogleSync()) {
+            result.setGoogleSync(false);
+            result.setSyncCode(callbackCode);
+            result.setGoogleToken(data.getAccessToken());
+            userManager.updateUser(result);
         }
         return result;
-
     }
 
     public Account confirmAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {

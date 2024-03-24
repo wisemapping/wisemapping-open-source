@@ -56,8 +56,12 @@ public class OAuth2Controller extends BaseController {
     @RequestMapping(method = RequestMethod.POST, value = "googlecallback", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public RestOath2CallbackResponse processGoogleCallback(@NotNull @RequestParam String code, @NotNull HttpServletResponse response, @NotNull HttpServletRequest request) throws WiseMappingException {
-        final Account user = userService.createAndAuthUserFromGoogle(code);
+        logger.debug("processGoogleCallback:" + code);
+        if (code == null) {
+            throw new WiseMappingException("Illegal argument exception: " + code);
+        }
 
+        final Account user = userService.createAndAuthUserFromGoogle(code);
         String jwtToken = null;
         if (user.getGoogleSync()) {
             jwtToken = jwtTokenUtil.doLogin(response, user.getEmail());
@@ -75,8 +79,8 @@ public class OAuth2Controller extends BaseController {
     @RequestMapping(method = RequestMethod.PUT, value = "confirmaccountsync", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public RestOath2CallbackResponse confirmAccountSync(@NotNull @RequestParam String email, @NotNull @RequestParam String code, @NotNull HttpServletResponse response) throws WiseMappingException {
-        logger.debug("confirmAccountSync:" + email + " - " + code);
-        if (email == null || code == null) {
+        logger.debug("ConfirmAccountSync:" + email + " - " + code);
+        if (code == null) {
             throw new WiseMappingException("Illegal argument exception: " + email + " - " + code);
         }
 
@@ -84,7 +88,7 @@ public class OAuth2Controller extends BaseController {
         final Account user = userService.createAndAuthUserFromGoogle(code);
 
         // Update login
-        userService.confirmAccountSync(email, code);
+        userService.confirmAccountSync(user.getEmail(), code);
 
         // Add header ...
         final String jwtToken = jwtTokenUtil.doLogin(response, email);
