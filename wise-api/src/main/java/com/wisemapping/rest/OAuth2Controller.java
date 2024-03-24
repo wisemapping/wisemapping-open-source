@@ -89,7 +89,7 @@ public class OAuth2Controller extends BaseController {
         // Response ...
         final RestOath2CallbackResponse result = new RestOath2CallbackResponse();
         result.setEmail(user.getEmail());
-        result.setGoogleSync(false);
+        result.setGoogleSync(user.getGoogleSync());
         result.setSyncCode(user.getSyncCode());
         result.setJwtToken(jwtToken);
         return result;
