@@ -9,7 +9,7 @@ WiseMapping is based on the same code product supporting [http://www.wisemapping
 
 The following products must be installed:
 
-    * OpenJDK 17 or higher
+    * OpenJDK 21 or higher
     * Maven 3.x or higher ([http://maven.apache.org/])
     * npm 6 or higher ([https://www.npmjs.com/package/npm?activeTab=versions])
 
