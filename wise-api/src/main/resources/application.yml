@@ -1,0 +1,104 @@
+# SpringBoot Configuration ...
+server:
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
+
+spring:
+  mail:
+    host: smtp.example.com
+    port: 25
+    username: setusername
+    password: setpassword
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+  output:
+    ansi:
+      enabled: always
+  application:
+    name: wisemapping-api
+    title: wisemapping-api
+  datasource:
+    url: jdbc:hsqldb:mem:wisemapping
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    password: ''
+    username: sa
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: true
+    properties:
+      hibernate:
+        current_session_context_class: thread
+        default_batch_fetch_size: 200
+        dialect: org.hibernate.dialect.HSQLDialect
+        format_sql: true
+  main:
+    allow-circular-references: true
+  sql:
+    init:
+      mode: always
+      platform: hsqldb
+
+# Login ...
+logging:
+  level:
+    org:
+      apache:
+        tomcat: INFO
+    root: INFO
+
+# Application Configuration.
+app:
+  site:
+    ui-base-url: https://localhost:8080
+    api-base-url: https://api.wisemapping.com
+  api:
+    http-basic-enabled: false
+#  analytics:
+#    account:
+  jwt:
+    secret: dlqxKAg685SaKhsQXIMeM=JWCw3bkl3Ei3Tb7LMlnd19oMd66burPNlJ0Po1qguyjgpakQTk2CN3
+    expirationMin: 10080 # One week
+  admin:
+    user: admin@wisemapping.org
+  mail:
+    sender-email: root@localhost
+    support-email: root@localhost
+    enabled: false
+  accounts:
+    max-inactive: 20
+  #######################################################################################
+  # Google OAuth Authentication
+  #######################################################################################
+  # OAuth Client id
+  #security.oauth2.google.clientId=<config settings>
+  # OAuth Client secret
+  #security.oauth2.google.clientSecret=<oauth client>
+  # Redirect to this url, this url must be configured in the google app {ui-base-url}/c/registration-google
+  #security.oauth2.google.callbackUrl=<oauth callback url>
+  security:
+    #    corsAllowedOrigins: https://dev.wisemapping.com
+    oauth2:
+      google:
+        clientSecret: <google-oath>
+        confirmUrl: https://oauth2.googleapis.com/token
+        userinfoUrl: https://www:googleapis.com/oauth2/v3/userinfo
+        callbackUrl: https://app.wisemapping.com/c/registration-google
+        clientId: 625682766634-cocbbbbb403iuvps1evecdk6d7phvbkf.apps.googleusercontent.com
+        url: https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${app.security.oauth2.google.callbackUrl}&prompt=consent&response_type=code&client_id=${app.security.oauth2.google.clientId}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&state=wisemapping&include_granted_scopes=true
+  #  accounts:
+  #    exclusion:
+  #      domain:
+  registration:
+    enabled: true
+    captcha:
+      enabled: false
+      siteKey: some-key
+      secretKey: some-secret
+
+

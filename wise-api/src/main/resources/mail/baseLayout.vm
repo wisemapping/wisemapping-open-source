@@ -1,0 +1,38 @@
+<html>
+<body>
+<div style="background-color: #fbeed5; max-width: 650px; font-family: Arial, sans-serif; color: #000; padding: 5px;">
+    <div style="height: 60px; font-size: 14px; font-weight: bold; padding-bottom: 4px;">
+        <table style="display: inline;width: 100%;">
+            <body>
+            <tr>
+                <td height="50px" width="2px"
+                    style="padding: 0; padding-right: 5px; text-align:center;font-weight: normal;font-family: Arial, sans-serif">
+                    <a href="${baseUrl}">
+                        <img style="border: 0;margin-top: 10px;"
+                             src="${baseUrl}/logo.svg"
+                             alt="WiseMapping"/>
+
+                    </a>
+                </td>
+                <td valign="bottom" height="32px" style="padding: 0;font-size: 16px;">
+                    ${messageTitle}
+                </td>
+            </tr>
+            </body>
+        </table>
+    </div>
+    <div style="font-size: 13px; background-color: #FFF; padding: 10px 7px 7px 7px; min-height: 100px">
+        ${messages.getMessage("EMAIL.GREETINGS",$noArgs,$locale)} ${firstName}:
+        <p>
+            ${messageBody}
+        </p>
+
+        <p style="color: #898989;">
+            <a href="https://www.wisemapping.com/">The WiseMapping Team</a><br/>
+        </p>
+    </div>
+</div>
+
+<p style="font-size: 13px;font-family: Arial, sans-serif">${doNotReplay}</p>
+</body>
+</html>

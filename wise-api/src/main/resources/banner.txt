@@ -1,0 +1,6 @@
+|  |  |'     |\  /|            '             /\  |~~\~|~
+|  |  ||(~/~/| \/ |/~~||~~\|~~\||/~\ /~~|   /__\ |__/ | 
+ \/ \/ |_)\/_|    |\__||__/|__/||   |\__|  /    \|   _|_
+                       |   |         \__|               
+${application.title} ${application.version}
+Powered by Spring Boot ${spring-boot.version}
