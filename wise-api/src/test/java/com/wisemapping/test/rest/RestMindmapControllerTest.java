@@ -438,7 +438,7 @@ public class RestMindmapControllerTest {
         // Try to delete but I'm not the owner ...
         final ResponseEntity<String> exchange = anotherTemplate.exchange(resourceUri + "/collabs?email=" + anotherUser.getEmail(), HttpMethod.DELETE, null, String.class);
         assertTrue(exchange.getStatusCode().is4xxClientError());
-        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("No enough permissions"));
+        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("You do not have enough right access to see this map. This map has been changed to private or deleted."));
 
     }
 

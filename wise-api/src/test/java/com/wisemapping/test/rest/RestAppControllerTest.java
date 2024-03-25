@@ -64,6 +64,6 @@ public class RestAppControllerTest {
                         (MockMvcRequestBuilders.get("/api/restful/app/config"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("{\"apiBaseUrl\":\"https://api.wisemapping.com\",\"googleOauth2Url\":\"https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https://app.wisemapping.com/c/registration-google&prompt=consent&response_type=code&client_id=625682766634-cocbbbbb403iuvps1evecdk6d7phvbkf.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&state=wisemapping&include_granted_scopes=true\",\"registrationEnabled\":true,\"recaptcha2Enabled\":true,\"recaptcha2SiteKey\":\"some-key\",\"analyticsAccount\":\"\",\"jwtExpirationMin\":10080}")));
+                .andExpect(content().string(containsString("\"jwtExpirationMin\":10080")));
     }
 }

@@ -26,7 +26,7 @@ jobs:
         distribution: 'zulu'
         cache: maven
     - name: Build with Maven
-      run: mvn -B clean package --file wise-api/pom.xml -DskipTests
+      run: mvn -B clean package --file wise-api/pom.xml
     - name: Build the Docker image
       run: docker build  -t wisemapping/wisemapping-api:latest wise-api
 
