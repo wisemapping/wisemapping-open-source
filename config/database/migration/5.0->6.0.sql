@@ -2,4 +2,9 @@ RENAME TABLE USER TO ACCOUNT;
 RENAME TABLE LABEL TO MINDMAP_LABEL;
 
 ALTER TABLE COLLABORATION 
-RENAME COLUMN colaboration_id to collaboration_id
+RENAME COLUMN colaborator_id to collaborator_id;
+
+ALTER TABLE ACCOUNT 
+RENAME COLUMN colaborator_id to collaborator_id;
+
+ALTER TABLE MINDMAP_LABEL DROP COLUMN iconName;
