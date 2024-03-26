@@ -82,7 +82,7 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/metadata", produces = {"application/json"})
     @ResponseBody
     public RestMindmapMetadata retrieveMetadata(@PathVariable int id) throws WiseMappingException {
-        final Account user = Utils.getUser(true);
+        final Account user = Utils.getUser(false);
         final Mindmap mindmap = findMindmapById(id);
         final MindMapBean mindMapBean = new MindMapBean(mindmap, user);
 
