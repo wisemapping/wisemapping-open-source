@@ -45,6 +45,7 @@ public class RestAppConfig {
                         .requestMatchers(mvc.pattern("/api/restful/authenticate")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/users/")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/app/config")).permitAll()
+                        .requestMatchers(mvc.pattern("/api/restful/maps/*/metadata")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/maps/*/document/xml-pub")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/users/resetPassword")).permitAll()
                         .requestMatchers(mvc.pattern("/api/restful/oauth2/googlecallback")).permitAll()
