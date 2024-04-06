@@ -1,4 +1,4 @@
-# Overview
+# WiseMapping Open Source
 
 WiseMapping is an open-source web-based mind mapping tool that harnesses the potential of Mind Maps by blending together open standards technologies like SVG and React. It is built upon the foundation of the code supporting http://www.wisemapping.com, ensuring reliability and continuity in its development.
 
