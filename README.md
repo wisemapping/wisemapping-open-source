@@ -35,7 +35,7 @@ $ cd wise-api
 $ mvn spring-boot:run
 ```
 
-## Compile and Start Frontend
+### Compile and Start Frontend
 
 You need to checkout https://github.com/wisemapping/wisemapping-frontend first. Then, follow the next steps:
 
