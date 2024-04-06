@@ -55,8 +55,8 @@ logging:
 # Application Configuration.
 app:
   site:
-    ui-base-url: https://localhost:8080
-    api-base-url: https://api.wisemapping.com
+    ui-base-url: http://localhost
+    api-base-url: http://localhost
   api:
     http-basic-enabled: false
 #  analytics:

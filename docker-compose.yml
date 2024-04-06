@@ -3,6 +3,7 @@ version: '3'
 services:
   wise-api:
     container_name: wise-api
+    hostname: wise-api
     image: wise-api:latest
     build:
       context: ./wise-api
