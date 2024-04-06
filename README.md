@@ -2,7 +2,7 @@
 
 WiseMapping is an open-source web-based mind mapping tool that harnesses the potential of Mind Maps by blending together open standards technologies like SVG and React. It is built upon the foundation of the code supporting http://www.wisemapping.com, ensuring reliability and continuity in its development.
 
-# Compile and Development
+# Build and Start Application
 
 The following section describes the steps to check out, compile, and start WiseMapping locally. If you are interested in deploying it, I recommend using the already published images https://hub.docker.com/r/wisemapping/wisemapping.
 
@@ -52,12 +52,11 @@ Application will start at http://localhost:3000/c/login. You can login using *te
 
 # Supportability Matrix
 
-## Supported Databases
+## Databases
 
 * MySQL v8 or higher
 * PostgreSQL v15 or higher
 * Hsqldb v2.7 or higher
-
 
 # Configuration
 
