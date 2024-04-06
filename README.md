@@ -19,8 +19,7 @@ The following command line will start WiseMapping locally using HSQLDB in memory
 
 ```
 $ mvn -f wise-api/pom.xml package
-$ docker compose build
-$ docker compose up
+$ docker compose up --build
 ```
 
 Application will start at http://localhost/c/login. You can login using *test@wisemapping.org* and password *test*
