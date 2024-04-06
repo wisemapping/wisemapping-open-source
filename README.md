@@ -25,7 +25,7 @@ $ docker compose up
 
 Application will start at http://localhost/c/login. You can login using *test@wisemapping.org* and password *test*
 
-## Option 2: Start UI and API independently 
+## Option 2: Start FrontEnd and Backend API
 
 ### Compile and Start API
 
