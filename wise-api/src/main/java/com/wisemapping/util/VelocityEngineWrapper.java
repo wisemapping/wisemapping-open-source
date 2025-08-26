@@ -17,30 +17,34 @@
  */
 package com.wisemapping.util;
 
-import org.apache.commons.collections.ExtendedProperties;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
+
+import java.util.Properties;
 
 @Component
 public class VelocityEngineWrapper {
     private final VelocityEngine velocityEngine;
 
     public VelocityEngineWrapper() {
-        ExtendedProperties extendedProperties = new ExtendedProperties();
-        extendedProperties.setProperty("resource.loader", "class");
-        extendedProperties.setProperty("class.resource.loader.class",
+        Properties properties = new Properties();
+        properties.setProperty("resource.loaders", "class");
+        properties.setProperty("resource.loader.class.class",
                 "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        
+        // Enable backward compatibility settings
+        properties.setProperty("introspector.conversion_handler.class", "none");
+        properties.setProperty("parser.space_gobbling", "bc");
+        properties.setProperty("parser.allow_hyphen_in_identifiers", "true");
+        properties.setProperty("velocimacro.enable_bc_mode", "true");
 
         this.velocityEngine = new VelocityEngine();
-        velocityEngine.setExtendedProperties(extendedProperties);
-
-        // Configure velocity to use log4j.
-        velocityEngine.setProperty( RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
-                "org.apache.velocity.runtime.log.SimpleLog4JLogSystem" );
-        velocityEngine.setProperty("runtime.log.logsystem.log4j.category", "org.apache.velocity");
-
+        velocityEngine.setProperties(properties);
+        
+        // Initialize the engine
+        velocityEngine.init();
     }
 
     @NotNull
