@@ -22,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.validator.Messages;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
@@ -53,7 +52,7 @@ public class RecaptchaService {
 
     @Nullable
     public String verifyRecaptcha(@NotNull String ip, @NotNull String recaptcha) {
-        String result = StringUtils.EMPTY;
+        String result = "";
         final List<NameValuePair> build = Form.form()
                 .add("secret", recaptchaSecret)
                 .add("response", recaptcha)
