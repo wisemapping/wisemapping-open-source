@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
+import javax.crypto.SecretKey;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -36,10 +37,10 @@ public class JwtTokenUtil implements Serializable {
 
     public String generateJwtToken(@NotNull final UserDetails user) {
         return Jwts.builder()
-                .setSubject((user.getUsername()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMin * 1000L * 60))
-                .signWith(key(), SignatureAlgorithm.HS256)
+                .subject(user.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date((new Date()).getTime() + jwtExpirationMin * 1000L * 60))
+                .signWith(key())
                 .compact();
     }
 
@@ -50,14 +51,14 @@ public class JwtTokenUtil implements Serializable {
 
     @Nullable
     public String extractFromJwtToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key()).build()
-                .parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().verifyWith((javax.crypto.SecretKey) key()).build()
+                .parseSignedClaims(token).getPayload().getSubject();
     }
 
     public boolean validateJwtToken(@NotNull String authToken) {
         boolean result = false;
         try {
-            Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
+            Jwts.parser().verifyWith((javax.crypto.SecretKey) key()).build().parse(authToken);
             result = true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
