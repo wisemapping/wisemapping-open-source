@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,9 +24,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig {
 
     @Autowired
+    @Lazy
     private ReadSecurityAdvise readAdvice;
 
     @Autowired
+    @Lazy
     private UpdateSecurityAdvise updateAdvice;
 
     @Autowired
@@ -46,14 +49,12 @@ public class SecurityConfig {
         return  DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationProvider googleAuthenticationProvider() {
+    private AuthenticationProvider googleAuthenticationProvider() {
         return new GoogleAuthenticationProvider(userDetailsService);
 
     }
 
-    @Bean
-    public AuthenticationProvider dbAuthenticationProvider() {
+    private AuthenticationProvider dbAuthenticationProvider() {
         final com.wisemapping.security.AuthenticationProvider provider =
                 new com.wisemapping.security.AuthenticationProvider();
         provider.setEncoder(passwordEncoder());
