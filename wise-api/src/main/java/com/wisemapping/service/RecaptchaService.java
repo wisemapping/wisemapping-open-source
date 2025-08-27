@@ -20,6 +20,7 @@ package com.wisemapping.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.validator.Messages;
 import org.apache.http.NameValuePair;
@@ -72,11 +73,13 @@ public class RecaptchaService {
                     .returnContent()
                     .asBytes();
 
-            final Map responseBody = objectMapper.readValue(body, HashMap.class);
+            final Map<String, Object> responseBody = objectMapper.readValue(body, 
+                new TypeReference<HashMap<String, Object>>() {});
             logger.debug("Response from recaptcha after parse: " + responseBody);
 
             final Boolean success = (Boolean) responseBody.get("success");
             if (success != null && !success) {
+                @SuppressWarnings("unchecked")
                 final List<String> errorCodes = (List<String>) responseBody.get("error-codes");
                 String errorCode = errorCodes.get(0);
                 if (errorCode.equals(CATCH_ERROR_CODE_TIMEOUT_OR_DUPLICATE)) {
