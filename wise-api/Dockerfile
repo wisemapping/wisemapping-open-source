@@ -8,7 +8,7 @@ RUN addgroup -g 1001 -S wisemapping && \
 VOLUME /tmp
 COPY --chown=wisemapping:wisemapping target/wisemapping-api.jar /app/wisemapping-api.jar
 
-USER wisemapping
 WORKDIR /app
+USER wisemapping
 
 ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar wisemapping-api.jar ${0} ${@}"]
