@@ -20,6 +20,7 @@ package com.wisemapping.validator;
 
 import com.wisemapping.model.Constants;
 import com.wisemapping.rest.model.RestUserRegistration;
+import com.wisemapping.service.DisposableEmailService;
 import com.wisemapping.service.UserService;
 import com.wisemapping.view.UserBean;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,7 @@ public class UserValidator
         implements Validator {
 
     private UserService userService;
+    private DisposableEmailService disposableEmailService;
     public boolean supports(final Class clazz) {
         return clazz.equals(UserBean.class);
     }
@@ -48,6 +50,10 @@ public class UserValidator
             if (isValid) {
                 if (userService.getUserBy(email) != null) {
                     errors.rejectValue("email", Messages.EMAIL_ALREADY_EXIST);
+                }
+                
+                if (disposableEmailService != null && disposableEmailService.isDisposableEmail(email)) {
+                    errors.rejectValue("email", Messages.DISPOSABLE_EMAIL_NOT_ALLOWED);
                 }
             } else {
                 Utils.validateEmailAddress(email, errors);
@@ -76,5 +82,9 @@ public class UserValidator
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setDisposableEmailService(DisposableEmailService disposableEmailService) {
+        this.disposableEmailService = disposableEmailService;
     }
 }
