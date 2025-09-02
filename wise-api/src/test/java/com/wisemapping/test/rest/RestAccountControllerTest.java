@@ -98,6 +98,62 @@ public class RestAccountControllerTest {
 
 
     @Test
+    public void changePassword() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+
+        final RestUser newUser = createNewUser();
+        final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
+
+        final String newPassword = "newPassword123";
+        final HttpEntity<String> updateEntity = new HttpEntity<>(newPassword, requestHeaders);
+        final ResponseEntity<String> exchange = userTemplate.exchange(BASE_REST_URL + "/account/password", HttpMethod.PUT, updateEntity, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), exchange.toString());
+    }
+
+    @Test
+    public void changeFirstname() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+
+        final RestUser newUser = createNewUser();
+        final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
+
+        final String newFirstname = "UpdatedFirstName";
+        final HttpEntity<String> updateEntity = new HttpEntity<>(newFirstname, requestHeaders);
+        final ResponseEntity<String> exchange = userTemplate.exchange(BASE_REST_URL + "/account/firstname", HttpMethod.PUT, updateEntity, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), exchange.toString());
+    }
+
+    @Test
+    public void changeLastname() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+
+        final RestUser newUser = createNewUser();
+        final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
+
+        final String newLastname = "UpdatedLastName";
+        final HttpEntity<String> updateEntity = new HttpEntity<>(newLastname, requestHeaders);
+        final ResponseEntity<String> exchange = userTemplate.exchange(BASE_REST_URL + "/account/lastname", HttpMethod.PUT, updateEntity, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), exchange.toString());
+    }
+
+    @Test
+    public void changeLocale() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+
+        final RestUser newUser = createNewUser();
+        final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
+
+        final String newLocale = "es";
+        final HttpEntity<String> updateEntity = new HttpEntity<>(newLocale, requestHeaders);
+        final ResponseEntity<String> exchange = userTemplate.exchange(BASE_REST_URL + "/account/locale", HttpMethod.PUT, updateEntity, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), exchange.toString());
+    }
+
+    @Test
     public RestUser createNewUser() {
         // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
@@ -134,6 +190,19 @@ public class RestAccountControllerTest {
         // Add extension only to avoid the fact that the last part is extracted ...
         final String url = BASE_REST_URL + "/admin/users/email/{email}";
         return templateRest.exchange(url, HttpMethod.GET, findUserEntity, RestUser.class, email);
+    }
+
+    @Test
+    public void changeUserPasswordAsAdmin() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
+        final TestRestTemplate adminTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+
+        final RestUser newUser = createNewUser();
+        
+        final String newPassword = "adminChangedPassword123";
+        final HttpEntity<String> updateEntity = new HttpEntity<>(newPassword, requestHeaders);
+        final ResponseEntity<String> exchange = adminTemplate.exchange(BASE_REST_URL + "/admin/users/" + newUser.getId() + "/password", HttpMethod.PUT, updateEntity, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), exchange.toString());
     }
 
     private URI createUser(@NotNull HttpHeaders requestHeaders, TestRestTemplate templateRest, RestUser restUser) {

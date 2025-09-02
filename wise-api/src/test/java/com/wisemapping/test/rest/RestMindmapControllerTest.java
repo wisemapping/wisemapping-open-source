@@ -8,6 +8,7 @@ import com.wisemapping.rest.AdminController;
 import com.wisemapping.rest.MindmapController;
 import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import jakarta.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -776,6 +777,41 @@ public class RestMindmapControllerTest {
         final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
         final ResponseEntity<RestCollaborationList> collabsList = restTemplate.exchange(resourceUri + "/collabs/", HttpMethod.PUT, updateEntity, RestCollaborationList.class);
         assertTrue(collabsList.getStatusCode().is4xxClientError());
+    }
+
+    @Test
+    public void retrieveDocumentXml() throws URISyntaxException {
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        final String xmlContent = "<map><node text='test document retrieval'></map>";
+        final URI resourceUri = addNewMap(restTemplate, "Test Document Retrieval", xmlContent);
+        final String mapId = resourceUri.getPath().replace("/api/restful/maps/", "");
+
+        final HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final HttpEntity<String> requestEntity = new HttpEntity<>(requestHeaders);
+
+        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restful/maps/" + mapId + "/document/xml", HttpMethod.GET, requestEntity, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful());
+        assertNotNull(exchange.getBody());
+        assertTrue(exchange.getBody().contains("test document retrieval"));
+    }
+
+    @Test
+    public void lockMindmap() throws URISyntaxException {
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        final URI resourceUri = addNewMap(restTemplate, "Map to Lock");
+
+        final HttpHeaders lockHeaders = new HttpHeaders();
+        lockHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final HttpEntity<String> lockEntity = new HttpEntity<>("true", lockHeaders);
+        final ResponseEntity<RestLockInfo> exchange = restTemplate.exchange(resourceUri + "/lock", HttpMethod.PUT, lockEntity, RestLockInfo.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful());
+
+        final HttpEntity<String> unlockEntity = new HttpEntity<>("false", lockHeaders);
+        final ResponseEntity<RestLockInfo> unlockResponse = restTemplate.exchange(resourceUri + "/lock", HttpMethod.PUT, unlockEntity, RestLockInfo.class);
+        assertTrue(unlockResponse.getStatusCode().is2xxSuccessful());
     }
 
     private String changeMapTitle(final HttpHeaders requestHeaders, final MediaType mediaType, final TestRestTemplate template, final URI resourceUri) throws RestClientException {

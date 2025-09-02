@@ -126,6 +126,26 @@ public class RestLabelControllerTest {
         }
     }
 
+    @Test
+    public void retrieveLabelList() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        final String title1 = "List Label 1";
+        addNewLabel(requestHeaders, restTemplate, title1, "#FF0000");
+
+        final String title2 = "List Label 2"; 
+        addNewLabel(requestHeaders, restTemplate, title2, "#00FF00");
+
+        final RestLabelList labelList = getLabels(requestHeaders, restTemplate);
+        assertNotNull(labelList);
+        assertTrue(labelList.getLabels().size() >= 2);
+
+        boolean found1 = labelList.getLabels().stream().anyMatch(l -> title1.equals(l.getTitle()));
+        boolean found2 = labelList.getLabels().stream().anyMatch(l -> title2.equals(l.getTitle()));
+        assertTrue(found1 && found2, "Labels could not be found in list");
+    }
+
     static URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull TestRestTemplate template, @Nullable String title, @Nullable String color) {
         final RestLabel restLabel = new RestLabel();
         if (title != null) {
