@@ -14,13 +14,13 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Log in to DigitalOcean Container Registry
-        run: echo "${{ secrets.DOCR_ACCESS_TOKEN }}" | docker login "${{ secrets.DOCR_REGISTRY }}" -u doctl --password-stdin
+        run: echo "${{ secrets.DOCR_ACCESS_TOKEN }}" | docker login ${{ secrets.DOCR_REGISTRY }} -u doctl --password-stdin
 
       - name: Build the Docker image
         run: docker buildx build --platform linux/amd64 -t wisemapping/wisemapping-api:${{ inputs.tag }} wise-api
 
       - name: Tag Docker image
-        run: docker tag wisemapping/wisemapping-api:${{ inputs.tag }} "${{ secrets.DOCR_REGISTRY }}"/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
+        run: docker tag wisemapping/wisemapping-api:${{ inputs.tag }} ${{ secrets.DOCR_REGISTRY }}/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
 
       - name: Push Image to Repo
-        run: docker push "${{ secrets.DOCR_REGISTRY }}"/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
+        run: docker push ${{ secrets.DOCR_REGISTRY }}/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
