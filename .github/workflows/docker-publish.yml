@@ -13,6 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: jar-artifact
+          path: wise-api/target/
+
       - name: Log in to DigitalOcean Container Registry
         run: echo "${{ secrets.DOCR_ACCESS_TOKEN }}" | docker login ${{ secrets.DOCR_REGISTRY }} -u doctl --password-stdin
 

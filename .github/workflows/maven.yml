@@ -30,6 +30,12 @@ jobs:
       - name: Build with Maven
         run: mvn -B clean install --file wise-api/pom.xml
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: jar-artifact
+          path: wise-api/target/*.jar
+
   docker-publish-dev:
     if: github.ref == 'refs/heads/develop'
     needs: build
