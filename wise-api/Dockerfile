@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:24-jre-alpine
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 # Create non-root user for security

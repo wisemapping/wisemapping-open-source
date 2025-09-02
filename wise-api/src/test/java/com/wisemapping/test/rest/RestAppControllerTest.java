@@ -19,33 +19,23 @@
 package com.wisemapping.test.rest;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.common.CommonConfig;
 import com.wisemapping.config.rest.RestAppConfig;
-import com.wisemapping.model.Account;
 import com.wisemapping.rest.AppController;
-import com.wisemapping.rest.UserController;
-import com.wisemapping.rest.model.RestUser;
-import com.wisemapping.rest.model.RestUserRegistration;
-import com.wisemapping.service.UserService;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.MvcResult;
 
-import static com.wisemapping.test.rest.RestHelper.createDummyUser;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
@@ -53,17 +43,50 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         properties = {"app.api.http-basic-enabled=true"}
 )
 @AutoConfigureMockMvc
-public class RestAppControllerTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DisplayName("App Controller Tests")
+class RestAppControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void fetchProperties() throws Exception {
-        this.mockMvc.perform
-                        (MockMvcRequestBuilders.get("/api/restful/app/config"))
+    @Order(1)
+    @DisplayName("Should return application configuration successfully")
+    void shouldReturnApplicationConfiguration() throws Exception {
+        MvcResult result = mockMvc.perform(
+                get("/api/restful/app/config"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"jwtExpirationMin\":10080")));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.jwtExpirationMin").value(10080))
+                .andExpect(jsonPath("$.jwtExpirationMin").isNumber())
+                .andExpect(jsonPath("$").isMap())
+                .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        assertThat(responseContent).contains("jwtExpirationMin");
+        assertThat(responseContent).isNotEmpty();
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("Should return proper content type")
+    void shouldReturnProperContentType() throws Exception {
+        mockMvc.perform(get("/api/restful/app/config"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(header().string("Content-Type", "application/json"));
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("Should validate response structure")
+    void shouldValidateResponseStructure() throws Exception {
+        mockMvc.perform(get("/api/restful/app/config"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.jwtExpirationMin").exists())
+                .andExpect(jsonPath("$.jwtExpirationMin").isNumber())
+                .andExpect(jsonPath("$.jwtExpirationMin").value(10080));
     }
 }

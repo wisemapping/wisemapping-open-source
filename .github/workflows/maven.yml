@@ -10,25 +10,44 @@ name: WiseMapping API
 
 on:
   push:
-    branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
-
+    branches: [ "develop","main" ]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 21
-      uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'zulu'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B clean package --file wise-api/pom.xml
-    - name: Build the Docker image
-      run: docker build  -t wisemapping/wisemapping-api:latest wise-api
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 24
+        uses: actions/setup-java@v4
+        with:
+          java-version: '24'
+          distribution: 'zulu'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B clean install --file wise-api/pom.xml
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-artifact
+          path: wise-api/target/*.jar
+
+  docker-publish-dev:
+    if: github.ref == 'refs/heads/develop'
+    needs: build
+    uses: ./.github/workflows/docker-publish.yml
+    with:
+      tag: latest
+    secrets: inherit
+    
+  docker-publish-prod:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    uses: ./.github/workflows/docker-publish.yml
+    with:
+      tag: stable
+    secrets: inherit
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph

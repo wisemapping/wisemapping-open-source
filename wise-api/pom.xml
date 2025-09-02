@@ -16,8 +16,8 @@
 
     <properties>
         <com.wisemapping.version>6.0.0-SNAPSHOT</com.wisemapping.version>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -185,11 +185,6 @@
                         </configuration>
                     </execution>
                 </executions>
-                <!--                <configuration>-->
-                <!--                    <jvmArguments>-->
-                <!--                        -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
-                <!--                    </jvmArguments>-->
-                <!--                </configuration>-->
             </plugin>
         </plugins>
     </build>
