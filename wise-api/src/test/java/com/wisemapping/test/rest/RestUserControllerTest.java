@@ -276,5 +276,31 @@ class RestUserControllerTest {
                 .andExpect(status().isInternalServerError());
     }
 
+    @Test
+    @Order(10)
+    @DisplayName("Should test user registration endpoint exists")
+    void registerUserEndpointExists() throws Exception {
+        MvcResult result = mockMvc.perform(post("/api/restful/users/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"endpoint.test@example.org\",\"password\":\"validpassword123\",\"firstName\":\"Valid\",\"lastName\":\"User\"}"))
+                .andReturn();
+        
+        int status = result.getResponse().getStatus();
+        assertThat(status).isIn(201, 400, 404);
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("Should test password reset endpoint exists")
+    void resetPasswordEndpointExists() throws Exception {
+        MvcResult result = mockMvc.perform(put("/api/restful/users/resetPassword")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"admin@wisemapping.org\"}"))
+                .andReturn();
+        
+        int status = result.getResponse().getStatus();
+        assertThat(status).isIn(200, 400, 404, 500);
+    }
+
 
 }

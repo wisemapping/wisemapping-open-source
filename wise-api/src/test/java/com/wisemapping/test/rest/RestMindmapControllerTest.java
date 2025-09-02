@@ -379,7 +379,7 @@ public class RestMindmapControllerTest {
         RestCollaborationList responseCollbs = fetchAndGetCollabs(requestHeaders, restTemplate, resourceUri);
 
         // Has been added ?
-        assertEquals(responseCollbs.getCount(), 2);
+        assertEquals(2, responseCollbs.getCount());
 
         // Now, remove it ...
         final ResponseEntity<String> exchange = restTemplate.exchange(resourceUri + "/collabs?email=" + newCollab, HttpMethod.DELETE, null, String.class);
@@ -387,7 +387,7 @@ public class RestMindmapControllerTest {
 
         // Check that it has been removed ...
         final ResponseEntity<RestCollaborationList> afterDeleteResponse = fetchCollabs(requestHeaders, restTemplate, resourceUri);
-        assertEquals(Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size(), 1);
+        assertEquals(1, Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size());
     }
 
     private String addNewCollaboration(final HttpHeaders requestHeaders, final TestRestTemplate template, final URI resourceUri) throws RestClientException {
@@ -814,6 +814,63 @@ public class RestMindmapControllerTest {
         assertTrue(unlockResponse.getStatusCode().is2xxSuccessful());
     }
 
+<<<<<<< HEAD
+=======
+    @Test
+    public void updateMapXmlWithTextPlain() throws URISyntaxException {
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        final URI resourceUri = addNewMap(restTemplate, "Map to Update XML");
+        final String mapId = resourceUri.getPath().replace("/api/restful/maps/", "");
+
+        final String xmlContent = "<map><topic central=\"true\" text=\"Updated via XML\"></topic></map>";
+        final HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final HttpEntity<String> updateEntity = new HttpEntity<>(xmlContent, requestHeaders);
+
+        final ResponseEntity<String> exchange = restTemplate.exchange("/api/restful/maps/" + mapId + "/document/xml", HttpMethod.PUT, updateEntity, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful());
+    }
+
+    @Test
+    public void retrieveHistoryDocumentXml() throws URISyntaxException {
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        final URI resourceUri = addNewMap(restTemplate, "Map for History Test");
+        final String mapId = resourceUri.getPath().replace("/api/restful/maps/", "");
+
+        final ResponseEntity<RestMindmapHistoryList> historyResponse = restTemplate.exchange("/api/restful/maps/" + mapId + "/history/", HttpMethod.GET, null, RestMindmapHistoryList.class);
+        assertTrue(historyResponse.getStatusCode().is2xxSuccessful());
+
+        if (historyResponse.getBody() != null && !historyResponse.getBody().getChanges().isEmpty()) {
+            final int hid = historyResponse.getBody().getChanges().get(0).getId();
+            final HttpHeaders requestHeaders = new HttpHeaders();
+            requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+            final HttpEntity<String> requestEntity = new HttpEntity<>(requestHeaders);
+
+            final ResponseEntity<String> exchange = restTemplate.exchange("/api/restful/maps/" + mapId + "/" + hid + "/document/xml", HttpMethod.GET, requestEntity, String.class);
+            assertTrue(exchange.getStatusCode().is2xxSuccessful());
+            assertNotNull(exchange.getBody());
+        }
+    }
+
+    @Test
+    public void getStarred() throws URISyntaxException {
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        final URI resourceUri = addNewMap(restTemplate, "Map to Star");
+
+        final HttpHeaders starHeaders = new HttpHeaders();
+        starHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final HttpEntity<String> starEntity = new HttpEntity<>("true", starHeaders);
+        restTemplate.exchange(resourceUri + "/starred", HttpMethod.PUT, starEntity, String.class);
+
+        final ResponseEntity<String> getStarredResponse = restTemplate.exchange(resourceUri + "/starred", HttpMethod.GET, null, String.class);
+        assertTrue(getStarredResponse.getStatusCode().is2xxSuccessful());
+        assertEquals("true", getStarredResponse.getBody());
+    }
+
+>>>>>>> b9d3e2e6 (Add disposable email test.)
     private String changeMapTitle(final HttpHeaders requestHeaders, final MediaType mediaType, final TestRestTemplate template, final URI resourceUri) throws RestClientException {
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
         final String result = "New map to change title  - " + mediaType;
