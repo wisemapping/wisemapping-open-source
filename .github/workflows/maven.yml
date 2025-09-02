@@ -11,9 +11,6 @@ name: WiseMapping API
 on:
   push:
     branches: [ "develop","main" ]
-  pull_request:
-    branches: [ "develop" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
