@@ -15,16 +15,36 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  deploy-dev:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 24
+        uses: actions/setup-java@v3
+        with:
+          java-version: '24'
+          distribution: 'zulu'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B clean package --file wise-api/pom.xml
+
+  docker-publish-dev:
     if: github.ref == 'refs/heads/develop'
-    uses: ./.github/workflows/deploy.yml
+    needs: build
+    uses: ./.github/workflows/docker-publish.yml
     with:
       tag: latest
-  deploy-prod:
+    secrets: inherit
+    
+  docker-publish-prod:
     if: github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/deploy.yml
+    needs: build
+    uses: ./.github/workflows/docker-publish.yml
     with:
       tag: stable
+    secrets: inherit
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
