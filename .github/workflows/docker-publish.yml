@@ -20,7 +20,7 @@ jobs:
           path: wise-api/target/
 
       - name: Log in to DigitalOcean Container Registry
-        run: echo "${{ secrets.DOCR_ACCESS_TOKEN }}" | docker login ${{ secrets.DOCR_REGISTRY }} -u doctl --password-stdin
+        run: echo "${{ secrets.DOCR_ACCESS_TOKEN }}" | docker login registry.digitalocean.com -u doctl --password-stdin
 
       - name: Build the Docker image
         run: docker buildx build --platform linux/amd64 -t wisemapping/wisemapping-api:${{ inputs.tag }} wise-api
