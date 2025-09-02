@@ -28,7 +28,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn -B clean package --file wise-api/pom.xml
+        run: mvn -B clean install --file wise-api/pom.xml
 
   docker-publish-dev:
     if: github.ref == 'refs/heads/develop'
