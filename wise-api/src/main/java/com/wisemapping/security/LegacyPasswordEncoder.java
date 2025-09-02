@@ -21,9 +21,8 @@ package com.wisemapping.security;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.springframework.security.crypto.codec.Base64;
-import org.springframework.security.crypto.codec.Hex;
-import org.springframework.security.crypto.codec.Utf8;
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.security.MessageDigest;
@@ -97,12 +96,12 @@ class ShaPasswordEncoder {
 
         MessageDigest messageDigest = getMessageDigest();
 
-        byte[] digest = messageDigest.digest(Utf8.encode(saltedPass));
+        byte[] digest = messageDigest.digest(saltedPass.getBytes(StandardCharsets.UTF_8));
 
         if (getEncodeHashAsBase64()) {
-            return Utf8.decode(Base64.encode(digest));
+            return Base64.getEncoder().encodeToString(digest);
         } else {
-            return new String(Hex.encode(digest));
+            return bytesToHex(digest);
         }
     }
 
@@ -125,6 +124,14 @@ class ShaPasswordEncoder {
 
     private boolean getEncodeHashAsBase64() {
         return encodeHashAsBase64;
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
     }
 
     private String mergePasswordAndSalt(String password, Object salt, boolean strict) {
