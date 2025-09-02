@@ -23,7 +23,7 @@ jobs:
         run: echo "${{ secrets.DOCR_ACCESS_TOKEN }}" | docker login registry.digitalocean.com -u doctl --password-stdin
 
       - name: Build the Docker image
-        run: docker buildx build --platform linux/amd64 -t wisemapping/wisemapping-api:${{ inputs.tag }} wise-api
+        run: docker buildx build --platform linux/amd64 --build-arg ENABLE_NEWRELIC=true -t wisemapping/wisemapping-api:${{ inputs.tag }} wise-api
 
       - name: Tag Docker image
         run: docker tag wisemapping/wisemapping-api:${{ inputs.tag }} registry.digitalocean.com/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
