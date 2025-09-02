@@ -56,6 +56,9 @@ public class UserController extends BaseController {
     @Autowired
     private RecaptchaService captchaService;
 
+    @Autowired
+    private DisposableEmailService disposableEmailService;
+
     @Qualifier("authenticationManager")
     @Autowired
     private AuthenticationManager authManager;
@@ -122,6 +125,7 @@ public class UserController extends BaseController {
         final BindException errors = new RegistrationException(registration, "registration");
         final UserValidator validator = new UserValidator();
         validator.setUserService(userService);
+        validator.setDisposableEmailService(disposableEmailService);
         validator.validate(registration, errors);
 
         // If captcha is enabled, generate it ...

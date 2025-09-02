@@ -106,6 +106,9 @@ app:
       enabled: false
       siteKey: some-key
       secretKey: some-secret
+    disposable-email:
+      blocking:
+        enabled: true
 
 
 # Behind reverse proxy configuration
