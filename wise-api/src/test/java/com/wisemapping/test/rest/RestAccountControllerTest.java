@@ -147,7 +147,7 @@ public class RestAccountControllerTest {
         final RestUser newUser = createNewUser();
         final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
 
-        final String newLocale = "es";
+        final String newLocale = "it";
         final HttpEntity<String> updateEntity = new HttpEntity<>(newLocale, requestHeaders);
         final ResponseEntity<String> exchange = userTemplate.exchange(BASE_REST_URL + "/account/locale", HttpMethod.PUT, updateEntity, String.class);
         assertTrue(exchange.getStatusCode().is2xxSuccessful(), exchange.toString());
