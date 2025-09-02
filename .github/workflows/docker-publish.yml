@@ -26,7 +26,7 @@ jobs:
         run: docker buildx build --platform linux/amd64 -t wisemapping/wisemapping-api:${{ inputs.tag }} wise-api
 
       - name: Tag Docker image
-        run: docker tag wisemapping/wisemapping-api:${{ inputs.tag }} ${{ secrets.DOCR_REGISTRY }}/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
+        run: docker tag wisemapping/wisemapping-api:${{ inputs.tag }} registry.digitalocean.com/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
 
       - name: Push Image to Repo
-        run: docker push ${{ secrets.DOCR_REGISTRY }}/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
+        run: docker push registry.digitalocean.com/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
