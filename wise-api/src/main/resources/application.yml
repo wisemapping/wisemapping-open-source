@@ -32,7 +32,6 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
       auto-commit: true
-      connection-test-query: SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS
       transaction-isolation: TRANSACTION_READ_COMMITTED
   jpa:
     hibernate:
