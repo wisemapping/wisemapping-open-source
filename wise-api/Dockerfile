@@ -8,18 +8,19 @@ ARG ENABLE_NEWRELIC=false
 RUN addgroup -g 1001 -S wisemapping && \
     adduser -S -u 1001 -G wisemapping wisemapping
 
-# Conditionally download New Relic agent
-RUN if [ "$ENABLE_NEWRELIC" = "true" ]; then \
+VOLUME /tmp
+COPY --chown=wisemapping:wisemapping env-config.sh /app/config-gen.sh
+COPY --chown=wisemapping:wisemapping target/wisemapping-api.jar /app/wisemapping-api.jar
+RUN chmod +x /app/config-gen.sh
+
+# Create app directory and conditionally download New Relic agent
+RUN mkdir -p /app && \
+    if [ "$ENABLE_NEWRELIC" = "true" ]; then \
         apk add --no-cache curl && \
         curl -o /app/newrelic.jar https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar && \
         chown wisemapping:wisemapping /app/newrelic.jar && \
         apk del curl; \
     fi
-
-VOLUME /tmp
-COPY --chown=wisemapping:wisemapping env-config.sh /app/config-gen.sh
-COPY --chown=wisemapping:wisemapping target/wisemapping-api.jar /app/wisemapping-api.jar
-RUN chmod +x /app/config-gen.sh
 
 WORKDIR /app
 USER wisemapping
