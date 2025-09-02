@@ -814,8 +814,6 @@ public class RestMindmapControllerTest {
         assertTrue(unlockResponse.getStatusCode().is2xxSuccessful());
     }
 
-<<<<<<< HEAD
-=======
     @Test
     public void updateMapXmlWithTextPlain() throws URISyntaxException {
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
@@ -870,7 +868,6 @@ public class RestMindmapControllerTest {
         assertEquals("true", getStarredResponse.getBody());
     }
 
->>>>>>> b9d3e2e6 (Add disposable email test.)
     private String changeMapTitle(final HttpHeaders requestHeaders, final MediaType mediaType, final TestRestTemplate template, final URI resourceUri) throws RestClientException {
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
         final String result = "New map to change title  - " + mediaType;
