@@ -20,9 +20,9 @@ public class SpamDetectionService {
         this.strategies = strategies;
     }
 
-    public boolean isSpamContent(Mindmap mindmap) {
+    public SpamDetectionResult detectSpam(Mindmap mindmap) {
         if (mindmap == null) {
-            return false;
+            return SpamDetectionResult.notSpam();
         }
         
         // Apply all spam detection strategies
@@ -40,10 +40,15 @@ public class SpamDetectionService {
                                strategy.getStrategyName(), mindmap.getId(), mindmap.getTitle(), 
                                mindmap.getDescription(), result.getReason(), result.getDetails());
                 }
-                return true;
+                return new SpamDetectionResult(true, result.getReason(), 
+                    String.format("Strategy: %s, Details: %s", strategy.getStrategyName(), result.getDetails()));
             }
         }
         
-        return false;
+        return SpamDetectionResult.notSpam();
+    }
+
+    public boolean isSpamContent(Mindmap mindmap) {
+        return detectSpam(mindmap).isSpam();
     }
 }

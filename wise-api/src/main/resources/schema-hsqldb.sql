@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS MINDMAP (
   xml            LONGVARBINARY NOT NULL,
   public         BOOLEAN       NOT NULL,
   spam_detected  BOOLEAN       NOT NULL,
+  spam_description LONGVARCHAR,
   creation_date  DATETIME,
   edition_date   DATETIME,
   creator_id     INTEGER       NOT NULL,
