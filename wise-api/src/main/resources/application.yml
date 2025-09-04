@@ -16,16 +16,22 @@ spring:
     properties:
       mail:
         smtp:
-          connectiontimeout: 5000
-          timeout: 3000
-          writetimeout: 5000
+          connectiontimeout: 30000
+          timeout: 30000
+          writetimeout: 30000
+          starttls:
+            enable: true
+          ssl:
+            trust: "*"
   # Database configuration options. Examples can be found: https://github.com/wisemapping/wisemapping-open-source/tree/develop/config/database
   datasource:
     url: jdbc:hsqldb:mem:wisemapping
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
     password: ''
     username: sa
+    type: com.zaxxer.hikari.HikariDataSource
     hikari:
+      pool-name: HikariPool-WiseMapping
       minimum-idle: 2
       maximum-pool-size: 10
       idle-timeout: 300000
@@ -33,6 +39,11 @@ spring:
       connection-timeout: 30000
       auto-commit: true
       transaction-isolation: TRANSACTION_READ_COMMITTED
+      leak-detection-threshold: 60000
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
   jpa:
     hibernate:
       ddl-auto: none
@@ -66,6 +77,9 @@ logging:
     org:
       apache:
         tomcat: INFO
+    com:
+      zaxxer:
+        hikari: DEBUG
     root: INFO
 
 #
@@ -91,6 +105,10 @@ app:
     sender-email: root@localhost
     support-email: root@localhost
     enabled: false
+    # Fallback configuration for connection issues
+    fallback:
+      enabled: true
+      log-only: true
   accounts:
     max-inactive: 20
   # Google OAuth Authentication
