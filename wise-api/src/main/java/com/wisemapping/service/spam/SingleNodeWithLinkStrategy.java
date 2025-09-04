@@ -19,6 +19,7 @@
 package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
@@ -26,7 +27,7 @@ import java.util.List;
 
 @Component
 public class SingleNodeWithLinkStrategy implements SpamDetectionStrategy {
-    
+
     private final SpamContentExtractor contentExtractor;
 
     public SingleNodeWithLinkStrategy(SpamContentExtractor contentExtractor) {
@@ -34,39 +35,35 @@ public class SingleNodeWithLinkStrategy implements SpamDetectionStrategy {
     }
 
     @Override
-    public SpamDetectionResult detectSpam(Mindmap mindmap) {
+    public SpamDetectionResult detectSpam(@NotNull  Mindmap mindmap) {
         try {
             String xml = mindmap.getXmlStr();
             if (xml.trim().isEmpty()) {
                 return SpamDetectionResult.notSpam();
             }
-            
+
             // Count topic elements (nodes)
             int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
-            
+
             // Check if there's only one topic (central node) and it contains a link
             if (topicCount == 1) {
                 boolean hasLink = xml.contains("<link") && xml.contains("url=");
                 if (hasLink) {
-                    String content = contentExtractor.extractTextContent(mindmap);
-                    boolean hasCeoKeywords = contentExtractor.hasSpamKeywords(content);
-                    if (hasCeoKeywords) {
-                        return SpamDetectionResult.spam("Single node with link and spam keywords", 
-                                                       "XML: " + xml + ", Content: " + content);
-                    }
+                    return SpamDetectionResult.spam("Single node with link and spam keywords",
+                            "XML: " + xml + ", Content: " + xml);
                 }
             }
-            
+
             // For maps with 2-3 nodes, check if central + minimal child nodes with links
             if (topicCount <= 3) {
                 boolean hasLinks = xml.contains("<link") && xml.contains("url=");
                 boolean hasCeoKeywords = contentExtractor.hasSpamKeywords(xml.toLowerCase());
                 if (hasLinks && hasCeoKeywords) {
-                    return SpamDetectionResult.spam("Few nodes with links and spam keywords", 
-                                                   "XML: " + xml + ", TopicCount: " + topicCount);
+                    return SpamDetectionResult.spam("Few nodes with links and spam keywords",
+                            "XML: " + xml + ", TopicCount: " + topicCount);
                 }
             }
-            
+
             return SpamDetectionResult.notSpam();
         } catch (UnsupportedEncodingException e) {
             return SpamDetectionResult.notSpam();
