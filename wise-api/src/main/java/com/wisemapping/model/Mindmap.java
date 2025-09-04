@@ -66,7 +66,7 @@ public class Mindmap implements Serializable {
     private boolean isPublic;
 
     @Column(name = "spam_detected")
-    private boolean spamDetected;
+    private boolean spamDetected = false;
 
     @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
