@@ -141,6 +141,14 @@ public class RestMindmap {
         // return mindmap.isPublic();
     }
 
+    public boolean isSpamDetected() {
+        return mindmap.isSpamDetected();
+    }
+
+    public void setSpamDetected(boolean value) {
+        mindmap.setSpamDetected(value);
+    }
+
     public String getXml() throws IOException {
         return mindmap.getXmlStr();
     }

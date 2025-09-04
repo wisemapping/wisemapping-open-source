@@ -65,6 +65,9 @@ public class Mindmap implements Serializable {
     @Column(name = "public")
     private boolean isPublic;
 
+    @Column(name = "spam_detected")
+    private boolean spamDetected;
+
     @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     private Set<Collaboration> collaborations = new HashSet<>();
@@ -194,6 +197,14 @@ public class Mindmap implements Serializable {
 
     public void setPublic(boolean isPublic) {
         this.isPublic = isPublic;
+    }
+
+    public boolean isSpamDetected() {
+        return spamDetected;
+    }
+
+    public void setSpamDetected(boolean spamDetected) {
+        this.spamDetected = spamDetected;
     }
 
     public Calendar getLastModificationTime() {
