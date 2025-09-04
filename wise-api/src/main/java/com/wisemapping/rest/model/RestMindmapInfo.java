@@ -133,7 +133,6 @@ public class RestMindmapInfo {
 
     public String getRole() {
         final Account user = Utils.getUser();
-        String result;
         final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
         return  collaboration.map(value -> value.getRole().getLabel()).orElse(ROLE_NONE);
     }
@@ -160,6 +159,10 @@ public class RestMindmapInfo {
 
     public boolean getPublic() {
         return mindmap.isPublic();
+    }
+
+    public boolean getSpamDetected() {
+        return mindmap.isSpamDetected();
     }
 
     public boolean getStarred() {

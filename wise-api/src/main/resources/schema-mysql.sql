@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS MINDMAP (
                  CHARACTER SET utf8,
   xml            MEDIUMBLOB         NOT NULL,
   public         BOOL               NOT NULL DEFAULT 0,
+  spam_detected  BOOL               NOT NULL DEFAULT 0,
   creation_date  DATETIME,
   edition_date   DATETIME,
   creator_id     INTEGER            NOT NULL,
