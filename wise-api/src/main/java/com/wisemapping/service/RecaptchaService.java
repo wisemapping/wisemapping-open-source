@@ -73,14 +73,14 @@ public class RecaptchaService {
                     .returnContent()
                     .asBytes();
 
-            final Map<String, Object> responseBody = objectMapper.readValue(body, 
-                new TypeReference<HashMap<String, Object>>() {});
+            final Map<String, Object> responseBody = objectMapper.readValue(body,
+                    new TypeReference<HashMap<String, Object>>() {
+                    });
             logger.debug("Response from recaptcha after parse: " + responseBody);
 
             final Boolean success = (Boolean) responseBody.get("success");
             if (success != null && !success) {
-                @SuppressWarnings("unchecked")
-                final List<String> errorCodes = (List<String>) responseBody.get("error-codes");
+                @SuppressWarnings("unchecked") final List<String> errorCodes = (List<String>) responseBody.get("error-codes");
                 String errorCode = errorCodes.get(0);
                 if (errorCode.equals(CATCH_ERROR_CODE_TIMEOUT_OR_DUPLICATE)) {
                     result = Messages.CAPTCHA_TIMEOUT_OUT_DUPLICATE;
@@ -91,7 +91,11 @@ public class RecaptchaService {
                     result = Messages.CAPTCHA_LOADING_ERROR;
                     logger.error("Unexpected error during catch resolution:" + errorCodes);
                 }
+                logger.debug("Captcha failed successfully: " + errorCodes);
+            } else {
+                logger.debug("Captcha completed successfully: " + success);
             }
+
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             result = e.getMessage();

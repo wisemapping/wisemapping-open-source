@@ -23,6 +23,7 @@ import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
+import com.wisemapping.service.SpamDetectionService;
 import com.wisemapping.validator.MapInfoValidator;
 import com.wisemapping.view.MindMapBean;
 import jakarta.servlet.http.HttpServletResponse;
@@ -64,6 +65,9 @@ public class MindmapController extends BaseController {
     @Qualifier("userService")
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SpamDetectionService spamDetectionService;
 
     @Value("${app.accounts.max-inactive:20}")
     private int maxAccountsInactive;
@@ -437,8 +441,15 @@ public class MindmapController extends BaseController {
             throw new IllegalArgumentException("No enough to execute this operation");
         }
 
+        boolean isPublic = Boolean.parseBoolean(value);
+        
+        // Check for spam content when trying to make public
+        if (isPublic && spamDetectionService.isSpamContent(mindMap)) {
+            throw new SpamContentException();
+        }
+
         // Update map status ...
-        mindMap.setPublic(Boolean.parseBoolean(value));
+        mindMap.setPublic(isPublic);
         mindmapService.updateMindmap(mindMap, false);
 
     }
