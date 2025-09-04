@@ -442,16 +442,24 @@ public class MindmapController extends BaseController {
         }
 
         boolean isPublic = Boolean.parseBoolean(value);
-        
-        // Check for spam content when trying to make public
-        if (isPublic && spamDetectionService.isSpamContent(mindMap)) {
+
+        // Check for spam content when trying to make public, but skip for OAuth users
+        boolean isOAuthUser = user.getAuthenticationType() == AuthenticationType.GOOGLE_OAUTH2;
+
+        if (isPublic && !isOAuthUser && spamDetectionService.isSpamContent(mindMap)) {
             // Mark the map as spam detected but don't make it public
             mindMap.setSpamDetected(true);
             mindMap.setPublic(false);
-        } else {
-            // Clear spam flag if content is not spam
+        } else if (isPublic && !isOAuthUser) {
+            // Making public and no spam detected - clear spam flag and make public
             mindMap.setSpamDetected(false);
-            mindMap.setPublic(isPublic);
+            mindMap.setPublic(true);
+        } else if (isPublic && isOAuthUser) {
+            // OAuth users can publish without spam checking - don't modify spam flag
+            mindMap.setPublic(true);
+        } else {
+            // Making private - only update public flag, preserve existing spam flag
+            mindMap.setPublic(false);
         }
 
         // Update map status ...
@@ -685,18 +693,13 @@ public class MindmapController extends BaseController {
         final Calendar now = Calendar.getInstance();
         mindMap.setLastModificationTime(now);
         mindMap.setLastEditor(user);
-        
+
         // Check for spam content during updates
-        if (spamDetectionService.isSpamContent(mindMap)) {
-            mindMap.setSpamDetected(true);
+        if (spamDetectionService.isSpamContent(mindMap) && mindMap.isPublic()) {
             // If the map is currently public but now detected as spam, make it private
-            if (mindMap.isPublic()) {
-                mindMap.setPublic(false);
-            }
-        } else {
-            mindMap.setSpamDetected(false);
+            mindMap.setPublic(false);
+            mindMap.setSpamDetected(true);
         }
-        
         mindmapService.updateMindmap(mindMap, !minor);
     }
 
