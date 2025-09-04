@@ -37,6 +37,7 @@ create TABLE IF NOT EXISTS MINDMAP (
   xml            BYTEA        NOT NULL,
   public         BOOL         NOT NULL DEFAULT FALSE,
   spam_detected  BOOL         NOT NULL DEFAULT FALSE,
+  spam_description TEXT,
   creation_date  TIMESTAMP,
   edition_date   TIMESTAMP,
   creator_id     INTEGER      NOT NULL,

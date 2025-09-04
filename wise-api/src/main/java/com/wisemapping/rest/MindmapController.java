@@ -23,6 +23,7 @@ import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
+import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.service.SpamDetectionService;
 import com.wisemapping.validator.MapInfoValidator;
 import com.wisemapping.view.MindMapBean;
@@ -446,14 +447,19 @@ public class MindmapController extends BaseController {
         // Check for spam content when trying to make public, but skip for OAuth users
         boolean isOAuthUser = user.getAuthenticationType() == AuthenticationType.GOOGLE_OAUTH2;
 
-        if (isPublic && !isOAuthUser && spamDetectionService.isSpamContent(mindMap)) {
-            // Mark the map as spam detected but don't make it public
-            mindMap.setSpamDetected(true);
-            mindMap.setPublic(false);
-        } else if (isPublic && !isOAuthUser) {
-            // Making public and no spam detected - clear spam flag and make public
-            mindMap.setSpamDetected(false);
-            mindMap.setPublic(true);
+        if (isPublic && !isOAuthUser) {
+            SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap);
+            if (spamResult.isSpam()) {
+                // Mark the map as spam detected but don't make it public
+                mindMap.setSpamDetected(true);
+                mindMap.setSpamDescription(spamResult.getDetails());
+                mindMap.setPublic(false);
+            } else {
+                // Making public and no spam detected - clear spam flag and make public
+                mindMap.setSpamDetected(false);
+                mindMap.setSpamDescription(null);
+                mindMap.setPublic(true);
+            }
         } else if (isPublic && isOAuthUser) {
             // OAuth users can publish without spam checking - don't modify spam flag
             mindMap.setPublic(true);
@@ -588,10 +594,15 @@ public class MindmapController extends BaseController {
         mindmap.setXmlStr(mapXml);
 
         // Check for spam content during creation
-        if (spamDetectionService.isSpamContent(mindmap) && mindmap.isPublic()) {
-            mindmap.setSpamDetected(true);
-        } else {
-            mindmap.setSpamDetected(false);
+        if (mindmap.isPublic()) {
+            SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
+            if (spamResult.isSpam()) {
+                mindmap.setSpamDetected(true);
+                mindmap.setSpamDescription(spamResult.getDetails());
+            } else {
+                mindmap.setSpamDetected(false);
+                mindmap.setSpamDescription(null);
+            }
         }
 
         // Add new mindmap ...
@@ -624,10 +635,13 @@ public class MindmapController extends BaseController {
         clonedMap.setDescription(restMindmap.getDescription());
 
         // Check for spam content in the duplicated map
-        if (spamDetectionService.isSpamContent(clonedMap)) {
+        SpamDetectionResult spamResult = spamDetectionService.detectSpam(clonedMap);
+        if (spamResult.isSpam()) {
             clonedMap.setSpamDetected(true);
+            clonedMap.setSpamDescription(spamResult.getDetails());
         } else {
             clonedMap.setSpamDetected(false);
+            clonedMap.setSpamDescription(null);
         }
 
         // Add new mindmap ...
@@ -695,10 +709,14 @@ public class MindmapController extends BaseController {
         mindMap.setLastEditor(user);
 
         // Check for spam content during updates
-        if (spamDetectionService.isSpamContent(mindMap) && mindMap.isPublic()) {
-            // If the map is currently public but now detected as spam, make it private
-            mindMap.setPublic(false);
-            mindMap.setSpamDetected(true);
+        if (mindMap.isPublic()) {
+            SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap);
+            if (spamResult.isSpam()) {
+                // If the map is currently public but now detected as spam, make it private
+                mindMap.setPublic(false);
+                mindMap.setSpamDetected(true);
+                mindMap.setSpamDescription(spamResult.getDetails());
+            }
         }
         mindmapService.updateMindmap(mindMap, !minor);
     }
