@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS ACCOUNT (
   google_sync		  BOOLEAN,
   sync_code           VARCHAR(255),
   google_token        VARCHAR(255),
+  suspended           BOOLEAN       NOT NULL DEFAULT FALSE,
+  suspended_date      DATETIME,
+  suspension_reason   CHAR(1),
+  suspension_end_date DATETIME,
   FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id)
 );
 

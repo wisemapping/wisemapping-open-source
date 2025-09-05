@@ -18,6 +18,10 @@ create TABLE IF NOT EXISTS ACCOUNT (
   google_sync         BOOLEAN,
   sync_code           VARCHAR(255),
   google_token        VARCHAR(255),
+  suspended           BOOL         NOT NULL DEFAULT FALSE,
+  suspended_date      TIMESTAMP,
+  suspension_reason   CHAR(1),
+  suspension_end_date TIMESTAMP,
   FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id) ON delete CASCADE ON update NO ACTION
 );
 
