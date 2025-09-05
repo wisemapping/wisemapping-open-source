@@ -114,6 +114,22 @@ app:
   # Google OAuth Authentication
   security:
     #    corsAllowedOrigins: https://dev.wisemapping.com
+  # Batch task configuration
+  batch:
+    spam-user-suspension:
+      enabled: true
+      cron-expression: "0 0 */6 * * *"  # Every 6 hours
+      spam-threshold: 2  # Number of spam mindmaps before suspension
+      months-back: 3  # Only process accounts created in the last N months
+      batch-size: 50  # Number of users to process in each batch
+      # Ratio-based suspension configuration
+      min-spam-count: 3  # Minimum number of spam mindmaps required
+      spam-ratio-threshold: 0.5  # Minimum spam ratio (0.0 to 1.0) - 50% spam ratio
+      use-ratio-based: true  # Enable ratio-based suspension instead of count-based
+    spam-detection:
+      enabled: true
+      cron-expression: "0 0 0 * * *"  # Every 24 hours at midnight
+      batch-size: 100  # Number of mindmaps to process in each batch
     oauth2:
       google:
         clientSecret: <google-oath>

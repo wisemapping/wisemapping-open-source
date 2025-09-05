@@ -12,14 +12,16 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import java.util.Locale;
 
-@ComponentScan(basePackageClasses = {AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class, com.wisemapping.service.SpamDetectionService.class})
+@ComponentScan(basePackageClasses = {AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class, com.wisemapping.service.SpamDetectionService.class, com.wisemapping.scheduler.SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, com.wisemapping.scheduler.SpamDetectionScheduler.class})
 @Import({JPAConfig.class, SecurityConfig.class})
 @EnableAutoConfiguration
+@EnableScheduling
 public class CommonConfig {
     @Bean
     public LocaleResolver localeResolver() {

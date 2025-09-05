@@ -56,4 +56,87 @@ public interface MindmapManager {
     void updateCollaboration(@NotNull Collaboration collaboration);
 
     List<Mindmap> findMindmapByUser(Account user);
+
+    /**
+     * Find users who have multiple spam-detected mindmaps
+     * @param spamThreshold minimum number of spam mindmaps to consider for suspension
+     * @return list of users with spam mindmaps count
+     */
+    List<SpamUserResult> findUsersWithSpamMindmaps(int spamThreshold);
+
+    /**
+     * Find users who have multiple spam-detected mindmaps and were created in the last N months
+     * @param spamThreshold minimum number of spam mindmaps to consider for suspension
+     * @param monthsBack number of months to look back for account creation
+     * @return list of users with spam mindmaps count
+     */
+    List<SpamUserResult> findUsersWithSpamMindaps(int spamThreshold, int monthsBack);
+
+    /**
+     * Find users who have multiple spam-detected mindmaps and were created in the last N months with pagination
+     * @param spamThreshold minimum number of spam mindmaps to consider for suspension
+     * @param monthsBack number of months to look back for account creation
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of users with spam mindmaps count for the given page
+     */
+    List<SpamUserResult> findUsersWithSpamMindaps(int spamThreshold, int monthsBack, int offset, int limit);
+    
+    /**
+     * Find users with spam mindmaps using cursor-based pagination (more efficient for large datasets)
+     * @param spamThreshold minimum number of spam mindmaps required
+     * @param monthsBack only process accounts created in the last N months
+     * @param lastUserId ID of the last processed user (null for first page)
+     * @param limit maximum number of results to return
+     * @return list of users with spam mindmaps count
+     */
+    List<SpamUserResult> findUsersWithSpamMindapsCursor(int spamThreshold, int monthsBack, Integer lastUserId, int limit);
+
+    /**
+     * Count users who have multiple spam-detected mindmaps and were created in the last N months
+     * @param spamThreshold minimum number of spam mindmaps to consider for suspension
+     * @param monthsBack number of months to look back for account creation
+     * @return total count of users with spam mindmaps
+     */
+    long countUsersWithSpamMindaps(int spamThreshold, int monthsBack);
+
+    /**
+     * Find users with high spam ratios (spam maps / total maps) for accounts created in the last N months
+     * @param minSpamCount minimum number of spam mindmaps required
+     * @param spamRatioThreshold minimum spam ratio (0.0 to 1.0) to consider for suspension
+     * @param monthsBack number of months to look back for account creation
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of users with their spam ratios
+     */
+    List<SpamRatioUserResult> findUsersWithHighSpamRatio(int minSpamCount, double spamRatioThreshold, int monthsBack, int offset, int limit);
+
+    /**
+     * Count users with high spam ratios for accounts created in the last N months
+     * @param minSpamCount minimum number of spam mindmaps required
+     * @param spamRatioThreshold minimum spam ratio (0.0 to 1.0) to consider for suspension
+     * @param monthsBack number of months to look back for account creation
+     * @return count of users meeting the criteria
+     */
+    long countUsersWithHighSpamRatio(int minSpamCount, double spamRatioThreshold, int monthsBack);
+
+    /**
+     * Find all public mindmaps (excluding those from disabled accounts)
+     * @return list of public mindmaps from active accounts
+     */
+    List<Mindmap> findPublicMindmaps();
+
+    /**
+     * Find all public mindmaps including those from disabled accounts with pagination
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of public mindmaps for the given page
+     */
+    List<Mindmap> findAllPublicMindmaps(int offset, int limit);
+
+    /**
+     * Count total number of public mindmaps
+     * @return total count of public mindmaps
+     */
+    long countAllPublicMindmaps();
 }
