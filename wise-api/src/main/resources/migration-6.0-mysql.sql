@@ -29,10 +29,6 @@ BEGIN;
   ALTER TABLE ACCOUNT ADD COLUMN suspension_reason CHAR(1);
 COMMIT;
 
-BEGIN;
-  -- Add suspension_end_date (when suspension expires)
-  ALTER TABLE ACCOUNT ADD COLUMN suspension_end_date DATETIME;
-COMMIT;
 
 -- Create indexes for better performance
 BEGIN;

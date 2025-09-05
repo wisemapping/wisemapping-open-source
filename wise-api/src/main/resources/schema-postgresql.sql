@@ -21,7 +21,6 @@ create TABLE IF NOT EXISTS ACCOUNT (
   suspended           BOOL         NOT NULL DEFAULT FALSE,
   suspended_date      TIMESTAMP,
   suspension_reason   CHAR(1),
-  suspension_end_date TIMESTAMP,
   FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id) ON delete CASCADE ON update NO ACTION
 );
 

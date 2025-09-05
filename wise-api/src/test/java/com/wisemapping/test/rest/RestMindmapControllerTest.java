@@ -667,7 +667,7 @@ public class RestMindmapControllerTest {
 
 
     @Test
-    public void updatePublishState() throws URISyntaxException {
+    public void updatePublishStateFailDueToSpam() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
@@ -679,8 +679,9 @@ public class RestMindmapControllerTest {
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
         final HttpEntity<String> updateEntity = new HttpEntity<>(Boolean.TRUE.toString(), requestHeaders);
 
+        // Maps was created and try to publish in short period of time, this is considered a spam behavior.
         final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
-        assertTrue(exchange.getStatusCode().is2xxSuccessful());
+        assertTrue(exchange.getStatusCode().isError());
     }
 
     @Test

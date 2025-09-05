@@ -59,16 +59,6 @@ BEGIN
   END;
 END$$;
 
-DO $$
-BEGIN
-  -- Add suspension_end_date (when suspension expires)
-  BEGIN
-    ALTER TABLE ACCOUNT ADD COLUMN suspension_end_date TIMESTAMP;
-  EXCEPTION
-    WHEN duplicate_column THEN
-      RAISE NOTICE 'Column suspension_end_date already exists in ACCOUNT table.';
-  END;
-END$$;
 
 -- Create indexes for better performance
 DO $$

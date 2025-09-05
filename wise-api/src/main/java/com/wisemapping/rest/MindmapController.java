@@ -450,10 +450,12 @@ public class MindmapController extends BaseController {
         if (isPublic && !isOAuthUser) {
             SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap);
             if (spamResult.isSpam()) {
-                // Mark the map as spam detected but don't make it public
+                // Mark the map as spam detected and throw exception
                 mindMap.setSpamDetected(true);
                 mindMap.setSpamDescription(spamResult.getDetails());
                 mindMap.setPublic(false);
+                mindmapService.updateMindmap(mindMap, false);
+                throw new SpamContentException();
             } else {
                 // Making public and no spam detected - clear spam flag and make public
                 mindMap.setSpamDetected(false);

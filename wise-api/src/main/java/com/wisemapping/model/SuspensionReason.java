@@ -35,7 +35,7 @@ public enum SuspensionReason {
         return code;
     }
 
-    public static SuspensionReason valueOf(String code) {
+    public static SuspensionReason fromCode(String code) {
         for (SuspensionReason reason : values()) {
             if (reason.code.equals(code)) {
                 return reason;

@@ -73,8 +73,6 @@ public class Account
     @Column(name = "suspension_reason")
     private Character suspensionReasonCode;
 
-    @Column(name = "suspension_end_date")
-    private Calendar suspensionEndDate;
 
     public Account() {
     }
@@ -212,10 +210,9 @@ public class Account
         this.suspended = true;
     }
 
-    public void suspend(SuspensionReason reason, Calendar suspensionEndDate) {
+    public void suspend(SuspensionReason reason) {
         this.suspended = true;
         this.suspensionReasonCode = reason != null ? reason.getCode().charAt(0) : null;
-        this.suspensionEndDate = suspensionEndDate;
     }
 
     @PrePersist
@@ -231,7 +228,6 @@ public class Account
     public void unsuspend() {
         this.suspended = false;
         this.suspensionReasonCode = null;
-        this.suspensionEndDate = null;
     }
 
     public Calendar getSuspendedDate() {
@@ -243,20 +239,13 @@ public class Account
     }
 
     public SuspensionReason getSuspensionReason() {
-        return suspensionReasonCode != null ? SuspensionReason.valueOf(suspensionReasonCode.toString()) : null;
+        return suspensionReasonCode != null ? SuspensionReason.fromCode(suspensionReasonCode.toString()) : null;
     }
 
     public void setSuspensionReason(SuspensionReason reason) {
         this.suspensionReasonCode = reason != null ? reason.getCode().charAt(0) : null;
     }
 
-    public Calendar getSuspensionEndDate() {
-        return suspensionEndDate;
-    }
-
-    public void setSuspensionEndDate(Calendar suspensionEndDate) {
-        this.suspensionEndDate = suspensionEndDate;
-    }
 
     @Override
     public String toString() {

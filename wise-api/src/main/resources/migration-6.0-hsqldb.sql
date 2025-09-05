@@ -27,9 +27,6 @@ ALTER TABLE ACCOUNT ADD COLUMN suspended_date DATETIME;
 ALTER TABLE ACCOUNT ADD COLUMN suspension_reason CHAR(1);
 -- Expected error: Column already exists
 
--- Add suspension_end_date (when suspension expires) (ignore error if exists)
-ALTER TABLE ACCOUNT ADD COLUMN suspension_end_date DATETIME;
--- Expected error: Column already exists
 
 -- Create indexes for better performance (ignore error if exists)
 CREATE INDEX idx_mindmap_spam_detected ON MINDMAP(spam_detected);
