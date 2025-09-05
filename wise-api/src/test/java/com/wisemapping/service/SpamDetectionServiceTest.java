@@ -53,11 +53,11 @@ class SpamDetectionServiceTest {
         contentExtractor.loadSpamKeywords();
         
         // Create strategies
-        SingleNodeWithLinkStrategy singleNodeStrategy = new SingleNodeWithLinkStrategy(contentExtractor);
+        FewNodesWithContentStrategy fewNodesStrategy = new FewNodesWithContentStrategy(contentExtractor);
         KeywordPatternStrategy keywordPatternStrategy = new KeywordPatternStrategy(contentExtractor);
         
-        // Create service with strategies
-        spamDetectionService = new SpamDetectionService(Arrays.asList(singleNodeStrategy, keywordPatternStrategy));
+        // Create service with strategies (excluding UserBehaviorStrategy for unit tests)
+        spamDetectionService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
     }
 
     @Test
@@ -111,7 +111,7 @@ class SpamDetectionServiceTest {
     }
 
     @Test
-    void testMultipleNodesWithLinks_NoSpamKeywords_ShouldNotDetectSpam() throws Exception {
+    void testMultipleNodesWithLinks_NoSpamKeywords_ShouldDetectSpam() throws Exception {
         String xml = """
                 <map>
                     <topic central="true" text="Useful Resources">
@@ -125,7 +125,7 @@ class SpamDetectionServiceTest {
                 </map>
                 """;
         Mindmap mindmap = createMindmap("Resources", "Helpful links", xml);
-        assertFalse(spamDetectionService.isSpamContent(mindmap));
+        assertTrue(spamDetectionService.isSpamContent(mindmap)); // Now detects spam due to updated SingleNodeWithLinkStrategy
     }
 
     @Test
