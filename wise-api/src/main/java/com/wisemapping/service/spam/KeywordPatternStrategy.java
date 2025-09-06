@@ -19,6 +19,7 @@
 package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -29,6 +30,9 @@ import java.util.regex.Pattern;
 public class KeywordPatternStrategy implements SpamDetectionStrategy {
     
     private final SpamContentExtractor contentExtractor;
+    
+    @Value("${app.batch.spam-detection.min-nodes-exemption:15}")
+    private int minNodesExemption;
 
     private static final List<Pattern> SPAM_PATTERNS = Arrays.asList(
         // Money and financial patterns
@@ -81,10 +85,22 @@ public class KeywordPatternStrategy implements SpamDetectionStrategy {
             return SpamDetectionResult.notSpam();
         }
         
+        // Check node count first - any mindmap with more than the configured threshold is considered legitimate content (not spam)
+        try {
+            String xml = mindmap.getXmlStr();
+            if (xml != null && !xml.trim().isEmpty()) {
+                int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
+                if (topicCount > minNodesExemption) {
+                    return SpamDetectionResult.notSpam();
+                }
+            }
+        } catch (Exception e) {
+            // If we can't count nodes, continue with other spam detection
+        }
+        
         final String lowerContent = content.toLowerCase();
         
         // Check for spam keywords
-        long keywordMatches = contentExtractor.countKeywordMatches(lowerContent);
         long uniqueKeywordTypes = contentExtractor.countUniqueKeywordTypes(lowerContent);
 
         // Check for spam patterns

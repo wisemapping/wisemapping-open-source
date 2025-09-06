@@ -56,6 +56,10 @@ class SpamDetectionServiceTest {
         FewNodesWithContentStrategy fewNodesStrategy = new FewNodesWithContentStrategy(contentExtractor);
         KeywordPatternStrategy keywordPatternStrategy = new KeywordPatternStrategy(contentExtractor);
         
+        // Set test configuration for node count exemption (use a high value for tests)
+        ReflectionTestUtils.setField(fewNodesStrategy, "minNodesExemption", 100);
+        ReflectionTestUtils.setField(keywordPatternStrategy, "minNodesExemption", 100);
+        
         // Create service with strategies (excluding UserBehaviorStrategy for unit tests)
         spamDetectionService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
     }
@@ -242,6 +246,122 @@ class SpamDetectionServiceTest {
                 """;
         Mindmap mindmap = createMindmap("Company", "Legitimate org chart", xml);
         assertFalse(spamDetectionService.isSpamContent(mindmap));
+    }
+
+    @Test
+    void testNodeCountExemption_WithHighNodeCount_ShouldNotDetectSpam() throws Exception {
+        // Create a mindmap with 20 nodes (more than the test threshold of 100, but we'll test with a lower threshold)
+        String xml = """
+                <map>
+                    <topic central="true" text="Complex Business Plan">
+                        <topic text="Market Analysis">
+                            <topic text="Target Market"/>
+                            <topic text="Competition"/>
+                            <topic text="Market Size"/>
+                        </topic>
+                        <topic text="Financial Projections">
+                            <topic text="Revenue"/>
+                            <topic text="Costs"/>
+                            <topic text="Profit"/>
+                        </topic>
+                        <topic text="Operations">
+                            <topic text="Team"/>
+                            <topic text="Processes"/>
+                            <topic text="Technology"/>
+                        </topic>
+                        <topic text="Marketing">
+                            <topic text="Strategy"/>
+                            <topic text="Channels"/>
+                            <topic text="Budget"/>
+                        </topic>
+                        <topic text="Risk Management">
+                            <topic text="Risks"/>
+                            <topic text="Mitigation"/>
+                            <topic text="Contingency"/>
+                        </topic>
+                        <topic text="Implementation">
+                            <topic text="Timeline"/>
+                            <topic text="Milestones"/>
+                        </topic>
+                    </topic>
+                </map>
+                """;
+        
+        // Create a new service instance with a lower threshold (16) to test the exemption
+        FewNodesWithContentStrategy fewNodesStrategy = new FewNodesWithContentStrategy(contentExtractor);
+        KeywordPatternStrategy keywordPatternStrategy = new KeywordPatternStrategy(contentExtractor);
+        
+        // Set a lower threshold for this test (16 nodes)
+        ReflectionTestUtils.setField(fewNodesStrategy, "minNodesExemption", 16);
+        ReflectionTestUtils.setField(keywordPatternStrategy, "minNodesExemption", 16);
+        
+        SpamDetectionService testService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
+        
+        // Create a mindmap with spam keywords but high node count
+        Mindmap mindmap = createMindmap("Business Plan", "CEO opportunity make money fast", xml);
+        
+        // Should NOT be detected as spam due to high node count (20 nodes > 16 threshold)
+        assertFalse(testService.isSpamContent(mindmap));
+    }
+
+    @Test
+    void testNodeCountExemption_WithLowNodeCount_ShouldDetectSpam() throws Exception {
+        // Create a mindmap with only 3 nodes (below the test threshold)
+        String xml = """
+                <map>
+                    <topic central="true" text="CEO Opportunity">
+                        <topic text="Make money fast"/>
+                        <topic text="Investment opportunity"/>
+                    </topic>
+                </map>
+                """;
+        
+        // Create a new service instance with a higher threshold (5) to test spam detection
+        FewNodesWithContentStrategy fewNodesStrategy = new FewNodesWithContentStrategy(contentExtractor);
+        KeywordPatternStrategy keywordPatternStrategy = new KeywordPatternStrategy(contentExtractor);
+        
+        // Set a higher threshold for this test (5 nodes)
+        ReflectionTestUtils.setField(fewNodesStrategy, "minNodesExemption", 5);
+        ReflectionTestUtils.setField(keywordPatternStrategy, "minNodesExemption", 5);
+        
+        SpamDetectionService testService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
+        
+        // Create a mindmap with spam keywords and low node count
+        Mindmap mindmap = createMindmap("Opportunity", "CEO make money fast investment", xml);
+        
+        // SHOULD be detected as spam due to low node count (3 nodes < 5 threshold) and spam keywords
+        assertTrue(testService.isSpamContent(mindmap));
+    }
+
+    @Test
+    void testNodeCountExemption_AtThreshold_ShouldDetectSpam() throws Exception {
+        // Create a mindmap with exactly 5 nodes (at the threshold)
+        String xml = """
+                <map>
+                    <topic central="true" text="CEO Business">
+                        <topic text="Investment"/>
+                        <topic text="Make money"/>
+                        <topic text="Fast profit"/>
+                        <topic text="Opportunity"/>
+                    </topic>
+                </map>
+                """;
+        
+        // Create a new service instance with threshold of 5
+        FewNodesWithContentStrategy fewNodesStrategy = new FewNodesWithContentStrategy(contentExtractor);
+        KeywordPatternStrategy keywordPatternStrategy = new KeywordPatternStrategy(contentExtractor);
+        
+        // Set threshold to 5 nodes
+        ReflectionTestUtils.setField(fewNodesStrategy, "minNodesExemption", 5);
+        ReflectionTestUtils.setField(keywordPatternStrategy, "minNodesExemption", 5);
+        
+        SpamDetectionService testService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
+        
+        // Create a mindmap with spam keywords and exactly threshold node count
+        Mindmap mindmap = createMindmap("Business", "CEO investment make money fast", xml);
+        
+        // SHOULD be detected as spam because 5 nodes is NOT > 5 threshold (it's equal)
+        assertTrue(testService.isSpamContent(mindmap));
     }
 
     private Mindmap createMindmap(String title, String description, String xml) throws Exception {

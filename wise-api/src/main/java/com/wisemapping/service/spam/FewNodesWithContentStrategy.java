@@ -19,6 +19,7 @@
 package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
@@ -28,6 +29,9 @@ import java.util.List;
 public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
 
     private final SpamContentExtractor contentExtractor;
+    
+    @Value("${app.batch.spam-detection.min-nodes-exemption:15}")
+    private int minNodesExemption;
 
     public FewNodesWithContentStrategy(SpamContentExtractor contentExtractor) {
         this.contentExtractor = contentExtractor;
@@ -42,6 +46,11 @@ public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
             if (!xml.trim().isEmpty()) {
                 // Count topic elements (nodes)
                 int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
+
+                // Any mindmap with more than the configured threshold is considered legitimate content (not spam)
+                if (topicCount > minNodesExemption) {
+                    return SpamDetectionResult.notSpam();
+                }
 
                 // For maps with 2-3 nodes, check if central + minimal child nodes with links or notes
                 if (topicCount <= 3) {
