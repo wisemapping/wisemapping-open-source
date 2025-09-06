@@ -697,7 +697,7 @@ public class RestMindmapControllerTest {
 
         // Test publishing with JSON content type
         final Map<String, Boolean> publishRequest = new HashMap<>();
-        publishRequest.put("public", true);
+        publishRequest.put("isPublic", true);
 
         final HttpEntity<Map<String, Boolean>> updateEntity = new HttpEntity<>(publishRequest, requestHeaders);
 
@@ -727,7 +727,7 @@ public class RestMindmapControllerTest {
 
         // Test making private with JSON content type
         final Map<String, Boolean> publishRequest = new HashMap<>();
-        publishRequest.put("public", false);
+        publishRequest.put("isPublic", false);
 
         final HttpEntity<Map<String, Boolean>> updateEntity = new HttpEntity<>(publishRequest, requestHeaders);
 
