@@ -24,7 +24,9 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -682,6 +684,84 @@ public class RestMindmapControllerTest {
         // Maps was created and try to publish in short period of time, this is considered a spam behavior.
         final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
         assertTrue(exchange.getStatusCode().isError());
+    }
+
+    @Test
+    public void updatePublishStateWithJson() throws URISyntaxException {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final String mapTitle = "updatePublishStateWithJson";
+        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
+
+        // Test publishing with JSON content type
+        final Map<String, Boolean> publishRequest = new HashMap<>();
+        publishRequest.put("public", true);
+
+        final HttpEntity<Map<String, Boolean>> updateEntity = new HttpEntity<>(publishRequest, requestHeaders);
+
+        // Try to publish - this should work with JSON content type
+        final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
+        
+        // The request should be accepted (not 415 error)
+        assertTrue(exchange.getStatusCode().is2xxSuccessful() || exchange.getStatusCode().is4xxClientError(), 
+                   "Expected 2xx or 4xx status, got: " + exchange.getStatusCode() + " - " + exchange.getBody());
+        
+        // If it's 4xx, it should be due to spam detection, not content type issues
+        if (exchange.getStatusCode().is4xxClientError()) {
+            assertTrue(Objects.requireNonNull(exchange.getBody()).contains("spam") || 
+                      Objects.requireNonNull(exchange.getBody()).contains("SpamContentException"),
+                      "Expected spam-related error, got: " + exchange.getBody());
+        }
+    }
+
+    @Test
+    public void updatePublishStateWithJsonMakePrivate() throws URISyntaxException {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final String mapTitle = "updatePublishStateWithJsonMakePrivate";
+        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
+
+        // Test making private with JSON content type
+        final Map<String, Boolean> publishRequest = new HashMap<>();
+        publishRequest.put("public", false);
+
+        final HttpEntity<Map<String, Boolean>> updateEntity = new HttpEntity<>(publishRequest, requestHeaders);
+
+        // Try to make private - this should always work
+        final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
+        
+        // Making private should always succeed
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), 
+                   "Expected 2xx status for making private, got: " + exchange.getStatusCode() + " - " + exchange.getBody());
+    }
+
+    @Test
+    public void updatePublishStateWithJsonInvalidRequest() throws URISyntaxException {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // Create a sample map ...
+        final String mapTitle = "updatePublishStateWithJsonInvalidRequest";
+        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
+
+        // Test with invalid JSON request (missing "public" field)
+        final Map<String, Boolean> publishRequest = new HashMap<>();
+        // Intentionally not adding "public" field
+
+        final HttpEntity<Map<String, Boolean>> updateEntity = new HttpEntity<>(publishRequest, requestHeaders);
+
+        // Try to publish with invalid request - this should fail
+        final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
+        
+        // Should return 4xx error due to missing "public" field
+        assertTrue(exchange.getStatusCode().is4xxClientError(), 
+                   "Expected 4xx status for invalid request, got: " + exchange.getStatusCode() + " - " + exchange.getBody());
+        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("Map properties can not be null"),
+                   "Expected error about missing properties, got: " + exchange.getBody());
     }
 
     @Test

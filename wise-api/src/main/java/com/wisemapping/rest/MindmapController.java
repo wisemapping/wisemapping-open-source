@@ -434,15 +434,30 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}/publish", consumes = {"text/plain"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updatePublishState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
+        // text/plain format: "true" or "false"
+        boolean isPublic = Boolean.parseBoolean(value);
+        updatePublishStateInternal(isPublic, id);
+    }
 
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}/publish", consumes = {"application/json"}, produces = {"application/json"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updatePublishState(@RequestBody Map<String, Boolean> request, @PathVariable int id) throws WiseMappingException {
+        // application/json format: {"public": true} or {"public": false}
+        Boolean isPublic = request.get("public");
+        if (isPublic == null) {
+            throw new IllegalArgumentException("Map properties can not be null");
+        }
+        updatePublishStateInternal(isPublic, id);
+    }
+
+    private void updatePublishStateInternal(Boolean isPublic, int id) throws WiseMappingException {
         final Mindmap mindMap = findMindmapById(id);
 
         final Account user = Utils.getUser();
         if (!mindMap.hasPermissions(user, CollaborationRole.OWNER)) {
             throw new IllegalArgumentException("No enough to execute this operation");
         }
-
-        boolean isPublic = Boolean.parseBoolean(value);
 
         // Check for spam content when trying to make public
         if (isPublic) {
