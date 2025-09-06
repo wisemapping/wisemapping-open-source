@@ -1,0 +1,177 @@
+#
+#  This file contains all the defaults that it will be used when the application is started.
+#  There are two main sections: SpringBoot Config and  Application Config
+#
+
+#
+# SpringBoot Config: WiseMapping Backend is based on SpringBoot. Additional configurations documentation could be found https://docs.spring.io/spring-boot/3.3/reference/features/external-config.html.
+#
+spring:
+  # Async task executor configuration
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 5
+        queue-capacity: 100
+        keep-alive: 60s
+        thread-name-prefix: "AsyncTask-"
+        allow-core-thread-timeout: true
+    scheduling:
+      pool:
+        size: 2
+  # SMTP server configuration used for password recovery and notifications.
+  mail:
+    host: smtp.example.com
+    port: 25
+    username: setusername
+    password: setpassword
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 30000
+          timeout: 30000
+          writetimeout: 30000
+          starttls:
+            enable: true
+          ssl:
+            trust: "*"
+  # Database configuration options. Examples can be found: https://github.com/wisemapping/wisemapping-open-source/tree/develop/config/database
+  datasource:
+    url: jdbc:hsqldb:mem:wisemapping
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    password: ''
+    username: sa
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: HikariPool-WiseMapping
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      auto-commit: true
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      leak-detection-threshold: 60000
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: true
+    properties:
+      hibernate:
+        current_session_context_class: thread
+        default_batch_fetch_size: 200
+        dialect: org.hibernate.dialect.HSQLDialect
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      platform: hsqldb
+  # General Config: Do no touch.
+  main:
+    allow-circular-references: true
+  output:
+    ansi:
+      enabled: always
+  application:
+    name: wisemapping-api
+    title: wisemapping-api
+
+
+#
+# Log Level
+#
+logging:
+  level:
+    org:
+      apache:
+        tomcat: INFO
+    com:
+      zaxxer:
+        hikari: DEBUG
+    root: INFO
+
+#
+# Application Config related options:
+#
+app:
+  # This information is mainly used by the frontend to connect to the backend. It must match the deployment topology used.
+  site:
+    ui-base-url: http://localhost
+    api-base-url: http://localhost
+  # Enable API basic authentication.
+  api:
+    http-basic-enabled: false
+  # JSON Web Token configuration options. Secret must be configured.
+  jwt:
+    secret: dlqxKAg685SaKhsQXIMeM=JWCw3bkl3Ei3Tb7LMlnd19oMd66burPNlJ0Po1qguyjgpakQTk2CN3
+    expirationMin: 10080 # One week
+  # Admin account with super admin permissions on the API.
+  admin:
+    user: admin@wisemapping.org
+  # STMP email configurations
+  mail:
+    sender-email: root@localhost
+    support-email: root@localhost
+    enabled: false
+    # Fallback configuration for connection issues
+    fallback:
+      enabled: true
+      log-only: true
+  accounts:
+    max-inactive: 20
+  # Google OAuth Authentication
+  security:
+    #    corsAllowedOrigins: https://dev.wisemapping.com
+  # Batch task configuration
+  batch:
+    spam-user-suspension:
+      enabled: true
+      cron-expression: "0 0 */6 * * *"  # Every 6 hours
+      spam-threshold: 2  # Number of spam mindmaps before suspension
+      months-back: 45  # Only process accounts created since 2022 (approximately 45 months)
+      batch-size: 50  # Number of users to process in each batch
+      # Ratio-based suspension configuration
+      min-spam-count: 2  # Minimum number of spam mindmaps required
+      spam-ratio-threshold: 0.5  # Minimum spam ratio (0.0 to 1.0) - 50% spam ratio
+      use-ratio-based: true  # Enable ratio-based suspension instead of count-based
+    spam-detection:
+      enabled: true
+      cron-expression: "0 0 0 * * *"  # Every 24 hours at midnight
+      batch-size: 100  # Number of mindmaps to process in each batch
+      min-nodes-exemption: 15  # Mindmaps with more than this many nodes are automatically considered not spam
+      startup-enabled: true  # Enable spam detection on application startup (async)
+      months-back: 45  # Only process mindmaps created since 2022 (approximately 45 months)
+    oauth2:
+      google:
+        clientSecret: <google-oath>
+        confirmUrl: https://oauth2.googleapis.com/token
+        userinfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
+        callbackUrl: https://app.wisemapping.com/c/registration-google
+        clientId: 625682766634-cocbbbbb403iuvps1evecdk6d7phvbkf.apps.googleusercontent.com
+        url: https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${app.security.oauth2.google.callbackUrl}&prompt=consent&response_type=code&client_id=${app.security.oauth2.google.clientId}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&state=wisemapping&include_granted_scopes=true
+  #  accounts:
+  #    exclusion:
+  #      domain:
+  # Account registration options dialog
+  registration:
+    enabled: true
+    captcha:
+      enabled: false
+      siteKey: some-key
+      secretKey: some-secret
+    disposable-email:
+      blocking:
+        enabled: true
+
+
+# Behind reverse proxy configuration
+server:
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
+

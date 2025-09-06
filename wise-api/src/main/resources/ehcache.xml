@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ehcache>
+<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+    <cache name="com.wisemapping.model.Collaborator"
+           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
+           timeToLiveSeconds="3600" overflowToDisk="false"/>
+    <cache name="com.wisemapping.model.Account"
+           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
+           timeToLiveSeconds="3600" overflowToDisk="false"/>
+    <cache name="com.wisemapping.model.MindmapLabel"
+           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
+           timeToLiveSeconds="3600" overflowToDisk="false"/>
+</ehcache>

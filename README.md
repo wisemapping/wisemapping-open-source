@@ -1,94 +1,83 @@
-# Overview
+# WiseMapping Open Source
 
-Wise Mapping is the web mind mapping open source tool that leverages the power of Mind Maps mixing open standards technologies such as SVG and React.
-WiseMapping is based on the same code product supporting [http://www.wisemapping.com]. 
+WiseMapping is an open-source web-based mind mapping tool that harnesses the potential of Mind Maps by blending together open standards technologies like SVG and React. It is built upon the foundation of the code supporting http://www.wisemapping.com, ensuring reliability and continuity in its development.
 
-## Compiling and Running
+# Build and Start Application
 
-### Prerequisites
+The following section describes the steps to check out, compile, and start WiseMapping locally. If you are interested in deploying it, I recommend using the already published images https://hub.docker.com/r/wisemapping/wisemapping.
 
-The following products must be installed:
+## Prerequisites
 
-    * OpenJDK 11 or higher
-    * Maven 3.x or higher ([http://maven.apache.org/])
-    * npm 6 or higher ([https://www.npmjs.com/package/npm?activeTab=versions])
+    * JDK 21 or higher
+    * Maven v3.x or higher ([http://maven.apache.org/])
+    * Yarn v1 or higher
+    * Node v18 or higher
 
-### Compiling
+## Option 1: Quick Start with Docker Compose
 
-WiseMapping uses Maven as packaging and project management. It's composed of 5 maven sub-modules:
+The following command line will start WiseMapping locally using HSQLDB in memory for development purposes:
 
-    * wise-ui:  React font-end fetcher
-    * wise-webapp: J2EE web application 
+```
+$ mvn -f wise-api/pom.xml package
+$ docker compose up --build
+```
 
-The full compilation of the project can be performed executing within <project-dir>:
+Application will start at http://localhost/c/login. You can login using *test@wisemapping.org* and password *test*
 
-`mvn clean install`
+## Option 2: Start Frontend and Backend API
 
-Once this command is executed, the file <project-dir>/wise-webapp/target/wisemapping*.war will be generated.
+### Compile and Start API
 
-### Local Development
-The previously generated war can be deployed locally executing within the directory <project-dir>/wise-webapp the following command:
+```
+$ mvn -f wise-api/pom.xml package
+$ cd wise-api
+$ mvn spring-boot:run
+```
 
-`cd wise-webapp;mvn jetty:run-war`
+### Compile and Start Frontend
 
-This will start the application on the URL: [http://localhost:8080/] using file based database.
+You need to checkout https://github.com/wisemapping/wisemapping-frontend first. Then, follow the next steps:
 
-User: test@wisemapping.org
-Password: test
+```
+$ export NODE_OPTIONS=--openssl-legacy-provider
+$ export APP_CONFIG_TYPE="file:dev"
 
-### Local Development + UI Integration
+$ cd wisemapping-frontend
+$ yarn install 
+$ yarn build
 
-In order to reduce the life-cycle to develop UI backend testing, you can do the following hack:
+$ cd packages/webapp; yarn start
+```
+Application will start at http://localhost:3000/c/login. You can login using *test@wisemapping.org* and password *test*
 
-* Clone [wisemapping-open-source](https://github.com/wisemapping/wisemapping-open-source/) and [wisemapping-frontend](https://github.com/wisemapping/wisemapping-frontend/) at the same top level directory
-* Compile `wisemapping-frontend`. Details for compilation can be found in the `wisemapping-frontend` readme.
-* Compile `wisemapping-open-source`
+# Supportability Matrix
 
-A quick and dirty solution to share changes in the UI is to manually compile the dist. This will make the loader file available without the need to publish:
+## Databases
 
-`yarn --cwd wisemapping-frontend build;cp -r wisemapping-frontend/packages/mindplot/dist/* wisemapping-open-source/wise-ui/target/wisemapping-mindplot/package/dist;cp -r wisemapping-frontend/packages/webapp/dist/* wisemapping-open-source/wise-ui/target/wisemapping-webapp/package/dist`
+* MySQL v8 or higher
+* PostgreSQL v15 or higher
+* Hsqldb v2.7 or higher
 
+# Configuration
 
-### Compiling and running with docker-compose
+WiseMapping backend is based on SpringBoot v3 and it's highly customizable. Additional documentation can be found [here](https://docs.spring.io/spring-boot/3.3/reference/features/external-config.html)
 
-Check out the [docker section](./docker/README.)
+The perfered option is to extended by overwriting [application.yaml](https://github.com/wisemapping/wisemapping-open-source/blob/develop/wise-api/src/main/resources/application.yml)
 
-### Test reports
+```
+$ java -jar target/wisemapping-api.jar --spring.config.additional-location=../../wise-conf/app.yml
+```
 
-Individual test result reports can be found in wisemapping-open-source/wise-webapp/target/failsafe-reports/index.html
-Test coverage report of unit and integration test can be found in wisemapping-open-source/wise-webapp/target/site/jacoco and wisemapping-open-source/wise-webapp/target/site/jacoco-it folders. Coverage report is generated in the verify phase of [lifecicle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#introduction-to-the-build-lifecyclea) using [jacoco](https://www.jacoco.org/jacoco/trunk/doc/maven.html)
+For example, this [example](https://github.com/wisemapping/wisemapping-open-source/blob/develop/config/database/postgresql/app-postgresql.yaml) configure PostgreSQL as database.
 
+# Members
 
-## Google authorization
-
-You must configure the following wisemapping properties (app.properties) in order to get google authorization working
-   * `security.oauth2.google.callbackUrl`: url where google will redirect after user authentication, tipically {frontendBaseUrl}/c/registration-google. Also, this url must be defined in google app configuration
-   * `security.oauth2.google.clientId`: client id from google app
-   * `security.oauth2.google.clientSecret`: client secret from google app
-
-You must create a Google Application in [Google Cloud](https://console.cloud.google.com) and complete all the information required by Google. Here are the most important properties.
-
-Oauth consent screen
-   * Authorized domains: wisemapping domain (ex: wisemapping.com), and you can add domains of other environments if needed
-   * Permissions
-      * `https://www.googleapis.com/auth/userinfo.profile`
-      * `https://www.googleapis.com/auth/userinfo.email`
-   * Test users: emails for testing, those can be used before the application is validated by Google
-  
-After that, in Credentials, you must create an `Oauth Client Id` credential
-   * Authorized JavaScript origins: list of authorized domains from which to redirect to Google. Ex: `https://wisemaping.com`, `https://wisemapping-testing.com:8080` 
-   * Authorized redirect URIs: list of allowed urls to which google will redirect after authenticating . Ex: `https://wisemaping.com/c/registration-google`, `https://wisemapping-testing.com:8080/c/registration-google`
-
-After credential was created, Google will show you the clientId and clientSecret to configure your application. For productive applications, you must **publish** your application, this is a validation process with Google.
-
-## Members
-
-### Founders
+## Founders
 
    * Paulo Veiga <pveiga@wisemapping.com>
    * Pablo Luna <pablo@wisemapping.com>
 
-### Past Individual Contributors
+## Past Individual Contributors
 
    * Ignacio Manzano  
    * Ezequiel Bergamaschi <ezequielbergamaschi@gmail.com>
@@ -96,5 +85,5 @@ After credential was created, Google will show you the clientId and clientSecret
 ## License
 
 The source code is Licensed under the WiseMapping Open License, Version 1.0 (the “License”);
-You may obtain a copy of the License at: [https://wisemapping.atlassian.net/wiki/display/WS/License]
+You may obtain a copy of the License at: [https://github.com/wisemapping/wisemapping-open-source/blob/develop/LICENSE.md](https://github.com/wisemapping/wisemapping-open-source/blob/develop/LICENSE.md)
 

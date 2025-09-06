@@ -1,6 +1,0 @@
-Sitemap: https://www.wisemapping.com/sitemap.xml
-
-User-agent: *
-Allow: /
-Disallow: /c/restful/maps/*/document/xml-pub
-Disallow: /c/maps/*/edit
