@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -50,13 +51,14 @@ public class SpamUserSuspensionScheduler {
      * - Every day of week
      */
     @Scheduled(cron = "${app.batch.spam-user-suspension.cron-expression:0 0 */6 * * *}")
+    @Async
     public void processSpamUserSuspension() {
         if (!enabled) {
             logger.debug("Spam user suspension scheduler is disabled");
             return;
         }
 
-        logger.info("Starting scheduled spam user suspension task");
+        logger.info("Starting scheduled spam user suspension task (async)");
         
         try {
             spamUserSuspensionService.processSpamUserSuspension();

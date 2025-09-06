@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -43,8 +44,8 @@ public class SpamUserSuspensionServiceOptimized {
     /**
      * Process users with multiple spam mindmaps using cursor-based pagination
      * This is more efficient than offset-based pagination for large datasets
+     * Each batch is processed in its own transaction to avoid long-running transactions
      */
-    @Transactional
     public void processSpamUserSuspensionOptimized() {
         if (!enabled) {
             logger.debug("Spam user suspension batch task is disabled");
@@ -59,40 +60,18 @@ public class SpamUserSuspensionServiceOptimized {
             boolean hasMoreData = true;
 
             while (hasMoreData) {
-                // Use cursor-based pagination instead of offset
-                List<SpamUserResult> usersWithSpamMindmaps = mindmapManager.findUsersWithSpamMindapsCursor(
-                    spamThreshold, monthsBack, lastUserId, batchSize);
+                // Process each batch in its own transaction
+                BatchResult result = processOptimizedBatch(lastUserId, batchSize);
+                suspendedCount += result.suspendedCount;
+                lastUserId = result.lastUserId;
 
-                if (usersWithSpamMindmaps.isEmpty()) {
+                if (result.suspendedCount == 0) {
                     hasMoreData = false;
                     break;
                 }
 
-                for (SpamUserResult result : usersWithSpamMindmaps) {
-                    Account user = result.getUser();
-                    long spamCount = result.getSpamCount();
-
-                    if (user.isSuspended()) {
-                        logger.debug("User {} is already suspended. Skipping.", user.getEmail());
-                        continue;
-                    }
-
-                    // Suspend the user
-                    user.suspend(SuspensionReason.ABUSE);
-                    userService.updateUser(user);
-
-                    suspendedCount++;
-                    logger.warn("Suspended user {} (created: {}) due to {} spam mindmaps",
-                        user.getEmail(), user.getCreationDate(), spamCount);
-                }
-
-                // Update cursor to the last processed user ID
-                if (!usersWithSpamMindmaps.isEmpty()) {
-                    lastUserId = usersWithSpamMindmaps.get(usersWithSpamMindmaps.size() - 1).getUser().getId();
-                }
-
                 // If we got fewer results than batch size, we've reached the end
-                if (usersWithSpamMindmaps.size() < batchSize) {
+                if (result.processedCount < batchSize) {
                     hasMoreData = false;
                 }
 
@@ -109,10 +88,67 @@ public class SpamUserSuspensionServiceOptimized {
     }
 
     /**
+     * Process a single batch using cursor-based pagination in its own transaction
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public BatchResult processOptimizedBatch(Integer lastUserId, int batchSize) {
+        // Use cursor-based pagination instead of offset
+        List<SpamUserResult> usersWithSpamMindmaps = mindmapManager.findUsersWithSpamMindapsCursor(
+            spamThreshold, monthsBack, lastUserId, batchSize);
+
+        if (usersWithSpamMindmaps.isEmpty()) {
+            return new BatchResult(0, 0, lastUserId);
+        }
+
+        int suspendedCount = 0;
+        Integer newLastUserId = lastUserId;
+
+        for (SpamUserResult result : usersWithSpamMindmaps) {
+            Account user = result.getUser();
+            long spamCount = result.getSpamCount();
+
+            if (user.isSuspended()) {
+                logger.debug("User {} is already suspended. Skipping.", user.getEmail());
+                continue;
+            }
+
+            // Suspend the user
+            user.suspend(SuspensionReason.ABUSE);
+            userService.updateUser(user);
+
+            suspendedCount++;
+            logger.warn("Suspended user {} (created: {}) due to {} spam mindmaps",
+                user.getEmail(), user.getCreationDate(), spamCount);
+        }
+
+        // Update cursor to the last processed user ID
+        if (!usersWithSpamMindmaps.isEmpty()) {
+            newLastUserId = usersWithSpamMindmaps.get(usersWithSpamMindmaps.size() - 1).getUser().getId();
+        }
+
+        return new BatchResult(usersWithSpamMindmaps.size(), suspendedCount, newLastUserId);
+    }
+
+    /**
+     * Result class for optimized batch processing
+     */
+    private static class BatchResult {
+        final int processedCount;
+        final int suspendedCount;
+        final Integer lastUserId;
+
+        BatchResult(int processedCount, int suspendedCount, Integer lastUserId) {
+            this.processedCount = processedCount;
+            this.suspendedCount = suspendedCount;
+            this.lastUserId = lastUserId;
+        }
+    }
+
+    /**
      * Alternative: Stream-based processing for even more memory efficiency
      * This processes one user at a time without loading all into memory
+     * Each user is processed in its own transaction to avoid long-running transactions
      */
-    @Transactional
     public void processSpamUserSuspensionStream() {
         if (!enabled) {
             logger.debug("Spam user suspension batch task is disabled");
@@ -140,14 +176,10 @@ public class SpamUserSuspensionServiceOptimized {
                 Account user = result.getUser();
                 long spamCount = result.getSpamCount();
 
-                if (!user.isSuspended()) {
-                    // Suspend the user
-                    user.suspend(SuspensionReason.ABUSE);
-                    userService.updateUser(user);
-
+                // Process each user in its own transaction
+                boolean wasSuspended = processSingleUser(user, spamCount);
+                if (wasSuspended) {
                     suspendedCount++;
-                    logger.warn("Suspended user {} (created: {}) due to {} spam mindmaps",
-                        user.getEmail(), user.getCreationDate(), spamCount);
                 }
 
                 // Update cursor
@@ -162,6 +194,26 @@ public class SpamUserSuspensionServiceOptimized {
             logger.error("Error during stream-based spam user suspension", e);
             throw e;
         }
+    }
+
+    /**
+     * Process a single user in its own transaction
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public boolean processSingleUser(Account user, long spamCount) {
+        if (user.isSuspended()) {
+            logger.debug("User {} is already suspended. Skipping.", user.getEmail());
+            return false;
+        }
+
+        // Suspend the user
+        user.suspend(SuspensionReason.ABUSE);
+        userService.updateUser(user);
+
+        logger.warn("Suspended user {} (created: {}) due to {} spam mindmaps",
+            user.getEmail(), user.getCreationDate(), spamCount);
+        
+        return true;
     }
 
     public boolean isEnabled() {

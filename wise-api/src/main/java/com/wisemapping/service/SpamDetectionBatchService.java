@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -48,8 +49,8 @@ public class SpamDetectionBatchService {
 
     /**
      * Process all public maps and mark them as spam if they match spam detection rules
+     * Each batch is processed in its own transaction to avoid long-running transactions
      */
-    @Transactional
     public void processPublicMapsSpamDetection() {
         if (!enabled) {
             logger.debug("Spam detection batch task is disabled");
@@ -68,44 +69,15 @@ public class SpamDetectionBatchService {
             int disabledAccountCount = 0;
             int offset = 0;
             
-            // Process maps in batches
+            // Process maps in batches, each batch in its own transaction
             while (offset < totalMaps) {
-                List<Mindmap> publicMaps = mindmapManager.findAllPublicMindmaps(offset, batchSize);
+                BatchResult result = processBatch(offset, batchSize);
+                processedCount += result.processedCount;
+                spamDetectedCount += result.spamDetectedCount;
+                disabledAccountCount += result.disabledAccountCount;
                 
-                if (publicMaps.isEmpty()) {
+                if (result.processedCount == 0) {
                     break; // No more maps to process
-                }
-                
-                for (Mindmap mindmap : publicMaps) {
-                    // Check if the creator account is disabled
-                    if (mindmap.getCreator().isSuspended()) {
-                        // Make the map private if the account is disabled
-                        mindmap.setPublic(false);
-                        mindmapManager.updateMindmap(mindmap, false);
-                        
-                        disabledAccountCount++;
-                        logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
-                            mindmap.getTitle(), mindmap.getId(), mindmap.getCreator().getEmail());
-                        continue;
-                    }
-                    
-                    // Skip if already marked as spam
-                    if (mindmap.isSpamDetected()) {
-                        continue;
-                    }
-                    
-                    // Check for spam content
-                    if (spamDetectionService.isSpamContent(mindmap)) {
-                        // Mark as spam but keep it public
-                        mindmap.setSpamDetected(true);
-                        mindmapManager.updateMindmap(mindmap, false);
-                        
-                        spamDetectedCount++;
-                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam", 
-                            mindmap.getTitle(), mindmap.getId());
-                    }
-                    
-                    processedCount++;
                 }
                 
                 offset += batchSize;
@@ -118,6 +90,71 @@ public class SpamDetectionBatchService {
 
         } catch (Exception e) {
             logger.error("Error during spam detection batch task", e);
+        }
+    }
+
+    /**
+     * Process a single batch of mindmaps in its own transaction
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public BatchResult processBatch(int offset, int batchSize) {
+        List<Mindmap> publicMaps = mindmapManager.findAllPublicMindmaps(offset, batchSize);
+        
+        if (publicMaps.isEmpty()) {
+            return new BatchResult(0, 0, 0);
+        }
+        
+        int processedCount = 0;
+        int spamDetectedCount = 0;
+        int disabledAccountCount = 0;
+        
+        for (Mindmap mindmap : publicMaps) {
+            // Check if the creator account is disabled
+            if (mindmap.getCreator().isSuspended()) {
+                // Make the map private if the account is disabled
+                mindmap.setPublic(false);
+                mindmapManager.updateMindmap(mindmap, false);
+                
+                disabledAccountCount++;
+                logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
+                    mindmap.getTitle(), mindmap.getId(), mindmap.getCreator().getEmail());
+                continue;
+            }
+            
+            // Skip if already marked as spam
+            if (mindmap.isSpamDetected()) {
+                continue;
+            }
+            
+            // Check for spam content
+            if (spamDetectionService.isSpamContent(mindmap)) {
+                // Mark as spam but keep it public
+                mindmap.setSpamDetected(true);
+                mindmapManager.updateMindmap(mindmap, false);
+                
+                spamDetectedCount++;
+                logger.warn("Marked public mindmap '{}' (ID: {}) as spam", 
+                    mindmap.getTitle(), mindmap.getId());
+            }
+            
+            processedCount++;
+        }
+        
+        return new BatchResult(processedCount, spamDetectedCount, disabledAccountCount);
+    }
+
+    /**
+     * Result class for batch processing
+     */
+    private static class BatchResult {
+        final int processedCount;
+        final int spamDetectedCount;
+        final int disabledAccountCount;
+
+        BatchResult(int processedCount, int spamDetectedCount, int disabledAccountCount) {
+            this.processedCount = processedCount;
+            this.spamDetectedCount = spamDetectedCount;
+            this.disabledAccountCount = disabledAccountCount;
         }
     }
 

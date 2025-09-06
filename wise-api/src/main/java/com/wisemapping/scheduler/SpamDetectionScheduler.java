@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -40,15 +41,16 @@ public class SpamDetectionScheduler {
     private boolean enabled;
 
     /**
-     * Execute spam detection task once at application startup
+     * Execute spam detection task once at application startup (async to not block startup)
      */
     @EventListener(ApplicationReadyEvent.class)
+    @Async
     public void processSpamDetectionOnStartup() {
         if (!enabled) {
             logger.debug("Spam detection scheduler is disabled");
             return;
         }
-        logger.info("Executing spam detection task on application startup...");
+        logger.info("Executing spam detection task on application startup (async)...");
         spamDetectionBatchService.processPublicMapsSpamDetection();
         logger.info("Startup spam detection task completed.");
     }
@@ -66,12 +68,13 @@ public class SpamDetectionScheduler {
      * - Every day of week
      */
     @Scheduled(cron = "${app.batch.spam-detection.cron-expression:0 0 0 * * *}")
+    @Async
     public void processSpamDetection() {
         if (!enabled) {
             logger.debug("Spam detection scheduler is disabled");
             return;
         }
-        logger.info("Executing scheduled spam detection task for public maps...");
+        logger.info("Executing scheduled spam detection task for public maps (async)...");
         spamDetectionBatchService.processPublicMapsSpamDetection();
         logger.info("Scheduled spam detection task completed.");
     }

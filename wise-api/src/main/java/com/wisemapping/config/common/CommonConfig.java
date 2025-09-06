@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
@@ -22,7 +23,9 @@ import java.util.Locale;
 @Import({JPAConfig.class, SecurityConfig.class})
 @EnableAutoConfiguration
 @EnableScheduling
+@EnableAsync
 public class CommonConfig {
+    
     @Bean
     public LocaleResolver localeResolver() {
         return new AcceptHeaderLocaleResolver() {

@@ -7,6 +7,19 @@
 # SpringBoot Config: WiseMapping Backend is based on SpringBoot. Additional configurations documentation could be found https://docs.spring.io/spring-boot/3.3/reference/features/external-config.html.
 #
 spring:
+  # Async task executor configuration
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 5
+        queue-capacity: 100
+        keep-alive: 60s
+        thread-name-prefix: "AsyncTask-"
+        allow-core-thread-timeout: true
+    scheduling:
+      pool:
+        size: 2
   # SMTP server configuration used for password recovery and notifications.
   mail:
     host: smtp.example.com
@@ -130,6 +143,7 @@ app:
       enabled: true
       cron-expression: "0 0 0 * * *"  # Every 24 hours at midnight
       batch-size: 100  # Number of mindmaps to process in each batch
+      startup-enabled: true  # Enable spam detection on application startup (async)
     oauth2:
       google:
         clientSecret: <google-oath>
