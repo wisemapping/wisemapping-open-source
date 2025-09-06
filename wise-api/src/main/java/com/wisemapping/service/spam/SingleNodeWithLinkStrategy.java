@@ -23,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 @Component
 public class SingleNodeWithLinkStrategy implements SpamDetectionStrategy {

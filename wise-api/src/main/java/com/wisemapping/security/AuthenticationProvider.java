@@ -19,6 +19,7 @@
 package com.wisemapping.security;
 
 
+import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,6 +50,11 @@ public class AuthenticationProvider implements org.springframework.security.auth
         // User has been disabled ...
         if (!user.isActive()) {
             throw new BadCredentialsException("User has been disabled for login " + auth.getPrincipal());
+        }
+
+        // Check if account is suspended
+        if (user.isSuspended()) {
+            throw new AccountDisabledException("ACCOUNT_SUSPENDED");
         }
 
         userDetailsService.getUserService().auditLogin(user);

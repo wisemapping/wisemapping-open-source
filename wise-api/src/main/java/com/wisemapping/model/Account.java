@@ -64,6 +64,16 @@ public class Account
     @Column(name = "google_token")
     private String googleToken;
 
+    @Column(name = "suspended")
+    private boolean suspended = false;
+
+    @Column(name = "suspended_date")
+    private Calendar suspendedDate;
+
+    @Column(name = "suspension_reason")
+    private Character suspensionReasonCode;
+
+
     public Account() {
     }
 
@@ -187,6 +197,55 @@ public class Account
     public void setGoogleToken(String googleToken) {
         this.googleToken = googleToken;
     }
+
+    public boolean isSuspended() {
+        return suspended;
+    }
+
+    public void setSuspended(boolean suspended) {
+        this.suspended = suspended;
+    }
+
+    public void suspend() {
+        this.suspended = true;
+    }
+
+    public void suspend(SuspensionReason reason) {
+        this.suspended = true;
+        this.suspensionReasonCode = reason != null ? reason.getCode().charAt(0) : null;
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void updateSuspendedDate() {
+        if (suspended && suspendedDate == null) {
+            suspendedDate = Calendar.getInstance();
+        } else if (!suspended) {
+            suspendedDate = null;
+        }
+    }
+
+    public void unsuspend() {
+        this.suspended = false;
+        this.suspensionReasonCode = null;
+    }
+
+    public Calendar getSuspendedDate() {
+        return suspendedDate;
+    }
+
+    public void setSuspendedDate(Calendar suspendedDate) {
+        this.suspendedDate = suspendedDate;
+    }
+
+    public SuspensionReason getSuspensionReason() {
+        return suspensionReasonCode != null ? SuspensionReason.fromCode(suspensionReasonCode.toString()) : null;
+    }
+
+    public void setSuspensionReason(SuspensionReason reason) {
+        this.suspensionReasonCode = reason != null ? reason.getCode().charAt(0) : null;
+    }
+
 
     @Override
     public String toString() {

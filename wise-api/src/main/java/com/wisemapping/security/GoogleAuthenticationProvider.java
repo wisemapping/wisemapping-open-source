@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
+import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.model.Account;
 
 public class GoogleAuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
@@ -35,6 +36,11 @@ public class GoogleAuthenticationProvider implements org.springframework.securit
 
         if (!user.isActive()) {
             throw new BadCredentialsException("User has been disabled for login " + inputToken.getName());
+        }
+
+        // Check if account is suspended
+        if (user.isSuspended()) {
+            throw new AccountDisabledException("ACCOUNT_SUSPENDED");
         }
 
         PreAuthenticatedAuthenticationToken resultToken = new PreAuthenticatedAuthenticationToken(userDetails,
