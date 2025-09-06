@@ -47,6 +47,9 @@ public class SpamDetectionBatchService {
     @Value("${app.batch.spam-detection.batch-size:100}")
     private int batchSize;
 
+    @Value("${app.batch.spam-detection.months-back:45}")
+    private int monthsBack;
+
     /**
      * Process all public maps and mark them as spam if they match spam detection rules
      * Each batch is processed in its own transaction to avoid long-running transactions
@@ -57,12 +60,16 @@ public class SpamDetectionBatchService {
             return;
         }
 
-        logger.info("Starting spam detection batch task for public maps");
+        logger.info("Starting spam detection batch task for public maps created since {} months ago", monthsBack);
 
         try {
+            // Calculate cutoff date (monthsBack months ago)
+            java.util.Calendar cutoffDate = java.util.Calendar.getInstance();
+            cutoffDate.add(java.util.Calendar.MONTH, -monthsBack);
+            
             // Get total count for logging
-            long totalMaps = mindmapManager.countAllPublicMindmaps();
-            logger.info("Starting spam detection for {} public maps in batches of {}", totalMaps, batchSize);
+            long totalMaps = mindmapManager.countAllPublicMindmapsSince(cutoffDate);
+            logger.info("Starting spam detection for {} public maps created since {} in batches of {}", totalMaps, cutoffDate.getTime(), batchSize);
             
             int processedCount = 0;
             int spamDetectedCount = 0;
@@ -71,7 +78,7 @@ public class SpamDetectionBatchService {
             
             // Process maps in batches, each batch in its own transaction
             while (offset < totalMaps) {
-                BatchResult result = processBatch(offset, batchSize);
+                BatchResult result = processBatch(cutoffDate, offset, batchSize);
                 processedCount += result.processedCount;
                 spamDetectedCount += result.spamDetectedCount;
                 disabledAccountCount += result.disabledAccountCount;
@@ -97,8 +104,8 @@ public class SpamDetectionBatchService {
      * Process a single batch of mindmaps in its own transaction
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public BatchResult processBatch(int offset, int batchSize) {
-        List<Mindmap> publicMaps = mindmapManager.findAllPublicMindmaps(offset, batchSize);
+    public BatchResult processBatch(java.util.Calendar cutoffDate, int offset, int batchSize) {
+        List<Mindmap> publicMaps = mindmapManager.findAllPublicMindmapsSince(cutoffDate, offset, batchSize);
         
         if (publicMaps.isEmpty()) {
             return new BatchResult(0, 0, 0);

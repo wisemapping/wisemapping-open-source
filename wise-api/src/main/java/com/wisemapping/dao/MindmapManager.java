@@ -139,4 +139,20 @@ public interface MindmapManager {
      * @return total count of public mindmaps
      */
     long countAllPublicMindmaps();
+
+    /**
+     * Find all public mindmaps created since a specific date with pagination
+     * @param cutoffDate only return mindmaps created after this date
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of public mindmaps for the given page
+     */
+    List<Mindmap> findAllPublicMindmapsSince(java.util.Calendar cutoffDate, int offset, int limit);
+
+    /**
+     * Count total number of public mindmaps created since a specific date
+     * @param cutoffDate only count mindmaps created after this date
+     * @return total count of public mindmaps
+     */
+    long countAllPublicMindmapsSince(java.util.Calendar cutoffDate);
 }

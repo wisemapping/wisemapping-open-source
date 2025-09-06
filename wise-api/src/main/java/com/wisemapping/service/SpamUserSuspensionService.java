@@ -83,11 +83,11 @@ public class SpamUserSuspensionService {
     }
 
     /**
-     * Process users using ratio-based suspension (spam maps / total maps)
+     * Process users using ratio-based suspension (spam public maps / total public maps)
      * Each batch is processed in its own transaction to avoid long-running transactions
      */
     public void processSpamUserSuspensionByRatio() {
-        logger.info("Starting ratio-based spam user suspension batch task with min spam count: {}, ratio threshold: {}%, and months back: {}", 
+        logger.info("Starting ratio-based spam user suspension batch task with min spam count: {}, ratio threshold: {}%, and months back: {} (public maps only)", 
             minSpamCount, spamRatioThreshold * 100, monthsBack);
 
         try {
@@ -148,7 +148,7 @@ public class SpamUserSuspensionService {
             userService.updateUser(user);
 
             suspendedCount++;
-            logger.warn("Suspended user {} (created: {}) due to {} spam mindmaps out of {} total ({}% spam ratio)",
+            logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps out of {} total public ({}% spam ratio)",
                 user.getEmail(), user.getCreationDate(), spamCount, totalCount, 
                 String.format("%.1f", spamRatio * 100));
         }
@@ -157,11 +157,11 @@ public class SpamUserSuspensionService {
     }
 
     /**
-     * Process users using count-based suspension (legacy method)
+     * Process users using count-based suspension (legacy method) - public maps only
      * Each batch is processed in its own transaction to avoid long-running transactions
      */
     public void processSpamUserSuspensionByCount() {
-        logger.info("Starting count-based spam user suspension batch task with threshold: {} and months back: {}", spamThreshold, monthsBack);
+        logger.info("Starting count-based spam user suspension batch task with threshold: {} and months back: {} (public maps only)", spamThreshold, monthsBack);
 
         try {
             long totalUsers = mindmapManager.countUsersWithSpamMindaps(spamThreshold, monthsBack);
@@ -218,7 +218,7 @@ public class SpamUserSuspensionService {
             userService.updateUser(user);
 
             suspendedCount++;
-            logger.warn("Suspended user {} (created: {}) due to {} spam mindmaps",
+            logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps",
                 user.getEmail(), user.getCreationDate(), spamCount);
         }
 

@@ -45,6 +45,7 @@ public class SpamUserSuspensionServiceOptimized {
      * Process users with multiple spam mindmaps using cursor-based pagination
      * This is more efficient than offset-based pagination for large datasets
      * Each batch is processed in its own transaction to avoid long-running transactions
+     * Only considers public maps for spam detection
      */
     public void processSpamUserSuspensionOptimized() {
         if (!enabled) {
@@ -52,7 +53,7 @@ public class SpamUserSuspensionServiceOptimized {
             return;
         }
 
-        logger.info("Starting optimized spam user suspension batch task with threshold: {} and months back: {}", spamThreshold, monthsBack);
+        logger.info("Starting optimized spam user suspension batch task with threshold: {} and months back: {} (public maps only)", spamThreshold, monthsBack);
 
         try {
             int suspendedCount = 0;
@@ -117,7 +118,7 @@ public class SpamUserSuspensionServiceOptimized {
             userService.updateUser(user);
 
             suspendedCount++;
-            logger.warn("Suspended user {} (created: {}) due to {} spam mindmaps",
+            logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps",
                 user.getEmail(), user.getCreationDate(), spamCount);
         }
 
@@ -148,6 +149,7 @@ public class SpamUserSuspensionServiceOptimized {
      * Alternative: Stream-based processing for even more memory efficiency
      * This processes one user at a time without loading all into memory
      * Each user is processed in its own transaction to avoid long-running transactions
+     * Only considers public maps for spam detection
      */
     public void processSpamUserSuspensionStream() {
         if (!enabled) {
@@ -155,7 +157,7 @@ public class SpamUserSuspensionServiceOptimized {
             return;
         }
 
-        logger.info("Starting stream-based spam user suspension batch task");
+        logger.info("Starting stream-based spam user suspension batch task (public maps only)");
 
         try {
             int suspendedCount = 0;
@@ -210,7 +212,7 @@ public class SpamUserSuspensionServiceOptimized {
         user.suspend(SuspensionReason.ABUSE);
         userService.updateUser(user);
 
-        logger.warn("Suspended user {} (created: {}) due to {} spam mindmaps",
+        logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps",
             user.getEmail(), user.getCreationDate(), spamCount);
         
         return true;
