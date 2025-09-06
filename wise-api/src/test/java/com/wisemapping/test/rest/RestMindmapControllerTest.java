@@ -748,9 +748,9 @@ public class RestMindmapControllerTest {
         final String mapTitle = "updatePublishStateWithJsonInvalidRequest";
         final URI mindmapUri = addNewMap(restTemplate, mapTitle);
 
-        // Test with invalid JSON request (missing "public" field)
+        // Test with invalid JSON request (missing "isPublic" field)
         final Map<String, Boolean> publishRequest = new HashMap<>();
-        // Intentionally not adding "public" field
+        // Intentionally not adding "isPublic" field
 
         final HttpEntity<Map<String, Boolean>> updateEntity = new HttpEntity<>(publishRequest, requestHeaders);
 
