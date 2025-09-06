@@ -444,10 +444,8 @@ public class MindmapController extends BaseController {
 
         boolean isPublic = Boolean.parseBoolean(value);
 
-        // Check for spam content when trying to make public, but skip for OAuth users
-        boolean isOAuthUser = user.getAuthenticationType() == AuthenticationType.GOOGLE_OAUTH2;
-
-        if (isPublic && !isOAuthUser) {
+        // Check for spam content when trying to make public
+        if (isPublic) {
             SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap);
             if (spamResult.isSpam()) {
                 // Mark the map as spam detected and throw exception
@@ -462,9 +460,6 @@ public class MindmapController extends BaseController {
                 mindMap.setSpamDescription(null);
                 mindMap.setPublic(true);
             }
-        } else if (isPublic && isOAuthUser) {
-            // OAuth users can publish without spam checking - don't modify spam flag
-            mindMap.setPublic(true);
         } else {
             // Making private - only update public flag, preserve existing spam flag
             mindMap.setPublic(false);
