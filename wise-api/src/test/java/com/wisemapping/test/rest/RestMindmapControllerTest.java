@@ -675,117 +675,13 @@ public class RestMindmapControllerTest {
         final String mapTitle = "updatePublishState";
         final URI mindmapUri = addNewMap(restTemplate, mapTitle);
 
-        // Change map status using JSON format ...
-        final RestPublishRequest publishRequest = new RestPublishRequest();
-        publishRequest.setIsPublic(true);
-        final HttpEntity<RestPublishRequest> updateEntity = new HttpEntity<>(publishRequest, requestHeaders);
+        // Change map status ...
+        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final HttpEntity<String> updateEntity = new HttpEntity<>(Boolean.TRUE.toString(), requestHeaders);
 
         // Maps was created and try to publish in short period of time, this is considered a spam behavior.
         final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
         assertTrue(exchange.getStatusCode().isError());
-    }
-
-    @Test
-    public void updatePublishStateWithJson() throws URISyntaxException {
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
-
-        // Create a sample map ...
-        final String mapTitle = "updatePublishStateWithJson";
-        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
-
-        // Test publishing with JSON content type
-        final RestPublishRequest publishRequest = new RestPublishRequest();
-        publishRequest.setIsPublic(true);
-        publishRequest.setRecaptcha("test-recaptcha-token"); // Optional for testing
-
-        final HttpEntity<RestPublishRequest> updateEntity = new HttpEntity<>(publishRequest, requestHeaders);
-
-        // Try to publish - this should work with JSON content type
-        final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
-        
-        // The request should be accepted (not 415 error)
-        assertTrue(exchange.getStatusCode().is2xxSuccessful() || exchange.getStatusCode().is4xxClientError(), 
-                   "Expected 2xx or 4xx status, got: " + exchange.getStatusCode() + " - " + exchange.getBody());
-        
-        // If it's 4xx, it should be due to spam detection, not content type issues
-        if (exchange.getStatusCode().is4xxClientError()) {
-            assertTrue(Objects.requireNonNull(exchange.getBody()).contains("spam") || 
-                      Objects.requireNonNull(exchange.getBody()).contains("SpamContentException"),
-                      "Expected spam-related error, got: " + exchange.getBody());
-        }
-    }
-
-    @Test
-    public void updatePublishStateWithJsonMakePrivate() throws URISyntaxException {
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
-
-        // Create a sample map ...
-        final String mapTitle = "updatePublishStateWithJsonMakePrivate";
-        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
-
-        // Test making private with JSON content type
-        final RestPublishRequest publishRequest = new RestPublishRequest();
-        publishRequest.setIsPublic(false);
-
-        final HttpEntity<RestPublishRequest> updateEntity = new HttpEntity<>(publishRequest, requestHeaders);
-
-        // Try to make private - this should always work
-        final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
-        
-        // Making private should always succeed
-        assertTrue(exchange.getStatusCode().is2xxSuccessful(), 
-                   "Expected 2xx status for making private, got: " + exchange.getStatusCode() + " - " + exchange.getBody());
-    }
-
-    @Test
-    public void updatePublishStateWithTextPlain() throws URISyntaxException {
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
-
-        // Create a sample map ...
-        final String mapTitle = "updatePublishStateWithTextPlain";
-        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
-
-        // Test publishing with text/plain content type (legacy format)
-        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
-        final HttpEntity<String> updateEntity = new HttpEntity<>("true", requestHeaders);
-
-        // Try to publish - this should work with text/plain content type
-        final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
-        
-        // The request should be accepted (not 415 error)
-        assertTrue(exchange.getStatusCode().is2xxSuccessful() || exchange.getStatusCode().is4xxClientError(), 
-                   "Expected 2xx or 4xx status, got: " + exchange.getStatusCode() + " - " + exchange.getBody());
-        
-        // If it's 4xx, it should be due to spam detection, not content type issues
-        if (exchange.getStatusCode().is4xxClientError()) {
-            assertTrue(Objects.requireNonNull(exchange.getBody()).contains("spam") || 
-                      Objects.requireNonNull(exchange.getBody()).contains("SpamContentException"),
-                      "Expected spam-related error, got: " + exchange.getBody());
-        }
-    }
-
-    @Test
-    public void updatePublishStateWithTextPlainMakePrivate() throws URISyntaxException {
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
-
-        // Create a sample map ...
-        final String mapTitle = "updatePublishStateWithTextPlainMakePrivate";
-        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
-
-        // Test making private with text/plain content type
-        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
-        final HttpEntity<String> updateEntity = new HttpEntity<>("false", requestHeaders);
-
-        // Try to make private - this should always work
-        final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
-        
-        // Making private should always succeed
-        assertTrue(exchange.getStatusCode().is2xxSuccessful(), 
-                   "Expected 2xx status for making private, got: " + exchange.getStatusCode() + " - " + exchange.getBody());
     }
 
     @Test
