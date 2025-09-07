@@ -1,5 +1,6 @@
 package com.wisemapping.config;
 
+import io.micrometer.core.instrument.Clock;
 import io.micrometer.newrelic.NewRelicConfig;
 import io.micrometer.newrelic.NewRelicMeterRegistry;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -47,6 +48,6 @@ public class ConditionalNewRelicAutoConfiguration {
     @Bean
     public NewRelicMeterRegistry newRelicMeterRegistry(NewRelicConfig newRelicConfig) {
         // This will only be called when enabled=true and properties are loaded
-        return new NewRelicMeterRegistry(newRelicConfig, java.time.Clock.SYSTEM);
+        return new NewRelicMeterRegistry(newRelicConfig, Clock.SYSTEM);
     }
 }

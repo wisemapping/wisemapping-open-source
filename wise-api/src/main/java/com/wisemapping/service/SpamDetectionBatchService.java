@@ -141,14 +141,20 @@ public class SpamDetectionBatchService {
             }
             
             // Check for spam content
-            if (spamDetectionService.isSpamContent(mindmap)) {
-                // Mark as spam but keep it public
-                mindmap.setSpamDetected(true);
-                mindmapManager.updateMindmap(mindmap, false);
-                
-                spamDetectedCount++;
-                logger.warn("Marked public mindmap '{}' (ID: {}) as spam", 
-                    mindmap.getTitle(), mindmap.getId());
+            try {
+                if (spamDetectionService.isSpamContent(mindmap)) {
+                    // Mark as spam but keep it public
+                    mindmap.setSpamDetected(true);
+                    mindmapManager.updateMindmap(mindmap, false);
+                    
+                    spamDetectedCount++;
+                    logger.warn("Marked public mindmap '{}' (ID: {}) as spam", 
+                        mindmap.getTitle(), mindmap.getId());
+                }
+            } catch (Exception e) {
+                logger.error("Error during spam detection for mindmap '{}' (ID: {}): {}", 
+                    mindmap.getTitle(), mindmap.getId(), e.getMessage(), e);
+                // Continue processing other mindmaps in the batch
             }
             
             processedCount++;

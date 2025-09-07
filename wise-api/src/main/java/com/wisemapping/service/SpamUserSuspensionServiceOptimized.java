@@ -61,23 +61,29 @@ public class SpamUserSuspensionServiceOptimized {
             boolean hasMoreData = true;
 
             while (hasMoreData) {
-                // Process each batch in its own transaction
-                BatchResult result = processOptimizedBatch(lastUserId, batchSize);
-                suspendedCount += result.suspendedCount;
-                lastUserId = result.lastUserId;
+                try {
+                    // Process each batch in its own transaction
+                    BatchResult result = processOptimizedBatch(lastUserId, batchSize);
+                    suspendedCount += result.suspendedCount;
+                    lastUserId = result.lastUserId;
 
-                if (result.suspendedCount == 0) {
-                    hasMoreData = false;
-                    break;
+                    if (result.suspendedCount == 0) {
+                        hasMoreData = false;
+                        break;
+                    }
+
+                    // If we got fewer results than batch size, we've reached the end
+                    if (result.processedCount < batchSize) {
+                        hasMoreData = false;
+                    }
+
+                    logger.debug("Processed batch: lastUserId={}, batchSize={}, totalSuspended={}",
+                        lastUserId, batchSize, suspendedCount);
+                } catch (Exception e) {
+                    logger.error("Error processing optimized batch with lastUserId {}: {}", lastUserId, e.getMessage(), e);
+                    // Continue with next batch instead of failing completely
+                    hasMoreData = false; // Exit the loop to prevent infinite retry
                 }
-
-                // If we got fewer results than batch size, we've reached the end
-                if (result.processedCount < batchSize) {
-                    hasMoreData = false;
-                }
-
-                logger.debug("Processed batch: lastUserId={}, batchSize={}, totalSuspended={}",
-                    lastUserId, batchSize, suspendedCount);
             }
 
             logger.info("Optimized spam user suspension batch task completed. Suspended {} users", suspendedCount);
@@ -105,21 +111,26 @@ public class SpamUserSuspensionServiceOptimized {
         Integer newLastUserId = lastUserId;
 
         for (SpamUserResult result : usersWithSpamMindmaps) {
-            Account user = result.getUser();
-            long spamCount = result.getSpamCount();
+            try {
+                Account user = result.getUser();
+                long spamCount = result.getSpamCount();
 
-            if (user.isSuspended()) {
-                logger.debug("User {} is already suspended. Skipping.", user.getEmail());
-                continue;
+                if (user.isSuspended()) {
+                    logger.debug("User {} is already suspended. Skipping.", user.getEmail());
+                    continue;
+                }
+
+                // Suspend the user
+                user.suspend(SuspensionReason.ABUSE);
+                userService.updateUser(user);
+
+                suspendedCount++;
+                logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps",
+                    user.getEmail(), user.getCreationDate(), spamCount);
+            } catch (Exception e) {
+                logger.error("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
+                // Continue processing other users in the batch
             }
-
-            // Suspend the user
-            user.suspend(SuspensionReason.ABUSE);
-            userService.updateUser(user);
-
-            suspendedCount++;
-            logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps",
-                user.getEmail(), user.getCreationDate(), spamCount);
         }
 
         // Update cursor to the last processed user ID

@@ -21,6 +21,7 @@ package com.wisemapping.service.spam;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.service.MindmapService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.List;
@@ -36,6 +37,7 @@ public class UserBehaviorStrategy implements SpamDetectionStrategy {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SpamDetectionResult detectSpam(Mindmap mindmap) {
         if (mindmap == null || mindmap.getCreator() == null || mindmap.getCreationTime() == null) {
             return SpamDetectionResult.notSpam();
