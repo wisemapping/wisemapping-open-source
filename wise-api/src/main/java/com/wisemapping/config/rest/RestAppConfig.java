@@ -23,10 +23,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @SpringBootApplication(
-    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class},
-    exclude = {
-        org.springframework.boot.actuate.autoconfigure.metrics.export.newrelic.NewRelicMetricsExportAutoConfiguration.class
-    }
+    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class}
 )
 @EnableWebSecurity
 public class RestAppConfig {
