@@ -86,6 +86,7 @@ public class SpamUserSuspensionService {
      * Process users using ratio-based suspension (spam public maps / total public maps)
      * Each batch is processed in its own transaction to avoid long-running transactions
      */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public void processSpamUserSuspensionByRatio() {
         logger.info("Starting ratio-based spam user suspension batch task with min spam count: {}, ratio threshold: {}%, and months back: {} (public maps only)", 
             minSpamCount, spamRatioThreshold * 100, monthsBack);
@@ -160,6 +161,7 @@ public class SpamUserSuspensionService {
      * Process users using count-based suspension (legacy method) - public maps only
      * Each batch is processed in its own transaction to avoid long-running transactions
      */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public void processSpamUserSuspensionByCount() {
         logger.info("Starting count-based spam user suspension batch task with threshold: {} and months back: {} (public maps only)", spamThreshold, monthsBack);
 

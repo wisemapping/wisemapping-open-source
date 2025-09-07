@@ -41,7 +41,7 @@ public class MindmapLabel implements Serializable {
     private String color;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creator_id", nullable = true, unique = true)
+    @JoinColumn(name = "creator_id", nullable = true)
     @NotNull
     private Account creator;
 

@@ -54,6 +54,7 @@ public class SpamDetectionBatchService {
      * Process all public maps and mark them as spam if they match spam detection rules
      * Each batch is processed in its own transaction to avoid long-running transactions
      */
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public void processPublicMapsSpamDetection() {
         if (!enabled) {
             logger.debug("Spam detection batch task is disabled");
