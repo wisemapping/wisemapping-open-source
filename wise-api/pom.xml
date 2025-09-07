@@ -105,6 +105,11 @@
             <version>1.10.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-new-relic</artifactId>
+            <version>1.13.3</version> <!-- latest stable as of Sep 2025 -->
+        </dependency>
 
         <!-- Connection Pool-->
         <dependency>
@@ -176,19 +181,19 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
             <version>1.40.0</version>
         </dependency>
-        
+
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-sdk</artifactId>
             <version>1.40.0</version>
         </dependency>
-        
+
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-prometheus</artifactId>
