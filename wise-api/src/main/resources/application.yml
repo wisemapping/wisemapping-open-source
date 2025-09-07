@@ -192,12 +192,6 @@ management:
     export:
       prometheus:
         enabled: true
-      newrelic:
-        enabled: false  # Disable New Relic auto-configuration until properly configured
-        # To enable New Relic, uncomment and configure the following:
-        # api-key: ${NEW_RELIC_API_KEY:your-api-key-here}
-        # account-id: ${NEW_RELIC_ACCOUNT_ID:your-account-id-here}
-        # uri: https://metric-api.newrelic.com/metric/v1
     tags:
       application: wisemapping-api
 
