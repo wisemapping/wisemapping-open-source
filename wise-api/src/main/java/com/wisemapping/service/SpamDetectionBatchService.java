@@ -53,8 +53,8 @@ public class SpamDetectionBatchService {
     /**
      * Process all public maps and mark them as spam if they match spam detection rules
      * Each batch is processed in its own transaction to avoid long-running transactions
+     * This method itself is not transactional to avoid connection leaks
      */
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public void processPublicMapsSpamDetection() {
         if (!enabled) {
             logger.debug("Spam detection batch task is disabled");
@@ -79,18 +79,24 @@ public class SpamDetectionBatchService {
             
             // Process maps in batches, each batch in its own transaction
             while (offset < totalMaps) {
-                BatchResult result = processBatch(cutoffDate, offset, batchSize);
-                processedCount += result.processedCount;
-                spamDetectedCount += result.spamDetectedCount;
-                disabledAccountCount += result.disabledAccountCount;
-                
-                if (result.processedCount == 0) {
-                    break; // No more maps to process
+                try {
+                    BatchResult result = processBatch(cutoffDate, offset, batchSize);
+                    processedCount += result.processedCount;
+                    spamDetectedCount += result.spamDetectedCount;
+                    disabledAccountCount += result.disabledAccountCount;
+                    
+                    if (result.processedCount == 0) {
+                        break; // No more maps to process
+                    }
+                    
+                    offset += batchSize;
+                    logger.debug("Processed batch: offset={}, batchSize={}, totalProcessed={}", 
+                        offset - batchSize, batchSize, processedCount);
+                } catch (Exception e) {
+                    logger.error("Error processing batch at offset {}: {}", offset, e.getMessage(), e);
+                    // Continue with next batch instead of failing completely
+                    offset += batchSize;
                 }
-                
-                offset += batchSize;
-                logger.debug("Processed batch: offset={}, batchSize={}, totalProcessed={}", 
-                    offset - batchSize, batchSize, processedCount);
             }
 
             logger.info("Spam detection batch task completed. Processed {} public maps, marked {} as spam, made {} private due to disabled accounts", 
