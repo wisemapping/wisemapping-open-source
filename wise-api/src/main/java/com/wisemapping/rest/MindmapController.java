@@ -41,6 +41,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -69,6 +71,9 @@ public class MindmapController extends BaseController {
 
     @Autowired
     private SpamDetectionService spamDetectionService;
+
+    @Autowired
+    private MeterRegistry meterRegistry;
 
     @Value("${app.accounts.max-inactive:20}")
     private int maxAccountsInactive;
@@ -649,6 +654,13 @@ public class MindmapController extends BaseController {
 
         // Add new mindmap ...
         mindmapService.addMindmap(clonedMap, user);
+
+        // Track mindmap duplication with OpenTelemetry metrics
+        Counter.builder("mindmaps.created")
+                .description("Total number of mindmaps created")
+                .tag("type", "duplicate")
+                .register(meterRegistry)
+                .increment();
 
         // Return the new created map ...
         response.setHeader("Location", "/api/restful/maps/" + clonedMap.getId());

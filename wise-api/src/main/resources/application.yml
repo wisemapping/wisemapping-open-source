@@ -175,3 +175,23 @@ server:
     remote-ip-header: x-forwarded-for
     protocol-header: x-forwarded-proto
 
+# Spring Boot Actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: wisemapping-api
+

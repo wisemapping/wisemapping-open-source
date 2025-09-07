@@ -40,6 +40,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 import java.util.*;
 
@@ -61,6 +63,9 @@ public class UserServiceImpl
     private VelocityEngineWrapper velocityEngineWrapper;
     @Autowired
     private GoogleService googleService;
+
+    @Autowired
+    private MeterRegistry meterRegistry;
 
     final private static Logger logger = LogManager.getLogger();
 
@@ -165,6 +170,13 @@ public class UserServiceImpl
         //create welcome map
         final Mindmap mindMap = buildTutorialMindmap(user.getFirstname());
         mindmapService.addMindmap(mindMap, user);
+
+        // Track tutorial mindmap creation with OpenTelemetry metrics
+        Counter.builder("mindmaps.created")
+                .description("Total number of mindmaps created")
+                .tag("type", "tutorial")
+                .register(meterRegistry)
+                .increment();
 
         // Send registration email.
         if (emailConfirmEnabled) {
