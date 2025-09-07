@@ -20,13 +20,13 @@ package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+// import org.springframework.stereotype.Component; // Disabled - strategy not active
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-@Component
+// @Component // Disabled - KeywordPattern strategy is disabled
 public class KeywordPatternStrategy implements SpamDetectionStrategy {
     
     private final SpamContentExtractor contentExtractor;
