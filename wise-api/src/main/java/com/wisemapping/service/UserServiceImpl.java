@@ -146,6 +146,12 @@ public class UserServiceImpl
         accessAuditory.setUser(user);
         accessAuditory.setLoginDate(Calendar.getInstance());
         userManager.auditLogin(accessAuditory);
+        
+        // Track user login with OpenTelemetry metrics
+        Counter.builder("user.logins")
+                .description("Total number of user logins")
+                .register(meterRegistry)
+                .increment();
     }
 
     @NotNull

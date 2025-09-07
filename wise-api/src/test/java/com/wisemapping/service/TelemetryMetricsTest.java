@@ -144,4 +144,35 @@ class TelemetryMetricsTest {
         assertNotNull(testCounter);
         assertEquals(0.0, testCounter.count());
     }
+
+    @Test
+    void testNewTelemetryMetrics() {
+        // Test user login metrics
+        Counter loginCounter = Counter.builder("user.logins")
+                .description("Total number of user logins")
+                .register(meterRegistry);
+        
+        // Test publish attempt metrics
+        Counter publishCounter = Counter.builder("mindmaps.publish.attempts")
+                .description("Total number of publish attempts")
+                .register(meterRegistry);
+        
+        // Test spam detection metrics
+        Counter spamCounter = Counter.builder("mindmaps.publish.spam_detected")
+                .description("Total number of maps marked as spam during publish")
+                .register(meterRegistry);
+
+        // Increment counters
+        loginCounter.increment();
+        loginCounter.increment();
+        publishCounter.increment();
+        publishCounter.increment();
+        publishCounter.increment();
+        spamCounter.increment();
+
+        // Verify counts
+        assertEquals(2.0, loginCounter.count());
+        assertEquals(3.0, publishCounter.count());
+        assertEquals(1.0, spamCounter.count());
+    }
 }

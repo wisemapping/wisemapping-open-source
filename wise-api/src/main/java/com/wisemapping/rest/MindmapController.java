@@ -455,6 +455,12 @@ public class MindmapController extends BaseController {
             throw new IllegalArgumentException("No enough to execute this operation");
         }
 
+        // Track total publish executions
+        Counter.builder("mindmaps.publish.attempts")
+                .description("Total number of publish attempts")
+                .register(meterRegistry)
+                .increment();
+
         // Check for spam content when trying to make public
         if (isPublic) {
             SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap);
@@ -464,6 +470,13 @@ public class MindmapController extends BaseController {
                 mindMap.setSpamDescription(spamResult.getDetails());
                 mindMap.setPublic(false);
                 mindmapService.updateMindmap(mindMap, false);
+                
+                // Track maps marked as spam during publish
+                Counter.builder("mindmaps.publish.spam_detected")
+                        .description("Total number of maps marked as spam during publish")
+                        .register(meterRegistry)
+                        .increment();
+                
                 throw new SpamContentException();
             } else {
                 // Making public and no spam detected - clear spam flag and make public
