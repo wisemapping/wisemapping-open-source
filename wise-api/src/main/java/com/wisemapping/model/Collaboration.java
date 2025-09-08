@@ -24,7 +24,6 @@ import org.jetbrains.annotations.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "COLLABORATION")
@@ -126,8 +125,18 @@ public class Collaboration implements Serializable {
         Collaboration that = (Collaboration) o;
 
         if (id != that.id) return false;
-        if (!Objects.equals(collaborator, that.collaborator)) return false;
-        if (!Objects.equals(mindMap, that.mindMap)) return false;
+        // Use collaborator ID instead of full object comparison to avoid lazy initialization issues
+        if (collaborator != null && that.collaborator != null) {
+            if (collaborator.getId() != that.collaborator.getId()) return false;
+        } else if (collaborator != that.collaborator) {
+            return false;
+        }
+        // Use mindMap ID instead of full object comparison to avoid lazy initialization issues
+        if (mindMap != null && that.mindMap != null) {
+            if (mindMap.getId() != that.mindMap.getId()) return false;
+        } else if (mindMap != that.mindMap) {
+            return false;
+        }
         return role == that.role;
     }
 
