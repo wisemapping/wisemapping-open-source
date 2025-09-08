@@ -139,7 +139,7 @@ public class SpamDetectionBatchService {
                     // Make the map private if the account is disabled
                     // Use native SQL to avoid cascade conflicts with spam info
                     try {
-                        String updateSql = "UPDATE mindmap SET public = false WHERE id = ?";
+                        String updateSql = "UPDATE MINDMAP SET public = false WHERE id = ?";
                         entityManager.createNativeQuery(updateSql)
                             .setParameter(1, mindmap.getId())
                             .executeUpdate();

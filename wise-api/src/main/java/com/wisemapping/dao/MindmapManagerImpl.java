@@ -171,7 +171,7 @@ public class MindmapManagerImpl
         try {
             // Use native SQL for guaranteed "last win" behavior
             String sql = """
-                INSERT INTO mindmap_spam_info (mindmap_id, spam_detected, spam_detection_version, spam_type_code)
+                INSERT INTO MINDMAP_SPAM_INFO (mindmap_id, spam_detected, spam_detection_version, spam_type_code)
                 VALUES (?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
                     spam_detected = VALUES(spam_detected),
@@ -187,8 +187,10 @@ public class MindmapManagerImpl
                 .executeUpdate();
                 
         } catch (Exception e) {
-            // Fallback to standard merge if native SQL fails
-            entityManager.merge(spamInfo);
+            // If native SQL fails, log the error and throw a runtime exception
+            // This ensures we don't fall back to JPA merge which causes optimistic locking issues
+            throw new RuntimeException("Failed to update MindmapSpamInfo for mindmap ID: " + 
+                spamInfo.getMindmapId() + " (native SQL failed)", e);
         }
     }
 
