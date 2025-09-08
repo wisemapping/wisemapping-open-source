@@ -20,8 +20,7 @@ package com.wisemapping.test.rest;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wisemapping.config.common.CommonConfig;
-import com.wisemapping.config.rest.RestAppConfig;
+import com.wisemapping.config.AppConfig;
 import com.wisemapping.rest.JwtAuthController;
 import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.security.JwtTokenUtil;
@@ -39,7 +38,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
-        classes = {RestAppConfig.class, CommonConfig.class, JwtAuthController.class},
+        classes = {AppConfig.class, JwtAuthController.class},
         properties = {"app.api.http-basic-enabled=true"}
 )
 @AutoConfigureMockMvc

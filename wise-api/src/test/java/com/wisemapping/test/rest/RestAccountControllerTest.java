@@ -18,8 +18,7 @@
 
 package com.wisemapping.test.rest;
 
-import com.wisemapping.config.common.CommonConfig;
-import com.wisemapping.config.rest.RestAppConfig;
+import com.wisemapping.config.AppConfig;
 import com.wisemapping.rest.AdminController;
 import com.wisemapping.rest.MindmapController;
 import com.wisemapping.rest.UserController;
@@ -41,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(
-        classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class},
+        classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {"app.api.http-basic-enabled=true"}
 )

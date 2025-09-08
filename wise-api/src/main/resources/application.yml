@@ -96,9 +96,6 @@ logging:
     org:
       apache:
         tomcat: INFO
-    com:
-      zaxxer:
-        hikari: DEBUG
     root: INFO
 
 #

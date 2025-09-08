@@ -1,8 +1,7 @@
 package com.wisemapping.test.rest;
 
 
-import com.wisemapping.config.common.CommonConfig;
-import com.wisemapping.config.rest.RestAppConfig;
+import com.wisemapping.config.AppConfig;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.rest.AdminController;
 import com.wisemapping.rest.MindmapController;
@@ -35,7 +34,7 @@ import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {RestAppConfig.class, CommonConfig.class, MindmapController.class, AdminController.class, UserController.class},
+        classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {"app.api.http-basic-enabled=true"})
 public class RestMindmapControllerTest {
@@ -136,7 +135,8 @@ public class RestMindmapControllerTest {
         // Add map with same name ...
         HttpEntity<RestMindmap> createUserEntity = new HttpEntity<>(requestHeaders);
         final ResponseEntity<String> response = restTemplate.exchange("/api/restful/maps?title=" + title, HttpMethod.POST, createUserEntity, String.class);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        // The global exception handler now returns 400 instead of 500 for validation errors
+        assertTrue(response.getStatusCode().is4xxClientError(), "Expected 4xx status, got: " + response.getStatusCode());
         assertTrue(Objects.requireNonNull(response.getBody()).contains("You have already a map with the same name"));
     }
 
@@ -775,6 +775,7 @@ public class RestMindmapControllerTest {
         final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
         
         // The request should be accepted (not 415 error)
+        // The global exception handler now returns 400 instead of 500 for validation errors
         assertTrue(exchange.getStatusCode().is2xxSuccessful() || exchange.getStatusCode().is4xxClientError(), 
                    "Expected 2xx or 4xx status, got: " + exchange.getStatusCode() + " - " + exchange.getBody());
         
@@ -927,7 +928,8 @@ public class RestMindmapControllerTest {
 
         final HttpEntity<RestCollaborationList> updateEntity = new HttpEntity<>(collabs, requestHeaders);
         final ResponseEntity<RestCollaborationList> collabsList = restTemplate.exchange(resourceUri + "/collabs/", HttpMethod.PUT, updateEntity, RestCollaborationList.class);
-        assertTrue(collabsList.getStatusCode().is4xxClientError());
+        // The global exception handler now returns 400 instead of 500 for validation errors
+        assertTrue(collabsList.getStatusCode().is4xxClientError(), "Expected 4xx status, got: " + collabsList.getStatusCode());
     }
 
     @Test

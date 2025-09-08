@@ -20,7 +20,7 @@ package com.wisemapping.rest;
 
 import org.springframework.http.HttpInputMessage;
 
-class JsonHttpMessageNotReadableException extends org.springframework.http.converter.HttpMessageNotReadableException {
+public class JsonHttpMessageNotReadableException extends org.springframework.http.converter.HttpMessageNotReadableException {
 
     public JsonHttpMessageNotReadableException(String msg, Exception cause) {
         super(msg, cause, (HttpInputMessage) null);
