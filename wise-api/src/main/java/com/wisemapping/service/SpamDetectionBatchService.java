@@ -143,11 +143,8 @@ public class SpamDetectionBatchService {
                     // Check for spam content only if not already marked as spam
                     SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
                     if (spamResult.isSpam()) {
-                        // Mark as spam but keep it public
-                        MindmapSpamInfo spamInfo = mindmap.getSpamInfo();
-                        if (spamInfo == null) {
-                            spamInfo = new MindmapSpamInfo(mindmap);
-                        }
+                        // Mark as spam but keep it public - "last win" strategy
+                        MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
                         spamInfo.setSpamDetected(true);
                         spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
                         
@@ -157,26 +154,22 @@ public class SpamDetectionBatchService {
                             spamInfo.setSpamTypeCode(strategyName);
                         }
                         
-                        // Update only the spam info record
+                        // Update with "last win" strategy - will overwrite any existing data
                         mindmapManager.updateMindmapSpamInfo(spamInfo);
                         spamDetectedCount++;
-                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {}", 
+                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (last win)", 
                             mindmap.getTitle(), mindmap.getId(), spamInfo.getSpamTypeCode());
                     } else {
-                        // Update version even if not spam to mark as processed
-                        MindmapSpamInfo spamInfo = mindmap.getSpamInfo();
-                        if (spamInfo == null) {
-                            spamInfo = new MindmapSpamInfo(mindmap);
-                        }
+                        // Update version even if not spam to mark as processed - "last win" strategy
+                        MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
+                        spamInfo.setSpamDetected(false);
                         spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
                         mindmapManager.updateMindmapSpamInfo(spamInfo);
                     }
                 } else {
-                    // Already marked as spam, just update the version
-                    MindmapSpamInfo spamInfo = mindmap.getSpamInfo();
-                    if (spamInfo == null) {
-                        spamInfo = new MindmapSpamInfo(mindmap);
-                    }
+                    // Already marked as spam, just update the version - "last win" strategy
+                    MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
+                    spamInfo.setSpamDetected(true);
                     spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
                     mindmapManager.updateMindmapSpamInfo(spamInfo);
                 }

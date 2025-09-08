@@ -165,7 +165,31 @@ public class MindmapManagerImpl
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateMindmapSpamInfo(@NotNull com.wisemapping.model.MindmapSpamInfo spamInfo) {
         assert spamInfo != null : "Update MindmapSpamInfo: SpamInfo is required!";
-        entityManager.merge(spamInfo);
+        
+        // "Last Win" strategy: Use native SQL to force update regardless of conflicts
+        // This ensures the latest data always wins, even in high concurrency scenarios
+        try {
+            // Use native SQL for guaranteed "last win" behavior
+            String sql = """
+                INSERT INTO mindmap_spam_info (mindmap_id, spam_detected, spam_detection_version, spam_type_code)
+                VALUES (?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    spam_detected = VALUES(spam_detected),
+                    spam_detection_version = VALUES(spam_detection_version),
+                    spam_type_code = VALUES(spam_type_code)
+                """;
+            
+            entityManager.createNativeQuery(sql)
+                .setParameter(1, spamInfo.getMindmapId())
+                .setParameter(2, spamInfo.isSpamDetected())
+                .setParameter(3, spamInfo.getSpamDetectionVersion())
+                .setParameter(4, spamInfo.getSpamTypeCode())
+                .executeUpdate();
+                
+        } catch (Exception e) {
+            // Fallback to standard merge if native SQL fails
+            entityManager.merge(spamInfo);
+        }
     }
 
     @Override
