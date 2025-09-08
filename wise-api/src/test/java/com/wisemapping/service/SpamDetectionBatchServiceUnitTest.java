@@ -289,7 +289,7 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(0, result.spamDetectedCount);
         assertEquals(1, result.disabledAccountCount);
         // Verify that native SQL was called to update the mindmap
-        verify(entityManager, times(1)).createNativeQuery(contains("UPDATE mindmap SET public = false"));
+        verify(entityManager, times(1)).createNativeQuery(contains("UPDATE MINDMAP SET public = false"));
         // Verify that updateMindmapSpamInfo was called to update the version
         verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }

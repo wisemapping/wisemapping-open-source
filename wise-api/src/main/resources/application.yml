@@ -38,7 +38,7 @@ spring:
             trust: "*"
   # Database configuration options. Examples can be found: https://github.com/wisemapping/wisemapping-open-source/tree/develop/config/database
   datasource:
-    url: jdbc:hsqldb:mem:wisemapping
+    url: jdbc:hsqldb:mem:wisemapping;sql.names=false;sql.regular_names=false
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
     password: ''
     username: sa
