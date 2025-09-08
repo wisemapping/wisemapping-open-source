@@ -51,8 +51,13 @@ public class SpamDetectionScheduler {
             return;
         }
         logger.info("Executing spam detection task on application startup (async)...");
-        spamDetectionBatchService.processPublicMapsSpamDetection();
-        logger.info("Startup spam detection task completed.");
+        
+        try {
+            spamDetectionBatchService.processPublicMapsSpamDetection();
+            logger.info("Startup spam detection task completed.");
+        } catch (Exception e) {
+            logger.error("Startup spam detection task failed", e);
+        }
     }
 
     /**
@@ -75,7 +80,12 @@ public class SpamDetectionScheduler {
             return;
         }
         logger.info("Executing scheduled spam detection task for public maps (async)...");
-        spamDetectionBatchService.processPublicMapsSpamDetection();
-        logger.info("Scheduled spam detection task completed.");
+        
+        try {
+            spamDetectionBatchService.processPublicMapsSpamDetection();
+            logger.info("Scheduled spam detection task completed.");
+        } catch (Exception e) {
+            logger.error("Scheduled spam detection task failed", e);
+        }
     }
 }

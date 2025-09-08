@@ -110,7 +110,7 @@ public class SpamDetectionBatchService {
     /**
      * Process a single batch of mindmaps in its own transaction
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public BatchResult processBatch(java.util.Calendar cutoffDate, int offset, int batchSize) {
         List<Mindmap> publicMaps = mindmapManager.findAllPublicMindmapsSince(cutoffDate, offset, batchSize);
         
@@ -127,7 +127,7 @@ public class SpamDetectionBatchService {
             if (mindmap.getCreator().isSuspended()) {
                 // Make the map private if the account is disabled
                 mindmap.setPublic(false);
-                mindmapManager.updateMindmap(mindmap, false);
+                updateMindmapInTransaction(mindmap);
                 
                 disabledAccountCount++;
                 logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
@@ -145,7 +145,7 @@ public class SpamDetectionBatchService {
                 if (spamDetectionService.isSpamContent(mindmap)) {
                     // Mark as spam but keep it public
                     mindmap.setSpamDetected(true);
-                    mindmapManager.updateMindmap(mindmap, false);
+                    updateMindmapInTransaction(mindmap);
                     
                     spamDetectedCount++;
                     logger.warn("Marked public mindmap '{}' (ID: {}) as spam", 
@@ -162,14 +162,22 @@ public class SpamDetectionBatchService {
         
         return new BatchResult(processedCount, spamDetectedCount, disabledAccountCount);
     }
+    
+    /**
+     * Update mindmap in a separate transaction to ensure proper transaction context
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void updateMindmapInTransaction(Mindmap mindmap) {
+        mindmapManager.updateMindmap(mindmap, false);
+    }
 
     /**
      * Result class for batch processing
      */
-    private static class BatchResult {
-        final int processedCount;
-        final int spamDetectedCount;
-        final int disabledAccountCount;
+    public static class BatchResult {
+        public final int processedCount;
+        public final int spamDetectedCount;
+        public final int disabledAccountCount;
 
         BatchResult(int processedCount, int spamDetectedCount, int disabledAccountCount) {
             this.processedCount = processedCount;

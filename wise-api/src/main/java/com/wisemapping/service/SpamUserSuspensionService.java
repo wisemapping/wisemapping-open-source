@@ -128,7 +128,7 @@ public class SpamUserSuspensionService {
     /**
      * Process a single batch of users for ratio-based suspension in its own transaction
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public int processRatioBatch(int offset, int batchSize) {
         List<SpamRatioUserResult> usersWithHighSpamRatio = mindmapManager.findUsersWithHighSpamRatio(
             minSpamCount, spamRatioThreshold, monthsBack, offset, batchSize);
@@ -153,7 +153,7 @@ public class SpamUserSuspensionService {
 
                 // Suspend the user
                 user.suspend(SuspensionReason.ABUSE);
-                userService.updateUser(user);
+                updateUserInTransaction(user);
 
                 suspendedCount++;
                 logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps out of {} total public ({}% spam ratio)",
@@ -213,7 +213,7 @@ public class SpamUserSuspensionService {
     /**
      * Process a single batch of users for count-based suspension in its own transaction
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public int processCountBatch(int offset, int batchSize) {
         List<SpamUserResult> usersWithSpamMindmaps = mindmapManager.findUsersWithSpamMindaps(spamThreshold, monthsBack, offset, batchSize);
 
@@ -235,7 +235,7 @@ public class SpamUserSuspensionService {
 
                 // Suspend the user
                 user.suspend(SuspensionReason.ABUSE);
-                userService.updateUser(user);
+                updateUserInTransaction(user);
 
                 suspendedCount++;
                 logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps",
@@ -312,5 +312,13 @@ public class SpamUserSuspensionService {
     @Transactional(readOnly = true)
     public long getTotalUsersWithSpamMindmaps() {
         return mindmapManager.countUsersWithSpamMindaps(spamThreshold, monthsBack);
+    }
+    
+    /**
+     * Update user in a separate transaction to ensure proper transaction context
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void updateUserInTransaction(Account user) {
+        userService.updateUser(user);
     }
 }
