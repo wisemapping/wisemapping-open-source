@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
@@ -43,6 +44,9 @@ public class SpamUserSuspensionService {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     @Value("${app.batch.spam-user-suspension.enabled:true}")
     private boolean enabled;
@@ -316,9 +320,18 @@ public class SpamUserSuspensionService {
     
     /**
      * Update user in a separate transaction to ensure proper transaction context
+     * Uses TransactionTemplate to programmatically manage transactions in async context
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void updateUserInTransaction(Account user) {
-        userService.updateUser(user);
+        transactionTemplate.execute(status -> {
+            try {
+                userService.updateUser(user);
+                return null;
+            } catch (Exception e) {
+                logger.error("Error updating user {} in transaction: {}", user.getEmail(), e.getMessage(), e);
+                status.setRollbackOnly();
+                throw e;
+            }
+        });
     }
 }

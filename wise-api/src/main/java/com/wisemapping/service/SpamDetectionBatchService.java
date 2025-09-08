@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
@@ -40,6 +41,9 @@ public class SpamDetectionBatchService {
 
     @Autowired
     private SpamDetectionService spamDetectionService;
+    
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     @Value("${app.batch.spam-detection.enabled:true}")
     private boolean enabled;
@@ -165,10 +169,19 @@ public class SpamDetectionBatchService {
     
     /**
      * Update mindmap in a separate transaction to ensure proper transaction context
+     * Uses TransactionTemplate to programmatically manage transactions in async context
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void updateMindmapInTransaction(Mindmap mindmap) {
-        mindmapManager.updateMindmap(mindmap, false);
+        transactionTemplate.execute(status -> {
+            try {
+                mindmapManager.updateMindmap(mindmap, false);
+                return null;
+            } catch (Exception e) {
+                logger.error("Error updating mindmap {} in transaction: {}", mindmap.getId(), e.getMessage(), e);
+                status.setRollbackOnly();
+                throw e;
+            }
+        });
     }
 
     /**

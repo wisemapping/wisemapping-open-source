@@ -28,6 +28,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -35,6 +36,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class SpamDetectionBatchServiceUnitTest {
@@ -44,6 +46,9 @@ class SpamDetectionBatchServiceUnitTest {
 
     @Mock
     private SpamDetectionService spamDetectionService;
+    
+    @Mock
+    private TransactionTemplate transactionTemplate;
 
     @InjectMocks
     private SpamDetectionBatchService spamDetectionBatchService;
@@ -77,6 +82,12 @@ class SpamDetectionBatchServiceUnitTest {
         } catch (Exception e) {
             // Ignore for test setup
         }
+        
+        // Set up TransactionTemplate mock to execute the callback directly
+        lenient().when(transactionTemplate.execute(any())).thenAnswer(invocation -> {
+            org.springframework.transaction.support.TransactionCallback<?> callback = invocation.getArgument(0);
+            return callback.doInTransaction(null);
+        });
 
         // Set up service configuration
         ReflectionTestUtils.setField(spamDetectionBatchService, "enabled", true);
