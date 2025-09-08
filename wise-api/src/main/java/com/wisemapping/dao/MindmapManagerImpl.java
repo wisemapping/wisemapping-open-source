@@ -442,7 +442,9 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> findPublicMindmapsNeedingSpamDetection(Calendar cutoffDate, int currentVersion, int offset, int limit) {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m " +
+            "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN FETCH m.collaborations c " +
+            "LEFT JOIN FETCH c.collaborator " +
             "LEFT JOIN m.spamInfo s " +
             "WHERE m.isPublic = true " +
             "  AND m.creationTime >= :cutoffDate " +
