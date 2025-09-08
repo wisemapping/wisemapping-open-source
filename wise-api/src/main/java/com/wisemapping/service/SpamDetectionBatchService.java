@@ -137,38 +137,58 @@ public class SpamDetectionBatchService {
                 // Check if the creator account is disabled
                 if (mindmap.getCreator().isSuspended()) {
                     // Make the map private if the account is disabled
-                    // Use native SQL to avoid cascade conflicts with spam info
+                    // Store entity data before clearing the persistence context
+                    Integer mindmapId = mindmap.getId();
+                    String mindmapTitle = mindmap.getTitle();
+                    String creatorEmail = mindmap.getCreator().getEmail();
+                    boolean wasSpamDetected = mindmap.isSpamDetected();
+                    
                     try {
                         // Flush any pending changes and clear the persistence context to avoid conflicts
                         entityManager.flush();
                         entityManager.clear();
                         
+                        // Use native SQL to update the mindmap
                         String updateSql = "UPDATE MINDMAP SET public = false WHERE id = ?";
                         int updatedRows = entityManager.createNativeQuery(updateSql)
-                            .setParameter(1, mindmap.getId())
+                            .setParameter(1, mindmapId)
                             .executeUpdate();
                         
                         if (updatedRows == 0) {
                             logger.warn("No rows updated for mindmap '{}' (ID: {}) - mindmap may not exist or already private", 
-                                mindmap.getTitle(), mindmap.getId());
+                                mindmapTitle, mindmapId);
+                        } else {
+                            logger.info("Successfully made mindmap '{}' (ID: {}) private due to disabled account", 
+                                mindmapTitle, mindmapId);
                         }
                         
-                        // Only update spam info if the mindmap is already marked as spam
-                        if (mindmap.isSpamDetected()) {
-                            MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
-                            spamInfo.setSpamDetected(true);
-                            spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
-                            mindmapManager.updateMindmapSpamInfo(spamInfo);
-                        }
+                        // Always update spam info with current version for disabled accounts
+                        // This ensures the spam detection version is current for all processed mindmaps
+                        MindmapSpamInfo spamInfo = new MindmapSpamInfo();
+                        spamInfo.setMindmapId(mindmapId);
+                        spamInfo.setSpamDetected(wasSpamDetected); // Preserve existing spam status
+                        spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
+                        mindmapManager.updateMindmapSpamInfo(spamInfo);
+                        
+                        disabledAccountCount++;
+                        logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
+                            mindmapTitle, mindmapId, creatorEmail);
+                            
                     } catch (Exception updateException) {
-                        logger.error("Failed to make mindmap '{}' (ID: {}) private due to disabled account: {}", 
-                            mindmap.getTitle(), mindmap.getId(), updateException.getMessage(), updateException);
-                            logger.error(updateException.getMessage(),updateException);
+                        // Log detailed error information to help diagnose the issue
+                        logger.error("Failed to make mindmap '{}' (ID: {}) private due to disabled account. " +
+                                   "Error type: {}, Message: {}", 
+                            mindmapTitle, mindmapId, 
+                            updateException.getClass().getSimpleName(), 
+                            updateException.getMessage());
                         
+                        // Log the full stack trace for debugging
+                        logger.error("Full stack trace for mindmap update failure:", updateException);
+                        
+                        // Log additional context information
+                        logger.error("Mindmap context - Title: '{}', ID: {}, Creator: '{}', WasSpamDetected: {}", 
+                            mindmapTitle, mindmapId, creatorEmail, wasSpamDetected);
                     }
-                    disabledAccountCount++;
-                    logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
-                        mindmap.getTitle(), mindmap.getId(), mindmap.getCreator().getEmail());
                 } else if (!mindmap.isSpamDetected()) {
                     // Check for spam content only if not already marked as spam
                     SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
