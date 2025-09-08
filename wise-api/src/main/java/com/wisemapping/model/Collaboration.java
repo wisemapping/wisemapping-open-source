@@ -127,12 +127,14 @@ public class Collaboration implements Serializable {
         if (id != that.id) return false;
         // Use collaborator ID instead of full object comparison to avoid lazy initialization issues
         if (collaborator != null && that.collaborator != null) {
+            // Use getId() method which is safe and doesn't trigger lazy loading
             if (collaborator.getId() != that.collaborator.getId()) return false;
         } else if (collaborator != that.collaborator) {
             return false;
         }
         // Use mindMap ID instead of full object comparison to avoid lazy initialization issues
         if (mindMap != null && that.mindMap != null) {
+            // Use getId() method which is safe and doesn't trigger lazy loading
             if (mindMap.getId() != that.mindMap.getId()) return false;
         } else if (mindMap != that.mindMap) {
             return false;
