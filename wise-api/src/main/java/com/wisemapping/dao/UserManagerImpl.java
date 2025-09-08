@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -94,6 +95,7 @@ public class UserManagerImpl
     }
 
     @Override
+    @Transactional
     public void createUser(Account user) {
         assert user != null : "Trying to store a null user";
         if (!AuthenticationType.GOOGLE_OAUTH2.equals(user.getAuthenticationType())) {
@@ -105,6 +107,7 @@ public class UserManagerImpl
     }
 
     @Override
+    @Transactional
     public Account createUser(@NotNull Account user, @NotNull Collaborator collaborator) {
         assert user != null : "Trying to store a null user";
 
@@ -128,15 +131,18 @@ public class UserManagerImpl
     }
 
     @Override
+    @Transactional
     public void removeUser(@NotNull final Account user) {
         entityManager.remove(user);
     }
 
+    @Transactional
     public void auditLogin(@NotNull AccessAuditory accessAuditory) {
         assert accessAuditory != null : "accessAuditory is null";
         entityManager.persist(accessAuditory);
     }
 
+    @Transactional
     public void updateUser(@NotNull Account user) {
         assert user != null : "user is null";
 
