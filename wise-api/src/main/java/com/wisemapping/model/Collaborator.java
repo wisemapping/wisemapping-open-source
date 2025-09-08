@@ -96,8 +96,9 @@ public class Collaborator implements Serializable {
 
         Collaborator that = (Collaborator) o;
 
-        if (id != that.getId()) return false;
-        return email != null ? email.equals(that.getEmail()) : that.getEmail() == null;
+        // Use direct field access to avoid lazy initialization issues
+        if (id != that.id) return false;
+        return email != null ? email.equals(that.email) : that.email == null;
     }
 
     @Override
@@ -120,11 +121,12 @@ public class Collaborator implements Serializable {
             return false;
         }
 
-        if (id != that.getId()) {
+        // Use direct field access to avoid lazy initialization issues
+        if (id != that.id) {
             return false;
         }
 
-        return email != null ? email.equals(that.getEmail()) : that.getEmail() == null;
+        return email != null ? email.equals(that.email) : that.email == null;
     }
 
 }
