@@ -87,7 +87,8 @@ class SpamDetectionBatchServiceUnitTest {
         // Set up TransactionTemplate mock to execute the callback directly
         lenient().when(transactionTemplate.execute(any())).thenAnswer(invocation -> {
             org.springframework.transaction.support.TransactionCallback<?> callback = invocation.getArgument(0);
-            return callback.doInTransaction(null);
+            org.springframework.transaction.TransactionStatus mockStatus = mock(org.springframework.transaction.TransactionStatus.class);
+            return callback.doInTransaction(mockStatus);
         });
 
         // Set up service configuration
@@ -115,6 +116,8 @@ class SpamDetectionBatchServiceUnitTest {
         when(mindmapManager.countPublicMindmapsNeedingSpamDetection(any(Calendar.class), anyInt())).thenReturn(1L);
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(any(Calendar.class), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
+        when(spamDetectionService.detectSpam(testMindmap)).thenReturn(
+            com.wisemapping.service.spam.SpamDetectionResult.notSpam());
 
         // Act
         spamDetectionBatchService.processPublicMapsSpamDetection();
@@ -129,7 +132,8 @@ class SpamDetectionBatchServiceUnitTest {
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
-        when(spamDetectionService.isSpamContent(testMindmap)).thenReturn(true);
+        when(spamDetectionService.detectSpam(testMindmap)).thenReturn(
+            com.wisemapping.service.spam.SpamDetectionResult.spam("Test spam", "Test details", "TestStrategy"));
 
         // Act
         SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
@@ -149,7 +153,8 @@ class SpamDetectionBatchServiceUnitTest {
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
-        when(spamDetectionService.isSpamContent(testMindmap)).thenReturn(false);
+        when(spamDetectionService.detectSpam(testMindmap)).thenReturn(
+            com.wisemapping.service.spam.SpamDetectionResult.notSpam());
 
         // Act
         SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
@@ -183,7 +188,7 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(0, result.disabledAccountCount);
         // Version should still be updated even if already marked as spam
         assertEquals(1, testMindmap.getSpamDetectionVersion());
-        verify(spamDetectionService, never()).isSpamContent(any(Mindmap.class));
+        verify(spamDetectionService, never()).detectSpam(any(Mindmap.class));
         verify(mindmapManager, times(1)).updateMindmap(eq(testMindmap), eq(false));
     }
 
@@ -193,7 +198,7 @@ class SpamDetectionBatchServiceUnitTest {
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
-        when(spamDetectionService.isSpamContent(testMindmap)).thenThrow(new RuntimeException("Spam detection error"));
+        when(spamDetectionService.detectSpam(testMindmap)).thenThrow(new RuntimeException("Spam detection error"));
 
         // Act
         SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
@@ -295,7 +300,7 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(0, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
         // Should not call spam detection service
-        verify(spamDetectionService, never()).isSpamContent(any(Mindmap.class));
+        verify(spamDetectionService, never()).detectSpam(any(Mindmap.class));
         // Should not update mindmap
         verify(mindmapManager, never()).updateMindmap(any(Mindmap.class), anyBoolean());
     }

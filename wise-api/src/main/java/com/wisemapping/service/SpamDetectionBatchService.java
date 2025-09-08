@@ -28,9 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,8 +42,6 @@ public class SpamDetectionBatchService {
     @Autowired
     private SpamDetectionService spamDetectionService;
     
-    @Autowired
-    private TransactionTemplate transactionTemplate;
 
     @Value("${app.batch.spam-detection.enabled:true}")
     private boolean enabled;
@@ -131,82 +127,58 @@ public class SpamDetectionBatchService {
         int spamDetectedCount = 0;
         int disabledAccountCount = 0;
         
-        // Collect mindmaps that need updates
-        List<Mindmap> mindmapsToUpdate = new ArrayList<>();
-        
         for (Mindmap mindmap : publicMaps) {
-            boolean needsUpdate = false;
-            
-            // Check if the creator account is disabled
-            if (mindmap.getCreator().isSuspended()) {
-                // Make the map private if the account is disabled
-                mindmap.setPublic(false);
-                mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
-                needsUpdate = true;
-                disabledAccountCount++;
-                logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
-                    mindmap.getTitle(), mindmap.getId(), mindmap.getCreator().getEmail());
-            } else if (!mindmap.isSpamDetected()) {
-                // Check for spam content only if not already marked as spam
-                try {
-                    if (spamDetectionService.isSpamContent(mindmap)) {
+            try {
+                // Check if the creator account is disabled
+                if (mindmap.getCreator().isSuspended()) {
+                    // Make the map private if the account is disabled
+                    mindmap.setPublic(false);
+                    mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
+                    mindmapManager.updateMindmap(mindmap, false);
+                    disabledAccountCount++;
+                    logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
+                        mindmap.getTitle(), mindmap.getId(), mindmap.getCreator().getEmail());
+                } else if (!mindmap.isSpamDetected()) {
+                    // Check for spam content only if not already marked as spam
+                    SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
+                    if (spamResult.isSpam()) {
                         // Mark as spam but keep it public
                         mindmap.setSpamDetected(true);
                         mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
-                        needsUpdate = true;
+                        
+                        // Set spam type code from the strategy name
+                        String strategyName = spamResult.getStrategyName();
+                        if (strategyName != null) {
+                            mindmap.getSpamInfo().setSpamTypeCode(strategyName);
+                        }
+                        
+                        mindmapManager.updateMindmap(mindmap, false);
                         spamDetectedCount++;
-                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam", 
-                            mindmap.getTitle(), mindmap.getId());
+                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {}", 
+                            mindmap.getTitle(), mindmap.getId(), mindmap.getSpamInfo().getSpamTypeCode());
                     } else {
                         // Update version even if not spam to mark as processed
                         mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
-                        needsUpdate = true;
+                        mindmapManager.updateMindmap(mindmap, false);
                     }
-                } catch (Exception e) {
-                    logger.error("Error during spam detection for mindmap '{}' (ID: {}): {}", 
-                        mindmap.getTitle(), mindmap.getId(), e.getMessage(), e);
-                    // Continue processing other mindmaps in the batch
+                } else {
+                    // Already marked as spam, just update the version
+                    mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
+                    mindmapManager.updateMindmap(mindmap, false);
                 }
-            } else {
-                // Already marked as spam, just update the version
-                mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
-                needsUpdate = true;
+                
+                processedCount++;
+            } catch (Exception e) {
+                logger.error("Error processing mindmap '{}' (ID: {}): {}", 
+                    mindmap.getTitle(), mindmap.getId(), e.getMessage(), e);
+                // Continue processing other mindmaps in the batch
+                processedCount++;
             }
-            
-            if (needsUpdate) {
-                mindmapsToUpdate.add(mindmap);
-            }
-            
-            processedCount++;
-        }
-        
-        // Update all mindmaps in a single transaction if there are any updates
-        if (!mindmapsToUpdate.isEmpty()) {
-            updateMindmapsInTransaction(mindmapsToUpdate);
         }
         
         return new BatchResult(processedCount, spamDetectedCount, disabledAccountCount);
     }
     
-    /**
-     * Update multiple mindmaps in a single transaction to ensure proper transaction context
-     * Uses TransactionTemplate to programmatically manage transactions in async context
-     */
-    public void updateMindmapsInTransaction(List<Mindmap> mindmaps) {
-        transactionTemplate.execute(status -> {
-            try {
-                for (Mindmap mindmap : mindmaps) {
-                    mindmapManager.updateMindmap(mindmap, false);
-                }
-                logger.debug("Successfully updated {} mindmaps in transaction", mindmaps.size());
-                return null;
-            } catch (Exception e) {
-                logger.error("Error updating {} mindmaps in transaction: {}", mindmaps.size(), e.getMessage(), e);
-                status.setRollbackOnly();
-                throw e;
-            }
-        });
-    }
 
     /**
      * Result class for batch processing
