@@ -155,7 +155,7 @@ class SpamDetectionBatchServiceUnitTest {
     }
 
     @Test
-    void testProcessBatch_WithNoSpamDetected_ShouldNotMarkAsSpam() {
+    void testProcessBatch_WithNoSpamDetected_ShouldUpdateVersion() {
         // Arrange
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
@@ -170,8 +170,8 @@ class SpamDetectionBatchServiceUnitTest {
         assertNotNull(result);
         assertEquals(1, result.processedCount);
         assertEquals(0, result.spamDetectedCount);
-        // Verify that updateMindmapSpamInfo was NOT called when no spam is detected
-        verify(mindmapManager, never()).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
+        // Verify that updateMindmapSpamInfo was called to track processing version even when no spam is detected
+        verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
 
     @Test
@@ -267,6 +267,8 @@ class SpamDetectionBatchServiceUnitTest {
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
+        when(spamDetectionService.detectSpam(testMindmap)).thenReturn(
+            com.wisemapping.service.spam.SpamDetectionResult.notSpam());
 
         // Act
         SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
@@ -276,8 +278,8 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(1, result.processedCount);
         assertEquals(0, result.spamDetectedCount);
         // Verify that no special handling is done for suspended users
-        // The mindmap should be processed normally for spam detection only
-        verify(mindmapManager, never()).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
+        // The mindmap should be processed normally for spam detection and version tracking
+        verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
 
     @Test
