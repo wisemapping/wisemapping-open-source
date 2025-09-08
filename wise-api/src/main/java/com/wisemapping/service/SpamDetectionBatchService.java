@@ -140,8 +140,8 @@ public class SpamDetectionBatchService {
                         logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (last win)", 
                             mindmap.getTitle(), mindmap.getId(), spamTypeCode);
                     } else {
-                        // No spam detected - no need to update MINDMAP_SPAM_INFO table
-                        logger.debug("No spam detected in mindmap '{}' (ID: {}) - skipping spam info update", 
+                        // No spam detected - still need to update version to track processing
+                        logger.debug("No spam detected in mindmap '{}' (ID: {}) - updating version only", 1
                             mindmap.getTitle(), mindmap.getId());
                     }
                 } else {
@@ -153,10 +153,8 @@ public class SpamDetectionBatchService {
                         mindmap.getTitle(), mindmap.getId());
                 }
                 
-                // Update spam info if spam was detected (either newly or already)
-                if (isSpamDetected) {
-                    updateSpamInfo(mindmap, spamTypeCode);
-                }
+                // Always update spam info to track processing version
+                updateSpamInfo(mindmap, spamTypeCode);
                 
                 processedCount++;
             } catch (Exception e) {
@@ -177,10 +175,13 @@ public class SpamDetectionBatchService {
     private void updateSpamInfo(Mindmap mindmap, String spamTypeCode) {
         try {
             MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
-            spamInfo.setSpamDetected(true);
+            
+            // Set spam detection status and version
+            boolean isSpamDetected = (spamTypeCode != null);
+            spamInfo.setSpamDetected(isSpamDetected);
             spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
             
-            // Set spam type code if provided
+            // Set spam type code if provided (only when spam is detected)
             if (spamTypeCode != null) {
                 spamInfo.setSpamTypeCode(spamTypeCode);
             }
