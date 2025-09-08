@@ -83,16 +83,30 @@ public class MindmapServiceImpl
     public boolean hasPermissions(@Nullable Account user, @Nullable Mindmap map, @NotNull CollaborationRole role) {
         boolean result = false;
         if (map != null) {
-            if ((map.isPublic() && role == CollaborationRole.VIEWER) || isAdmin(user)) {
+            // Admin always has access
+            if (isAdmin(user)) {
                 result = true;
             } else if (user != null) {
-                final Optional<Collaboration> collaboration = map.findCollaboration(user);
-                if (collaboration.isPresent()) {
-                    result = collaboration
-                            .get()
-                            .hasPermissions(role);
+                // Check if user is the creator/owner
+                if (map.isCreator(user)) {
+                    result = true;
+                } else {
+                    // Check collaboration permissions first
+                    final Optional<Collaboration> collaboration = map.findCollaboration(user);
+                    if (collaboration.isPresent()) {
+                        result = collaboration.get().hasPermissions(role);
+                    } else {
+                        // Check if map is public and user has viewer role
+                        if (map.isPublic() && role == CollaborationRole.VIEWER) {
+                            // If map is marked as spam, only allow access to owner, collaborators, or admin
+                            if (map.isSpamDetected()) {
+                                result = false; // Non-owners and non-collaborators cannot access spam-marked public maps
+                            } else {
+                                result = true; // Non-owners can access normal public maps
+                            }
+                        }
+                    }
                 }
-
             }
         }
         return result;
