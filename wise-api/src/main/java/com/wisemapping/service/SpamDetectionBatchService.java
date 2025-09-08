@@ -22,6 +22,7 @@ import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindmapSpamInfo;
 import com.wisemapping.service.spam.SpamDetectionResult;
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class SpamDetectionBatchService {
 
     @Autowired
     private SpamDetectionService spamDetectionService;
+
+    @Autowired
+    private EntityManager entityManager;
     
 
     @Value("${app.batch.spam-detection.enabled:true}")
@@ -133,9 +137,23 @@ public class SpamDetectionBatchService {
                 // Check if the creator account is disabled
                 if (mindmap.getCreator().isSuspended()) {
                     // Make the map private if the account is disabled
-                    mindmap.setPublic(false);
-                    mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
-                    mindmapManager.updateMindmap(mindmap, false);
+                    // Use native SQL to avoid cascade conflicts with spam info
+                    try {
+                        String updateSql = "UPDATE mindmap SET public = false WHERE id = ?";
+                        entityManager.createNativeQuery(updateSql)
+                            .setParameter(1, mindmap.getId())
+                            .executeUpdate();
+                        
+                        // Update spam detection version separately to avoid cascade conflicts
+                        MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
+                        spamInfo.setSpamDetected(mindmap.isSpamDetected());
+                        spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
+                        mindmapManager.updateMindmapSpamInfo(spamInfo);
+                    } catch (Exception updateException) {
+                        logger.error("Failed to make mindmap '{}' (ID: {}) private due to disabled account: {}", 
+                            mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
+                        // Continue processing - this is a best effort operation
+                    }
                     disabledAccountCount++;
                     logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
                         mindmap.getTitle(), mindmap.getId(), mindmap.getCreator().getEmail());
@@ -155,23 +173,41 @@ public class SpamDetectionBatchService {
                         }
                         
                         // Update with "last win" strategy - will overwrite any existing data
-                        mindmapManager.updateMindmapSpamInfo(spamInfo);
-                        spamDetectedCount++;
-                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (last win)", 
-                            mindmap.getTitle(), mindmap.getId(), spamInfo.getSpamTypeCode());
+                        try {
+                            mindmapManager.updateMindmapSpamInfo(spamInfo);
+                            spamDetectedCount++;
+                            logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (last win)", 
+                                mindmap.getTitle(), mindmap.getId(), spamInfo.getSpamTypeCode());
+                        } catch (Exception updateException) {
+                            logger.error("Failed to update spam info for mindmap '{}' (ID: {}): {}", 
+                                mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
+                            // Continue processing - this is a best effort operation
+                        }
                     } else {
                         // Update version even if not spam to mark as processed - "last win" strategy
-                        MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
-                        spamInfo.setSpamDetected(false);
-                        spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
-                        mindmapManager.updateMindmapSpamInfo(spamInfo);
+                        try {
+                            MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
+                            spamInfo.setSpamDetected(false);
+                            spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
+                            mindmapManager.updateMindmapSpamInfo(spamInfo);
+                        } catch (Exception updateException) {
+                            logger.error("Failed to update spam detection version for mindmap '{}' (ID: {}): {}", 
+                                mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
+                            // Continue processing - this is a best effort operation
+                        }
                     }
                 } else {
                     // Already marked as spam, just update the version - "last win" strategy
-                    MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
-                    spamInfo.setSpamDetected(true);
-                    spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
-                    mindmapManager.updateMindmapSpamInfo(spamInfo);
+                    try {
+                        MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
+                        spamInfo.setSpamDetected(true);
+                        spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
+                        mindmapManager.updateMindmapSpamInfo(spamInfo);
+                    } catch (Exception updateException) {
+                        logger.error("Failed to update spam detection version for already-spam mindmap '{}' (ID: {}): {}", 
+                            mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
+                        // Continue processing - this is a best effort operation
+                    }
                 }
                 
                 processedCount++;

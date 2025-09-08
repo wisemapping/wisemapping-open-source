@@ -22,6 +22,7 @@ import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindmapSpamInfo;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,6 +51,9 @@ class SpamDetectionBatchServiceUnitTest {
     
     @Mock
     private TransactionTemplate transactionTemplate;
+
+    @Mock
+    private EntityManager entityManager;
 
     @InjectMocks
     private SpamDetectionBatchService spamDetectionBatchService;
@@ -91,6 +95,9 @@ class SpamDetectionBatchServiceUnitTest {
             org.springframework.transaction.TransactionStatus mockStatus = mock(org.springframework.transaction.TransactionStatus.class);
             return callback.doInTransaction(mockStatus);
         });
+
+        // Set up EntityManager mock for native SQL queries
+        lenient().when(entityManager.createNativeQuery(anyString())).thenReturn(mock(jakarta.persistence.Query.class));
 
         // Set up service configuration
         ReflectionTestUtils.setField(spamDetectionBatchService, "enabled", true);
@@ -144,7 +151,7 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(1, result.processedCount);
         assertEquals(1, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
-        assertTrue(testMindmap.isSpamDetected());
+        // Verify that updateMindmapSpamInfo was called with spam detected
         verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
 
@@ -165,9 +172,7 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(1, result.processedCount);
         assertEquals(0, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
-        assertFalse(testMindmap.isSpamDetected());
-        // Version should be updated even when no spam is detected
-        assertEquals(1, testMindmap.getSpamDetectionVersion());
+        // Verify that updateMindmapSpamInfo was called to update the version even when no spam is detected
         verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
 
@@ -187,8 +192,7 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(1, result.processedCount); // processedCount represents total mindmaps processed
         assertEquals(0, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
-        // Version should still be updated even if already marked as spam
-        assertEquals(1, testMindmap.getSpamDetectionVersion());
+        // Verify that spam detection was skipped but version was still updated
         verify(spamDetectionService, never()).detectSpam(any(Mindmap.class));
         verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
@@ -270,6 +274,12 @@ class SpamDetectionBatchServiceUnitTest {
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
 
+        // Mock the native query for updating mindmap
+        jakarta.persistence.Query mockQuery = mock(jakarta.persistence.Query.class);
+        when(entityManager.createNativeQuery(anyString())).thenReturn(mockQuery);
+        when(mockQuery.setParameter(anyInt(), any())).thenReturn(mockQuery);
+        when(mockQuery.executeUpdate()).thenReturn(1);
+
         // Act
         SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
 
@@ -278,10 +288,10 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(1, result.processedCount); // processedCount represents total mindmaps processed
         assertEquals(0, result.spamDetectedCount);
         assertEquals(1, result.disabledAccountCount);
-        assertFalse(testMindmap.isPublic()); // Should be made private
-        // Version should be updated when making map private due to suspended user
-        assertEquals(1, testMindmap.getSpamDetectionVersion());
-        verify(mindmapManager, times(1)).updateMindmap(eq(testMindmap), eq(false));
+        // Verify that native SQL was called to update the mindmap
+        verify(entityManager, times(1)).createNativeQuery(contains("UPDATE mindmap SET public = false"));
+        // Verify that updateMindmapSpamInfo was called to update the version
+        verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
 
     @Test
