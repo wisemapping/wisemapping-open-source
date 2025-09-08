@@ -20,6 +20,7 @@ package com.wisemapping.service;
 
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.MindmapSpamInfo;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,28 +144,41 @@ public class SpamDetectionBatchService {
                     SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
                     if (spamResult.isSpam()) {
                         // Mark as spam but keep it public
-                        mindmap.setSpamDetected(true);
-                        mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
+                        MindmapSpamInfo spamInfo = mindmap.getSpamInfo();
+                        if (spamInfo == null) {
+                            spamInfo = new MindmapSpamInfo(mindmap);
+                        }
+                        spamInfo.setSpamDetected(true);
+                        spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
                         
                         // Set spam type code from the strategy name
                         String strategyName = spamResult.getStrategyName();
                         if (strategyName != null) {
-                            mindmap.getSpamInfo().setSpamTypeCode(strategyName);
+                            spamInfo.setSpamTypeCode(strategyName);
                         }
                         
-                        mindmapManager.updateMindmap(mindmap, false);
+                        // Update only the spam info record
+                        mindmapManager.updateMindmapSpamInfo(spamInfo);
                         spamDetectedCount++;
                         logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {}", 
-                            mindmap.getTitle(), mindmap.getId(), mindmap.getSpamInfo().getSpamTypeCode());
+                            mindmap.getTitle(), mindmap.getId(), spamInfo.getSpamTypeCode());
                     } else {
                         // Update version even if not spam to mark as processed
-                        mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
-                        mindmapManager.updateMindmap(mindmap, false);
+                        MindmapSpamInfo spamInfo = mindmap.getSpamInfo();
+                        if (spamInfo == null) {
+                            spamInfo = new MindmapSpamInfo(mindmap);
+                        }
+                        spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
+                        mindmapManager.updateMindmapSpamInfo(spamInfo);
                     }
                 } else {
                     // Already marked as spam, just update the version
-                    mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
-                    mindmapManager.updateMindmap(mindmap, false);
+                    MindmapSpamInfo spamInfo = mindmap.getSpamInfo();
+                    if (spamInfo == null) {
+                        spamInfo = new MindmapSpamInfo(mindmap);
+                    }
+                    spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
+                    mindmapManager.updateMindmapSpamInfo(spamInfo);
                 }
                 
                 processedCount++;
@@ -178,6 +192,7 @@ public class SpamDetectionBatchService {
         
         return new BatchResult(processedCount, spamDetectedCount, disabledAccountCount);
     }
+
     
 
     /**

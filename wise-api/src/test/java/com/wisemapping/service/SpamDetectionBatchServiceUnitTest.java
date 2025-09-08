@@ -21,6 +21,7 @@ package com.wisemapping.service;
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.MindmapSpamInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -144,7 +145,7 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(1, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
         assertTrue(testMindmap.isSpamDetected());
-        verify(mindmapManager, times(1)).updateMindmap(eq(testMindmap), eq(false));
+        verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
 
     @Test
@@ -167,7 +168,7 @@ class SpamDetectionBatchServiceUnitTest {
         assertFalse(testMindmap.isSpamDetected());
         // Version should be updated even when no spam is detected
         assertEquals(1, testMindmap.getSpamDetectionVersion());
-        verify(mindmapManager, times(1)).updateMindmap(eq(testMindmap), eq(false));
+        verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
 
     @Test
@@ -189,7 +190,7 @@ class SpamDetectionBatchServiceUnitTest {
         // Version should still be updated even if already marked as spam
         assertEquals(1, testMindmap.getSpamDetectionVersion());
         verify(spamDetectionService, never()).detectSpam(any(Mindmap.class));
-        verify(mindmapManager, times(1)).updateMindmap(eq(testMindmap), eq(false));
+        verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
 
     @Test

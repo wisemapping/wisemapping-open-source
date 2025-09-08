@@ -160,6 +160,12 @@ public class MindmapManagerImpl
     }
 
     @Override
+    public void updateMindmapSpamInfo(@NotNull com.wisemapping.model.MindmapSpamInfo spamInfo) {
+        assert spamInfo != null : "Update MindmapSpamInfo: SpamInfo is required!";
+        entityManager.merge(spamInfo);
+    }
+
+    @Override
     public void removeMindmap(@NotNull final Mindmap mindmap) {
         // Delete history first ...
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();

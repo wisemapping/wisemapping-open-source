@@ -43,6 +43,8 @@ public interface MindmapManager {
 
     void updateMindmap(@NotNull Mindmap mindmap, boolean saveHistory);
 
+    void updateMindmapSpamInfo(@NotNull com.wisemapping.model.MindmapSpamInfo spamInfo);
+
     void removeCollaborator(@NotNull Collaborator collaborator);
 
     void removeMindmap(Mindmap mindmap);
