@@ -69,7 +69,6 @@ public class SpamUserSuspensionService {
      * Process users with multiple spam mindmaps and suspend them if necessary
      * Each batch is processed in its own transaction to avoid long-running transactions
      */
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void processSpamUserSuspension() {
         if (!enabled) {
             logger.debug("Spam user suspension batch task is disabled");
@@ -88,13 +87,12 @@ public class SpamUserSuspensionService {
      * Each batch is processed in its own transaction to avoid long-running transactions
      * This method itself is not transactional to avoid connection leaks
      */
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void processSpamUserSuspensionByRatio() {
         logger.info("Starting ratio-based spam user suspension batch task with min spam count: {}, ratio threshold: {}%, and months back: {} (public maps only)", 
             minSpamCount, spamRatioThreshold * 100, monthsBack);
 
         try {
-            long totalUsers = mindmapManager.countUsersWithHighSpamRatio(minSpamCount, spamRatioThreshold, monthsBack);
+            long totalUsers = getTotalUsersWithHighSpamRatio();
             logger.info("Starting ratio-based spam user suspension for {} users in batches of {}", totalUsers, batchSize);
 
             int suspendedCount = 0;
@@ -175,12 +173,11 @@ public class SpamUserSuspensionService {
      * Each batch is processed in its own transaction to avoid long-running transactions
      * This method itself is not transactional to avoid connection leaks
      */
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void processSpamUserSuspensionByCount() {
         logger.info("Starting count-based spam user suspension batch task with threshold: {} and months back: {} (public maps only)", spamThreshold, monthsBack);
 
         try {
-            long totalUsers = mindmapManager.countUsersWithSpamMindaps(spamThreshold, monthsBack);
+            long totalUsers = getTotalUsersWithSpamMindmaps();
             logger.info("Starting count-based spam user suspension for {} users in batches of {}", totalUsers, batchSize);
 
             int suspendedCount = 0;
@@ -299,5 +296,21 @@ public class SpamUserSuspensionService {
      */
     public boolean isUseRatioBased() {
         return useRatioBased;
+    }
+
+    /**
+     * Get total count of users with high spam ratio (transactional)
+     */
+    @Transactional(readOnly = true)
+    public long getTotalUsersWithHighSpamRatio() {
+        return mindmapManager.countUsersWithHighSpamRatio(minSpamCount, spamRatioThreshold, monthsBack);
+    }
+
+    /**
+     * Get total count of users with spam mindmaps (transactional)
+     */
+    @Transactional(readOnly = true)
+    public long getTotalUsersWithSpamMindmaps() {
+        return mindmapManager.countUsersWithSpamMindaps(spamThreshold, monthsBack);
     }
 }

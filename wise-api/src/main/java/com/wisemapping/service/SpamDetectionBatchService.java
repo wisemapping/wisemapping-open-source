@@ -55,7 +55,6 @@ public class SpamDetectionBatchService {
      * Each batch is processed in its own transaction to avoid long-running transactions
      * This method itself is not transactional to avoid connection leaks
      */
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void processPublicMapsSpamDetection() {
         if (!enabled) {
             logger.debug("Spam detection batch task is disabled");
@@ -70,7 +69,7 @@ public class SpamDetectionBatchService {
             cutoffDate.add(java.util.Calendar.MONTH, -monthsBack);
             
             // Get total count for logging
-            long totalMaps = mindmapManager.countAllPublicMindmapsSince(cutoffDate);
+            long totalMaps = getTotalMapsCount(cutoffDate);
             logger.info("Starting spam detection for {} public maps created since {} in batches of {}", totalMaps, cutoffDate.getTime(), batchSize);
             
             int processedCount = 0;
@@ -177,6 +176,14 @@ public class SpamDetectionBatchService {
             this.spamDetectedCount = spamDetectedCount;
             this.disabledAccountCount = disabledAccountCount;
         }
+    }
+
+    /**
+     * Get total count of public mindmaps since cutoff date (transactional)
+     */
+    @Transactional(readOnly = true)
+    public long getTotalMapsCount(java.util.Calendar cutoffDate) {
+        return mindmapManager.countAllPublicMindmapsSince(cutoffDate);
     }
 
     /**
