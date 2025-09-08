@@ -261,29 +261,22 @@ class SpamDetectionBatchServiceUnitTest {
     }
 
     @Test
-    void testProcessBatch_WithSuspendedUser_ShouldMakeMapPrivate() {
-        // Arrange
+    void testProcessBatch_WithSuspendedUser_ShouldProcessNormally() {
+        // Arrange - suspended users are now handled the same as regular users
         testUser.setSuspended(true);
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
-
-        // Mock the native query for updating mindmap
-        jakarta.persistence.Query mockQuery = mock(jakarta.persistence.Query.class);
-        when(entityManager.createNativeQuery(anyString())).thenReturn(mockQuery);
-        when(mockQuery.setParameter(anyInt(), any())).thenReturn(mockQuery);
-        when(mockQuery.executeUpdate()).thenReturn(1);
 
         // Act
         SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
 
         // Assert
         assertNotNull(result);
-        assertEquals(1, result.processedCount); // processedCount represents total mindmaps processed
+        assertEquals(1, result.processedCount);
         assertEquals(0, result.spamDetectedCount);
-        // Verify that native SQL was called to update the mindmap
-        verify(entityManager, times(1)).createNativeQuery(contains("UPDATE MINDMAP SET public = false"));
-        // Verify that updateMindmapSpamInfo was NOT called since the mindmap is not marked as spam
+        // Verify that no special handling is done for suspended users
+        // The mindmap should be processed normally for spam detection only
         verify(mindmapManager, never()).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
 
