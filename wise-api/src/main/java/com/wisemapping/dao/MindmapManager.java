@@ -173,4 +173,22 @@ public interface MindmapManager {
      * @return total count of public mindmaps needing spam detection
      */
     long countPublicMindmapsNeedingSpamDetection(java.util.Calendar cutoffDate, int currentVersion);
+
+    /**
+     * Find users with public spam mindmaps detected by specific spam type strategies
+     * @param spamTypeCodes array of spam type codes to filter by (e.g., "FewNodesWithContent", "UserBehavior")
+     * @param monthsBack number of months to look back for account creation
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of users with their spam counts for the specified spam types
+     */
+    List<SpamUserResult> findUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack, int offset, int limit);
+
+    /**
+     * Count users with public spam mindmaps detected by specific spam type strategies
+     * @param spamTypeCodes array of spam type codes to filter by
+     * @param monthsBack number of months to look back for account creation
+     * @return count of users meeting the criteria
+     */
+    long countUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack);
 }

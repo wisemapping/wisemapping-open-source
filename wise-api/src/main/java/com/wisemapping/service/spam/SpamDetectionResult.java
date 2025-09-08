@@ -22,19 +22,32 @@ public class SpamDetectionResult {
     private final boolean isSpam;
     private final String reason;
     private final String details;
+    private final String strategyName;
 
     public SpamDetectionResult(boolean isSpam, String reason, String details) {
         this.isSpam = isSpam;
         this.reason = reason;
         this.details = details;
+        this.strategyName = null;
+    }
+
+    public SpamDetectionResult(boolean isSpam, String reason, String details, String strategyName) {
+        this.isSpam = isSpam;
+        this.reason = reason;
+        this.details = details;
+        this.strategyName = strategyName;
     }
 
     public static SpamDetectionResult notSpam() {
-        return new SpamDetectionResult(false, null, null);
+        return new SpamDetectionResult(false, null, null, null);
     }
 
     public static SpamDetectionResult spam(String reason, String details) {
-        return new SpamDetectionResult(true, reason, details);
+        return new SpamDetectionResult(true, reason, details, null);
+    }
+
+    public static SpamDetectionResult spam(String reason, String details, String strategyName) {
+        return new SpamDetectionResult(true, reason, details, strategyName);
     }
 
     public boolean isSpam() {
@@ -47,5 +60,9 @@ public class SpamDetectionResult {
 
     public String getDetails() {
         return details;
+    }
+
+    public String getStrategyName() {
+        return strategyName;
     }
 }

@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -470,6 +471,86 @@ public class MindmapManagerImpl
         return query.getSingleResult();
     }
 
+    @Override
+    public List<SpamUserResult> findUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack, int offset, int limit) {
+        if (spamTypeCodes == null || spamTypeCodes.length == 0) {
+            return new ArrayList<>();
+        }
+
+        // Calculate cutoff date (monthsBack months ago)
+        Calendar cutoffDate = Calendar.getInstance();
+        cutoffDate.add(Calendar.MONTH, -monthsBack);
+
+        // Build the IN clause for spam type codes
+        StringBuilder inClause = new StringBuilder();
+        for (int i = 0; i < spamTypeCodes.length; i++) {
+            if (i > 0) inClause.append(", ");
+            inClause.append(":spamType").append(i);
+        }
+
+        final TypedQuery<Object[]> query = entityManager.createQuery(
+            "SELECT m.creator, COUNT(m.id) as spamCount " +
+            "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.spamInfo s " +
+            "WHERE s.spamDetected = true " +
+            "  AND m.isPublic = true " +
+            "  AND m.creator.creationDate >= :cutoffDate " +
+            "  AND s.spamTypeCode IN (" + inClause.toString() + ") " +
+            "GROUP BY m.creator " +
+            "ORDER BY m.creator.id", 
+            Object[].class);
+        
+        query.setParameter("cutoffDate", cutoffDate);
+        for (int i = 0; i < spamTypeCodes.length; i++) {
+            query.setParameter("spamType" + i, spamTypeCodes[i]);
+        }
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        
+        // Convert Object[] results to SpamUserResult objects
+        return query.getResultList().stream()
+                .map(result -> {
+                    Account user = (Account) result[0];
+                    Long spamCount = (Long) result[1];
+                    return new SpamUserResult(user, spamCount);
+                })
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public long countUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack) {
+        if (spamTypeCodes == null || spamTypeCodes.length == 0) {
+            return 0;
+        }
+
+        // Calculate cutoff date (monthsBack months ago)
+        Calendar cutoffDate = Calendar.getInstance();
+        cutoffDate.add(Calendar.MONTH, -monthsBack);
+
+        // Build the IN clause for spam type codes
+        StringBuilder inClause = new StringBuilder();
+        for (int i = 0; i < spamTypeCodes.length; i++) {
+            if (i > 0) inClause.append(", ");
+            inClause.append(":spamType").append(i);
+        }
+
+        final TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(DISTINCT m.creator) " +
+            "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.spamInfo s " +
+            "WHERE s.spamDetected = true " +
+            "  AND m.isPublic = true " +
+            "  AND m.creator.creationDate >= :cutoffDate " +
+            "  AND s.spamTypeCode IN (" + inClause.toString() + ")", 
+            Long.class);
+        
+        query.setParameter("cutoffDate", cutoffDate);
+        for (int i = 0; i < spamTypeCodes.length; i++) {
+            query.setParameter("spamType" + i, spamTypeCodes[i]);
+        }
+        
+        return query.getSingleResult();
+    }
 
     private void saveHistory(@NotNull final Mindmap mindMap) {
         final MindMapHistory history = new MindMapHistory();

@@ -334,6 +334,113 @@ public class SpamUserSuspensionService {
     public long getTotalUsersWithSpamMindmaps() {
         return mindmapManager.countUsersWithSpamMindaps(spamThreshold, monthsBack);
     }
+
+    /**
+     * Suspend users who have public maps marked as spam by specific detection strategies
+     * @param spamTypeCodes array of spam type codes to filter by (e.g., "FewNodesWithContent", "UserBehavior")
+     * @param monthsBack number of months to look back for account creation
+     * @param suspensionReason the reason for suspension
+     * @return number of users suspended
+     */
+    public int suspendUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack, SuspensionReason suspensionReason) {
+        if (!enabled) {
+            logger.debug("Spam user suspension is disabled");
+            return 0;
+        }
+
+        if (spamTypeCodes == null || spamTypeCodes.length == 0) {
+            logger.warn("No spam type codes provided for suspension");
+            return 0;
+        }
+
+        logger.info("Starting suspension of users with public spam maps by type: {} (months back: {})", 
+            String.join(", ", spamTypeCodes), monthsBack);
+
+        try {
+            long totalUsers = mindmapManager.countUsersWithPublicSpamMapsByType(spamTypeCodes, monthsBack);
+            logger.info("Found {} users with public spam maps of specified types", totalUsers);
+
+            if (totalUsers == 0) {
+                return 0;
+            }
+
+            int suspendedCount = 0;
+            int offset = 0;
+
+            while (offset < totalUsers) {
+                try {
+                    int batchSuspendedCount = processSpamTypeBatch(spamTypeCodes, monthsBack, offset, batchSize, suspensionReason);
+                    suspendedCount += batchSuspendedCount;
+
+                    if (batchSuspendedCount == 0) {
+                        break; // No more users to process
+                    }
+
+                    offset += batchSize;
+                    logger.debug("Processed batch: offset={}, batchSize={}, totalSuspended={}",
+                        offset - batchSize, batchSize, suspendedCount);
+                } catch (Exception e) {
+                    logger.error("Error processing spam type batch at offset {}: {}", offset, e.getMessage(), e);
+                    // Continue with next batch instead of failing completely
+                    offset += batchSize;
+                }
+            }
+
+            logger.info("Spam type-based user suspension completed. Suspended {} users", suspendedCount);
+            return suspendedCount;
+
+        } catch (Exception e) {
+            logger.error("Error during spam type-based user suspension", e);
+            throw e;
+        }
+    }
+
+    /**
+     * Process a single batch of users for spam type-based suspension in its own transaction
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public int processSpamTypeBatch(String[] spamTypeCodes, int monthsBack, int offset, int batchSize, SuspensionReason suspensionReason) {
+        List<SpamUserResult> usersWithSpamMaps = mindmapManager.findUsersWithPublicSpamMapsByType(spamTypeCodes, monthsBack, offset, batchSize);
+
+        if (usersWithSpamMaps.isEmpty()) {
+            return 0;
+        }
+
+        int suspendedCount = 0;
+        
+        // Collect users that need to be suspended
+        List<Account> usersToSuspend = new ArrayList<>();
+
+        for (SpamUserResult result : usersWithSpamMaps) {
+            try {
+                Account user = result.getUser();
+                long spamCount = result.getSpamCount();
+
+                if (user.isSuspended()) {
+                    logger.debug("User {} is already suspended. Skipping.", user.getEmail());
+                    continue;
+                }
+
+                // Suspend the user
+                user.suspend(suspensionReason);
+                usersToSuspend.add(user);
+
+                suspendedCount++;
+                logger.warn("Suspended user {} (created: {}) due to {} public spam mindmaps of types: {}",
+                    user.getEmail(), user.getCreationDate(), spamCount, String.join(", ", spamTypeCodes));
+            } catch (Exception e) {
+                logger.error("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
+                // Continue processing other users in the batch
+            }
+        }
+        
+        // Update all users in a single transaction if there are any updates
+        if (!usersToSuspend.isEmpty()) {
+            updateUsersInTransaction(usersToSuspend);
+        }
+
+        return suspendedCount;
+    }
     
     /**
      * Update multiple users in a single transaction to ensure proper transaction context

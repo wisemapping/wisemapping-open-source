@@ -41,7 +41,8 @@ public class SpamDetectionService {
                                mindmap.getDescription(), result.getReason(), result.getDetails());
                 }
                 return new SpamDetectionResult(true, result.getReason(), 
-                    String.format("Strategy: %s, Details: %s", strategy.getStrategyName(), result.getDetails()));
+                    String.format("Strategy: %s, Details: %s", strategy.getStrategyName(), result.getDetails()),
+                    strategy.getStrategyName());
             }
         }
         
