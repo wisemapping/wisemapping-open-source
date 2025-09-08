@@ -150,7 +150,6 @@ class SpamDetectionBatchServiceUnitTest {
         assertNotNull(result);
         assertEquals(1, result.processedCount);
         assertEquals(1, result.spamDetectedCount);
-        assertEquals(0, result.disabledAccountCount);
         // Verify that updateMindmapSpamInfo was called with spam detected
         verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
@@ -171,7 +170,6 @@ class SpamDetectionBatchServiceUnitTest {
         assertNotNull(result);
         assertEquals(1, result.processedCount);
         assertEquals(0, result.spamDetectedCount);
-        assertEquals(0, result.disabledAccountCount);
         // Verify that updateMindmapSpamInfo was NOT called when no spam is detected
         verify(mindmapManager, never()).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
     }
@@ -191,7 +189,6 @@ class SpamDetectionBatchServiceUnitTest {
         assertNotNull(result);
         assertEquals(1, result.processedCount); // processedCount represents total mindmaps processed
         assertEquals(0, result.spamDetectedCount);
-        assertEquals(0, result.disabledAccountCount);
         // Verify that spam detection was skipped but version was still updated
         verify(spamDetectionService, never()).detectSpam(any(Mindmap.class));
         verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
@@ -212,7 +209,6 @@ class SpamDetectionBatchServiceUnitTest {
         assertNotNull(result);
         assertEquals(1, result.processedCount);
         assertEquals(0, result.spamDetectedCount);
-        assertEquals(0, result.disabledAccountCount);
         // When exception occurs, mindmap should not be updated
         verify(mindmapManager, never()).updateMindmap(any(Mindmap.class), anyBoolean());
     }
@@ -247,23 +243,21 @@ class SpamDetectionBatchServiceUnitTest {
     @Test
     void testBatchResult_Constructor_ShouldSetValuesCorrectly() {
         // Act
-        SpamDetectionBatchService.BatchResult result = new SpamDetectionBatchService.BatchResult(5, 2, 1);
+        SpamDetectionBatchService.BatchResult result = new SpamDetectionBatchService.BatchResult(5, 2);
 
         // Assert
         assertEquals(5, result.processedCount);
         assertEquals(2, result.spamDetectedCount);
-        assertEquals(1, result.disabledAccountCount);
     }
 
     @Test
     void testBatchResult_WithZeroValues_ShouldWorkCorrectly() {
         // Act
-        SpamDetectionBatchService.BatchResult result = new SpamDetectionBatchService.BatchResult(0, 0, 0);
+        SpamDetectionBatchService.BatchResult result = new SpamDetectionBatchService.BatchResult(0, 0);
 
         // Assert
         assertEquals(0, result.processedCount);
         assertEquals(0, result.spamDetectedCount);
-        assertEquals(0, result.disabledAccountCount);
     }
 
     @Test
@@ -287,7 +281,6 @@ class SpamDetectionBatchServiceUnitTest {
         assertNotNull(result);
         assertEquals(1, result.processedCount); // processedCount represents total mindmaps processed
         assertEquals(0, result.spamDetectedCount);
-        assertEquals(1, result.disabledAccountCount);
         // Verify that native SQL was called to update the mindmap
         verify(entityManager, times(1)).createNativeQuery(contains("UPDATE MINDMAP SET public = false"));
         // Verify that updateMindmapSpamInfo was NOT called since the mindmap is not marked as spam
@@ -309,7 +302,6 @@ class SpamDetectionBatchServiceUnitTest {
         assertNotNull(result);
         assertEquals(0, result.processedCount); // No mindmaps processed because none returned by query
         assertEquals(0, result.spamDetectedCount);
-        assertEquals(0, result.disabledAccountCount);
         // Should not call spam detection service
         verify(spamDetectionService, never()).detectSpam(any(Mindmap.class));
         // Should not update mindmap
