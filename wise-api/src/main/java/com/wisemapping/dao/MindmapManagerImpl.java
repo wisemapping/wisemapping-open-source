@@ -431,6 +431,28 @@ public class MindmapManagerImpl
         return query.getSingleResult();
     }
 
+    @Override
+    public List<Mindmap> findPublicMindmapsNeedingSpamDetection(Calendar cutoffDate, int currentVersion, int offset, int limit) {
+        final TypedQuery<Mindmap> query = entityManager.createQuery(
+            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true AND m.creationTime >= :cutoffDate AND m.spamDetectionVersion < :currentVersion ORDER BY m.id", 
+            Mindmap.class);
+        query.setParameter("cutoffDate", cutoffDate);
+        query.setParameter("currentVersion", currentVersion);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countPublicMindmapsNeedingSpamDetection(Calendar cutoffDate, int currentVersion) {
+        final TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true AND m.creationTime >= :cutoffDate AND m.spamDetectionVersion < :currentVersion", 
+            Long.class);
+        query.setParameter("cutoffDate", cutoffDate);
+        query.setParameter("currentVersion", currentVersion);
+        return query.getSingleResult();
+    }
+
     private void saveHistory(@NotNull final Mindmap mindMap) {
         final MindMapHistory history = new MindMapHistory();
 

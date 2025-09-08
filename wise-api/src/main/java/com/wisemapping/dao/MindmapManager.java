@@ -155,4 +155,22 @@ public interface MindmapManager {
      * @return total count of public mindmaps
      */
     long countAllPublicMindmapsSince(java.util.Calendar cutoffDate);
+
+    /**
+     * Find public mindmaps that need spam detection (version < current version)
+     * @param cutoffDate only return mindmaps created after this date
+     * @param currentVersion only return mindmaps with version less than this
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of public mindmaps needing spam detection
+     */
+    List<Mindmap> findPublicMindmapsNeedingSpamDetection(java.util.Calendar cutoffDate, int currentVersion, int offset, int limit);
+
+    /**
+     * Count public mindmaps that need spam detection (version < current version)
+     * @param cutoffDate only count mindmaps created after this date
+     * @param currentVersion only count mindmaps with version less than this
+     * @return total count of public mindmaps needing spam detection
+     */
+    long countPublicMindmapsNeedingSpamDetection(java.util.Calendar cutoffDate, int currentVersion);
 }

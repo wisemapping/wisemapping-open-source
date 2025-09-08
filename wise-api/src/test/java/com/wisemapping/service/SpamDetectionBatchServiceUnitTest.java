@@ -73,6 +73,7 @@ class SpamDetectionBatchServiceUnitTest {
         testMindmap.setDescription("Test Description");
         testMindmap.setPublic(true);
         testMindmap.setSpamDetected(false);
+        testMindmap.setSpamDetectionVersion(0); // Set to 0 so it will be processed (0 < current version 1)
         testMindmap.setCreator(testUser);
         testMindmap.setCreationTime(Calendar.getInstance());
         testMindmap.setLastModificationTime(Calendar.getInstance());
@@ -111,22 +112,22 @@ class SpamDetectionBatchServiceUnitTest {
     @Test
     void testProcessPublicMapsSpamDetection_WhenEnabled_ShouldExecute() {
         // Arrange
-        when(mindmapManager.countAllPublicMindmapsSince(any(Calendar.class))).thenReturn(1L);
-        when(mindmapManager.findAllPublicMindmapsSince(any(Calendar.class), anyInt(), anyInt()))
+        when(mindmapManager.countPublicMindmapsNeedingSpamDetection(any(Calendar.class), anyInt())).thenReturn(1L);
+        when(mindmapManager.findPublicMindmapsNeedingSpamDetection(any(Calendar.class), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
 
         // Act
         spamDetectionBatchService.processPublicMapsSpamDetection();
 
         // Assert
-        verify(mindmapManager, atLeastOnce()).countAllPublicMindmapsSince(any(Calendar.class));
+        verify(mindmapManager, atLeastOnce()).countPublicMindmapsNeedingSpamDetection(any(Calendar.class), anyInt());
     }
 
     @Test
     void testProcessBatch_WithSpamDetected_ShouldMarkAsSpam() {
         // Arrange
         Calendar cutoffDate = Calendar.getInstance();
-        when(mindmapManager.findAllPublicMindmapsSince(eq(cutoffDate), anyInt(), anyInt()))
+        when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
         when(spamDetectionService.isSpamContent(testMindmap)).thenReturn(true);
 
@@ -146,7 +147,7 @@ class SpamDetectionBatchServiceUnitTest {
     void testProcessBatch_WithNoSpamDetected_ShouldNotMarkAsSpam() {
         // Arrange
         Calendar cutoffDate = Calendar.getInstance();
-        when(mindmapManager.findAllPublicMindmapsSince(eq(cutoffDate), anyInt(), anyInt()))
+        when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
         when(spamDetectionService.isSpamContent(testMindmap)).thenReturn(false);
 
@@ -169,7 +170,7 @@ class SpamDetectionBatchServiceUnitTest {
         // Arrange
         testMindmap.setSpamDetected(true);
         Calendar cutoffDate = Calendar.getInstance();
-        when(mindmapManager.findAllPublicMindmapsSince(eq(cutoffDate), anyInt(), anyInt()))
+        when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
 
         // Act
@@ -190,7 +191,7 @@ class SpamDetectionBatchServiceUnitTest {
     void testProcessBatch_WithSpamDetectionException_ShouldContinueProcessing() {
         // Arrange
         Calendar cutoffDate = Calendar.getInstance();
-        when(mindmapManager.findAllPublicMindmapsSince(eq(cutoffDate), anyInt(), anyInt()))
+        when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
         when(spamDetectionService.isSpamContent(testMindmap)).thenThrow(new RuntimeException("Spam detection error"));
 
@@ -211,14 +212,14 @@ class SpamDetectionBatchServiceUnitTest {
         // Arrange
         Calendar cutoffDate = Calendar.getInstance();
         long expectedCount = 5L;
-        when(mindmapManager.countAllPublicMindmapsSince(cutoffDate)).thenReturn(expectedCount);
+        when(mindmapManager.countPublicMindmapsNeedingSpamDetection(cutoffDate, 1)).thenReturn(expectedCount);
 
         // Act
         long actualCount = spamDetectionBatchService.getTotalMapsCount(cutoffDate);
 
         // Assert
         assertEquals(expectedCount, actualCount);
-        verify(mindmapManager, times(1)).countAllPublicMindmapsSince(cutoffDate);
+        verify(mindmapManager, times(1)).countPublicMindmapsNeedingSpamDetection(cutoffDate, 1);
     }
 
     @Test
@@ -260,7 +261,7 @@ class SpamDetectionBatchServiceUnitTest {
         // Arrange
         testUser.setSuspended(true);
         Calendar cutoffDate = Calendar.getInstance();
-        when(mindmapManager.findAllPublicMindmapsSince(eq(cutoffDate), anyInt(), anyInt()))
+        when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
 
         // Act
@@ -282,15 +283,15 @@ class SpamDetectionBatchServiceUnitTest {
         // Arrange
         testMindmap.setSpamDetectionVersion(2); // Higher than current version (1)
         Calendar cutoffDate = Calendar.getInstance();
-        when(mindmapManager.findAllPublicMindmapsSince(eq(cutoffDate), anyInt(), anyInt()))
-                .thenReturn(Collections.singletonList(testMindmap));
+        when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
+                .thenReturn(Collections.emptyList()); // No mindmaps returned because version >= current
 
         // Act
         SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
 
         // Assert
         assertNotNull(result);
-        assertEquals(1, result.processedCount); // Still counts as processed
+        assertEquals(0, result.processedCount); // No mindmaps processed because none returned by query
         assertEquals(0, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
         // Should not call spam detection service

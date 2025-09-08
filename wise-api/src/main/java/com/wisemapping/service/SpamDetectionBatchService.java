@@ -20,6 +20,7 @@ package com.wisemapping.service;
 
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.service.spam.SpamDetectionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class SpamDetectionBatchService {
             
             // Get total count for logging
             long totalMaps = getTotalMapsCount(cutoffDate);
-            logger.info("Starting spam detection for {} public maps created since {} in batches of {}", totalMaps, cutoffDate.getTime(), batchSize);
+            logger.info("Starting spam detection for {} public maps created since {} in batches of {} (current version: {})", totalMaps, cutoffDate.getTime(), batchSize, currentSpamDetectionVersion);
             
             int processedCount = 0;
             int spamDetectedCount = 0;
@@ -120,7 +121,7 @@ public class SpamDetectionBatchService {
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public BatchResult processBatch(java.util.Calendar cutoffDate, int offset, int batchSize) {
-        List<Mindmap> publicMaps = mindmapManager.findAllPublicMindmapsSince(cutoffDate, offset, batchSize);
+        List<Mindmap> publicMaps = mindmapManager.findPublicMindmapsNeedingSpamDetection(cutoffDate, currentSpamDetectionVersion, offset, batchSize);
         
         if (publicMaps.isEmpty()) {
             return new BatchResult(0, 0, 0);
@@ -135,14 +136,6 @@ public class SpamDetectionBatchService {
         
         for (Mindmap mindmap : publicMaps) {
             boolean needsUpdate = false;
-            
-            // Skip processing if mindmap has a version greater or equal to current version
-            if (mindmap.getSpamDetectionVersion() >= currentSpamDetectionVersion) {
-                logger.debug("Skipping mindmap '{}' (ID: {}) - already processed with version {} (current: {})", 
-                    mindmap.getTitle(), mindmap.getId(), mindmap.getSpamDetectionVersion(), currentSpamDetectionVersion);
-                processedCount++;
-                continue;
-            }
             
             // Check if the creator account is disabled
             if (mindmap.getCreator().isSuspended()) {
@@ -235,7 +228,7 @@ public class SpamDetectionBatchService {
      */
     @Transactional(readOnly = true)
     public long getTotalMapsCount(java.util.Calendar cutoffDate) {
-        return mindmapManager.countAllPublicMindmapsSince(cutoffDate);
+        return mindmapManager.countPublicMindmapsNeedingSpamDetection(cutoffDate, currentSpamDetectionVersion);
     }
 
     /**
