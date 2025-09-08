@@ -39,14 +39,24 @@ create TABLE IF NOT EXISTS MINDMAP (
   description    VARCHAR(255),
   xml            BYTEA        NOT NULL,
   public         BOOL         NOT NULL DEFAULT FALSE,
-  spam_detected  BOOL         NOT NULL DEFAULT FALSE,
-  spam_description TEXT,
-  spam_detection_version INTEGER NOT NULL DEFAULT 0,
   creation_date  TIMESTAMP,
   edition_date   TIMESTAMP,
   creator_id     INTEGER      NOT NULL,
   last_editor_id INTEGER      NOT NULL --,
 --FOREIGN KEY(creator_id) REFERENCES "USER"(collaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
+);
+
+CREATE TABLE IF NOT EXISTS MINDMAP_SPAM_INFO (
+  mindmap_id            INTEGER      NOT NULL PRIMARY KEY,
+  spam_detected         BOOL         NOT NULL DEFAULT FALSE,
+  spam_description      TEXT,
+  spam_detection_version INTEGER     NOT NULL DEFAULT 0,
+  spam_type_code        VARCHAR(50),
+  created_at            TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at            TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 );
 
 create TABLE IF NOT EXISTS R_LABEL_MINDMAP (

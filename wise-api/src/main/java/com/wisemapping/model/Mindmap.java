@@ -65,14 +65,8 @@ public class Mindmap implements Serializable {
     @Column(name = "public")
     private boolean isPublic;
 
-    @Column(name = "spam_detected")
-    private boolean spamDetected = false;
-
-    @Column(name = "spam_description")
-    private String spamDescription;
-
-    @Column(name = "spam_detection_version")
-    private int spamDetectionVersion = 0;
+    @OneToOne(mappedBy = "mindmap", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private MindmapSpamInfo spamInfo;
 
     @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
@@ -206,27 +200,44 @@ public class Mindmap implements Serializable {
     }
 
     public boolean isSpamDetected() {
-        return spamDetected;
+        return spamInfo != null && spamInfo.isSpamDetected();
     }
 
     public void setSpamDetected(boolean spamDetected) {
-        this.spamDetected = spamDetected;
+        if (spamInfo == null) {
+            spamInfo = new MindmapSpamInfo(this);
+        }
+        spamInfo.setSpamDetected(spamDetected);
     }
 
     public String getSpamDescription() {
-        return spamDescription;
+        return spamInfo != null ? spamInfo.getSpamDescription() : null;
     }
 
     public void setSpamDescription(String spamDescription) {
-        this.spamDescription = spamDescription;
+        if (spamInfo == null) {
+            spamInfo = new MindmapSpamInfo(this);
+        }
+        spamInfo.setSpamDescription(spamDescription);
     }
 
     public int getSpamDetectionVersion() {
-        return spamDetectionVersion;
+        return spamInfo != null ? spamInfo.getSpamDetectionVersion() : 0;
     }
 
     public void setSpamDetectionVersion(int spamDetectionVersion) {
-        this.spamDetectionVersion = spamDetectionVersion;
+        if (spamInfo == null) {
+            spamInfo = new MindmapSpamInfo(this);
+        }
+        spamInfo.setSpamDetectionVersion(spamDetectionVersion);
+    }
+
+    public MindmapSpamInfo getSpamInfo() {
+        return spamInfo;
+    }
+
+    public void setSpamInfo(MindmapSpamInfo spamInfo) {
+        this.spamInfo = spamInfo;
     }
 
     public Calendar getLastModificationTime() {

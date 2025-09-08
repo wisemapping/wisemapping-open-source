@@ -30,14 +30,24 @@ CREATE TABLE IF NOT EXISTS MINDMAP (
   description    VARCHAR(255),
   xml            LONGVARBINARY NOT NULL,
   public         BOOLEAN       NOT NULL,
-  spam_detected  BOOLEAN       NOT NULL,
-  spam_description LONGVARCHAR,
-  spam_detection_version INTEGER NOT NULL,
   creation_date  DATETIME,
   edition_date   DATETIME,
   creator_id     INTEGER       NOT NULL,
   last_editor_id INTEGER       NOT NULL
 --FOREIGN KEY(creator_id) REFERENCES ACCOUNT(collaborator_id)
+);
+
+CREATE TABLE IF NOT EXISTS MINDMAP_SPAM_INFO (
+  mindmap_id            INTEGER       NOT NULL PRIMARY KEY,
+  spam_detected         BOOLEAN       NOT NULL,
+  spam_description      LONGVARCHAR,
+  spam_detection_version INTEGER      NOT NULL,
+  spam_type_code        VARCHAR(50),
+  created_at            DATETIME,
+  updated_at            DATETIME,
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 );
 
 CREATE TABLE IF NOT EXISTS MINDMAP_LABEL (
