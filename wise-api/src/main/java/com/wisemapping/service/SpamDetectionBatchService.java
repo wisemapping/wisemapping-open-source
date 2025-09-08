@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -126,58 +127,67 @@ public class SpamDetectionBatchService {
         int spamDetectedCount = 0;
         int disabledAccountCount = 0;
         
+        // Collect mindmaps that need updates
+        List<Mindmap> mindmapsToUpdate = new ArrayList<>();
+        
         for (Mindmap mindmap : publicMaps) {
+            boolean needsUpdate = false;
+            
             // Check if the creator account is disabled
             if (mindmap.getCreator().isSuspended()) {
                 // Make the map private if the account is disabled
                 mindmap.setPublic(false);
-                updateMindmapInTransaction(mindmap);
-                
+                needsUpdate = true;
                 disabledAccountCount++;
                 logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
                     mindmap.getTitle(), mindmap.getId(), mindmap.getCreator().getEmail());
-                continue;
-            }
-            
-            // Skip if already marked as spam
-            if (mindmap.isSpamDetected()) {
-                continue;
-            }
-            
-            // Check for spam content
-            try {
-                if (spamDetectionService.isSpamContent(mindmap)) {
-                    // Mark as spam but keep it public
-                    mindmap.setSpamDetected(true);
-                    updateMindmapInTransaction(mindmap);
-                    
-                    spamDetectedCount++;
-                    logger.warn("Marked public mindmap '{}' (ID: {}) as spam", 
-                        mindmap.getTitle(), mindmap.getId());
+            } else if (!mindmap.isSpamDetected()) {
+                // Check for spam content only if not already marked as spam
+                try {
+                    if (spamDetectionService.isSpamContent(mindmap)) {
+                        // Mark as spam but keep it public
+                        mindmap.setSpamDetected(true);
+                        needsUpdate = true;
+                        spamDetectedCount++;
+                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam", 
+                            mindmap.getTitle(), mindmap.getId());
+                    }
+                } catch (Exception e) {
+                    logger.error("Error during spam detection for mindmap '{}' (ID: {}): {}", 
+                        mindmap.getTitle(), mindmap.getId(), e.getMessage(), e);
+                    // Continue processing other mindmaps in the batch
                 }
-            } catch (Exception e) {
-                logger.error("Error during spam detection for mindmap '{}' (ID: {}): {}", 
-                    mindmap.getTitle(), mindmap.getId(), e.getMessage(), e);
-                // Continue processing other mindmaps in the batch
+            }
+            
+            if (needsUpdate) {
+                mindmapsToUpdate.add(mindmap);
             }
             
             processedCount++;
+        }
+        
+        // Update all mindmaps in a single transaction if there are any updates
+        if (!mindmapsToUpdate.isEmpty()) {
+            updateMindmapsInTransaction(mindmapsToUpdate);
         }
         
         return new BatchResult(processedCount, spamDetectedCount, disabledAccountCount);
     }
     
     /**
-     * Update mindmap in a separate transaction to ensure proper transaction context
+     * Update multiple mindmaps in a single transaction to ensure proper transaction context
      * Uses TransactionTemplate to programmatically manage transactions in async context
      */
-    public void updateMindmapInTransaction(Mindmap mindmap) {
+    public void updateMindmapsInTransaction(List<Mindmap> mindmaps) {
         transactionTemplate.execute(status -> {
             try {
-                mindmapManager.updateMindmap(mindmap, false);
+                for (Mindmap mindmap : mindmaps) {
+                    mindmapManager.updateMindmap(mindmap, false);
+                }
+                logger.debug("Successfully updated {} mindmaps in transaction", mindmaps.size());
                 return null;
             } catch (Exception e) {
-                logger.error("Error updating mindmap {} in transaction: {}", mindmap.getId(), e.getMessage(), e);
+                logger.error("Error updating {} mindmaps in transaction: {}", mindmaps.size(), e.getMessage(), e);
                 status.setRollbackOnly();
                 throw e;
             }

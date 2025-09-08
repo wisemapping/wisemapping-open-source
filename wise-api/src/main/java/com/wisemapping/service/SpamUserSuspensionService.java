@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -142,6 +143,9 @@ public class SpamUserSuspensionService {
         }
 
         int suspendedCount = 0;
+        
+        // Collect users that need to be suspended
+        List<Account> usersToSuspend = new ArrayList<>();
 
         for (SpamRatioUserResult result : usersWithHighSpamRatio) {
             try {
@@ -157,7 +161,7 @@ public class SpamUserSuspensionService {
 
                 // Suspend the user
                 user.suspend(SuspensionReason.ABUSE);
-                updateUserInTransaction(user);
+                usersToSuspend.add(user);
 
                 suspendedCount++;
                 logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps out of {} total public ({}% spam ratio)",
@@ -167,6 +171,11 @@ public class SpamUserSuspensionService {
                 logger.error("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
                 // Continue processing other users in the batch
             }
+        }
+        
+        // Update all users in a single transaction if there are any updates
+        if (!usersToSuspend.isEmpty()) {
+            updateUsersInTransaction(usersToSuspend);
         }
 
         return suspendedCount;
@@ -226,6 +235,9 @@ public class SpamUserSuspensionService {
         }
 
         int suspendedCount = 0;
+        
+        // Collect users that need to be suspended
+        List<Account> usersToSuspend = new ArrayList<>();
 
         for (SpamUserResult result : usersWithSpamMindmaps) {
             try {
@@ -239,7 +251,7 @@ public class SpamUserSuspensionService {
 
                 // Suspend the user
                 user.suspend(SuspensionReason.ABUSE);
-                updateUserInTransaction(user);
+                usersToSuspend.add(user);
 
                 suspendedCount++;
                 logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps",
@@ -248,6 +260,11 @@ public class SpamUserSuspensionService {
                 logger.error("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
                 // Continue processing other users in the batch
             }
+        }
+        
+        // Update all users in a single transaction if there are any updates
+        if (!usersToSuspend.isEmpty()) {
+            updateUsersInTransaction(usersToSuspend);
         }
 
         return suspendedCount;
@@ -319,16 +336,19 @@ public class SpamUserSuspensionService {
     }
     
     /**
-     * Update user in a separate transaction to ensure proper transaction context
+     * Update multiple users in a single transaction to ensure proper transaction context
      * Uses TransactionTemplate to programmatically manage transactions in async context
      */
-    public void updateUserInTransaction(Account user) {
+    public void updateUsersInTransaction(List<Account> users) {
         transactionTemplate.execute(status -> {
             try {
-                userService.updateUser(user);
+                for (Account user : users) {
+                    userService.updateUser(user);
+                }
+                logger.debug("Successfully updated {} users in transaction", users.size());
                 return null;
             } catch (Exception e) {
-                logger.error("Error updating user {} in transaction: {}", user.getEmail(), e.getMessage(), e);
+                logger.error("Error updating {} users in transaction: {}", users.size(), e.getMessage(), e);
                 status.setRollbackOnly();
                 throw e;
             }

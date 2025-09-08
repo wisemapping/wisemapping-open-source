@@ -174,7 +174,7 @@ class SpamDetectionBatchServiceUnitTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(0, result.processedCount); // processedCount is incremented at end of loop, but continue skips it
+        assertEquals(1, result.processedCount); // processedCount represents total mindmaps processed
         assertEquals(0, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
         verify(spamDetectionService, never()).isSpamContent(any(Mindmap.class));
@@ -261,7 +261,7 @@ class SpamDetectionBatchServiceUnitTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(0, result.processedCount); // processedCount is incremented at end of loop, but continue skips it
+        assertEquals(1, result.processedCount); // processedCount represents total mindmaps processed
         assertEquals(0, result.spamDetectedCount);
         assertEquals(1, result.disabledAccountCount);
         assertFalse(testMindmap.isPublic()); // Should be made private
