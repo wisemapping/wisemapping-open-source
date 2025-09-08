@@ -18,8 +18,7 @@
 
 package com.wisemapping.test.rest;
 
-import com.wisemapping.config.common.CommonConfig;
-import com.wisemapping.config.rest.RestAppConfig;
+import com.wisemapping.config.AppConfig;
 import com.wisemapping.rest.OAuth2Controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ import org.springframework.http.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {RestAppConfig.class, CommonConfig.class, OAuth2Controller.class},
+        classes = {AppConfig.class, OAuth2Controller.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {"app.api.http-basic-enabled=true"})
 public class RestOAuth2ControllerTest {

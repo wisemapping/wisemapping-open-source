@@ -20,8 +20,7 @@ package com.wisemapping.test.rest;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wisemapping.config.common.CommonConfig;
-import com.wisemapping.config.rest.RestAppConfig;
+import com.wisemapping.config.AppConfig;
 import com.wisemapping.model.Account;
 import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestUser;
@@ -53,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
-        classes = {RestAppConfig.class, CommonConfig.class, UserController.class, TestDataManager.class},
+        classes = {AppConfig.class, UserController.class, TestDataManager.class},
         properties = {
             "app.api.http-basic-enabled=true",
             "app.registration.disposable-email.blocking.enabled=true"

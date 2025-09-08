@@ -80,12 +80,28 @@ public class SpamContentExtractor {
         
         StringBuilder text = new StringBuilder();
         
+        // Extract text from text attributes
         Pattern textPattern = Pattern.compile("text=\"([^\"]*?)\"", Pattern.CASE_INSENSITIVE);
         java.util.regex.Matcher matcher = textPattern.matcher(xml);
         while (matcher.find()) {
             text.append(matcher.group(1)).append(" ");
         }
         
+        // Extract content from note tags (including CDATA)
+        Pattern notePattern = Pattern.compile("<note>\\s*<!\\[CDATA\\[([^\\]]*?)\\]\\]>\\s*</note>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+        matcher = notePattern.matcher(xml);
+        while (matcher.find()) {
+            text.append(matcher.group(1)).append(" ");
+        }
+        
+        // Extract URLs from link attributes
+        Pattern linkPattern = Pattern.compile("url=\"([^\"]*?)\"", Pattern.CASE_INSENSITIVE);
+        matcher = linkPattern.matcher(xml);
+        while (matcher.find()) {
+            text.append(matcher.group(1)).append(" ");
+        }
+        
+        // Extract any remaining text content after removing XML tags
         String xmlWithoutTags = xml.replaceAll("<[^>]*>", " ")
                                   .replaceAll("\\s+", " ")
                                   .trim();

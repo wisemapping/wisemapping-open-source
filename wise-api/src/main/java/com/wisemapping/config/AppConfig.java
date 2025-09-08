@@ -1,14 +1,24 @@
-package com.wisemapping.config.rest;
+package com.wisemapping.config;
 
+import com.wisemapping.dao.LabelManagerImpl;
 import com.wisemapping.filter.JwtAuthenticationFilter;
 import com.wisemapping.rest.MindmapController;
+import com.wisemapping.security.AuthenticationProvider;
+import com.wisemapping.service.MindmapServiceImpl;
+import com.wisemapping.util.VelocityEngineUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,19 +27,35 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import com.wisemapping.model.Account;
+import com.wisemapping.security.Utils;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+
+import java.util.Locale;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-
 @SpringBootApplication(
-    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class}
+    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class, com.wisemapping.service.SpamDetectionService.class, com.wisemapping.scheduler.SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, com.wisemapping.scheduler.SpamDetectionScheduler.class, com.wisemapping.service.spam.ContactInfoSpamStrategy.class}
 )
+@Import({com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class})
+@EnableScheduling
+@EnableAsync
 @EnableWebSecurity
-public class RestAppConfig {
+@Configuration
+@EnableWebMvc
+public class AppConfig implements WebMvcConfigurer {
 
     @Value("${app.api.http-basic-enabled:false}")
     private boolean enableHttpBasic;
+
+    @Value("${app.security.corsAllowedOrigins:}")
+    private String corsAllowedOrigins;
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -73,5 +99,44 @@ public class RestAppConfig {
         }
 
         return http.build();
+    }
+
+
+    @Override
+    public void addCorsMappings(@NotNull CorsRegistry registry) {
+        if (!corsAllowedOrigins.isEmpty()) {
+            registry.addMapping("/api/**")
+                    .exposedHeaders("*")
+                    .allowedHeaders("*")
+                    .allowedMethods("*")
+                    .allowedOrigins(corsAllowedOrigins)
+                    .maxAge(3600);
+        }
+    }
+
+    @Bean
+    @Primary
+    public LocaleResolver customLocaleResolver() {
+        return new AcceptHeaderLocaleResolver() {
+            @Override
+            @NotNull
+            public Locale resolveLocale(@NotNull HttpServletRequest request) {
+                final Account user = Utils.getUser();
+                Locale result;
+                if (user != null && user.getLocale() != null) {
+                    String locale = user.getLocale();
+                    final String locales[] = locale.split("_");
+
+                    Locale.Builder builder = new Locale.Builder().setLanguage(locales[0]);
+                    if (locales.length > 1) {
+                        builder.setVariant(locales[1]);
+                    }
+                    result = builder.build();
+                } else {
+                    result = super.resolveLocale(request);
+                }
+                return result;
+            }
+        };
     }
 }

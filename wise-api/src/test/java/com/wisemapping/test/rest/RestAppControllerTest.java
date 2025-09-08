@@ -19,8 +19,7 @@
 package com.wisemapping.test.rest;
 
 
-import com.wisemapping.config.common.CommonConfig;
-import com.wisemapping.config.rest.RestAppConfig;
+import com.wisemapping.config.AppConfig;
 import com.wisemapping.rest.AppController;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
-        classes = {RestAppConfig.class, CommonConfig.class, AppController.class},
+        classes = {AppConfig.class, AppController.class},
         properties = {"app.api.http-basic-enabled=true"}
 )
 @AutoConfigureMockMvc
