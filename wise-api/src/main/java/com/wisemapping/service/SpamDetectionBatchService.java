@@ -139,10 +139,19 @@ public class SpamDetectionBatchService {
                     // Make the map private if the account is disabled
                     // Use native SQL to avoid cascade conflicts with spam info
                     try {
+                        // Flush any pending changes and clear the persistence context to avoid conflicts
+                        entityManager.flush();
+                        entityManager.clear();
+                        
                         String updateSql = "UPDATE MINDMAP SET public = false WHERE id = ?";
-                        entityManager.createNativeQuery(updateSql)
+                        int updatedRows = entityManager.createNativeQuery(updateSql)
                             .setParameter(1, mindmap.getId())
                             .executeUpdate();
+                        
+                        if (updatedRows == 0) {
+                            logger.warn("No rows updated for mindmap '{}' (ID: {}) - mindmap may not exist or already private", 
+                                mindmap.getTitle(), mindmap.getId());
+                        }
                         
                         // Only update spam info if the mindmap is already marked as spam
                         if (mindmap.isSpamDetected()) {
@@ -153,8 +162,9 @@ public class SpamDetectionBatchService {
                         }
                     } catch (Exception updateException) {
                         logger.error("Failed to make mindmap '{}' (ID: {}) private due to disabled account: {}", 
-                            mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
-                        // Continue processing - this is a best effort operation
+                            mindmap.getTitle(), mindmap.getId(), updateException.getMessage(), updateException);
+                            logger.error(updateException.getMessage(),updateException);
+                        
                     }
                     disabledAccountCount++;
                     logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
