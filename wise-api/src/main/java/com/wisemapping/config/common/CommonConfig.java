@@ -19,7 +19,7 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import java.util.Locale;
 
-@ComponentScan(basePackageClasses = {AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class, com.wisemapping.service.SpamDetectionService.class, com.wisemapping.scheduler.SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, com.wisemapping.scheduler.SpamDetectionScheduler.class})
+@ComponentScan(basePackageClasses = {AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class, com.wisemapping.service.SpamDetectionService.class, com.wisemapping.scheduler.SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, com.wisemapping.scheduler.SpamDetectionScheduler.class, com.wisemapping.service.spam.ContactInfoSpamStrategy.class})
 @Import({JPAConfig.class, SecurityConfig.class})
 @EnableAutoConfiguration
 @EnableScheduling
