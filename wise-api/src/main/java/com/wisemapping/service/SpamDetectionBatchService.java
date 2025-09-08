@@ -55,6 +55,7 @@ public class SpamDetectionBatchService {
      * Each batch is processed in its own transaction to avoid long-running transactions
      * This method itself is not transactional to avoid connection leaks
      */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void processPublicMapsSpamDetection() {
         if (!enabled) {
             logger.debug("Spam detection batch task is disabled");

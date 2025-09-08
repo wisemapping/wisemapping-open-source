@@ -69,6 +69,7 @@ public class SpamUserSuspensionService {
      * Process users with multiple spam mindmaps and suspend them if necessary
      * Each batch is processed in its own transaction to avoid long-running transactions
      */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void processSpamUserSuspension() {
         if (!enabled) {
             logger.debug("Spam user suspension batch task is disabled");
@@ -87,6 +88,7 @@ public class SpamUserSuspensionService {
      * Each batch is processed in its own transaction to avoid long-running transactions
      * This method itself is not transactional to avoid connection leaks
      */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void processSpamUserSuspensionByRatio() {
         logger.info("Starting ratio-based spam user suspension batch task with min spam count: {}, ratio threshold: {}%, and months back: {} (public maps only)", 
             minSpamCount, spamRatioThreshold * 100, monthsBack);
@@ -173,6 +175,7 @@ public class SpamUserSuspensionService {
      * Each batch is processed in its own transaction to avoid long-running transactions
      * This method itself is not transactional to avoid connection leaks
      */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void processSpamUserSuspensionByCount() {
         logger.info("Starting count-based spam user suspension batch task with threshold: {} and months back: {} (public maps only)", spamThreshold, monthsBack);
 
