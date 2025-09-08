@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS MINDMAP (
   public         BOOL               NOT NULL DEFAULT 0,
   spam_detected  BOOL               NOT NULL DEFAULT 0,
   spam_description TEXT CHARACTER SET UTF8MB4,
+  spam_detection_version INTEGER    NOT NULL DEFAULT 0,
   creation_date  DATETIME,
   edition_date   DATETIME,
   creator_id     INTEGER            NOT NULL,

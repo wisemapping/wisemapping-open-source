@@ -55,6 +55,9 @@ public class SpamDetectionBatchService {
     @Value("${app.batch.spam-detection.months-back:45}")
     private int monthsBack;
 
+    @Value("${app.batch.spam-detection.version:1}")
+    private int currentSpamDetectionVersion;
+
     /**
      * Process all public maps and mark them as spam if they match spam detection rules
      * Each batch is processed in its own transaction to avoid long-running transactions
@@ -133,10 +136,19 @@ public class SpamDetectionBatchService {
         for (Mindmap mindmap : publicMaps) {
             boolean needsUpdate = false;
             
+            // Skip processing if mindmap has a version greater or equal to current version
+            if (mindmap.getSpamDetectionVersion() >= currentSpamDetectionVersion) {
+                logger.debug("Skipping mindmap '{}' (ID: {}) - already processed with version {} (current: {})", 
+                    mindmap.getTitle(), mindmap.getId(), mindmap.getSpamDetectionVersion(), currentSpamDetectionVersion);
+                processedCount++;
+                continue;
+            }
+            
             // Check if the creator account is disabled
             if (mindmap.getCreator().isSuspended()) {
                 // Make the map private if the account is disabled
                 mindmap.setPublic(false);
+                mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
                 needsUpdate = true;
                 disabledAccountCount++;
                 logger.warn("Made public mindmap '{}' (ID: {}) private due to disabled account '{}'", 
@@ -147,16 +159,25 @@ public class SpamDetectionBatchService {
                     if (spamDetectionService.isSpamContent(mindmap)) {
                         // Mark as spam but keep it public
                         mindmap.setSpamDetected(true);
+                        mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
                         needsUpdate = true;
                         spamDetectedCount++;
                         logger.warn("Marked public mindmap '{}' (ID: {}) as spam", 
                             mindmap.getTitle(), mindmap.getId());
+                    } else {
+                        // Update version even if not spam to mark as processed
+                        mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
+                        needsUpdate = true;
                     }
                 } catch (Exception e) {
                     logger.error("Error during spam detection for mindmap '{}' (ID: {}): {}", 
                         mindmap.getTitle(), mindmap.getId(), e.getMessage(), e);
                     // Continue processing other mindmaps in the batch
                 }
+            } else {
+                // Already marked as spam, just update the version
+                mindmap.setSpamDetectionVersion(currentSpamDetectionVersion);
+                needsUpdate = true;
             }
             
             if (needsUpdate) {
@@ -229,5 +250,12 @@ public class SpamDetectionBatchService {
      */
     public int getBatchSize() {
         return batchSize;
+    }
+
+    /**
+     * Get the current spam detection version
+     */
+    public int getCurrentSpamDetectionVersion() {
+        return currentSpamDetectionVersion;
     }
 }

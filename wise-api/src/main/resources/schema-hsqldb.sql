@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS MINDMAP (
   public         BOOLEAN       NOT NULL,
   spam_detected  BOOLEAN       NOT NULL,
   spam_description LONGVARCHAR,
+  spam_detection_version INTEGER NOT NULL,
   creation_date  DATETIME,
   edition_date   DATETIME,
   creator_id     INTEGER       NOT NULL,

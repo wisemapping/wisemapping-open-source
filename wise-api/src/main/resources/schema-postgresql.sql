@@ -41,6 +41,7 @@ create TABLE IF NOT EXISTS MINDMAP (
   public         BOOL         NOT NULL DEFAULT FALSE,
   spam_detected  BOOL         NOT NULL DEFAULT FALSE,
   spam_description TEXT,
+  spam_detection_version INTEGER NOT NULL DEFAULT 0,
   creation_date  TIMESTAMP,
   edition_date   TIMESTAMP,
   creator_id     INTEGER      NOT NULL,

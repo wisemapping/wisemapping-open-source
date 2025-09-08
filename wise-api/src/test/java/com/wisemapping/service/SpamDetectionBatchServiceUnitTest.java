@@ -93,6 +93,7 @@ class SpamDetectionBatchServiceUnitTest {
         ReflectionTestUtils.setField(spamDetectionBatchService, "enabled", true);
         ReflectionTestUtils.setField(spamDetectionBatchService, "batchSize", 10);
         ReflectionTestUtils.setField(spamDetectionBatchService, "monthsBack", 1);
+        ReflectionTestUtils.setField(spamDetectionBatchService, "currentSpamDetectionVersion", 1);
     }
 
     @Test
@@ -158,7 +159,9 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(0, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
         assertFalse(testMindmap.isSpamDetected());
-        verify(mindmapManager, never()).updateMindmap(any(Mindmap.class), anyBoolean());
+        // Version should be updated even when no spam is detected
+        assertEquals(1, testMindmap.getSpamDetectionVersion());
+        verify(mindmapManager, times(1)).updateMindmap(eq(testMindmap), eq(false));
     }
 
     @Test
@@ -177,7 +180,10 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(1, result.processedCount); // processedCount represents total mindmaps processed
         assertEquals(0, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
+        // Version should still be updated even if already marked as spam
+        assertEquals(1, testMindmap.getSpamDetectionVersion());
         verify(spamDetectionService, never()).isSpamContent(any(Mindmap.class));
+        verify(mindmapManager, times(1)).updateMindmap(eq(testMindmap), eq(false));
     }
 
     @Test
@@ -196,6 +202,7 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(1, result.processedCount);
         assertEquals(0, result.spamDetectedCount);
         assertEquals(0, result.disabledAccountCount);
+        // When exception occurs, mindmap should not be updated
         verify(mindmapManager, never()).updateMindmap(any(Mindmap.class), anyBoolean());
     }
 
@@ -265,6 +272,36 @@ class SpamDetectionBatchServiceUnitTest {
         assertEquals(0, result.spamDetectedCount);
         assertEquals(1, result.disabledAccountCount);
         assertFalse(testMindmap.isPublic()); // Should be made private
+        // Version should be updated when making map private due to suspended user
+        assertEquals(1, testMindmap.getSpamDetectionVersion());
         verify(mindmapManager, times(1)).updateMindmap(eq(testMindmap), eq(false));
+    }
+
+    @Test
+    void testProcessBatch_WithHigherVersion_ShouldSkipProcessing() {
+        // Arrange
+        testMindmap.setSpamDetectionVersion(2); // Higher than current version (1)
+        Calendar cutoffDate = Calendar.getInstance();
+        when(mindmapManager.findAllPublicMindmapsSince(eq(cutoffDate), anyInt(), anyInt()))
+                .thenReturn(Collections.singletonList(testMindmap));
+
+        // Act
+        SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.processedCount); // Still counts as processed
+        assertEquals(0, result.spamDetectedCount);
+        assertEquals(0, result.disabledAccountCount);
+        // Should not call spam detection service
+        verify(spamDetectionService, never()).isSpamContent(any(Mindmap.class));
+        // Should not update mindmap
+        verify(mindmapManager, never()).updateMindmap(any(Mindmap.class), anyBoolean());
+    }
+
+    @Test
+    void testGetCurrentSpamDetectionVersion_ShouldReturnConfiguredValue() {
+        // Act & Assert
+        assertEquals(1, spamDetectionBatchService.getCurrentSpamDetectionVersion());
     }
 }
