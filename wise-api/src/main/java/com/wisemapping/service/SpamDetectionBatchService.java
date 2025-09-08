@@ -144,11 +144,13 @@ public class SpamDetectionBatchService {
                             .setParameter(1, mindmap.getId())
                             .executeUpdate();
                         
-                        // Update spam detection version separately to avoid cascade conflicts
-                        MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
-                        spamInfo.setSpamDetected(mindmap.isSpamDetected());
-                        spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
-                        mindmapManager.updateMindmapSpamInfo(spamInfo);
+                        // Only update spam info if the mindmap is already marked as spam
+                        if (mindmap.isSpamDetected()) {
+                            MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
+                            spamInfo.setSpamDetected(true);
+                            spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
+                            mindmapManager.updateMindmapSpamInfo(spamInfo);
+                        }
                     } catch (Exception updateException) {
                         logger.error("Failed to make mindmap '{}' (ID: {}) private due to disabled account: {}", 
                             mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
@@ -184,17 +186,9 @@ public class SpamDetectionBatchService {
                             // Continue processing - this is a best effort operation
                         }
                     } else {
-                        // Update version even if not spam to mark as processed - "last win" strategy
-                        try {
-                            MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
-                            spamInfo.setSpamDetected(false);
-                            spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
-                            mindmapManager.updateMindmapSpamInfo(spamInfo);
-                        } catch (Exception updateException) {
-                            logger.error("Failed to update spam detection version for mindmap '{}' (ID: {}): {}", 
-                                mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
-                            // Continue processing - this is a best effort operation
-                        }
+                        // No spam detected - no need to update MINDMAP_SPAM_INFO table
+                        logger.debug("No spam detected in mindmap '{}' (ID: {}) - skipping spam info update", 
+                            mindmap.getTitle(), mindmap.getId());
                     }
                 } else {
                     // Already marked as spam, just update the version - "last win" strategy

@@ -153,6 +153,12 @@ app:
       startup-enabled: true  # Enable spam detection on application startup (async)
       months-back: 45  # Only process mindmaps created since 2022 (approximately 45 months)
       version: 1  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
+    history-cleanup:
+      enabled: true
+      cron-expression: "0 0 2 * * *"  # Every 24 hours at 2:00 AM
+      retention-days: 90  # Keep history entries for 90 days
+      max-entries-per-map: 10  # Maximum number of history entries per mindmap
+      batch-size: 100  # Number of mindmaps to process in each batch to prevent memory issues
     oauth2:
       google:
         clientSecret: <google-oath>

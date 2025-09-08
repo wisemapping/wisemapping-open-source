@@ -22,6 +22,7 @@ import com.wisemapping.model.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Calendar;
 import java.util.List;
 
 public interface MindmapManager {
@@ -193,4 +194,13 @@ public interface MindmapManager {
      * @return count of users meeting the criteria
      */
     long countUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack);
+
+    /**
+     * Clean up old mindmap history entries
+     * @param cutoffDate delete history entries older than this date
+     * @param maxEntriesPerMap maximum number of history entries to keep per mindmap
+     * @param batchSize number of mindmaps to process in each batch to prevent memory issues
+     * @return number of history entries deleted
+     */
+    int cleanupOldMindmapHistory(Calendar cutoffDate, int maxEntriesPerMap, int batchSize);
 }
