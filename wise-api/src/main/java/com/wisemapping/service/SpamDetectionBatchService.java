@@ -141,7 +141,7 @@ public class SpamDetectionBatchService {
                             mindmap.getTitle(), mindmap.getId(), spamTypeCode);
                     } else {
                         // No spam detected - still need to update version to track processing
-                        logger.debug("No spam detected in mindmap '{}' (ID: {}) - updating version only", 1
+                        logger.debug("No spam detected in mindmap '{}' (ID: {}) - updating version only", 
                             mindmap.getTitle(), mindmap.getId());
                     }
                 } else {
