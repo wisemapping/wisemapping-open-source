@@ -40,10 +40,13 @@ import java.util.Locale;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@SpringBootApplication(
-    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class, com.wisemapping.service.SpamDetectionService.class, com.wisemapping.scheduler.SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, com.wisemapping.scheduler.SpamDetectionScheduler.class, com.wisemapping.service.spam.ContactInfoSpamStrategy.class, com.wisemapping.config.PropertyTestConfiguration.class, com.wisemapping.config.NewRelicAutoConfiguration.class}
-)
-@Import({com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class})
+@SpringBootApplication(scanBasePackageClasses = { MindmapController.class, JwtAuthenticationFilter.class,
+        AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class,
+        com.wisemapping.service.SpamDetectionService.class, com.wisemapping.scheduler.SpamUserSuspensionScheduler.class,
+        com.wisemapping.service.SpamDetectionBatchService.class, com.wisemapping.scheduler.SpamDetectionScheduler.class,
+        com.wisemapping.service.spam.ContactInfoSpamStrategy.class,
+        com.wisemapping.config.NewRelicAutoConfiguration.class })
+@Import({ com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class })
 @EnableScheduling
 @EnableAsync
 @EnableWebSecurity
@@ -66,7 +69,8 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http, @NotNull final MvcRequestMatcher.Builder mvc) throws Exception {
+    SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http,
+            @NotNull final MvcRequestMatcher.Builder mvc) throws Exception {
         http
                 .cors(Customizer.withDefaults()) // enables WebMvcConfigurer CORS
                 .securityMatcher("/**")
@@ -84,8 +88,7 @@ public class AppConfig implements WebMvcConfigurer {
                         .requestMatchers(mvc.pattern("/api/restful/admin/**")).hasAnyRole("ADMIN")
                         .requestMatchers(mvc.pattern("/**")).hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .logout(logout -> logout.permitAll()
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);
@@ -100,7 +103,6 @@ public class AppConfig implements WebMvcConfigurer {
 
         return http.build();
     }
-
 
     @Override
     public void addCorsMappings(@NotNull CorsRegistry registry) {
