@@ -184,11 +184,15 @@ public class MindmapManagerImpl
                     updated_at = ?
                 """;
             
+            // Convert SpamStrategyType enum to Character for native SQL
+            Character spamTypeCode = spamInfo.getSpamTypeCode() != null ? 
+                spamInfo.getSpamTypeCode().getCode() : null;
+            
             entityManager.createNativeQuery(sql)
                 .setParameter(1, spamInfo.getMindmapId())
                 .setParameter(2, spamInfo.isSpamDetected())
                 .setParameter(3, spamInfo.getSpamDetectionVersion())
-                .setParameter(4, spamInfo.getSpamTypeCode())
+                .setParameter(4, spamTypeCode) // Convert enum to char
                 .setParameter(5, spamInfo.getSpamDescription())
                 .setParameter(6, now) // created_at
                 .setParameter(7, now) // updated_at
