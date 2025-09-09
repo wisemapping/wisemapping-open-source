@@ -3,28 +3,34 @@ package com.wisemapping.config;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.newrelic.NewRelicConfig;
 import io.micrometer.newrelic.NewRelicMeterRegistry;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * Conditional New Relic configuration that respects the enabled property.
- * This configuration only activates when management.metrics.export.newrelic.enabled=true
+ * This configuration only activates when
+ * management.metrics.export.newrelic.enabled=true
  * and provides the required API key and account ID.
  */
 @Configuration
-@ConditionalOnProperty(
-    name = "management.metrics.export.newrelic.enabled", 
-    havingValue = "true",
-    matchIfMissing = false
-)
-public class ConditionalNewRelicAutoConfiguration {
-    
+@ConditionalOnProperty(name = "management.metrics.export.newrelic.enabled", havingValue = "true", matchIfMissing = false)
+public class NewRelicAutoConfiguration {
+    private static final Logger logger = LogManager.getLogger();
+
+    public NewRelicAutoConfiguration() {
+        logger.info("New Relic metrics export is ENABLED");
+    }
+
     /**
      * New Relic configuration that uses properties from application.yml
      */
     @Bean
     public NewRelicConfig newRelicConfig() {
+        logger.info("Creating NewRelicConfig bean");
         return new NewRelicConfig() {
             @Override
             public String get(String key) {
@@ -32,7 +38,7 @@ public class ConditionalNewRelicAutoConfiguration {
                 // Return null to use default values from application.yml
                 return null;
             }
-            
+
             @Override
             public boolean enabled() {
                 // This ensures the registry is only created when explicitly enabled
@@ -40,7 +46,7 @@ public class ConditionalNewRelicAutoConfiguration {
             }
         };
     }
-    
+
     /**
      * New Relic Meter Registry that only gets created when enabled.
      * This replaces the auto-configured registry and respects your settings.
@@ -48,6 +54,8 @@ public class ConditionalNewRelicAutoConfiguration {
     @Bean
     public NewRelicMeterRegistry newRelicMeterRegistry(NewRelicConfig newRelicConfig) {
         // This will only be called when enabled=true and properties are loaded
+        logger.info("New Relic Meter Registry created");
+
         return new NewRelicMeterRegistry(newRelicConfig, Clock.SYSTEM);
     }
 }
