@@ -64,6 +64,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
     public RestErrors handleAuthException(@NotNull final AuthenticationCredentialsNotFoundException ex) {
         logger.debug(ex.getMessage(), ex);
         return new RestErrors("Authentication exception. Session must be expired. Try logging again.", Severity.INFO);
@@ -71,6 +72,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
     public RestErrors handleValidationErrors(@NotNull final ValidationException ex) {
         logger.debug(ex.getMessage(), ex);
         return new RestErrors(ex.getErrors(), messageSource);
@@ -78,6 +80,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(JsonHttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
     public RestErrors handleJSONErrors(@NotNull JsonHttpMessageNotReadableException ex) {
         logger.error(ex.getMessage(), ex);
         return new RestErrors("Communication error", Severity.SEVERE);
@@ -85,6 +88,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
     public RestErrors handleSecurityErrors(@NotNull UndeclaredThrowableException ex) {
         logger.error(ex.getMessage(), ex);
         final Throwable cause = ex.getCause();
@@ -99,6 +103,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ClientException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
     public RestErrors handleClientErrors(@NotNull ClientException ex) {
         final Locale locale = LocaleContextHolder.getLocale();
         return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
