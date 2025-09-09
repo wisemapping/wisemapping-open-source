@@ -44,12 +44,9 @@ public class SpamDetectionResult {
         return new SpamDetectionResult(false, null, null, null);
     }
 
-    public static SpamDetectionResult spam(String reason, String details) {
-        return new SpamDetectionResult(true, reason, details, null);
-    }
 
-    public static SpamDetectionResult spam(String reason, String details, SpamStrategyType strategyName) {
-        return new SpamDetectionResult(true, reason, details, strategyName);
+    public static SpamDetectionResult spam(String reason, String details, SpamStrategyType type) {
+        return new SpamDetectionResult(true, reason, details, type);
     }
 
     public boolean isSpam() {

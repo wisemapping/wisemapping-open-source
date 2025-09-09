@@ -166,7 +166,7 @@ public class ContactInfoSpamStrategy implements SpamDetectionStrategy {
             }
 
             if (isContactInfoSpam) {
-                return SpamDetectionResult.spam(reason, details);
+                return SpamDetectionResult.spam(reason, details, getType());
             }
 
         } catch (UnsupportedEncodingException e) {

@@ -61,7 +61,7 @@ public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
                                        hasLinks ? "Few nodes with links and spam keywords" :
                                        "Few nodes with notes and spam keywords";
                         result = SpamDetectionResult.spam(reason,
-                                "XML: " + xml + ", TopicCount: " + topicCount);
+                                "XML: " + xml + ", TopicCount: " + topicCount, getType());
                     }
                 }
             }
