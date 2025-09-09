@@ -7,6 +7,9 @@
 # SpringBoot Config: WiseMapping Backend is based on SpringBoot. Additional configurations documentation could be found https://docs.spring.io/spring-boot/3.3/reference/features/external-config.html.
 #
 spring:
+  # Spring MVC configuration to handle exceptions gracefully
+  mvc:
+    log-resolved-exception: false
   # Async task executor configuration
   task:
     execution:
