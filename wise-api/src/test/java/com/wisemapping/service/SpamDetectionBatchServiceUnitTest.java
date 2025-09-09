@@ -141,7 +141,7 @@ class SpamDetectionBatchServiceUnitTest {
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
         when(spamDetectionService.detectSpam(testMindmap)).thenReturn(
-            com.wisemapping.service.spam.SpamDetectionResult.spam("Test spam", "Test details", "TestStrategy"));
+            com.wisemapping.service.spam.SpamDetectionResult.spam("Test spam", "Test details", com.wisemapping.model.SpamStrategyType.CONTACT_INFO));
 
         // Act
         SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);

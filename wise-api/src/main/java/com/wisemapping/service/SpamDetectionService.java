@@ -1,6 +1,7 @@
 package com.wisemapping.service;
 
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.SpamStrategyType;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.service.spam.SpamDetectionStrategy;
 import org.apache.logging.log4j.LogManager;
@@ -32,17 +33,17 @@ public class SpamDetectionService {
                 try {
                     logger.warn("Spam detected by strategy '{}' in mindmap '{}' - Title: '{}', Description: '{}', XML: '{}', " +
                                "Reason: '{}', Details: '{}'",
-                               strategy.getStrategyName(), mindmap.getId(), mindmap.getTitle(), 
+                               strategy.getType().getStrategyName(), mindmap.getId(), mindmap.getTitle(), 
                                mindmap.getDescription(), mindmap.getXmlStr(), result.getReason(), result.getDetails());
                 } catch (UnsupportedEncodingException e) {
                     logger.warn("Spam detected by strategy '{}' in mindmap '{}' - Title: '{}', Description: '{}', " +
                                "Reason: '{}', Details: '{}'",
-                               strategy.getStrategyName(), mindmap.getId(), mindmap.getTitle(), 
+                               strategy.getType().getStrategyName(), mindmap.getId(), mindmap.getTitle(), 
                                mindmap.getDescription(), result.getReason(), result.getDetails());
                 }
                 return new SpamDetectionResult(true, result.getReason(), 
-                    String.format("Strategy: %s, Details: %s", strategy.getStrategyName(), result.getDetails()),
-                    strategy.getStrategyName());
+                    String.format("Strategy: %s, Details: %s", strategy.getType().getStrategyName(), result.getDetails()),
+                    strategy.getType());
             }
         }
         

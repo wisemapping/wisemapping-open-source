@@ -19,6 +19,7 @@
 package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
 // import org.springframework.stereotype.Component; // Disabled - strategy not active
 
@@ -134,7 +135,7 @@ public class KeywordPatternStrategy implements SpamDetectionStrategy {
     }
 
     @Override
-    public String getStrategyName() {
-        return "KeywordPattern";
+    public SpamStrategyType getType() {
+        return SpamStrategyType.KEYWORD_PATTERN;
     }
 }

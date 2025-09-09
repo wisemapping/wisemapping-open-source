@@ -19,6 +19,7 @@
 package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.SpamStrategyType;
 import com.wisemapping.service.MindmapService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,7 +101,7 @@ public class UserBehaviorStrategy implements SpamDetectionStrategy {
     }
 
     @Override
-    public String getStrategyName() {
-        return "UserBehavior";
+    public SpamStrategyType getType() {
+        return SpamStrategyType.USER_BEHAVIOR;
     }
 }

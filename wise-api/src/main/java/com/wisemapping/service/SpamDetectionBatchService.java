@@ -21,6 +21,7 @@ package com.wisemapping.service;
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindmapSpamInfo;
+import com.wisemapping.model.SpamStrategyType;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,17 +129,18 @@ public class SpamDetectionBatchService {
         for (Mindmap mindmap : publicMaps) {
             try {
                 boolean isSpamDetected = mindmap.isSpamDetected();
-                String spamTypeCode = null;
+                SpamStrategyType spamTypeCode = null;
                 
                 // Check for spam content only if not already marked as spam
                 if (!isSpamDetected) {
                     SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
                     if (spamResult.isSpam()) {
                         isSpamDetected = true;
+                        // Get strategy name as enum
                         spamTypeCode = spamResult.getStrategyName();
                         spamDetectedCount++;
-                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (last win)", 
-                            mindmap.getTitle(), mindmap.getId(), spamTypeCode);
+                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (strategy: {}) (last win)", 
+                            mindmap.getTitle(), mindmap.getId(), spamTypeCode, spamResult.getStrategyName());
                     } else {
                         // No spam detected - still need to update version to track processing
                         logger.debug("No spam detected in mindmap '{}' (ID: {}) - updating version only", 
@@ -172,7 +174,7 @@ public class SpamDetectionBatchService {
      * Helper method to update spam info for a mindmap
      * Handles both new and existing MindmapSpamInfo entities
      */
-    private void updateSpamInfo(Mindmap mindmap, String spamTypeCode) {
+    private void updateSpamInfo(Mindmap mindmap, SpamStrategyType spamTypeCode) {
         try {
             MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
             

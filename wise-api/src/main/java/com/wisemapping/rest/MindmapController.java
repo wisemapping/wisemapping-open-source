@@ -20,6 +20,7 @@ package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.*;
 import com.wisemapping.model.*;
+import com.wisemapping.model.SpamStrategyType;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
@@ -468,6 +469,8 @@ public class MindmapController extends BaseController {
                 // Mark the map as spam detected and throw exception
                 mindMap.setSpamDetected(true);
                 mindMap.setSpamDescription(spamResult.getDetails());
+                // Get strategy name as enum
+                mindMap.setSpamTypeCode(spamResult.getStrategyName());
                 mindMap.setPublic(false);
                 mindmapService.updateMindmap(mindMap, false);
                 
@@ -620,9 +623,12 @@ public class MindmapController extends BaseController {
             if (spamResult.isSpam()) {
                 mindmap.setSpamDetected(true);
                 mindmap.setSpamDescription(spamResult.getDetails());
+                // Get strategy name as enum
+                mindmap.setSpamTypeCode(spamResult.getStrategyName());
             } else {
                 mindmap.setSpamDetected(false);
                 mindmap.setSpamDescription(null);
+                mindmap.setSpamTypeCode(null);
             }
         }
 
@@ -660,9 +666,12 @@ public class MindmapController extends BaseController {
         if (spamResult.isSpam()) {
             clonedMap.setSpamDetected(true);
             clonedMap.setSpamDescription(spamResult.getDetails());
+            // Get strategy name as enum
+            clonedMap.setSpamTypeCode(spamResult.getStrategyName());
         } else {
             clonedMap.setSpamDetected(false);
             clonedMap.setSpamDescription(null);
+            clonedMap.setSpamTypeCode(null);
         }
 
         // Add new mindmap ...
@@ -744,6 +753,8 @@ public class MindmapController extends BaseController {
                 mindMap.setPublic(false);
                 mindMap.setSpamDetected(true);
                 mindMap.setSpamDescription(spamResult.getDetails());
+                // Get strategy name as enum
+                mindMap.setSpamTypeCode(spamResult.getStrategyName());
             }
         }
         mindmapService.updateMindmap(mindMap, !minor);

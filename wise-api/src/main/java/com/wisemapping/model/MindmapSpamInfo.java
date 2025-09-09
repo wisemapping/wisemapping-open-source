@@ -50,8 +50,9 @@ public class MindmapSpamInfo {
     @Column(name = "spam_detection_version", nullable = false)
     private int spamDetectionVersion = 0;
     
+    @Enumerated(EnumType.STRING)
     @Column(name = "spam_type_code")
-    private String spamTypeCode;
+    private SpamStrategyType spamTypeCode;
     
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -113,11 +114,11 @@ public class MindmapSpamInfo {
         this.spamDetectionVersion = spamDetectionVersion;
     }
     
-    public String getSpamTypeCode() {
+    public SpamStrategyType getSpamTypeCode() {
         return spamTypeCode;
     }
-    
-    public void setSpamTypeCode(String spamTypeCode) {
+
+    public void setSpamTypeCode(SpamStrategyType spamTypeCode) {
         this.spamTypeCode = spamTypeCode;
     }
     
