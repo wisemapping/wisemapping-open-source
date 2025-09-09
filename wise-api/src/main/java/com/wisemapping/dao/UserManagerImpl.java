@@ -110,24 +110,35 @@ public class UserManagerImpl
     @Transactional
     public Account createUser(@NotNull Account user, @NotNull Collaborator collaborator) {
         assert user != null : "Trying to store a null user";
+        assert collaborator != null : "Trying to store a null collaborator";
 
-        // Migrate from previous temporal collab to new user ...
-        collaborator.setEmail(collaborator.getEmail() + "_toRemove");
-        entityManager.merge(collaborator);
-        entityManager.flush();
+        try {
+            // Migrate from previous temporal collab to new user ...
+            // First, rename the collaborator email to avoid constraint violations
+            String originalEmail = collaborator.getEmail();
+            collaborator.setEmail(originalEmail + "_toRemove_" + System.currentTimeMillis());
+            entityManager.merge(collaborator);
+            entityManager.flush();
 
-        // Save all new...
-        this.createUser(user);
+            // Save the new account...
+            this.createUser(user);
 
-        // Update mindmap ...
-        final Set<Collaboration> collaborations = new CopyOnWriteArraySet<>(collaborator.getCollaborations());
-        for (Collaboration collabs : collaborations) {
-            collabs.setCollaborator(user);
+            // Update all collaborations to point to the new account
+            final Set<Collaboration> collaborations = new CopyOnWriteArraySet<>(collaborator.getCollaborations());
+            for (Collaboration collabs : collaborations) {
+                collabs.setCollaborator(user);
+            }
+
+            // Delete the old collaborator record
+            entityManager.remove(collaborator);
+            entityManager.flush();
+            
+            return user;
+        } catch (Exception e) {
+            // If anything goes wrong, we need to clean up and rethrow
+            throw new RuntimeException("Failed to migrate collaborator to account for email: " + 
+                collaborator.getEmail() + " -> " + user.getEmail(), e);
         }
-
-        // Delete old user ...
-        entityManager.remove(collaborator);
-        return user;
     }
 
     @Override
