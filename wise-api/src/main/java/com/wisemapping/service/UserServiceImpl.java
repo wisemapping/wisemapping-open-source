@@ -40,7 +40,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import java.util.*;
@@ -66,6 +65,9 @@ public class UserServiceImpl
 
     @Autowired
     private MeterRegistry meterRegistry;
+
+    @Autowired
+    private MetricsService telemetryMetricsService;
 
     final private static Logger logger = LogManager.getLogger();
 
@@ -147,11 +149,8 @@ public class UserServiceImpl
         accessAuditory.setLoginDate(Calendar.getInstance());
         userManager.auditLogin(accessAuditory);
         
-        // Track user login with OpenTelemetry metrics
-        Counter.builder("user.logins")
-                .description("Total number of user logins")
-                .register(meterRegistry)
-                .increment();
+        // Track user login with enhanced metrics
+        telemetryMetricsService.trackUserLogin(user, "database");
     }
 
     @NotNull
@@ -177,12 +176,10 @@ public class UserServiceImpl
         final Mindmap mindMap = buildTutorialMindmap(user.getFirstname());
         mindmapService.addMindmap(mindMap, user);
 
-        // Track tutorial mindmap creation with OpenTelemetry metrics
-        Counter.builder("mindmaps.created")
-                .description("Total number of mindmaps created")
-                .tag("type", "tutorial")
-                .register(meterRegistry)
-                .increment();
+        // Track tutorial mindmap creation and user registration
+        telemetryMetricsService.trackMindmapCreation(mindMap, user, "tutorial");
+        String emailProvider = telemetryMetricsService.extractEmailProvider(user.getEmail());
+        telemetryMetricsService.trackUserRegistration(user, emailProvider);
 
         // Send registration email.
         if (emailConfirmEnabled) {

@@ -73,6 +73,9 @@ public class MindmapController extends BaseController {
     private SpamDetectionService spamDetectionService;
 
     @Autowired
+    private MetricsService metricService;
+
+    @Autowired
     private MeterRegistry meterRegistry;
 
     @Value("${app.accounts.max-inactive:20}")
@@ -623,6 +626,9 @@ public class MindmapController extends BaseController {
                 mindmap.setSpamDescription(spamResult.getDetails());
                 // Get strategy name as enum
                 mindmap.setSpamTypeCode(spamResult.getStrategyType());
+                
+                // Track spam detection during creation
+                metricService.trackSpamDetection(mindmap, spamResult, "creation");
             } else {
                 mindmap.setSpamDetected(false);
                 mindmap.setSpamDescription(null);
@@ -633,6 +639,9 @@ public class MindmapController extends BaseController {
         // Add new mindmap ...
         final Account user = Utils.getUser(true);
         mindmapService.addMindmap(mindmap, user);
+
+        // Track mindmap creation
+        metricService.trackMindmapCreation(mindmap, user, "new");
 
         // Return the new created map ...
         response.setHeader("Location", "/api/restful/maps/" + mindmap.getId());
@@ -675,12 +684,8 @@ public class MindmapController extends BaseController {
         // Add new mindmap ...
         mindmapService.addMindmap(clonedMap, user);
 
-        // Track mindmap duplication with OpenTelemetry metrics
-        Counter.builder("mindmaps.created")
-                .description("Total number of mindmaps created")
-                .tag("type", "duplicate")
-                .register(meterRegistry)
-                .increment();
+        // Track mindmap duplication
+        metricService.trackMindmapCreation(clonedMap, user, "duplicate");
 
         // Return the new created map ...
         response.setHeader("Location", "/api/restful/maps/" + clonedMap.getId());

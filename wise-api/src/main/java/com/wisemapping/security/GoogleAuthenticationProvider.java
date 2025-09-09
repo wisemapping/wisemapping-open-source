@@ -8,13 +8,16 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 
 import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.model.Account;
+import com.wisemapping.service.MetricsService;
 
 public class GoogleAuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
 
     private UserDetailsService userDetailsService;
+    private MetricsService telemetryMetricsService;
 
-    public GoogleAuthenticationProvider(@NotNull UserDetailsService userDetailsService) {
+    public GoogleAuthenticationProvider(@NotNull UserDetailsService userDetailsService, MetricsService telemetryMetricsService) {
         this.userDetailsService = userDetailsService;
+        this.telemetryMetricsService = telemetryMetricsService;
     }
 
     /**
@@ -48,6 +51,11 @@ public class GoogleAuthenticationProvider implements org.springframework.securit
         resultToken.setDetails(userDetails);
 
         userDetailsService.getUserService().auditLogin(user);
+        
+        // Track Google OAuth login (optional)
+        if (telemetryMetricsService != null) {
+            telemetryMetricsService.trackUserLogin(user, "google_oauth");
+        }
 
         return resultToken;
     }

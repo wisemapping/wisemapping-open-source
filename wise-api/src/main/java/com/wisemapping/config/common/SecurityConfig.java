@@ -50,7 +50,7 @@ public class SecurityConfig {
     }
 
     private AuthenticationProvider googleAuthenticationProvider() {
-        return new GoogleAuthenticationProvider(userDetailsService);
+        return new GoogleAuthenticationProvider(userDetailsService, null); // Telemetry will be optional for now
 
     }
 
