@@ -50,8 +50,8 @@ public class MindmapSpamInfo {
     @Column(name = "spam_detection_version", nullable = false)
     private int spamDetectionVersion = 0;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name = "spam_type_code")
+    @Convert(converter = SpamStrategyTypeConverter.class)
+    @Column(name = "spam_type_code", columnDefinition = "CHAR(1)")
     private SpamStrategyType spamTypeCode;
     
     @CreationTimestamp
