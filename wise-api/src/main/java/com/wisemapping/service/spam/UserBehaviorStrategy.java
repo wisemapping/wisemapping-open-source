@@ -53,7 +53,7 @@ public class UserBehaviorStrategy implements SpamDetectionStrategy {
         if (minutesSinceCreation < 5) {
             return SpamDetectionResult.spam("Map created within 5 minutes",
                     String.format("Created: %s, Current: %s, Minutes: %d", 
-                                creationTime.getTime(), now.getTime(), minutesSinceCreation));
+                                creationTime.getTime(), now.getTime(), minutesSinceCreation), getType());
         }
 
         // Rule 2: Bot behavior detection - map modified within 5 minutes of most recent map creation
@@ -87,7 +87,7 @@ public class UserBehaviorStrategy implements SpamDetectionStrategy {
                                             mindmap.getCreator().getEmail(),
                                             currentMapModificationTime.getTime(),
                                             mostRecentCreationTime.getTime(),
-                                            minutesDifference));
+                                            minutesDifference), getType());
                     }
                 }
             }

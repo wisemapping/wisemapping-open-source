@@ -117,7 +117,7 @@ public class KeywordPatternStrategy implements SpamDetectionStrategy {
             String reason = getSpamReason(uniqueKeywordTypes, patternMatches);
             String details = String.format("Content: '%s', UniqueKeywords: %d, Patterns: %d", 
                                           content, uniqueKeywordTypes, patternMatches);
-            return SpamDetectionResult.spam(reason, details);
+            return SpamDetectionResult.spam(reason, details, getType());
         }
         
         return SpamDetectionResult.notSpam();
