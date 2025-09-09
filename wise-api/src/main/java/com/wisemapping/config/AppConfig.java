@@ -40,13 +40,10 @@ import java.util.Locale;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@SpringBootApplication(scanBasePackageClasses = { MindmapController.class, JwtAuthenticationFilter.class,
-        AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class,
-        com.wisemapping.service.SpamDetectionService.class, com.wisemapping.scheduler.SpamUserSuspensionScheduler.class,
-        com.wisemapping.service.SpamDetectionBatchService.class, com.wisemapping.scheduler.SpamDetectionScheduler.class,
-        com.wisemapping.service.spam.ContactInfoSpamStrategy.class,
-        com.wisemapping.config.NewRelicAutoConfiguration.class })
-@Import({ com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class })
+@SpringBootApplication(
+    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class, com.wisemapping.service.SpamDetectionService.class, com.wisemapping.scheduler.SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, com.wisemapping.scheduler.SpamDetectionScheduler.class, com.wisemapping.service.spam.ContactInfoSpamStrategy.class, com.wisemapping.config.NewRelicAutoConfiguration.class}
+)
+@Import({com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class})
 @EnableScheduling
 @EnableAsync
 @EnableWebSecurity
