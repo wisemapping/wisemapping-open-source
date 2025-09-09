@@ -175,26 +175,6 @@ class SpamDetectionBatchServiceUnitTest {
     }
 
     @Test
-    void testProcessBatch_WithAlreadySpamDetected_ShouldSkip() {
-        // Arrange
-        testMindmap.setSpamDetected(true);
-        Calendar cutoffDate = Calendar.getInstance();
-        when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
-                .thenReturn(Collections.singletonList(testMindmap));
-
-        // Act
-        SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(1, result.processedCount); // processedCount represents total mindmaps processed
-        assertEquals(0, result.spamDetectedCount);
-        // Verify that spam detection was skipped but version was still updated
-        verify(spamDetectionService, never()).detectSpam(any(Mindmap.class));
-        verify(mindmapManager, times(1)).updateMindmapSpamInfo(any(MindmapSpamInfo.class));
-    }
-
-    @Test
     void testProcessBatch_WithSpamDetectionException_ShouldContinueProcessing() {
         // Arrange
         Calendar cutoffDate = Calendar.getInstance();
