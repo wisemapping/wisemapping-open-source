@@ -43,16 +43,16 @@ public class ContactInfoSpamStrategy implements SpamDetectionStrategy {
         Pattern.compile("[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:/[^\\s]*)?", Pattern.CASE_INSENSITIVE),
         
         // Phone number patterns (various international formats)
-        Pattern.compile("\\+?[1-9]\\d{1,14}", Pattern.CASE_INSENSITIVE), // International format
+        Pattern.compile("\\+?[1-9]\\d{9,14}", Pattern.CASE_INSENSITIVE), // International format (10-15 digits)
         Pattern.compile("\\(?[0-9]{3}\\)?[-.\\s]?[0-9]{3}[-.\\s]?[0-9]{4}", Pattern.CASE_INSENSITIVE), // US format
         Pattern.compile("[0-9]{3}[-.\\s]?[0-9]{3}[-.\\s]?[0-9]{4}", Pattern.CASE_INSENSITIVE), // US format without parentheses
-        Pattern.compile("\\+?[0-9]{1,4}[-.\\s]?[0-9]{1,4}[-.\\s]?[0-9]{1,4}[-.\\s]?[0-9]{1,4}", Pattern.CASE_INSENSITIVE), // General format
+        Pattern.compile("\\+?[0-9]{2,4}[-.\\s]?[0-9]{2,4}[-.\\s]?[0-9]{2,4}[-.\\s]?[0-9]{2,4}", Pattern.CASE_INSENSITIVE), // General format (8+ digits total)
         
         // Address patterns (street addresses, postal codes)
-        Pattern.compile("\\d+\\s+[a-zA-Z0-9\\s,.-]+(?:street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|court|ct|place|pl)", Pattern.CASE_INSENSITIVE),
+        Pattern.compile("\\d+\\s+[a-zA-Z0-9\\s,.-]+\\s+(?:street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|court|ct|place|pl)\\b", Pattern.CASE_INSENSITIVE),
         Pattern.compile("\\d{5}(?:-\\d{4})?", Pattern.CASE_INSENSITIVE), // US ZIP codes
         Pattern.compile("[a-zA-Z]\\d[a-zA-Z]\\s?\\d[a-zA-Z]\\d", Pattern.CASE_INSENSITIVE), // Canadian postal codes
-        Pattern.compile("\\d{4}\\s?[a-zA-Z]{2}", Pattern.CASE_INSENSITIVE), // Dutch postal codes
+        Pattern.compile("\\b\\d{4}\\s?[a-zA-Z]{2}\\b", Pattern.CASE_INSENSITIVE), // Dutch postal codes
         
         // Email patterns
         Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", Pattern.CASE_INSENSITIVE),
@@ -130,21 +130,21 @@ public class ContactInfoSpamStrategy implements SpamDetectionStrategy {
             String reason = "";
             String details = "";
 
-            // Rule 1: Has website + phone + address (classic business contact info spam)
+            // PRIMARY RULE: Contact info spam MUST contain Address, Website, and Phone
             if (hasWebsite && hasPhone && hasAddress) {
                 isContactInfoSpam = true;
-                reason = "Complete contact information detected (website, phone, address)";
+                reason = "Contact info spam detected - contains address, website, and phone";
                 details = String.format("Content: '%s', HasWebsite: %s, HasPhone: %s, HasAddress: %s", 
                                       content, hasWebsite, hasPhone, hasAddress);
             }
-            // Rule 2: Has website + phone with contact keywords
+            // Rule 2: Has website + phone with contact keywords (secondary detection)
             else if (hasWebsite && hasPhone && contactKeywordMatches > 0) {
                 isContactInfoSpam = true;
                 reason = "Website and phone with contact keywords detected";
                 details = String.format("Content: '%s', HasWebsite: %s, HasPhone: %s, ContactKeywords: %d", 
                                       content, hasWebsite, hasPhone, contactKeywordMatches);
             }
-            // Rule 3: Multiple contact patterns with contact keywords
+            // Rule 3: Multiple contact patterns with contact keywords (secondary detection)
             else if (contactPatternMatches >= 3 && contactKeywordMatches >= 2) {
                 isContactInfoSpam = true;
                 reason = "Multiple contact patterns with contact keywords detected";
