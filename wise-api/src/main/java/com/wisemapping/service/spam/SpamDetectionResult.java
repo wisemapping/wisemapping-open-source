@@ -61,7 +61,7 @@ public class SpamDetectionResult {
         return details;
     }
 
-    public SpamStrategyType getStrategyName() {
+    public SpamStrategyType getStrategyType() {
         return strategyName;
     }
 }
