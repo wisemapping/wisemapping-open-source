@@ -184,8 +184,7 @@ public class SpamDetectionBatchService {
             mindmapManager.updateMindmapSpamInfo(spamInfo);
         } catch (Exception updateException) {
             logger.error("Failed to update spam info for mindmap '{}' (ID: {}): {}",
-                    mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
-            logger.error(updateException);
+                    mindmap.getTitle(), mindmap.getId(), updateException.getMessage(), updateException);
         }
     }
 
