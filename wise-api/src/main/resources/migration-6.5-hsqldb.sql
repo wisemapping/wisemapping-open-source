@@ -8,7 +8,7 @@ BEGIN;
     spam_detected         BOOLEAN       NOT NULL,
     spam_description      LONGVARCHAR,
     spam_detection_version INTEGER      NOT NULL,
-    spam_type_code        VARCHAR(50),
+    spam_type_code        CHAR(1),
     created_at            DATETIME,
     updated_at            DATETIME,
     FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)

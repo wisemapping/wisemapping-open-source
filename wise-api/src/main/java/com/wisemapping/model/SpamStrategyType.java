@@ -25,29 +25,29 @@ package com.wisemapping.model;
 public enum SpamStrategyType {
     
     // Contact Information Spam
-    CONTACT_INFO("CI", "ContactInfo"),
+    CONTACT_INFO('C', "ContactInfo"),
     
     // Few Nodes with Content Spam
-    FEW_NODES("FN", "FewNodesWithContent"),
+    FEW_NODES('F', "FewNodesWithContent"),
     
     // User Behavior Spam
-    USER_BEHAVIOR("UB", "UserBehavior"),
+    USER_BEHAVIOR('U', "UserBehavior"),
     
     // Keyword Pattern Spam (currently disabled)
-    KEYWORD_PATTERN("KP", "KeywordPattern"),
+    KEYWORD_PATTERN('K', "KeywordPattern"),
     
     // Unknown/Generic spam
-    UNKNOWN("UN", "Unknown");
+    UNKNOWN('X', "Unknown");
     
-    private final String code;
+    private final char code;
     private final String strategyName;
     
-    SpamStrategyType(String code, String strategyName) {
+    SpamStrategyType(char code, String strategyName) {
         this.code = code;
         this.strategyName = strategyName;
     }
     
-    public String getCode() {
+    public char getCode() {
         return code;
     }
     
@@ -57,21 +57,30 @@ public enum SpamStrategyType {
     
     
     /**
-     * Get spam strategy type from code string
+     * Get spam strategy type from code char
      * @param code The short code
      * @return The corresponding spam strategy type, or UNKNOWN if not found
      */
-    public static SpamStrategyType fromCode(String code) {
-        if (code == null) {
-            return UNKNOWN;
-        }
-        
+    public static SpamStrategyType fromCode(char code) {
         for (SpamStrategyType spamType : values()) {
-            if (spamType.code.equals(code)) {
+            if (spamType.code == code) {
                 return spamType;
             }
         }
         
         return UNKNOWN;
+    }
+    
+    /**
+     * Get spam strategy type from code string (for backward compatibility)
+     * @param code The short code string
+     * @return The corresponding spam strategy type, or UNKNOWN if not found
+     */
+    public static SpamStrategyType fromCode(String code) {
+        if (code == null || code.length() != 1) {
+            return UNKNOWN;
+        }
+        
+        return fromCode(code.charAt(0));
     }
 }

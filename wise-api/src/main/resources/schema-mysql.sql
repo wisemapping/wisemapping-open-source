@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS MINDMAP_SPAM_INFO (
   spam_detected         BOOL               NOT NULL DEFAULT 0,
   spam_description      TEXT               CHARACTER SET UTF8MB4,
   spam_detection_version INTEGER           NOT NULL DEFAULT 0,
-  spam_type_code        VARCHAR(50),
+  spam_type_code        CHAR(1),
   created_at            DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at            DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
