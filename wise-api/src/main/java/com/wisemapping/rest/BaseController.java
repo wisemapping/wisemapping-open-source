@@ -102,7 +102,6 @@ public class BaseController {
         return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
     }
 
-
     @ExceptionHandler(AccessDeniedSecurityException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)

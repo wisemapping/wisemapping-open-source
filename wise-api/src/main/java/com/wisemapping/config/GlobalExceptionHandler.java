@@ -104,6 +104,14 @@ public class GlobalExceptionHandler {
         return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
     }
 
+    @ExceptionHandler(WiseMappingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestErrors handleWiseMappingException(@NotNull WiseMappingException ex) {
+        logger.debug(ex.getMessage(), ex);
+        return new RestErrors(ex.getMessage(), Severity.WARNING);
+    }
+
     @ExceptionHandler(OAuthAuthenticationException.class)
     @ResponseBody
     public OAuthAuthenticationException handleOAuthErrors(@NotNull OAuthAuthenticationException ex, HttpServletResponse response) {
