@@ -162,7 +162,6 @@ public class MindmapManagerImpl
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateMindmapSpamInfo(@NotNull com.wisemapping.model.MindmapSpamInfo spamInfo) {
         assert spamInfo != null : "Update MindmapSpamInfo: SpamInfo is required!";
         
@@ -171,12 +170,14 @@ public class MindmapManagerImpl
         try {
             // Use native SQL for guaranteed "last win" behavior
             String sql = """
-                INSERT INTO MINDMAP_SPAM_INFO (mindmap_id, spam_detected, spam_detection_version, spam_type_code)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO MINDMAP_SPAM_INFO (mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
                 ON DUPLICATE KEY UPDATE
                     spam_detected = VALUES(spam_detected),
                     spam_detection_version = VALUES(spam_detection_version),
-                    spam_type_code = VALUES(spam_type_code)
+                    spam_type_code = VALUES(spam_type_code),
+                    spam_description = VALUES(spam_description),
+                    updated_at = CURRENT_TIMESTAMP
                 """;
             
             entityManager.createNativeQuery(sql)
@@ -184,6 +185,7 @@ public class MindmapManagerImpl
                 .setParameter(2, spamInfo.isSpamDetected())
                 .setParameter(3, spamInfo.getSpamDetectionVersion())
                 .setParameter(4, spamInfo.getSpamTypeCode())
+                .setParameter(5, spamInfo.getSpamDescription())
                 .executeUpdate();
                 
         } catch (Exception e) {

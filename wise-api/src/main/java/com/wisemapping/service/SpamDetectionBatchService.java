@@ -137,10 +137,10 @@ public class SpamDetectionBatchService {
                 SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
                 if (spamResult.isSpam()) {
                     // Get strategy name as enum
-                    spamTypeCode = spamResult.getStrategyName();
+                    spamTypeCode = spamResult.getStrategyType();
                     spamDetectedCount++;
                     logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (strategy: {}) (last win)",
-                            mindmap.getTitle(), mindmap.getId(), spamTypeCode, spamResult.getStrategyName());
+                            mindmap.getTitle(), mindmap.getId(), spamTypeCode, spamResult.getStrategyType());
                 } else {
                     // No spam detected - still need to update version to track processing
                     logger.debug("No spam detected in mindmap '{}' (ID: {}) - updating version only",
@@ -148,7 +148,8 @@ public class SpamDetectionBatchService {
                 }
 
                 // Always update spam info to track processing version
-                updateSpamInfo(mindmap, spamTypeCode);
+                String spamDescription = spamResult.isSpam() ? spamResult.getDetails() : null;
+                updateSpamInfo(mindmap, spamTypeCode, spamDescription);
                 processedCount++;
             } catch (Exception e) {
                 logger.error("Error processing mindmap '{}' (ID: {}): {}",
@@ -165,7 +166,7 @@ public class SpamDetectionBatchService {
      * Helper method to update spam info for a mindmap
      * Handles both new and existing MindmapSpamInfo entities
      */
-    private void updateSpamInfo(Mindmap mindmap, @Nullable SpamStrategyType spamTypeCode) {
+    protected void updateSpamInfo(Mindmap mindmap, @Nullable SpamStrategyType spamTypeCode, @Nullable String description) {
         try {
             MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
 
@@ -175,8 +176,9 @@ public class SpamDetectionBatchService {
             spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
 
             // Set spam type code if provided (only when spam is detected)
-            if (spamTypeCode != null) {
+            if (isSpamDetected) {
                 spamInfo.setSpamTypeCode(spamTypeCode);
+                spamInfo.setSpamDescription(description);
             }
 
             mindmapManager.updateMindmapSpamInfo(spamInfo);
