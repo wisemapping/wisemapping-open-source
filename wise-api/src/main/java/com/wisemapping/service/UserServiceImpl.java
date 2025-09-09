@@ -208,6 +208,9 @@ public class UserServiceImpl
         // Callback is successful, the email of the user exits. Is an existing account ?
         Account result = userManager.getUserBy(data.getEmail());
         if (result == null) {
+            // Check if there's an existing collaborator with this email
+            Collaborator existingCollaborator = userManager.getCollaboratorBy(data.getEmail());
+            
             Account newUser = new Account();
             // new registrations from google starts sync
             newUser.setGoogleSync(true);
@@ -216,7 +219,15 @@ public class UserServiceImpl
             newUser.setLastname(data.getLastName());
             newUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
             newUser.setGoogleToken(data.getAccessToken());
-            result = this.createUser(newUser, false, true);
+            
+            if (existingCollaborator != null) {
+                // Migrate existing collaborator to account
+                logger.debug("Migrating existing collaborator to Google OAuth account for email: " + data.getEmail());
+                result = userManager.createUser(newUser, existingCollaborator);
+            } else {
+                // Create new account
+                result = this.createUser(newUser, false, true);
+            }
             logger.debug("Google account successfully created");
         }
 
