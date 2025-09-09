@@ -317,7 +317,7 @@ class ContactInfoSpamStrategyTest {
         
         var result = contactInfoSpamStrategy.detectSpam(mindmap);
         assertTrue(result.isSpam());
-        assertTrue(result.getReason().contains("Complete contact information detected"));
+        assertTrue(result.getReason().contains("Contact info spam detected - contains address, website, and phone"));
         assertTrue(result.getDetails().contains("HasWebsite: true"));
         assertTrue(result.getDetails().contains("HasPhone: true"));
         assertTrue(result.getDetails().contains("HasAddress: true"));
