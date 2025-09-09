@@ -32,6 +32,12 @@ public class NewRelicAutoConfiguration {
     @Value("${management.metrics.export.newrelic.uri:https://metric-api.newrelic.com/metric/v1}")
     private String uri;
 
+    @Value("${management.metrics.export.newrelic.application:}")
+    private String applicationName;
+
+    @Value("${management.metrics.export.newrelic.step:PT1M}")
+    private String step;
+
     public NewRelicAutoConfiguration() {
         logger.info("New Relic metrics export is ENABLED");
     }
@@ -51,23 +57,43 @@ public class NewRelicAutoConfiguration {
             throw new IllegalArgumentException("NewRelic Account ID is required but not provided. Set management.metrics.export.newrelic.account-id");
         }
         
-        logger.info("NewRelic configuration validated - API key and Account ID provided");
+        logger.info("NewRelic configuration validated - API key: {} (length), Account ID: {}, URI: {}, Application: {}", 
+            apiKey.length(), accountId, uri, applicationName);
         
         return new NewRelicConfig() {
             @Override
             public String get(String key) {
-                // Return the actual configuration values
+                // Return the actual configuration values - logging for debugging
+                String value;
                 switch (key) {
                     case "newrelic.apiKey":
-                        return apiKey;
+                        value = apiKey;
+                        break;
                     case "newrelic.accountId":
-                        return accountId;
+                        value = accountId;
+                        break;
                     case "newrelic.uri":
-                        return uri;
+                        value = uri;
+                        break;
+                    case "newrelic.applicationName":
+                        value = applicationName;
+                        break;
+                    case "newrelic.step":
+                        value = step;
+                        break;
                     default:
                         // Return null to use defaults for other properties
-                        return null;
+                        value = null;
+                        break;
                 }
+                
+                if (value != null && !key.contains("apiKey")) {
+                    logger.debug("NewRelic config get('{}') = '{}'", key, value);
+                }else {
+                    logger.warn("NewRelic config cound not be ressolved ('{}') = '{}'", key, value);
+                }
+                
+                return value;
             }
 
             @Override

@@ -149,8 +149,10 @@ public class UserServiceImpl
         accessAuditory.setLoginDate(Calendar.getInstance());
         userManager.auditLogin(accessAuditory);
         
-        // Track user login with enhanced metrics
-        telemetryMetricsService.trackUserLogin(user, "database");
+        // Track user login with enhanced metrics (null-safe)
+        if (telemetryMetricsService != null) {
+            telemetryMetricsService.trackUserLogin(user, "database");
+        }
     }
 
     @NotNull
@@ -176,10 +178,12 @@ public class UserServiceImpl
         final Mindmap mindMap = buildTutorialMindmap(user.getFirstname());
         mindmapService.addMindmap(mindMap, user);
 
-        // Track tutorial mindmap creation and user registration
-        telemetryMetricsService.trackMindmapCreation(mindMap, user, "tutorial");
-        String emailProvider = telemetryMetricsService.extractEmailProvider(user.getEmail());
-        telemetryMetricsService.trackUserRegistration(user, emailProvider);
+        // Track tutorial mindmap creation and user registration (null-safe)
+        if (telemetryMetricsService != null) {
+            telemetryMetricsService.trackMindmapCreation(mindMap, user, "tutorial");
+            String emailProvider = telemetryMetricsService.extractEmailProvider(user.getEmail());
+            telemetryMetricsService.trackUserRegistration(user, emailProvider);
+        }
 
         // Send registration email.
         if (emailConfirmEnabled) {

@@ -72,7 +72,7 @@ public class MindmapController extends BaseController {
     @Autowired
     private SpamDetectionService spamDetectionService;
 
-    @Autowired
+    @Autowired(required = false)
     private MetricsService metricService;
 
     @Autowired
@@ -627,8 +627,10 @@ public class MindmapController extends BaseController {
                 // Get strategy name as enum
                 mindmap.setSpamTypeCode(spamResult.getStrategyType());
                 
-                // Track spam detection during creation
-                metricService.trackSpamDetection(mindmap, spamResult, "creation");
+                // Track spam detection during creation (null-safe)
+                if (metricService != null) {
+                    metricService.trackSpamDetection(mindmap, spamResult, "creation");
+                }
             } else {
                 mindmap.setSpamDetected(false);
                 mindmap.setSpamDescription(null);
@@ -640,8 +642,10 @@ public class MindmapController extends BaseController {
         final Account user = Utils.getUser(true);
         mindmapService.addMindmap(mindmap, user);
 
-        // Track mindmap creation
-        metricService.trackMindmapCreation(mindmap, user, "new");
+        // Track mindmap creation (null-safe)
+        if (metricService != null) {
+            metricService.trackMindmapCreation(mindmap, user, "new");
+        }
 
         // Return the new created map ...
         response.setHeader("Location", "/api/restful/maps/" + mindmap.getId());
@@ -684,8 +688,10 @@ public class MindmapController extends BaseController {
         // Add new mindmap ...
         mindmapService.addMindmap(clonedMap, user);
 
-        // Track mindmap duplication
-        metricService.trackMindmapCreation(clonedMap, user, "duplicate");
+        // Track mindmap duplication (null-safe)
+        if (metricService != null) {
+            metricService.trackMindmapCreation(clonedMap, user, "duplicate");
+        }
 
         // Return the new created map ...
         response.setHeader("Location", "/api/restful/maps/" + clonedMap.getId());
