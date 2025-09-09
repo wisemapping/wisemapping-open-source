@@ -185,7 +185,7 @@ public class SpamDetectionBatchService {
         } catch (Exception updateException) {
             logger.error("Failed to update spam info for mindmap '{}' (ID: {}): {}",
                     mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
-            // Continue processing - this is a best effort operation
+            logger.error(updateException);
         }
     }
 
