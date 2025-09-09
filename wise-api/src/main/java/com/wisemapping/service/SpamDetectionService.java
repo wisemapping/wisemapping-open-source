@@ -6,6 +6,7 @@ import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.service.spam.SpamDetectionStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -17,7 +18,7 @@ public class SpamDetectionService {
     
     private final List<SpamDetectionStrategy> strategies;
 
-    public SpamDetectionService(List<SpamDetectionStrategy> strategies) {
+    public SpamDetectionService(@NotNull List<SpamDetectionStrategy> strategies) {
         this.strategies = strategies;
     }
 
@@ -50,7 +51,7 @@ public class SpamDetectionService {
         return SpamDetectionResult.notSpam();
     }
 
-    public boolean isSpamContent(Mindmap mindmap) {
+    public boolean isSpamContent(@NotNull Mindmap mindmap) {
         return detectSpam(mindmap).isSpam();
     }
 }

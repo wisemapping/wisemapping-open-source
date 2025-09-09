@@ -23,6 +23,9 @@ import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindmapSpamInfo;
 import com.wisemapping.model.SpamStrategyType;
 import com.wisemapping.service.spam.SpamDetectionResult;
+import jakarta.validation.constraints.Null;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,7 @@ public class SpamDetectionBatchService {
 
     @Autowired
     private SpamDetectionService spamDetectionService;
-    
+
 
     @Value("${app.batch.spam-detection.enabled:true}")
     private boolean enabled;
@@ -74,29 +77,29 @@ public class SpamDetectionBatchService {
             // Calculate cutoff date (monthsBack months ago)
             java.util.Calendar cutoffDate = java.util.Calendar.getInstance();
             cutoffDate.add(java.util.Calendar.MONTH, -monthsBack);
-            
+
             // Get total count for logging
             long totalMaps = getTotalMapsCount(cutoffDate);
             logger.info("Starting spam detection for {} public maps created since {} in batches of {} (current version: {})", totalMaps, cutoffDate.getTime(), batchSize, currentSpamDetectionVersion);
-            
+
             int processedCount = 0;
             int spamDetectedCount = 0;
             int offset = 0;
-            
+
             // Process maps in batches, each batch in its own transaction
             while (offset < totalMaps) {
                 try {
                     BatchResult result = processBatch(cutoffDate, offset, batchSize);
                     processedCount += result.processedCount;
                     spamDetectedCount += result.spamDetectedCount;
-                    
+
                     if (result.processedCount == 0) {
                         break; // No more maps to process
                     }
-                    
+
                     offset += batchSize;
-                    logger.debug("Processed batch: offset={}, batchSize={}, totalProcessed={}", 
-                        offset - batchSize, batchSize, processedCount);
+                    logger.debug("Processed batch: offset={}, batchSize={}, totalProcessed={}",
+                            offset - batchSize, batchSize, processedCount);
                 } catch (Exception e) {
                     logger.error("Error processing batch at offset {}: {}", offset, e.getMessage(), e);
                     // Continue with next batch instead of failing completely
@@ -104,8 +107,8 @@ public class SpamDetectionBatchService {
                 }
             }
 
-            logger.info("Spam detection batch task completed. Processed {} public maps, marked {} as spam", 
-                processedCount, spamDetectedCount);
+            logger.info("Spam detection batch task completed. Processed {} public maps, marked {} as spam",
+                    processedCount, spamDetectedCount);
 
         } catch (Exception e) {
             logger.error("Error during spam detection batch task", e);
@@ -115,58 +118,46 @@ public class SpamDetectionBatchService {
     /**
      * Process a single batch of mindmaps in its own transaction
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public BatchResult processBatch(java.util.Calendar cutoffDate, int offset, int batchSize) {
         List<Mindmap> publicMaps = mindmapManager.findPublicMindmapsNeedingSpamDetection(cutoffDate, currentSpamDetectionVersion, offset, batchSize);
-        
+
         if (publicMaps.isEmpty()) {
             return new BatchResult(0, 0);
         }
-        
+
         int processedCount = 0;
         int spamDetectedCount = 0;
-        
+
         for (Mindmap mindmap : publicMaps) {
             try {
-                boolean isSpamDetected = mindmap.isSpamDetected();
                 SpamStrategyType spamTypeCode = null;
-                
+
                 // Check for spam content only if not already marked as spam
-                if (!isSpamDetected) {
-                    SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
-                    if (spamResult.isSpam()) {
-                        isSpamDetected = true;
-                        // Get strategy name as enum
-                        spamTypeCode = spamResult.getStrategyName();
-                        spamDetectedCount++;
-                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (strategy: {}) (last win)", 
+                SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
+                if (spamResult.isSpam()) {
+                    // Get strategy name as enum
+                    spamTypeCode = spamResult.getStrategyName();
+                    spamDetectedCount++;
+                    logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (strategy: {}) (last win)",
                             mindmap.getTitle(), mindmap.getId(), spamTypeCode, spamResult.getStrategyName());
-                    } else {
-                        // No spam detected - still need to update version to track processing
-                        logger.debug("No spam detected in mindmap '{}' (ID: {}) - updating version only", 
-                            mindmap.getTitle(), mindmap.getId());
-                    }
                 } else {
-                    // Already marked as spam, preserve existing spam type code
-                    if (mindmap.getSpamInfo() != null) {
-                        spamTypeCode = mindmap.getSpamInfo().getSpamTypeCode();
-                    }
-                    logger.debug("Already marked as spam mindmap '{}' (ID: {}) - updating version only", 
-                        mindmap.getTitle(), mindmap.getId());
+                    // No spam detected - still need to update version to track processing
+                    logger.debug("No spam detected in mindmap '{}' (ID: {}) - updating version only",
+                            mindmap.getTitle(), mindmap.getId());
                 }
-                
+
                 // Always update spam info to track processing version
                 updateSpamInfo(mindmap, spamTypeCode);
-                
                 processedCount++;
             } catch (Exception e) {
-                logger.error("Error processing mindmap '{}' (ID: {}): {}", 
-                    mindmap.getTitle(), mindmap.getId(), e.getMessage(), e);
+                logger.error("Error processing mindmap '{}' (ID: {}): {}",
+                        mindmap.getTitle(), mindmap.getId(), e.getMessage(), e);
                 // Continue processing other mindmaps in the batch
                 processedCount++;
             }
         }
-        
+
         return new BatchResult(processedCount, spamDetectedCount);
     }
 
@@ -174,29 +165,28 @@ public class SpamDetectionBatchService {
      * Helper method to update spam info for a mindmap
      * Handles both new and existing MindmapSpamInfo entities
      */
-    private void updateSpamInfo(Mindmap mindmap, SpamStrategyType spamTypeCode) {
+    private void updateSpamInfo(Mindmap mindmap, @Nullable SpamStrategyType spamTypeCode) {
         try {
             MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
-            
+
             // Set spam detection status and version
             boolean isSpamDetected = (spamTypeCode != null);
             spamInfo.setSpamDetected(isSpamDetected);
             spamInfo.setSpamDetectionVersion(currentSpamDetectionVersion);
-            
+
             // Set spam type code if provided (only when spam is detected)
             if (spamTypeCode != null) {
                 spamInfo.setSpamTypeCode(spamTypeCode);
             }
-            
+
             mindmapManager.updateMindmapSpamInfo(spamInfo);
         } catch (Exception updateException) {
-            logger.error("Failed to update spam info for mindmap '{}' (ID: {}): {}", 
-                mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
+            logger.error("Failed to update spam info for mindmap '{}' (ID: {}): {}",
+                    mindmap.getTitle(), mindmap.getId(), updateException.getMessage());
             // Continue processing - this is a best effort operation
         }
     }
 
-    
 
     /**
      * Result class for batch processing
@@ -214,7 +204,6 @@ public class SpamDetectionBatchService {
     /**
      * Get total count of public mindmaps since cutoff date (transactional)
      */
-    @Transactional(readOnly = true)
     public long getTotalMapsCount(java.util.Calendar cutoffDate) {
         return mindmapManager.countPublicMindmapsNeedingSpamDetection(cutoffDate, currentSpamDetectionVersion);
     }

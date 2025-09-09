@@ -47,10 +47,10 @@ public class SpamDetectionScheduler {
     @Async
     public void processSpamDetectionOnStartup() {
         if (!enabled) {
-            logger.debug("Spam detection scheduler is disabled");
+            logger.debug("Spam detection scheduler is disabled.");
             return;
         }
-        logger.info("Executing spam detection task on application startup (async)...");
+        logger.info("Executing spam detection task on application startup");
         
         try {
             spamDetectionBatchService.processPublicMapsSpamDetection();
