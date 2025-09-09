@@ -18,11 +18,13 @@
 
 package com.wisemapping.service.spam;
 
+import com.wisemapping.model.SpamStrategyType;
+
 public class SpamDetectionResult {
     private final boolean isSpam;
     private final String reason;
     private final String details;
-    private final String strategyName;
+    private final SpamStrategyType strategyName;
 
     public SpamDetectionResult(boolean isSpam, String reason, String details) {
         this.isSpam = isSpam;
@@ -31,7 +33,7 @@ public class SpamDetectionResult {
         this.strategyName = null;
     }
 
-    public SpamDetectionResult(boolean isSpam, String reason, String details, String strategyName) {
+    public SpamDetectionResult(boolean isSpam, String reason, String details, SpamStrategyType strategyName) {
         this.isSpam = isSpam;
         this.reason = reason;
         this.details = details;
@@ -46,7 +48,7 @@ public class SpamDetectionResult {
         return new SpamDetectionResult(true, reason, details, null);
     }
 
-    public static SpamDetectionResult spam(String reason, String details, String strategyName) {
+    public static SpamDetectionResult spam(String reason, String details, SpamStrategyType strategyName) {
         return new SpamDetectionResult(true, reason, details, strategyName);
     }
 
@@ -62,7 +64,7 @@ public class SpamDetectionResult {
         return details;
     }
 
-    public String getStrategyName() {
+    public SpamStrategyType getStrategyName() {
         return strategyName;
     }
 }

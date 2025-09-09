@@ -19,6 +19,7 @@
 package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -177,7 +178,7 @@ public class ContactInfoSpamStrategy implements SpamDetectionStrategy {
     }
 
     @Override
-    public String getStrategyName() {
-        return "ContactInfo";
+    public SpamStrategyType getType() {
+        return SpamStrategyType.CONTACT_INFO;
     }
 }

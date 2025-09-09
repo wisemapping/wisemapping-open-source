@@ -19,6 +19,7 @@
 package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -73,7 +74,7 @@ public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
     }
 
     @Override
-    public String getStrategyName() {
-        return "FewNodesWithContent";
+    public SpamStrategyType getType() {
+        return SpamStrategyType.FEW_NODES;
     }
 }

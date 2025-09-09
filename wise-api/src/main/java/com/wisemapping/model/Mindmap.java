@@ -232,6 +232,17 @@ public class Mindmap implements Serializable {
         spamInfo.setSpamDetectionVersion(spamDetectionVersion);
     }
 
+    public SpamStrategyType getSpamTypeCode() {
+        return spamInfo != null ? spamInfo.getSpamTypeCode() : null;
+    }
+
+    public void setSpamTypeCode(SpamStrategyType spamTypeCode) {
+        if (spamInfo == null) {
+            spamInfo = new MindmapSpamInfo(this);
+        }
+        spamInfo.setSpamTypeCode(spamTypeCode);
+    }
+
     public MindmapSpamInfo getSpamInfo() {
         return spamInfo;
     }

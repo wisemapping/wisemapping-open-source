@@ -281,7 +281,7 @@ class ContactInfoSpamStrategyTest {
 
     @Test
     void testStrategyName() {
-        assertEquals("ContactInfo", contactInfoSpamStrategy.getStrategyName());
+        assertEquals("ContactInfo", contactInfoSpamStrategy.getType().getStrategyName());
     }
 
     @Test

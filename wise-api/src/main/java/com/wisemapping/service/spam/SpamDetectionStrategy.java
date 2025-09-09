@@ -19,8 +19,9 @@
 package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.SpamStrategyType;
 
 public interface SpamDetectionStrategy {
     SpamDetectionResult detectSpam(Mindmap mindmap);
-    String getStrategyName();
+    SpamStrategyType getType();
 }
