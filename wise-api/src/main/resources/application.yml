@@ -89,6 +89,16 @@ spring:
 
 
 #
+# OpenTelemetry Resource Attributes
+#
+otel:
+  resource:
+    attributes:
+      service:
+        name: wisemapping-api
+        version: 6.0.0
+
+#
 # Log Level
 #
 logging:
@@ -182,8 +192,9 @@ app:
 # Behind reverse proxy configuration
 server:
   tomcat:
-    remote-ip-header: x-forwarded-for
-    protocol-header: x-forwarded-proto
+    remoteip:
+      remote-ip-header: x-forwarded-for
+      protocol-header: x-forwarded-proto
 
 # Spring Boot Actuator configuration
 management:
@@ -194,23 +205,15 @@ management:
   endpoint:
     health:
       show-details: when-authorized
-    metrics:
-      enabled: true
-    prometheus:
-      enabled: true
   metrics:
-    export:
-      prometheus:
-        enabled: true
-      otlp:
-        enabled: false
-        url: http://localhost:4318/v1/metrics
-        step: 10s
-        resource-attributes:
-          service.name: wisemapping-api
-          service.version: 6.0.0
-        headers:
-          api-key: your-otel-api-key-here
     tags:
       application: wisemapping-api
+  otlp:
+    metrics:
+      export:
+        url: http://localhost:4318/v1/metrics
+        step: 10s
+        headers:
+          api-key: your-otel-api-key-here
+        enabled: false
 
