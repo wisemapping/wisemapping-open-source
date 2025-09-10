@@ -9,7 +9,6 @@ import com.wisemapping.security.AuthenticationProvider;
 import com.wisemapping.service.MindmapServiceImpl;
 import com.wisemapping.service.SpamDetectionService;
 import com.wisemapping.service.spam.ContactInfoSpamStrategy;
-import com.wisemapping.util.VelocityEngineUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
@@ -30,14 +29,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import com.wisemapping.model.Account;
 import com.wisemapping.security.Utils;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import java.util.Locale;
@@ -64,30 +61,25 @@ public class AppConfig implements WebMvcConfigurer {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean
-    MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
-        return new MvcRequestMatcher.Builder(introspector);
-    }
 
     @Bean
-    SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http,
-            @NotNull final MvcRequestMatcher.Builder mvc) throws Exception {
+    SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults()) // enables WebMvcConfigurer CORS
                 .securityMatcher("/**")
                 .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(mvc.pattern("/error")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/authenticate")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/users/")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/app/config")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/maps/*/metadata")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/maps/*/document/xml-pub")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/users/resetPassword")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/oauth2/googlecallback")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/oauth2/confirmaccountsync")).permitAll()
-                        .requestMatchers(mvc.pattern("/api/restful/admin/**")).hasAnyRole("ADMIN")
-                        .requestMatchers(mvc.pattern("/**")).hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/api/restful/authenticate").permitAll()
+                        .requestMatchers("/api/restful/users/").permitAll()
+                        .requestMatchers("/api/restful/app/config").permitAll()
+                        .requestMatchers("/api/restful/maps/*/metadata").permitAll()
+                        .requestMatchers("/api/restful/maps/*/document/xml-pub").permitAll()
+                        .requestMatchers("/api/restful/users/resetPassword").permitAll()
+                        .requestMatchers("/api/restful/oauth2/googlecallback").permitAll()
+                        .requestMatchers("/api/restful/oauth2/confirmaccountsync").permitAll()
+                        .requestMatchers("/api/restful/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
                 .logout(logout -> logout.permitAll()
@@ -132,7 +124,7 @@ public class AppConfig implements WebMvcConfigurer {
 
                     Locale.Builder builder = new Locale.Builder().setLanguage(locales[0]);
                     if (locales.length > 1) {
-                        builder.setVariant(locales[1]);
+                        builder.setRegion(locales[1]);
                     }
                     result = builder.build();
                 } else {
