@@ -23,8 +23,6 @@ import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindmapSpamInfo;
 import com.wisemapping.model.SpamStrategyType;
 import com.wisemapping.service.spam.SpamDetectionResult;
-import jakarta.validation.constraints.Null;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,9 +44,9 @@ public class SpamDetectionBatchService {
 
     @Autowired
     private SpamDetectionService spamDetectionService;
-    
-    @Autowired(required = false)
-    private MetricsService telemetryMetricsService;
+
+    @Autowired
+    private MetricsService metricsService;
 
 
     @Value("${app.batch.spam-detection.enabled:true}")
@@ -142,13 +140,11 @@ public class SpamDetectionBatchService {
                     // Get strategy name as enum
                     spamTypeCode = spamResult.getStrategyType();
                     spamDetectedCount++;
-                        logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (strategy: {}) (last win)",
-                                mindmap.getTitle(), mindmap.getId(), spamTypeCode, spamResult.getStrategyType());
-                        
-                        // Track spam detection (null-safe)
-                        if (telemetryMetricsService != null) {
-                            telemetryMetricsService.trackSpamDetection(mindmap, spamResult, "batch_scan");
-                        }
+                    logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (strategy: {}) (last win)",
+                            mindmap.getTitle(), mindmap.getId(), spamTypeCode, spamResult.getStrategyType());
+
+                    // Track spam detection (null-safe)
+                    metricsService.trackSpamDetection(mindmap, spamResult, "batch_scan");
                 } else {
                     // No spam detected - still need to update version to track processing
                     logger.debug("No spam detected in mindmap '{}' (ID: {}) - updating version only",

@@ -31,8 +31,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -57,7 +55,8 @@ public class MindmapServiceImpl
     private NotificationService notificationService;
 
     @Autowired
-    private MeterRegistry meterRegistry;
+    private MetricsService metricsService;
+
 
     @Value("${app.admin.user}")
     private String adminUser;
@@ -219,13 +218,9 @@ public class MindmapServiceImpl
         mindmap.getCollaborations().add(collaboration);
 
         mindmapManager.addMindmap(dbUser, mindmap);
-        
-        // Track mindmap creation with OpenTelemetry metrics
-        Counter.builder("mindmaps.created")
-                .description("Total number of mindmaps created")
-                .tag("type", "new")
-                .register(meterRegistry)
-                .increment();
+
+        // Track mindmap creation with enhanced metrics
+        metricsService.trackMindmapCreation(mindmap, dbUser, "new");
     }
 
     @Override

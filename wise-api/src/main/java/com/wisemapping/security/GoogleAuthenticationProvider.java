@@ -13,11 +13,11 @@ import com.wisemapping.service.MetricsService;
 public class GoogleAuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
 
     private UserDetailsService userDetailsService;
-    private MetricsService telemetryMetricsService;
+    private MetricsService metricsService;
 
-    public GoogleAuthenticationProvider(@NotNull UserDetailsService userDetailsService, MetricsService telemetryMetricsService) {
+    public GoogleAuthenticationProvider(@NotNull UserDetailsService userDetailsService, MetricsService metricsService) {
         this.userDetailsService = userDetailsService;
-        this.telemetryMetricsService = telemetryMetricsService;
+        this.metricsService = metricsService;
     }
 
     /**
@@ -51,11 +51,9 @@ public class GoogleAuthenticationProvider implements org.springframework.securit
         resultToken.setDetails(userDetails);
 
         userDetailsService.getUserService().auditLogin(user);
-        
+
         // Track Google OAuth login (optional)
-        if (telemetryMetricsService != null) {
-            telemetryMetricsService.trackUserLogin(user, "google_oauth");
-        }
+        metricsService.trackUserLogin(user, "google_oauth");
 
         return resultToken;
     }

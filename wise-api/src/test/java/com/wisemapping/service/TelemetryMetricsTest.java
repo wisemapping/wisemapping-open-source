@@ -49,20 +49,20 @@ class TelemetryMetricsTest {
 
     private MeterRegistry meterRegistry;
     private MindmapServiceImpl mindmapServiceImpl;
-    private MetricsService telemetryMetricsService;
+    private MetricsService metricsService;
 
     @BeforeEach
     void setUp() {
         meterRegistry = new SimpleMeterRegistry();
         mindmapServiceImpl = new MindmapServiceImpl();
-        telemetryMetricsService = new MetricsService();
+        metricsService = new MetricsService();
         
         // Use reflection to inject the meterRegistry since it's private
         try {
-            // Inject meterRegistry into telemetryMetricsService
+            // Inject meterRegistry into metricsService
             java.lang.reflect.Field field = MetricsService.class.getDeclaredField("meterRegistry");
             field.setAccessible(true);
-            field.set(telemetryMetricsService, meterRegistry);
+            field.set(metricsService, meterRegistry);
         } catch (Exception e) {
             fail("Failed to inject meterRegistry: " + e.getMessage());
         }
@@ -154,15 +154,15 @@ class TelemetryMetricsTest {
     void testUserRegistrationMetrics() {
         // Test Gmail registration
         Account gmailUser = createTestUser("test@gmail.com", AuthenticationType.DATABASE);
-        telemetryMetricsService.trackUserRegistration(gmailUser, "gmail");
+        metricsService.trackUserRegistration(gmailUser, "gmail");
         
         // Test other email registration
         Account otherUser = createTestUser("test@company.com", AuthenticationType.DATABASE);
-        telemetryMetricsService.trackUserRegistration(otherUser, "other");
+        metricsService.trackUserRegistration(otherUser, "other");
         
         // Test Google OAuth registration
         Account googleUser = createTestUser("test@gmail.com", AuthenticationType.GOOGLE_OAUTH2);
-        telemetryMetricsService.trackUserRegistration(googleUser, "gmail");
+        metricsService.trackUserRegistration(googleUser, "gmail");
         
         // Verify metrics were recorded
         Double gmailRegistrations = meterRegistry.find("wisemapping.api.user.registrations")
@@ -190,11 +190,11 @@ class TelemetryMetricsTest {
         Account user = createTestUser("test@example.com", AuthenticationType.DATABASE);
         
         // Test database login
-        telemetryMetricsService.trackUserLogin(user, "database");
-        telemetryMetricsService.trackUserLogin(user, "database");
+        metricsService.trackUserLogin(user, "database");
+        metricsService.trackUserLogin(user, "database");
         
         // Test google oauth login
-        telemetryMetricsService.trackUserLogin(user, "google_oauth");
+        metricsService.trackUserLogin(user, "google_oauth");
         
         // Verify metrics
         Double databaseLogins = meterRegistry.find("wisemapping.api.user.logins")
@@ -213,7 +213,7 @@ class TelemetryMetricsTest {
     void testSpamPreventionMetrics() {
         // Test spam prevention (simpler test without needing SpamDetectionResult)
         Mindmap mindmap = createTestMindmap();
-        telemetryMetricsService.trackSpamPrevention(mindmap, "publish");
+        metricsService.trackSpamPrevention(mindmap, "publish");
         
         // Verify prevention metric
         Double prevention = meterRegistry.find("wisemapping.api.spam.prevented")
@@ -226,16 +226,16 @@ class TelemetryMetricsTest {
     @Test
     void testEmailProviderExtraction() {
         // Test various email providers
-        assertEquals("gmail", telemetryMetricsService.extractEmailProvider("test@gmail.com"));
-        assertEquals("gmail", telemetryMetricsService.extractEmailProvider("test@googlemail.com"));
-        assertEquals("yahoo", telemetryMetricsService.extractEmailProvider("test@yahoo.com"));
-        assertEquals("microsoft", telemetryMetricsService.extractEmailProvider("test@outlook.com"));
-        assertEquals("microsoft", telemetryMetricsService.extractEmailProvider("test@hotmail.com"));
-        assertEquals("apple", telemetryMetricsService.extractEmailProvider("test@icloud.com"));
-        assertEquals("education", telemetryMetricsService.extractEmailProvider("test@university.edu"));
-        assertEquals("government", telemetryMetricsService.extractEmailProvider("test@agency.gov"));
-        assertEquals("other", telemetryMetricsService.extractEmailProvider("test@company.com"));
-        assertEquals("other", telemetryMetricsService.extractEmailProvider("invalid-email"));
+        assertEquals("gmail", metricsService.extractEmailProvider("test@gmail.com"));
+        assertEquals("gmail", metricsService.extractEmailProvider("test@googlemail.com"));
+        assertEquals("yahoo", metricsService.extractEmailProvider("test@yahoo.com"));
+        assertEquals("microsoft", metricsService.extractEmailProvider("test@outlook.com"));
+        assertEquals("microsoft", metricsService.extractEmailProvider("test@hotmail.com"));
+        assertEquals("apple", metricsService.extractEmailProvider("test@icloud.com"));
+        assertEquals("education", metricsService.extractEmailProvider("test@university.edu"));
+        assertEquals("government", metricsService.extractEmailProvider("test@agency.gov"));
+        assertEquals("other", metricsService.extractEmailProvider("test@company.com"));
+        assertEquals("other", metricsService.extractEmailProvider("invalid-email"));
     }
 
     private Account createTestUser(String email, AuthenticationType authType) {
