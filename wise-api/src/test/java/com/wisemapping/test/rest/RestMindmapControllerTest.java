@@ -781,8 +781,8 @@ public class RestMindmapControllerTest {
         
         // If it's 4xx, it should be due to spam detection, not content type issues
         if (exchange.getStatusCode().is4xxClientError()) {
-            assertTrue(Objects.requireNonNull(exchange.getBody()).contains("spam") || 
-                      Objects.requireNonNull(exchange.getBody()).contains("SpamContentException"),
+            String body = Objects.requireNonNull(exchange.getBody()).toLowerCase();
+            assertTrue(body.contains("spam") || body.contains("spamcontentexception"),
                       "Expected spam-related error, got: " + exchange.getBody());
         }
     }
