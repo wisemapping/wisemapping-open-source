@@ -32,12 +32,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Centralized service for managing application telemetry metrics.
+ * Centralized service for managing application telemetry metrics using Micrometer with OpenTelemetry.
  * This service provides methods to track key business metrics including:
  * - User logins
  * - User registrations (by email provider)
  * - Mindmap creation
  * - Spam detection
+ * 
+ * Uses Micrometer MeterRegistry which can export to OpenTelemetry without auto-instrumentation.
  */
 @Service
 public class MetricsService {
@@ -53,7 +55,7 @@ public class MetricsService {
     private static final String MINDMAPS_CREATED = "mindmaps.created";
     private static final String SPAM_DETECTED = "spam.detected";
     private static final String SPAM_PREVENTED = "spam.prevented";
-
+    
     /**
      * Track a user login event
      * @param user The user who logged in

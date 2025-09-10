@@ -201,7 +201,16 @@ management:
   metrics:
     export:
       prometheus:
+        enabled: true
+      otlp:
         enabled: false
+        url: http://localhost:4318/v1/metrics
+        step: 10s
+        resource-attributes:
+          service.name: wisemapping-api
+          service.version: 6.0.0
+        headers:
+          api-key: your-otel-api-key-here
     tags:
       application: wisemapping-api
 
