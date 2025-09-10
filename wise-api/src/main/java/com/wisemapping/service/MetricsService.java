@@ -50,11 +50,11 @@ public class MetricsService {
     private MeterRegistry meterRegistry;
 
     // Metric names as constants to avoid typos
-    private static final String USER_LOGINS = "user.logins";
-    private static final String USER_REGISTRATIONS = "user.registrations";
-    private static final String MINDMAPS_CREATED = "mindmaps.created";
-    private static final String SPAM_DETECTED = "spam.detected";
-    private static final String SPAM_PREVENTED = "spam.prevented";
+    private static final String USER_LOGINS = "wisemapping.api.user.logins";
+    private static final String USER_REGISTRATIONS = "wisemapping.api.user.registrations";
+    private static final String MINDMAPS_CREATED = "wisemapping.api.mindmaps.created";
+    private static final String SPAM_DETECTED = "wisemapping.api.spam.detected";
+    private static final String SPAM_PREVENTED = "wisemapping.api.spam.prevented";
     
     /**
      * Track a user login event
