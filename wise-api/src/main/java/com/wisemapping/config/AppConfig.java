@@ -3,8 +3,12 @@ package com.wisemapping.config;
 import com.wisemapping.dao.LabelManagerImpl;
 import com.wisemapping.filter.JwtAuthenticationFilter;
 import com.wisemapping.rest.MindmapController;
+import com.wisemapping.scheduler.SpamDetectionScheduler;
+import com.wisemapping.scheduler.SpamUserSuspensionScheduler;
 import com.wisemapping.security.AuthenticationProvider;
 import com.wisemapping.service.MindmapServiceImpl;
+import com.wisemapping.service.SpamDetectionService;
+import com.wisemapping.service.spam.ContactInfoSpamStrategy;
 import com.wisemapping.util.VelocityEngineUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,7 +45,7 @@ import java.util.Locale;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @SpringBootApplication(
-    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class, com.wisemapping.service.SpamDetectionService.class, com.wisemapping.scheduler.SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, com.wisemapping.scheduler.SpamDetectionScheduler.class, com.wisemapping.service.spam.ContactInfoSpamStrategy.class, com.wisemapping.config.NewRelicAutoConfiguration.class}
+    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, VelocityEngineUtils.class,SpamDetectionService.class, SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class, ContactInfoSpamStrategy.class}
 )
 @Import({com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class})
 @EnableScheduling

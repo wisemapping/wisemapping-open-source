@@ -84,11 +84,8 @@ spring:
     name: wisemapping-api
     title: wisemapping-api
   # Conditional auto-configuration exclusion
-  # New Relic auto-configuration is excluded by default, but can be enabled
-  # by setting management.metrics.export.newrelic.enabled=true
   autoconfigure:
-    exclude: 
-      - org.springframework.boot.actuate.autoconfigure.metrics.export.newrelic.NewRelicMetricsExportAutoConfiguration
+    exclude:
 
 
 #
@@ -205,12 +202,6 @@ management:
     export:
       prometheus:
         enabled: false
-      newrelic:
-        enabled: false  # Set to true to enable New Relic metrics export
-        # To enable New Relic, change enabled to true and configure:
-        # api-key: your-actual-api-key-here
-        # account-id: your-actual-account-id-here
-        # uri: https://metric-api.newrelic.com/metric/v1
     tags:
       application: wisemapping-api
 
