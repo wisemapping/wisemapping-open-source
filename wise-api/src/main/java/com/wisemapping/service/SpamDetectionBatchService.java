@@ -47,7 +47,7 @@ public class SpamDetectionBatchService {
     @Autowired
     private SpamDetectionService spamDetectionService;
     
-    @Autowired
+    @Autowired(required = false)
     private MetricsService telemetryMetricsService;
 
 
@@ -145,8 +145,10 @@ public class SpamDetectionBatchService {
                         logger.warn("Marked public mindmap '{}' (ID: {}) as spam with type: {} (strategy: {}) (last win)",
                                 mindmap.getTitle(), mindmap.getId(), spamTypeCode, spamResult.getStrategyType());
                         
-                        // Track spam detection
-                        telemetryMetricsService.trackSpamDetection(mindmap, spamResult, "batch_scan");
+                        // Track spam detection (null-safe)
+                        if (telemetryMetricsService != null) {
+                            telemetryMetricsService.trackSpamDetection(mindmap, spamResult, "batch_scan");
+                        }
                 } else {
                     // No spam detected - still need to update version to track processing
                     logger.debug("No spam detected in mindmap '{}' (ID: {}) - updating version only",

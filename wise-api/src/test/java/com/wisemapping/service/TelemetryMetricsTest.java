@@ -59,12 +59,8 @@ class TelemetryMetricsTest {
         
         // Use reflection to inject the meterRegistry since it's private
         try {
-            java.lang.reflect.Field field = MindmapServiceImpl.class.getDeclaredField("meterRegistry");
-            field.setAccessible(true);
-            field.set(mindmapServiceImpl, meterRegistry);
-            
             // Inject meterRegistry into telemetryMetricsService
-            field = MetricsService.class.getDeclaredField("meterRegistry");
+            java.lang.reflect.Field field = MetricsService.class.getDeclaredField("meterRegistry");
             field.setAccessible(true);
             field.set(telemetryMetricsService, meterRegistry);
         } catch (Exception e) {

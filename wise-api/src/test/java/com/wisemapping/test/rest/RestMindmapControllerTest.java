@@ -34,7 +34,7 @@ import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class},
+        classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class, com.wisemapping.config.GlobalExceptionHandler.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {"app.api.http-basic-enabled=true"})
 public class RestMindmapControllerTest {

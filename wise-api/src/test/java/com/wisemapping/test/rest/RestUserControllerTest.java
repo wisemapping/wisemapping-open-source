@@ -52,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
-        classes = {AppConfig.class, UserController.class, TestDataManager.class},
+        classes = {AppConfig.class, UserController.class, TestDataManager.class, com.wisemapping.config.GlobalExceptionHandler.class},
         properties = {
             "app.api.http-basic-enabled=true",
             "app.registration.disposable-email.blocking.enabled=true"
