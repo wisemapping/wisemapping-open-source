@@ -165,17 +165,17 @@ class TelemetryMetricsTest {
         telemetryMetricsService.trackUserRegistration(googleUser, "gmail");
         
         // Verify metrics were recorded
-        Double gmailRegistrations = meterRegistry.find("user.registrations")
+        Double gmailRegistrations = meterRegistry.find("wisemapping.api.user.registrations")
                 .tag("email_provider", "gmail")
                 .tag("auth_type", "D")
                 .counter().count();
         
-        Double otherRegistrations = meterRegistry.find("user.registrations")
+        Double otherRegistrations = meterRegistry.find("wisemapping.api.user.registrations")
                 .tag("email_provider", "other")
                 .tag("auth_type", "D")
                 .counter().count();
         
-        Double googleRegistrations = meterRegistry.find("user.registrations")
+        Double googleRegistrations = meterRegistry.find("wisemapping.api.user.registrations")
                 .tag("email_provider", "gmail")
                 .tag("auth_type", "G")
                 .counter().count();
@@ -197,11 +197,11 @@ class TelemetryMetricsTest {
         telemetryMetricsService.trackUserLogin(user, "google_oauth");
         
         // Verify metrics
-        Double databaseLogins = meterRegistry.find("user.logins")
+        Double databaseLogins = meterRegistry.find("wisemapping.api.user.logins")
                 .tag("auth_type", "database")
                 .counter().count();
         
-        Double googleLogins = meterRegistry.find("user.logins")
+        Double googleLogins = meterRegistry.find("wisemapping.api.user.logins")
                 .tag("auth_type", "google_oauth")
                 .counter().count();
         
@@ -216,7 +216,7 @@ class TelemetryMetricsTest {
         telemetryMetricsService.trackSpamPrevention(mindmap, "publish");
         
         // Verify prevention metric
-        Double prevention = meterRegistry.find("spam.prevented")
+        Double prevention = meterRegistry.find("wisemapping.api.spam.prevented")
                 .tag("action", "publish")
                 .counter().count();
         
