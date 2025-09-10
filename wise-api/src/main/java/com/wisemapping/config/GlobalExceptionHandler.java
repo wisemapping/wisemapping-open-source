@@ -55,6 +55,15 @@ public class GlobalExceptionHandler {
         return new RestErrors(ex.getMessage(), ex.getSeverity(), ex.getTechInfo());
     }
 
+    @ExceptionHandler(SpamContentException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public RestErrors handleSpamContentException(SpamContentException ex) {
+        // Log at INFO level for spam detection tracking
+        logger.info("Spam content detected and blocked: {}", ex.getMessage());
+        return new RestErrors(ex.getMessage(), ex.getSeverity(), ex.getTechInfo());
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
