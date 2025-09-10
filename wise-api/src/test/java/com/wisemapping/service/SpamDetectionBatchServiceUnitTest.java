@@ -104,7 +104,7 @@ class SpamDetectionBatchServiceUnitTest {
 
         // Set up service configuration
         ReflectionTestUtils.setField(spamDetectionBatchService, "enabled", true);
-        ReflectionTestUtils.setField(spamDetectionBatchService, "telemetryMetricsService", metricsService);
+        ReflectionTestUtils.setField(spamDetectionBatchService, "metricsService", metricsService);
         ReflectionTestUtils.setField(spamDetectionBatchService, "batchSize", 10);
         ReflectionTestUtils.setField(spamDetectionBatchService, "monthsBack", 1);
         ReflectionTestUtils.setField(spamDetectionBatchService, "currentSpamDetectionVersion", 1);

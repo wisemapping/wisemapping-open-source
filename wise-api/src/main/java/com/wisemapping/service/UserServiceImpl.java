@@ -35,7 +35,6 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -62,12 +61,8 @@ public class UserServiceImpl
     private VelocityEngineWrapper velocityEngineWrapper;
     @Autowired
     private GoogleService googleService;
-
     @Autowired
-    private MeterRegistry meterRegistry;
-
-    @Autowired
-    private MetricsService telemetryMetricsService;
+    private MetricsService metricsService;
 
     final private static Logger logger = LogManager.getLogger();
 
@@ -148,11 +143,9 @@ public class UserServiceImpl
         accessAuditory.setUser(user);
         accessAuditory.setLoginDate(Calendar.getInstance());
         userManager.auditLogin(accessAuditory);
-        
-        // Track user login with enhanced metrics (null-safe)
-        if (telemetryMetricsService != null) {
-            telemetryMetricsService.trackUserLogin(user, "database");
-        }
+
+        // Track user login with enhanced metrics
+        metricsService.trackUserLogin(user, "database");
     }
 
     @NotNull
@@ -178,12 +171,10 @@ public class UserServiceImpl
         final Mindmap mindMap = buildTutorialMindmap(user.getFirstname());
         mindmapService.addMindmap(mindMap, user);
 
-        // Track tutorial mindmap creation and user registration (null-safe)
-        if (telemetryMetricsService != null) {
-            telemetryMetricsService.trackMindmapCreation(mindMap, user, "tutorial");
-            String emailProvider = telemetryMetricsService.extractEmailProvider(user.getEmail());
-            telemetryMetricsService.trackUserRegistration(user, emailProvider);
-        }
+        // Track tutorial mindmap creation and user registration
+        metricsService.trackMindmapCreation(mindMap, user, "tutorial");
+        String emailProvider = metricsService.extractEmailProvider(user.getEmail());
+        metricsService.trackUserRegistration(user, emailProvider);
 
         // Send registration email.
         if (emailConfirmEnabled) {
@@ -211,7 +202,7 @@ public class UserServiceImpl
         if (result == null) {
             // Check if there's an existing collaborator with this email
             Collaborator existingCollaborator = userManager.getCollaboratorBy(data.getEmail());
-            
+
             Account newUser = new Account();
             // new registrations from google starts sync
             newUser.setGoogleSync(true);
@@ -220,7 +211,7 @@ public class UserServiceImpl
             newUser.setLastname(data.getLastName());
             newUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
             newUser.setGoogleToken(data.getAccessToken());
-            
+
             if (existingCollaborator != null) {
                 // Migrate existing collaborator to account
                 logger.debug("Migrating existing collaborator to Google OAuth account for email: " + data.getEmail());
