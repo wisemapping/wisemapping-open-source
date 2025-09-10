@@ -136,7 +136,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
         // Log at DEBUG level for expected exceptions to avoid ERROR logs
-        if (ex instanceof AccessDeniedSecurityException || ex instanceof InvalidEmailException) {
+        if (ex instanceof AccessDeniedSecurityException || ex instanceof InvalidEmailException || 
+            ex instanceof ValidationException || ex instanceof ClientException) {
             logger.debug("Expected exception handled: {}", ex.getMessage());
         } else {
             logger.error(ex.getMessage(), ex);
