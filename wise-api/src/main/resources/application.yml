@@ -211,9 +211,9 @@ management:
   otlp:
     metrics:
       export:
-        url: http://localhost:4318/v1/metrics
-        step: 10s
-        headers:
-          api-key: your-otel-api-key-here
         enabled: false
+        url: https://otlp.nr-data.net/v1/metrics
+        step: 60s
+        headers:
+          api-key: ${NEW_RELIC_LICENSE_KEY:your-new-relic-license-key-here}
 
