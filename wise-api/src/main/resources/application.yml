@@ -106,6 +106,9 @@ logging:
     org:
       apache:
         tomcat: INFO
+        catalina:
+          core:
+            StandardWrapperValve: OFF
     root: INFO
 
 #
@@ -215,5 +218,5 @@ management:
         url: https://otlp.nr-data.net/v1/metrics
         step: 60s
         headers:
-          api-key: ${NEW_RELIC_LICENSE_KEY:your-new-relic-license-key-here}
+          api-key: your-new-relic-license-key-here
 
