@@ -213,17 +213,4 @@ public class MetricsService {
                 }
         }
     }
-
-    /**
-     * Get the authentication type as a string for metrics
-     * @param authenticationType The authentication type enum
-     * @return String representation for metrics
-     */
-    @NotNull
-    public String getAuthTypeString(@Nullable AuthenticationType authenticationType) {
-        if (authenticationType == null) {
-            return "unknown";
-        }
-        return String.valueOf(authenticationType.getCode()).toLowerCase();
-    }
 }
