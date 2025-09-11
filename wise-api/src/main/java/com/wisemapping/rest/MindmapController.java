@@ -93,6 +93,12 @@ public class MindmapController extends BaseController {
     public RestMindmapMetadata retrieveMetadata(@PathVariable int id) throws WiseMappingException {
         final Account user = Utils.getUser(false);
         final Mindmap mindmap = findMindmapById(id);
+
+        // If it's not authenticated
+        if (user == null && mindmap.isSpamDetected()) {
+            throw new SpamContentException();
+        }
+
         final MindMapBean mindMapBean = new MindMapBean(mindmap, user);
 
         // Is the mindmap locked ?.
@@ -262,18 +268,18 @@ public class MindmapController extends BaseController {
         if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found. Id:" + id);
         }
-        
+
         // If map is public, allow access without authentication
         if (result.isPublic()) {
             return result;
         }
-        
+
         // For private maps, require authentication and permissions
         final Account user = Utils.getUser(false);
         if (!mindmapService.hasPermissions(user, id, CollaborationRole.VIEWER)) {
             throw new AccessDeniedSecurityException(id, user);
         }
-        
+
         return result;
     }
 
