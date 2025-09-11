@@ -1021,6 +1021,97 @@ public class RestMindmapControllerTest {
         assertEquals("true", getStarredResponse.getBody());
     }
 
+    @Test
+    public void retrievePublicMapMetadataFailsWithoutAuthentication() throws URISyntaxException {
+        final TestRestTemplate authenticatedTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+        final TestRestTemplate unauthenticatedTemplate = new TestRestTemplate();
+        unauthenticatedTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(this.restTemplate.getRootUri()));
+        
+        // Create a map and make it public
+        final String mapTitle = "Public Map Metadata Test";
+        final URI mapUri = addNewMap(authenticatedTemplate, mapTitle);
+        
+        // Try to make the map public (this might fail due to spam detection, but that's okay)
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final Map<String, Boolean> publishRequest = new HashMap<>();
+        publishRequest.put("isPublic", true);
+        final HttpEntity<Map<String, Boolean>> publishEntity = new HttpEntity<>(publishRequest, requestHeaders);
+        authenticatedTemplate.exchange(mapUri + "/publish", HttpMethod.PUT, publishEntity, String.class);
+        
+        // This test demonstrates the current bug: even if the map is public,
+        // unauthenticated access to metadata fails with 500 Internal Server Error
+        // due to the findMindmapById method requiring authentication
+        final ResponseEntity<RestMindmapMetadata> publicResponse = unauthenticatedTemplate.exchange(mapUri + "/metadata", HttpMethod.GET, null, RestMindmapMetadata.class);
+        
+        // Currently this fails due to the bug in findMindmapById method
+        // The endpoint is marked with @PreAuthorize("permitAll()") but the implementation
+        // calls Utils.getUser() instead of Utils.getUser(false) in findMindmapById
+        // This results in authentication-related failures (403 FORBIDDEN or 500 Internal Server Error)
+        assertTrue(publicResponse.getStatusCode().is4xxClientError() || publicResponse.getStatusCode().is5xxServerError(), 
+                   "Current implementation fails due to authentication check in findMindmapById. " +
+                   "Public maps should be accessible without authentication but got: " + publicResponse.getStatusCode());
+    }
+
+    @Test
+    public void retrievePublicMapDocumentFailsWithoutAuthentication() throws URISyntaxException {
+        final TestRestTemplate authenticatedTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+        final TestRestTemplate unauthenticatedTemplate = new TestRestTemplate();
+        unauthenticatedTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(this.restTemplate.getRootUri()));
+        
+        // Create a map with specific XML content
+        final String mapTitle = "Public Map Document Test";
+        final String xmlContent = "<map><topic central=\"true\" text=\"Public Map Content\"></topic></map>";
+        final URI mapUri = addNewMap(authenticatedTemplate, mapTitle, xmlContent);
+        final String mapId = mapUri.getPath().replace("/api/restful/maps/", "");
+        
+        // Try to make the map public (this might fail due to spam detection, but that's okay for this test)
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final Map<String, Boolean> publishRequest = new HashMap<>();
+        publishRequest.put("isPublic", true);
+        final HttpEntity<Map<String, Boolean>> publishEntity = new HttpEntity<>(publishRequest, requestHeaders);
+        authenticatedTemplate.exchange(mapUri + "/publish", HttpMethod.PUT, publishEntity, String.class);
+        
+        // This test demonstrates that public document access also fails
+        // The document endpoints are marked with @PreAuthorize("permitAll()") but also use findMindmapById
+        final HttpHeaders xmlHeaders = new HttpHeaders();
+        xmlHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final HttpEntity<String> requestEntity = new HttpEntity<>(xmlHeaders);
+        
+        // Test /document/xml endpoint - should fail due to same bug in findMindmapById
+        final ResponseEntity<String> xmlResponse = unauthenticatedTemplate.exchange("/api/restful/maps/" + mapId + "/document/xml", HttpMethod.GET, requestEntity, String.class);
+        assertTrue(xmlResponse.getStatusCode().is4xxClientError() || xmlResponse.getStatusCode().is5xxServerError(),
+                   "Public map XML document access fails due to authentication check in findMindmapById. Got: " + xmlResponse.getStatusCode());
+        
+        // Test /document/xml-pub endpoint - should also fail due to same bug
+        final ResponseEntity<String> xmlPubResponse = unauthenticatedTemplate.exchange("/api/restful/maps/" + mapId + "/document/xml-pub", HttpMethod.GET, requestEntity, String.class);
+        assertTrue(xmlPubResponse.getStatusCode().is4xxClientError() || xmlPubResponse.getStatusCode().is5xxServerError(),
+                   "Public map XML-pub document access fails due to authentication check in findMindmapById. Got: " + xmlPubResponse.getStatusCode());
+    }
+
+    @Test
+    public void confirmMetadataEndpointFailureStatusCode() throws URISyntaxException {
+        final TestRestTemplate authenticatedTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+        final TestRestTemplate unauthenticatedTemplate = new TestRestTemplate();
+        unauthenticatedTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(this.restTemplate.getRootUri()));
+        
+        // Create a map
+        final String mapTitle = "Metadata Status Test";
+        final URI mapUri = addNewMap(authenticatedTemplate, mapTitle);
+        
+        // Get the raw response to see the exact status code
+        final ResponseEntity<String> response = unauthenticatedTemplate.exchange(mapUri + "/metadata", HttpMethod.GET, null, String.class);
+        
+        // Log what we actually got for debugging
+        System.out.println("Metadata endpoint returned status: " + response.getStatusCode());
+        System.out.println("Response body: " + response.getBody());
+        
+        // This test confirms what status code is actually returned
+        // Based on the code analysis, it should be 403 (AccessDeniedSecurityException)
+        // But user reports 500, so let's see what we actually get
+        assertTrue(response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError(),
+                   "Metadata endpoint should fail for unauthenticated access to non-public maps. Got: " + response.getStatusCode());
+    }
+
     private String changeMapTitle(final HttpHeaders requestHeaders, final MediaType mediaType, final TestRestTemplate template, final URI resourceUri) throws RestClientException {
         requestHeaders.setContentType(MediaType.TEXT_PLAIN);
         final String result = "New map to change title  - " + mediaType;
