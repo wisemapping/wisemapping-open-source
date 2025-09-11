@@ -94,20 +94,13 @@ public class MindmapServiceImpl
                     final Optional<Collaboration> collaboration = map.findCollaboration(user);
                     if (collaboration.isPresent()) {
                         result = collaboration.get().hasPermissions(role);
-                    } else {
-                        // Check if map is public and user has viewer role
-                        if (map.isPublic() && role == CollaborationRole.VIEWER) {
-                            // If map is marked as spam, only allow access to owner, collaborators, or admin
-                            result = true; // Non-owners can access normal public maps
-                        }
                     }
                 }
-            } else if (user == null) { // In this case, user is not authenticated.
-                if (map.isPublic() && role == CollaborationRole.VIEWER) {
-                    // This case,
-                    result = true;
-                }
+            }
 
+            // In case, users should have access to public maps.
+            if (!result) {
+                result = map.isPublic() && role == CollaborationRole.VIEWER;
             }
         }
         return result;
