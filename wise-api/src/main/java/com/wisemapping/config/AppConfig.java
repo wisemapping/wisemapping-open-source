@@ -42,7 +42,7 @@ import java.util.Locale;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @SpringBootApplication(
-    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, com.wisemapping.util.VelocityEngineWrapper.class, SpamDetectionService.class, SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class, ContactInfoSpamStrategy.class}
+    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, com.wisemapping.util.VelocityEngineWrapper.class, SpamDetectionService.class, SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class, ContactInfoSpamStrategy.class, GlobalExceptionHandler.class}
 )
 @Import({com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class})
 @EnableScheduling

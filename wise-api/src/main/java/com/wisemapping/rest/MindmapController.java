@@ -258,7 +258,7 @@ public class MindmapController extends BaseController {
     @NotNull
     private Mindmap findMindmapById(int id) throws MapCouldNotFoundException, AccessDeniedSecurityException {
         // Has enough permissions ?
-        final Account user = Utils.getUser();
+        final Account user = Utils.getUser(false);
         if (!mindmapService.hasPermissions(user, id, CollaborationRole.VIEWER)) {
             throw new AccessDeniedSecurityException(id, user);
         }
