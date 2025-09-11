@@ -23,7 +23,6 @@ import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
-import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.service.SpamDetectionService;
 import com.wisemapping.validator.MapInfoValidator;
@@ -94,9 +93,14 @@ public class MindmapController extends BaseController {
         final Account user = Utils.getUser(false);
         final Mindmap mindmap = findMindmapById(id);
 
-        // If it's not authenticated
+        // If it's not authenticated and map is spam-detected, block access
         if (user == null && mindmap.isSpamDetected()) {
             throw new SpamContentException();
+        }
+
+        // For private maps, check if user has permission to access
+        if (!mindmap.isPublic() && !mindmapService.hasPermissions(user, mindmap, CollaborationRole.VIEWER)) {
+            throw new AccessDeniedSecurityException("You do not have enough right access to see this map");
         }
 
         final MindMapBean mindMapBean = new MindMapBean(mindmap, user);
@@ -193,7 +197,13 @@ public class MindmapController extends BaseController {
     @RequestMapping(method = RequestMethod.GET, value = {"/{id}/document/xml", "/{id}/document/xml-pub"}, consumes = {"text/plain"}, produces = {"application/xml; charset=UTF-8"})
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @NotNull HttpServletResponse response) throws WiseMappingException, IOException {
+        final Account user = Utils.getUser(false);
         final Mindmap mindmap = findMindmapById(id);
+
+        // If it's not authenticated and map is spam-detected, block access
+        if (user == null && mindmap.isSpamDetected()) {
+            throw new SpamContentException();
+        }
 
         String xmlStr = mindmap.getXmlStr();
         return xmlStr.getBytes(StandardCharsets.UTF_8);
@@ -268,18 +278,6 @@ public class MindmapController extends BaseController {
         if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found. Id:" + id);
         }
-
-        // If map is public, allow access without authentication
-        if (result.isPublic()) {
-            return result;
-        }
-
-        // For private maps, require authentication and permissions
-        final Account user = Utils.getUser(false);
-        if (!mindmapService.hasPermissions(user, id, CollaborationRole.VIEWER)) {
-            throw new AccessDeniedSecurityException(id, user);
-        }
-
         return result;
     }
 

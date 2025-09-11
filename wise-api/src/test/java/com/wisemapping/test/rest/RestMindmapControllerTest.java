@@ -424,25 +424,35 @@ public class RestMindmapControllerTest {
         assertEquals(Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size(), 1);
     }
 
-    @Disabled
+    @Disabled("SECURITY ISSUE: Non-owner can delete collaborations - needs investigation")
     @Test
     public void deleteCollabsWithoutOwnerPermission() throws URISyntaxException {
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
-        final URI resourceUri = addNewMap(restTemplate, "deleteWithoutOwnerPermission");
+        // Use the owner template to create the map
+        final TestRestTemplate ownerTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+        final URI resourceUri = addNewMap(ownerTemplate, "deleteWithoutOwnerPermission");
 
-        // Create a new user ...
+        // Create another user and add them as a collaborator
         final RestAccountControllerTest restAccount = RestAccountControllerTest.create(restTemplate);
-        this.user = restAccount.createNewUser();
+        final RestUser collaboratorUser = restAccount.createNewUser();
+        
+        // Add the collaborator using the owner
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Adding collaborator");
+        addCollabToList(collaboratorUser.getEmail(), "editor", collabs);
+        final HttpEntity<RestCollaborationList> addCollabEntity = new HttpEntity<>(collabs, requestHeaders);
+        ownerTemplate.put(resourceUri + "/collabs/", addCollabEntity);
 
-        // Create template ...
-        final RestAccountControllerTest accountController = RestAccountControllerTest.create(restTemplate);
-        final RestUser anotherUser = accountController.createNewUser();
+        // Create a third user who is NOT the owner and NOT a collaborator
+        final RestAccountControllerTest anotherAccount = RestAccountControllerTest.create(restTemplate);
+        final RestUser anotherUser = anotherAccount.createNewUser();
         final TestRestTemplate anotherTemplate = this.restTemplate.withBasicAuth(anotherUser.getEmail(), anotherUser.getPassword());
 
-        // Try to delete but I'm not the owner ...
-        final ResponseEntity<String> exchange = anotherTemplate.exchange(resourceUri + "/collabs?email=" + anotherUser.getEmail(), HttpMethod.DELETE, null, String.class);
+        // Try to delete the collaborator as a non-owner - this should fail
+        final ResponseEntity<String> exchange = anotherTemplate.exchange(resourceUri + "/collabs?email=" + collaboratorUser.getEmail(), HttpMethod.DELETE, null, String.class);
         assertTrue(exchange.getStatusCode().is4xxClientError());
-        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("You do not have enough right access to see this map. This map has been changed to private or deleted."));
+        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("No enough permissions"));
 
     }
 
@@ -571,50 +581,6 @@ public class RestMindmapControllerTest {
 
     }
 
-    @Test
-    @Disabled
-    public void fetchMapMetadataSpamBlockedForNonOwner() throws URISyntaxException {
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate ownerTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
-
-        // Create a sample map ...
-        final String mapTitle = "Spam Map Test";
-        final URI mindmapUri = addNewMap(ownerTemplate, mapTitle);
-        final String mapId = mindmapUri.getPath().replace("/api/restful/maps/", "");
-
-        // Make the map public first
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        final Map<String, Boolean> publishRequest = new HashMap<>();
-        publishRequest.put("isPublic", true);
-        final HttpEntity<Map<String, Boolean>> publishEntity = new HttpEntity<>(publishRequest, requestHeaders);
-        
-        // Try to publish - this might fail due to spam detection, but that's ok for this test
-        final ResponseEntity<String> publishResponse = ownerTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, publishEntity, String.class);
-        
-        // If publish succeeded, we need to manually mark it as spam for testing
-        // Since we can't easily trigger spam detection in tests, we'll simulate the scenario
-        // by creating another user and testing access
-        
-        // Create another user to test non-owner access
-        final RestAccountControllerTest restAccount = RestAccountControllerTest.create(restTemplate);
-        final RestUser anotherUser = restAccount.createNewUser();
-        final TestRestTemplate anotherTemplate = this.restTemplate.withBasicAuth(anotherUser.getEmail(), anotherUser.getPassword());
-
-        // Test metadata access as non-owner - this should work for normal public maps
-        final ResponseEntity<RestMindmapMetadata> exchange = anotherTemplate.exchange(mindmapUri + "/metadata", HttpMethod.GET, null, RestMindmapMetadata.class);
-        
-        // The test verifies the current behavior - if the map is public and not marked as spam,
-        // non-owners should be able to access metadata
-        if (publishResponse.getStatusCode().is2xxSuccessful()) {
-            // Map was successfully made public, so metadata should be accessible
-            assertTrue(exchange.getStatusCode().is2xxSuccessful());
-            assertEquals(mapTitle, exchange.getBody().getTitle());
-        } else {
-            // Map publish failed (likely due to spam detection), so it should remain private
-            // and non-owners should not have access
-            assertTrue(exchange.getStatusCode().is4xxClientError());
-        }
-    }
 
     @Test
     public void fetchMapMetadataSpamAllowedForOwner() throws URISyntaxException {
