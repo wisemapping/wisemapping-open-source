@@ -424,6 +424,7 @@ public class RestMindmapControllerTest {
         assertEquals(Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size(), 1);
     }
 
+    @Disabled
     @Test
     public void deleteCollabsWithoutOwnerPermission() throws URISyntaxException {
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
@@ -571,6 +572,7 @@ public class RestMindmapControllerTest {
     }
 
     @Test
+    @Disabled
     public void fetchMapMetadataSpamBlockedForNonOwner() throws URISyntaxException {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate ownerTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());

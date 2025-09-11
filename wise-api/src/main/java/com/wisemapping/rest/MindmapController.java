@@ -74,9 +74,6 @@ public class MindmapController extends BaseController {
     @Autowired
     private MetricsService metricsService;
 
-    @Autowired
-    private MindmapManager mindmapManager;
-
     @Value("${app.accounts.max-inactive:20}")
     private int maxAccountsInactive;
 
@@ -261,7 +258,7 @@ public class MindmapController extends BaseController {
     @NotNull
     private Mindmap findMindmapById(int id) throws MapCouldNotFoundException, AccessDeniedSecurityException {
         // Use manager directly to bypass service security annotations
-        final Mindmap result = mindmapManager.getMindmapById(id);
+        final Mindmap result = mindmapService.findMindmapById(id);
         if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found. Id:" + id);
         }
