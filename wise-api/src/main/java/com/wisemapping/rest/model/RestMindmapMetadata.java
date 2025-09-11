@@ -39,7 +39,7 @@ public class RestMindmapMetadata {
 
     private String creatorFullName;
 
-    public RestMindmapMetadata(@NotNull String title, @NotNull String jsonProps, @NotNull String creatorFullName, boolean locked, @Nullable String isLockedBy) {
+    public RestMindmapMetadata(String title, String jsonProps, String creatorFullName, boolean locked, String isLockedBy) {
         this.jsonProps = jsonProps;
         this.title = title;
         this.locked = locked;
