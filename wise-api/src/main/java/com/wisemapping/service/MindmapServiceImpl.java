@@ -98,14 +98,16 @@ public class MindmapServiceImpl
                         // Check if map is public and user has viewer role
                         if (map.isPublic() && role == CollaborationRole.VIEWER) {
                             // If map is marked as spam, only allow access to owner, collaborators, or admin
-                            if (map.isSpamDetected()) {
-                                result = false; // Non-owners and non-collaborators cannot access spam-marked public maps
-                            } else {
-                                result = true; // Non-owners can access normal public maps
-                            }
+                            result = true; // Non-owners can access normal public maps
                         }
                     }
                 }
+            } else if (user == null) { // In this case, user is not authenticated.
+                if (map.isPublic() && role == CollaborationRole.VIEWER) {
+                    // This case,
+                    result = true;
+                }
+
             }
         }
         return result;
