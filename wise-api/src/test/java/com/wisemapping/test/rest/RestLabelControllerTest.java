@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(
-        classes = {AppConfig.class, LabelController.class, AdminController.class, UserController.class, com.wisemapping.config.GlobalExceptionHandler.class},
+        classes = {AppConfig.class, LabelController.class, AdminController.class, UserController.class},
         properties = {"app.api.http-basic-enabled=true"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RestLabelControllerTest {

@@ -31,7 +31,7 @@ import java.util.Locale;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = LogManager.getLogger();
 
     @Qualifier("messageSource")
     @Autowired(required = false)

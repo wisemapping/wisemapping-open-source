@@ -23,6 +23,7 @@ import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
+import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.service.SpamDetectionService;
 import com.wisemapping.validator.MapInfoValidator;
@@ -73,6 +74,8 @@ public class MindmapController extends BaseController {
     @Autowired
     private MetricsService metricsService;
 
+    @Autowired
+    private MindmapManager mindmapManager;
 
     @Value("${app.accounts.max-inactive:20}")
     private int maxAccountsInactive;
@@ -257,17 +260,23 @@ public class MindmapController extends BaseController {
 
     @NotNull
     private Mindmap findMindmapById(int id) throws MapCouldNotFoundException, AccessDeniedSecurityException {
-        // Has enough permissions ?
-        final Account user = Utils.getUser();
-        if (!mindmapService.hasPermissions(user, id, CollaborationRole.VIEWER)) {
-            throw new AccessDeniedSecurityException(id, user);
-        }
-
-        // Does the map exists ?
-        final Mindmap result = mindmapService.findMindmapById(id);
+        // Use manager directly to bypass service security annotations
+        final Mindmap result = mindmapManager.getMindmapById(id);
         if (result == null) {
             throw new MapCouldNotFoundException("Map could not be found. Id:" + id);
         }
+        
+        // If map is public, allow access without authentication
+        if (result.isPublic()) {
+            return result;
+        }
+        
+        // For private maps, require authentication and permissions
+        final Account user = Utils.getUser(false);
+        if (!mindmapService.hasPermissions(user, id, CollaborationRole.VIEWER)) {
+            throw new AccessDeniedSecurityException(id, user);
+        }
+        
         return result;
     }
 
