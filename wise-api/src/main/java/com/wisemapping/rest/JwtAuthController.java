@@ -18,6 +18,7 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.exceptions.UserCouldNotBeAuthException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.security.JwtTokenUtil;
@@ -42,7 +43,8 @@ public class JwtAuthController {
     private JwtTokenUtil jwtTokenUtil;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<String> createAuthenticationToken(@RequestBody RestJwtUser user, @NotNull HttpServletResponse response) throws WiseMappingException {
+    public ResponseEntity<String> createAuthenticationToken(@RequestBody RestJwtUser user,
+            @NotNull HttpServletResponse response) throws WiseMappingException {
         // Is a valid user ?
         authenticate(user.getEmail(), user.getPassword());
         final String result = jwtTokenUtil.doLogin(response, user.getEmail());
@@ -54,7 +56,7 @@ public class JwtAuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException | BadCredentialsException e) {
-            throw new WiseMappingException(e.getMessage(), e);
+            throw new UserCouldNotBeAuthException("Authentication failed:" + e.getLocalizedMessage(), e);
         }
     }
 }
