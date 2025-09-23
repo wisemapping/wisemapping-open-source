@@ -63,8 +63,9 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
         Pattern.compile("color\\s*:\\s*white[^;]*background\\s*:\\s*white", Pattern.CASE_INSENSITIVE),
         Pattern.compile("color\\s*:\\s*#fff[^;]*background\\s*:\\s*#fff", Pattern.CASE_INSENSITIVE),
         
-        // Excessive use of links (common in spam)
-        Pattern.compile("<a[^>]*href[^>]*>.*?</a>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL),
+        // Note: Links are allowed since mindmaps can contain legitimate URLs on nodes
+        // Only flag excessive links (>10 links per note)
+        // Pattern.compile("<a[^>]*href[^>]*>.*?</a>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL),
         
         // JavaScript injection patterns
         Pattern.compile("javascript\\s*:", Pattern.CASE_INSENSITIVE),
