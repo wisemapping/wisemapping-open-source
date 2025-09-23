@@ -147,7 +147,8 @@ public class Mindmap implements Serializable {
     public void removedCollaboration(@NotNull Collaboration collaboration) {
         // https://stackoverflow.com/questions/25125210/hibernate-persistentset-remove-operation-not-working
         this.collaborations.remove(collaboration);
-        collaboration.setMindMap(null);
+        // Don't set mindMap to null here to avoid optimistic locking issues
+        // The collaboration will be deleted anyway, so this reference will be cleaned up
     }
 
     public void removedCollaboration(@NotNull Set<Collaboration> collaborations) {
