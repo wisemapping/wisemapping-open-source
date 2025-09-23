@@ -46,7 +46,11 @@ public class MindmapManagerImpl
     @Override
     public Collaborator findCollaborator(@NotNull final String email) {
         final Collaborator collaborator;
-        final TypedQuery<Collaborator> query = entityManager.createQuery("SELECT c FROM com.wisemapping.model.Collaborator c WHERE c.email = :email", Collaborator.class);
+        // Use a more explicit query that handles inheritance properly
+        // This ensures we find both Collaborator and Account entities
+        final TypedQuery<Collaborator> query = entityManager.createQuery(
+            "SELECT c FROM com.wisemapping.model.Collaborator c WHERE c.email = :email", 
+            Collaborator.class);
         query.setParameter("email", email);
 
         final List<Collaborator> collaborators = query.getResultList();
@@ -106,7 +110,22 @@ public class MindmapManagerImpl
     @Override
     public void addCollaborator(@NotNull Collaborator collaborator) {
         assert collaborator != null : "ADD MINDMAP COLLABORATOR: Collaborator is required!";
-        entityManager.persist(collaborator);
+        
+        // Use DAO pattern: check if collaborator exists first, then persist or merge
+        Collaborator existingCollaborator = findCollaborator(collaborator.getEmail());
+        
+        if (existingCollaborator != null) {
+            // Update existing collaborator with new creation date if provided
+            if (collaborator.getCreationDate() != null) {
+                existingCollaborator.setCreationDate(collaborator.getCreationDate());
+                entityManager.merge(existingCollaborator);
+            }
+            // Copy the ID to the collaborator object so caller can use it
+            collaborator.setId(existingCollaborator.getId());
+        } else {
+            // No existing collaborator found, persist the new one
+            entityManager.persist(collaborator);
+        }
     }
 
     @Override
