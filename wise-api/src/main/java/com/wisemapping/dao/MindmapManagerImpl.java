@@ -150,11 +150,24 @@ public class MindmapManagerImpl
     public void saveMindmap(Mindmap mindMap) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
         entityManager.persist(mindMap);
+        
+        // Handle spam info after the mindmap has been persisted and has an ID
+        MindmapSpamInfo spamInfo = mindMap.getSpamInfo();
+        if (spamInfo != null) {
+            updateMindmapSpamInfo(spamInfo);
+        }
     }
 
     @Override
     public void updateMindmap(@NotNull Mindmap mindMap, boolean saveHistory) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
+        
+        // Handle spam info separately using native SQL to prevent duplicate key violations
+        MindmapSpamInfo spamInfo = mindMap.getSpamInfo();
+        if (spamInfo != null) {
+            updateMindmapSpamInfo(spamInfo);
+        }
+        
         entityManager.merge(mindMap);
         if (saveHistory) {
             saveHistory(mindMap);
