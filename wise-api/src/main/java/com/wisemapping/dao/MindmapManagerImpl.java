@@ -110,8 +110,14 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void removeCollaboration(Collaboration collaboration) {
-        entityManager.remove(collaboration);
+        // Use a fresh entity manager to avoid optimistic locking issues
+        // The collaboration entity may have been modified in the current transaction
+        Collaboration managedCollaboration = entityManager.find(Collaboration.class, collaboration.getId());
+        if (managedCollaboration != null) {
+            entityManager.remove(managedCollaboration);
+        }
     }
 
     @Override
