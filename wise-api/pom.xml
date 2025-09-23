@@ -146,6 +146,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- HTML sanitization for security -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.17.2</version>
+        </dependency>
+
         <!-- JWT dependencies -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

@@ -29,6 +29,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import com.wisemapping.model.Account;
 import com.wisemapping.security.Utils;
 import org.springframework.web.servlet.LocaleResolver;
@@ -87,7 +88,25 @@ public class AppConfig implements WebMvcConfigurer {
                             response.setStatus(HttpServletResponse.SC_OK);
                         }))
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .headers(headers -> headers
+                        // Content Security Policy for HTML content
+                        .contentSecurityPolicy("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';")
+                        .and()
+                        // Prevent MIME type sniffing
+                        .contentTypeOptions().and()
+                        // Prevent clickjacking
+                        .frameOptions().deny()
+                        // XSS Protection
+                        .httpStrictTransportSecurity(hstsConfig -> hstsConfig
+                                .maxAgeInSeconds(31536000)
+                                .includeSubdomains(true)
+                                .preload(true))
+                        // Referrer Policy
+                        .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+                        // Remove server information
+                        .and().addHeaderWriter((request, response) -> response.setHeader("Server", "WiseMapping"))
+                );
 
         // Http basic is mainly used by automation tests.
         if (enableHttpBasic) {

@@ -36,6 +36,9 @@ public enum SpamStrategyType {
     // Keyword Pattern Spam (currently disabled)
     KEYWORD_PATTERN('K', "KeywordPattern"),
     
+    // HTML Content Spam
+    HTML_CONTENT('H', "HtmlContent"),
+    
     // Unknown/Generic spam
     UNKNOWN('X', "Unknown");
     

@@ -24,8 +24,10 @@ import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
 import com.wisemapping.service.*;
 import com.wisemapping.service.spam.SpamDetectionResult;
+import com.wisemapping.service.spam.SpamContentExtractor;
 import com.wisemapping.service.SpamDetectionService;
 import com.wisemapping.validator.MapInfoValidator;
+import com.wisemapping.validator.HtmlContentValidator;
 import com.wisemapping.view.MindMapBean;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -69,6 +71,12 @@ public class MindmapController extends BaseController {
 
     @Autowired
     private SpamDetectionService spamDetectionService;
+
+    @Autowired
+    private HtmlContentValidator htmlContentValidator;
+    
+    @Autowired
+    private SpamContentExtractor spamContentExtractor;
 
     @Autowired
     private MetricsService metricsService;
@@ -168,6 +176,9 @@ public class MindmapController extends BaseController {
         // Validate content ...
         final String xml = restMindmap.getXml();
         mindmap.setXmlStr(xml);
+        
+        // Validate HTML content in notes
+        htmlContentValidator.validateHtmlContent(mindmap);
 
         // Update map ...
         saveMindmapDocument(minor, mindmap, user);
@@ -216,6 +227,9 @@ public class MindmapController extends BaseController {
         final Mindmap mindmap = findMindmapById(id);
         final Account user = Utils.getUser(true);
         mindmap.setXmlStr(xmlDoc);
+        
+        // Validate HTML content in notes
+        htmlContentValidator.validateHtmlContent(mindmap);
 
         saveMindmapDocument(false, mindmap, user);
     }
@@ -569,6 +583,31 @@ public class MindmapController extends BaseController {
         boolean result = collaboration.get().getCollaborationProperties().getStarred();
         return Boolean.toString(result);
     }
+    
+    /**
+     * Validates note content and provides character count information.
+     * This endpoint helps users understand character limits for notes.
+     */
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @RequestMapping(method = RequestMethod.POST, value = "/validate-note", consumes = {"text/plain"}, produces = {"application/json"})
+    @ResponseBody
+    public NoteValidationResponse validateNoteContent(@RequestBody String noteContent) {
+        try {
+            SpamContentExtractor.NoteCharacterCount characterCount = spamContentExtractor.getNoteCharacterCount(noteContent);
+            
+            return new NoteValidationResponse(
+                characterCount.getRawLength(),
+                characterCount.getTextLength(),
+                characterCount.isHtml(),
+                characterCount.getRemainingChars(),
+                characterCount.isOverLimit(),
+                characterCount.getUsagePercentage()
+            );
+        } catch (Exception e) {
+            logger.warn("Error validating note content: {}", e.getMessage());
+            return new NoteValidationResponse(0, 0, false, 1000, false, 0.0);
+        }
+    }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/batch")
@@ -614,6 +653,9 @@ public class MindmapController extends BaseController {
             mapXml = Mindmap.getDefaultMindmapXml(mindmap.getTitle());
         }
         mindmap.setXmlStr(mapXml);
+        
+        // Validate HTML content in notes
+        htmlContentValidator.validateHtmlContent(mindmap);
 
         // Check for spam content during creation
         if (mindmap.isPublic()) {
