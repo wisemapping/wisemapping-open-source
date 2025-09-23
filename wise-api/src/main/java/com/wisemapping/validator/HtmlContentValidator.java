@@ -100,6 +100,7 @@ public class HtmlContentValidator {
     
     /**
      * Checks if the XML contains dangerous HTML patterns.
+     * URLs are allowed since mindmaps can contain legitimate links on nodes.
      * 
      * @param xml The XML content to check
      * @return true if dangerous patterns are found
@@ -125,7 +126,7 @@ public class HtmlContentValidator {
             return true;
         }
         
-        // Check for javascript: URLs
+        // Check for javascript: URLs (dangerous)
         if (xml.toLowerCase().contains("javascript:")) {
             return true;
         }
@@ -134,6 +135,9 @@ public class HtmlContentValidator {
         if (xml.matches(".*on\\w+\\s*=\\s*[\"'][^\"']*[\"'].*")) {
             return true;
         }
+        
+        // Note: Regular URLs (http://, https://, etc.) are allowed
+        // as mindmaps can legitimately contain links on nodes
         
         return false;
     }
