@@ -65,7 +65,7 @@ public class Mindmap implements Serializable {
     @Column(name = "public")
     private boolean isPublic;
 
-    @OneToOne(mappedBy = "mindmap", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "mindmap", fetch = FetchType.LAZY)
     private MindmapSpamInfo spamInfo;
 
     @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -147,6 +147,8 @@ public class Mindmap implements Serializable {
     public void removedCollaboration(@NotNull Collaboration collaboration) {
         // https://stackoverflow.com/questions/25125210/hibernate-persistentset-remove-operation-not-working
         this.collaborations.remove(collaboration);
+        // Set mindMap to null to maintain referential integrity before deletion
+        // This prevents the collaboration from being in an inconsistent state
         collaboration.setMindMap(null);
     }
 
