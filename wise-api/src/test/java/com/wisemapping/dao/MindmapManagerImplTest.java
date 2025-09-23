@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaQuery;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -206,47 +207,6 @@ class MindmapManagerImplTest {
         assertEquals(456, newCollaborator.getId());
     }
 
-    @Test
-    void testCollaborationExists_WhenCollaborationExists_ShouldReturnTrue() {
-        // Arrange
-        int mindmapId = 1951111;
-        int collaboratorId = 743212;
-        
-        // Mock the query to return count > 0
-        when(entityManager.createQuery(anyString(), eq(Long.class))).thenReturn(longTypedQuery);
-        when(longTypedQuery.setParameter(anyString(), any())).thenReturn(longTypedQuery);
-        when(longTypedQuery.getSingleResult()).thenReturn(1L);
-        
-        // Act
-        boolean exists = mindmapManager.collaborationExists(mindmapId, collaboratorId);
-        
-        // Assert
-        assertTrue(exists);
-        verify(entityManager).createQuery(
-            "SELECT COUNT(c) FROM com.wisemapping.model.Collaboration c " +
-            "WHERE c.mindMap.id = :mindmapId AND c.collaborator.id = :collaboratorId", 
-            Long.class);
-        verify(longTypedQuery).setParameter("mindmapId", mindmapId);
-        verify(longTypedQuery).setParameter("collaboratorId", collaboratorId);
-    }
-
-    @Test
-    void testCollaborationExists_WhenCollaborationDoesNotExist_ShouldReturnFalse() {
-        // Arrange
-        int mindmapId = 1951111;
-        int collaboratorId = 743212;
-        
-        // Mock the query to return count = 0
-        when(entityManager.createQuery(anyString(), eq(Long.class))).thenReturn(longTypedQuery);
-        when(longTypedQuery.setParameter(anyString(), any())).thenReturn(longTypedQuery);
-        when(longTypedQuery.getSingleResult()).thenReturn(0L);
-        
-        // Act
-        boolean exists = mindmapManager.collaborationExists(mindmapId, collaboratorId);
-        
-        // Assert
-        assertFalse(exists);
-    }
 
     @Test
     void testFindCollaboration_WhenCollaborationExists_ShouldReturnCollaboration() {
@@ -255,20 +215,15 @@ class MindmapManagerImplTest {
         int collaboratorId = 743212;
         Collaboration expectedCollaboration = new Collaboration();
         
-        // Mock the query to return the collaboration
-        when(entityManager.createQuery(anyString(), eq(Collaboration.class))).thenReturn(typedQuery);
-        when(typedQuery.setParameter(anyString(), any())).thenReturn(typedQuery);
-        when(typedQuery.getResultList()).thenReturn(Arrays.asList(expectedCollaboration));
+        // Mock the Criteria API query to return the collaboration
+        when(entityManager.createQuery(any(CriteriaQuery.class))).thenReturn(collaborationTypedQuery);
+        when(collaborationTypedQuery.getResultStream()).thenReturn(Arrays.asList(expectedCollaboration).stream());
         
         // Act
         Collaboration result = mindmapManager.findCollaboration(mindmapId, collaboratorId);
         
         // Assert
         assertEquals(expectedCollaboration, result);
-        verify(entityManager).createQuery(
-            "SELECT c FROM com.wisemapping.model.Collaboration c " +
-            "WHERE c.mindMap.id = :mindmapId AND c.collaborator.id = :collaboratorId", 
-            Collaboration.class);
     }
 
     @Test
@@ -277,10 +232,9 @@ class MindmapManagerImplTest {
         int mindmapId = 1951111;
         int collaboratorId = 743212;
         
-        // Mock the query to return empty list
-        when(entityManager.createQuery(anyString(), eq(Collaboration.class))).thenReturn(typedQuery);
-        when(typedQuery.setParameter(anyString(), any())).thenReturn(typedQuery);
-        when(typedQuery.getResultList()).thenReturn(Arrays.asList());
+        // Mock the Criteria API query to return empty stream
+        when(entityManager.createQuery(any(CriteriaQuery.class))).thenReturn(collaborationTypedQuery);
+        when(collaborationTypedQuery.getResultStream()).thenReturn(Arrays.asList().stream());
         
         // Act
         Collaboration result = mindmapManager.findCollaboration(mindmapId, collaboratorId);
