@@ -2,6 +2,7 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Collaborator;
+import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.AuthenticationType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,12 @@ class MindmapManagerImplTest {
 
     @Mock
     private TypedQuery<Collaborator> typedQuery;
+
+    @Mock
+    private TypedQuery<Long> longTypedQuery;
+
+    @Mock
+    private TypedQuery<Collaboration> collaborationTypedQuery;
 
     private MindmapManagerImpl mindmapManager;
 
@@ -197,5 +204,88 @@ class MindmapManagerImplTest {
         
         // Verify that the new collaborator got the ID from the existing account
         assertEquals(456, newCollaborator.getId());
+    }
+
+    @Test
+    void testCollaborationExists_WhenCollaborationExists_ShouldReturnTrue() {
+        // Arrange
+        int mindmapId = 1951111;
+        int collaboratorId = 743212;
+        
+        // Mock the query to return count > 0
+        when(entityManager.createQuery(anyString(), eq(Long.class))).thenReturn(longTypedQuery);
+        when(longTypedQuery.setParameter(anyString(), any())).thenReturn(longTypedQuery);
+        when(longTypedQuery.getSingleResult()).thenReturn(1L);
+        
+        // Act
+        boolean exists = mindmapManager.collaborationExists(mindmapId, collaboratorId);
+        
+        // Assert
+        assertTrue(exists);
+        verify(entityManager).createQuery(
+            "SELECT COUNT(c) FROM com.wisemapping.model.Collaboration c " +
+            "WHERE c.mindMap.id = :mindmapId AND c.collaborator.id = :collaboratorId", 
+            Long.class);
+        verify(longTypedQuery).setParameter("mindmapId", mindmapId);
+        verify(longTypedQuery).setParameter("collaboratorId", collaboratorId);
+    }
+
+    @Test
+    void testCollaborationExists_WhenCollaborationDoesNotExist_ShouldReturnFalse() {
+        // Arrange
+        int mindmapId = 1951111;
+        int collaboratorId = 743212;
+        
+        // Mock the query to return count = 0
+        when(entityManager.createQuery(anyString(), eq(Long.class))).thenReturn(longTypedQuery);
+        when(longTypedQuery.setParameter(anyString(), any())).thenReturn(longTypedQuery);
+        when(longTypedQuery.getSingleResult()).thenReturn(0L);
+        
+        // Act
+        boolean exists = mindmapManager.collaborationExists(mindmapId, collaboratorId);
+        
+        // Assert
+        assertFalse(exists);
+    }
+
+    @Test
+    void testFindCollaboration_WhenCollaborationExists_ShouldReturnCollaboration() {
+        // Arrange
+        int mindmapId = 1951111;
+        int collaboratorId = 743212;
+        Collaboration expectedCollaboration = new Collaboration();
+        
+        // Mock the query to return the collaboration
+        when(entityManager.createQuery(anyString(), eq(Collaboration.class))).thenReturn(typedQuery);
+        when(typedQuery.setParameter(anyString(), any())).thenReturn(typedQuery);
+        when(typedQuery.getResultList()).thenReturn(Arrays.asList(expectedCollaboration));
+        
+        // Act
+        Collaboration result = mindmapManager.findCollaboration(mindmapId, collaboratorId);
+        
+        // Assert
+        assertEquals(expectedCollaboration, result);
+        verify(entityManager).createQuery(
+            "SELECT c FROM com.wisemapping.model.Collaboration c " +
+            "WHERE c.mindMap.id = :mindmapId AND c.collaborator.id = :collaboratorId", 
+            Collaboration.class);
+    }
+
+    @Test
+    void testFindCollaboration_WhenCollaborationDoesNotExist_ShouldReturnNull() {
+        // Arrange
+        int mindmapId = 1951111;
+        int collaboratorId = 743212;
+        
+        // Mock the query to return empty list
+        when(entityManager.createQuery(anyString(), eq(Collaboration.class))).thenReturn(typedQuery);
+        when(typedQuery.setParameter(anyString(), any())).thenReturn(typedQuery);
+        when(typedQuery.getResultList()).thenReturn(Arrays.asList());
+        
+        // Act
+        Collaboration result = mindmapManager.findCollaboration(mindmapId, collaboratorId);
+        
+        // Assert
+        assertNull(result);
     }
 }
