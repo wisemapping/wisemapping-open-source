@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaQuery;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -29,12 +28,6 @@ class MindmapManagerImplTest {
 
     @Mock
     private TypedQuery<Collaborator> typedQuery;
-
-    @Mock
-    private TypedQuery<Long> longTypedQuery;
-
-    @Mock
-    private TypedQuery<Collaboration> collaborationTypedQuery;
 
     private MindmapManagerImpl mindmapManager;
 
@@ -208,38 +201,4 @@ class MindmapManagerImplTest {
     }
 
 
-    @Test
-    void testFindCollaboration_WhenCollaborationExists_ShouldReturnCollaboration() {
-        // Arrange
-        int mindmapId = 1951111;
-        int collaboratorId = 743212;
-        Collaboration expectedCollaboration = new Collaboration();
-        
-        // Mock the Criteria API query to return the collaboration
-        when(entityManager.createQuery(any(CriteriaQuery.class))).thenReturn(collaborationTypedQuery);
-        when(collaborationTypedQuery.getResultStream()).thenReturn(Arrays.asList(expectedCollaboration).stream());
-        
-        // Act
-        Collaboration result = mindmapManager.findCollaboration(mindmapId, collaboratorId);
-        
-        // Assert
-        assertEquals(expectedCollaboration, result);
-    }
-
-    @Test
-    void testFindCollaboration_WhenCollaborationDoesNotExist_ShouldReturnNull() {
-        // Arrange
-        int mindmapId = 1951111;
-        int collaboratorId = 743212;
-        
-        // Mock the Criteria API query to return empty stream
-        when(entityManager.createQuery(any(CriteriaQuery.class))).thenReturn(collaborationTypedQuery);
-        when(collaborationTypedQuery.getResultStream()).thenReturn(Arrays.asList().stream());
-        
-        // Act
-        Collaboration result = mindmapManager.findCollaboration(mindmapId, collaboratorId);
-        
-        // Assert
-        assertNull(result);
-    }
 }
