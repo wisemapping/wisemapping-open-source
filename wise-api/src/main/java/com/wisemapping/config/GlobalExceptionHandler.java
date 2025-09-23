@@ -110,6 +110,15 @@ public class GlobalExceptionHandler {
         return result;
     }
 
+    @ExceptionHandler(UserCouldNotBeAuthException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestErrors handleUserCouldNotBeAuthException(@NotNull UserCouldNotBeAuthException ex) {
+        logger.debug("Authentication failed: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
+    }
+
     @ExceptionHandler(ClientException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
