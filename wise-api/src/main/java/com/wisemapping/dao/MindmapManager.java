@@ -58,6 +58,26 @@ public interface MindmapManager {
 
     void updateCollaboration(@NotNull Collaboration collaboration);
 
+    /**
+     * Find an existing collaboration between a specific mindmap and collaborator
+     * @param mindmapId the mindmap ID
+     * @param collaboratorId the collaborator ID
+     * @return the Collaboration entity if found, null otherwise
+     */
+    @Nullable
+    Collaboration findCollaboration(int mindmapId, int collaboratorId);
+
+    /**
+     * Find or create a collaboration between a specific mindmap and collaborator
+     * This method prevents constraint violations by checking existence before creating
+     * @param mindmap the mindmap
+     * @param collaborator the collaborator
+     * @param role the collaboration role
+     * @return the existing or newly created Collaboration entity
+     */
+    @NotNull
+    Collaboration findOrCreateCollaboration(@NotNull Mindmap mindmap, @NotNull Collaborator collaborator, @NotNull CollaborationRole role);
+
     List<Mindmap> findMindmapByUser(Account user);
 
     /**

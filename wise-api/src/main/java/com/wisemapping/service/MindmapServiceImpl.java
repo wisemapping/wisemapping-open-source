@@ -36,7 +36,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service("mindmapService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -223,7 +222,24 @@ public class MindmapServiceImpl
     public void addCollaboration(@NotNull Mindmap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
             throws CollaborationException {
 
-        // Validate
+        // Validate input
+        validateCollaborationRequest(mindmap, email, role);
+
+        // Get or create collaborator
+        final Collaborator collaborator = addCollaborator(email);
+        
+        // Use DAO's find-or-create pattern to prevent constraint violations
+        Collaboration collaboration = mindmapManager.findOrCreateCollaboration(mindmap, collaborator, role);
+        
+        // Send notification only for new collaborations
+        if (collaboration.getId() == 0) { // New collaboration (not yet persisted)
+            final Account user = Utils.getUser();
+            notificationService.newCollaboration(collaboration, mindmap, user, message);
+        }
+    }
+
+    private void validateCollaborationRequest(@NotNull Mindmap mindmap, @NotNull String email, @NotNull CollaborationRole role) 
+            throws CollaborationException {
         final Collaborator owner = mindmap.getCreator();
         if (owner.getEmail().equals(email)) {
             throw new CollaborationException("The user " + owner.getEmail() + " is the owner");
@@ -231,31 +247,13 @@ public class MindmapServiceImpl
 
         if (role == CollaborationRole.OWNER) {
             throw new CollaborationException("Ownership can not be modified");
-
-        }
-
-        final Set<Collaboration> collaborations = mindmap.getCollaborations();
-        Collaboration collaboration = getCollaborationBy(email, collaborations);
-        if (collaboration == null) {
-            final Collaborator collaborator = addCollaborator(email);
-            collaboration = new Collaboration(role, collaborator, mindmap);
-            mindmap.getCollaborations().add(collaboration);
-            mindmapManager.saveMindmap(mindmap);
-
-            // Notify by email ...
-            final Account user = Utils.getUser();
-            notificationService.newCollaboration(collaboration, mindmap, user, message);
-
-        } else if (collaboration.getRole() != role) {
-            // If the relationship already exists and the role changed then only update the role
-            collaboration.setRole(role);
-            mindmapManager.updateMindmap(mindmap, false);
         }
     }
 
 
+
     private Collaborator addCollaborator(@NotNull String email) {
-        // Add a new collaborator ...
+        // Find existing collaborator or create new one
         Collaborator collaborator = mindmapManager.findCollaborator(email);
         if (collaborator == null) {
             collaborator = new Collaborator();
@@ -315,17 +313,6 @@ public class MindmapServiceImpl
         return this.lockManager;
     }
 
-    private Collaboration getCollaborationBy(@NotNull final String email, @NotNull final Set<Collaboration> collaborations) {
-        Collaboration collaboration = null;
-
-        for (Collaboration user : collaborations) {
-            if (user.getCollaborator().getEmail().equals(email)) {
-                collaboration = user;
-                break;
-            }
-        }
-        return collaboration;
-    }
 
 
     public void setMindmapManager(MindmapManager mindmapManager) {

@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @Repository("mindmapManager")
 public class MindmapManagerImpl
@@ -88,6 +89,64 @@ public class MindmapManagerImpl
     @Override
     public void updateCollaboration(@NotNull Collaboration collaboration) {
         entityManager.persist(collaboration);
+    }
+
+    @Override
+    @Nullable
+    public Collaboration findCollaboration(int mindmapId, int collaboratorId) {
+        // Use JPA Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Collaboration> cq = cb.createQuery(Collaboration.class);
+        final Root<Collaboration> root = cq.from(Collaboration.class);
+        
+        // Build the query: WHERE mindMap.id = ? AND collaborator.id = ?
+        cq.select(root)
+          .where(cb.and(
+              cb.equal(root.get("mindMap").get("id"), mindmapId),
+              cb.equal(root.get("collaborator").get("id"), collaboratorId)
+          ));
+        
+        // Execute query and get result
+        final TypedQuery<Collaboration> query = entityManager.createQuery(cq);
+        return query.getResultStream()
+                   .findFirst()
+                   .orElse(null);
+    }
+
+    @Override
+    @NotNull
+    public Collaboration findOrCreateCollaboration(@NotNull Mindmap mindmap, @NotNull Collaborator collaborator, @NotNull CollaborationRole role) {
+        // Use JPA Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Collaboration> cq = cb.createQuery(Collaboration.class);
+        final Root<Collaboration> root = cq.from(Collaboration.class);
+        
+        // Build the query: WHERE mindMap.id = ? AND collaborator.id = ?
+        cq.select(root)
+          .where(cb.and(
+              cb.equal(root.get("mindMap").get("id"), mindmap.getId()),
+              cb.equal(root.get("collaborator").get("id"), collaborator.getId())
+          ));
+        
+        // Execute query and get result
+        final TypedQuery<Collaboration> query = entityManager.createQuery(cq);
+        final Optional<Collaboration> existing = query.getResultStream().findFirst();
+        
+        if (existing.isPresent()) {
+            // Update role if different
+            Collaboration collaboration = existing.get();
+            if (collaboration.getRole() != role) {
+                collaboration.setRole(role);
+                entityManager.merge(collaboration);
+            }
+            return collaboration;
+        }
+        
+        // Create new collaboration - this is safe because we verified it doesn't exist
+        Collaboration newCollaboration = new Collaboration(role, collaborator, mindmap);
+        entityManager.persist(newCollaboration);
+        
+        return newCollaboration;
     }
 
     @Override
