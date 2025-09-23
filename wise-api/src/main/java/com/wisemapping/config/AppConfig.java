@@ -29,6 +29,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
+import org.springframework.security.config.Customizer;
 import com.wisemapping.model.Account;
 import com.wisemapping.security.Utils;
 import org.springframework.web.servlet.LocaleResolver;
@@ -42,7 +44,7 @@ import java.util.Locale;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @SpringBootApplication(
-    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, com.wisemapping.util.VelocityEngineWrapper.class, SpamDetectionService.class, SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class, ContactInfoSpamStrategy.class, GlobalExceptionHandler.class}
+    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, com.wisemapping.util.VelocityEngineWrapper.class, SpamDetectionService.class, SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class, ContactInfoSpamStrategy.class, GlobalExceptionHandler.class, com.wisemapping.validator.HtmlContentValidator.class}
 )
 @Import({com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class})
 @EnableScheduling
@@ -87,7 +89,24 @@ public class AppConfig implements WebMvcConfigurer {
                             response.setStatus(HttpServletResponse.SC_OK);
                         }))
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .headers(headers -> headers
+                        // Content Security Policy for HTML content
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';"))
+                        // Prevent MIME type sniffing
+                        .contentTypeOptions(Customizer.withDefaults())
+                        // Prevent clickjacking
+                        .frameOptions(frameOptions -> frameOptions.deny())
+                        // HSTS (HTTP Strict Transport Security)
+                        .httpStrictTransportSecurity(hsts -> hsts
+                                .maxAgeInSeconds(31536000))
+                        // Referrer Policy
+                        .referrerPolicy(referrerPolicy -> referrerPolicy
+                                .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                        // Custom headers
+                        .addHeaderWriter((request, response) -> response.setHeader("Server", "WiseMapping"))
+                );
 
         // Http basic is mainly used by automation tests.
         if (enableHttpBasic) {
