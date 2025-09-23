@@ -1,10 +1,8 @@
 package com.wisemapping.config;
 
 import com.wisemapping.exceptions.*;
-import com.wisemapping.model.Account;
 import com.wisemapping.rest.JsonHttpMessageNotReadableException;
 import com.wisemapping.rest.model.RestErrors;
-import com.wisemapping.security.Utils;
 import com.wisemapping.service.RegistrationException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +17,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -76,7 +75,23 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public RestErrors handleAuthException(@NotNull final AuthenticationCredentialsNotFoundException ex) {
         logger.debug(ex.getMessage(), ex);
-        return new RestErrors("Authentication exception. Session must be expired. Try logging again.", Severity.INFO);
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("AUTHENTICATION_SESSION_EXPIRED", null, "Authentication exception. Session must be expired. Try logging again.", locale) :
+            "Authentication exception. Session must be expired. Try logging again.";
+        return new RestErrors(message, Severity.INFO);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public RestErrors handleAuthorizationDeniedException(@NotNull final AuthorizationDeniedException ex) {
+        logger.debug("Authorization denied: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("AUTHORIZATION_ACCESS_DENIED", null, "Access denied. The map may have been deleted or you don't have permission to access it.", locale) :
+            "Access denied. The map may have been deleted or you don't have permission to access it.";
+        return new RestErrors(message, Severity.WARNING);
     }
 
     @ExceptionHandler(ValidationException.class)
@@ -92,7 +107,11 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public RestErrors handleJSONErrors(@NotNull JsonHttpMessageNotReadableException ex) {
         logger.error(ex.getMessage(), ex);
-        return new RestErrors("Communication error", Severity.SEVERE);
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("COMMUNICATION_ERROR", null, "Communication error", locale) :
+            "Communication error";
+        return new RestErrors(message, Severity.SEVERE);
     }
 
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
@@ -160,7 +179,6 @@ public class GlobalExceptionHandler {
         } else {
             logger.error(ex.getMessage(), ex);
         }
-        final Account user = Utils.getUser(false);
         return new RestErrors(ex.getMessage(), Severity.SEVERE);
     }
 
