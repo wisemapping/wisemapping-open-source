@@ -93,9 +93,63 @@ public class HtmlContentValidator {
      */
     private void validateHtmlSecurity(String xml) throws WiseMappingException {
         // Check for dangerous HTML patterns
-        if (containsDangerousHtmlPatterns(xml)) {
-            throw new WiseMappingException("HTML content contains potentially dangerous patterns");
+        String dangerousPattern = getDangerousHtmlPattern(xml);
+        if (dangerousPattern != null) {
+            String errorMessage = String.format(
+                "HTML content contains potentially dangerous patterns: %s. " +
+                "This content is blocked for security reasons. Please remove or modify the content and try again.",
+                dangerousPattern
+            );
+            logger.warn("HTML security validation failed: {}", dangerousPattern);
+            throw new WiseMappingException(errorMessage);
         }
+    }
+    
+    /**
+     * Gets the specific dangerous HTML pattern found in the XML content.
+     * URLs are allowed since mindmaps can contain legitimate links on nodes.
+     * 
+     * @param xml The XML content to check
+     * @return String describing the dangerous pattern found, or null if none found
+     */
+    private String getDangerousHtmlPattern(String xml) {
+        // Check for script tags
+        if (xml.contains("<script") || xml.contains("</script>")) {
+            return "script tags (<script> or </script>) - these can execute malicious code";
+        }
+        
+        // Check for iframe tags
+        if (xml.contains("<iframe") || xml.contains("</iframe>")) {
+            return "iframe tags (<iframe>) - these can embed external content";
+        }
+        
+        // Check for object/embed tags
+        if (xml.contains("<object")) {
+            return "object tags (<object>) - these can embed external content";
+        }
+        if (xml.contains("<embed")) {
+            return "embed tags (<embed>) - these can embed external content";
+        }
+        
+        // Check for form tags
+        if (xml.contains("<form") || xml.contains("</form>")) {
+            return "form tags (<form>) - these can submit data to external sites";
+        }
+        
+        // Check for javascript: URLs (dangerous)
+        if (xml.toLowerCase().contains("javascript:")) {
+            return "javascript: URLs - these can execute malicious code";
+        }
+        
+        // Check for event handlers
+        if (xml.matches(".*on\\w+\\s*=\\s*[\"'][^\"']*[\"'].*")) {
+            return "event handlers (onclick, onload, etc.) - these can execute malicious code";
+        }
+        
+        // Note: Regular URLs (http://, https://, etc.) are allowed
+        // as mindmaps can legitimately contain links on nodes
+        
+        return null;
     }
     
     /**
@@ -106,40 +160,7 @@ public class HtmlContentValidator {
      * @return true if dangerous patterns are found
      */
     private boolean containsDangerousHtmlPatterns(String xml) {
-        // Check for script tags
-        if (xml.contains("<script") || xml.contains("</script>")) {
-            return true;
-        }
-        
-        // Check for iframe tags
-        if (xml.contains("<iframe") || xml.contains("</iframe>")) {
-            return true;
-        }
-        
-        // Check for object/embed tags
-        if (xml.contains("<object") || xml.contains("<embed")) {
-            return true;
-        }
-        
-        // Check for form tags
-        if (xml.contains("<form") || xml.contains("</form>")) {
-            return true;
-        }
-        
-        // Check for javascript: URLs (dangerous)
-        if (xml.toLowerCase().contains("javascript:")) {
-            return true;
-        }
-        
-        // Check for event handlers
-        if (xml.matches(".*on\\w+\\s*=\\s*[\"'][^\"']*[\"'].*")) {
-            return true;
-        }
-        
-        // Note: Regular URLs (http://, https://, etc.) are allowed
-        // as mindmaps can legitimately contain links on nodes
-        
-        return false;
+        return getDangerousHtmlPattern(xml) != null;
     }
     
     /**
@@ -155,15 +176,26 @@ public class HtmlContentValidator {
         
         // Check length
         if (noteContent.length() > MAX_NOTE_LENGTH) {
-            throw new WiseMappingException(
-                String.format("Note content exceeds maximum length of %d characters (found %d)", 
-                    MAX_NOTE_LENGTH, noteContent.length())
+            String errorMessage = String.format(
+                "Note content exceeds maximum length of %d characters (found %d characters). " +
+                "Please shorten the content and try again.",
+                MAX_NOTE_LENGTH, noteContent.length()
             );
+            logger.warn("Note content length validation failed: {} characters (max: {})", 
+                noteContent.length(), MAX_NOTE_LENGTH);
+            throw new WiseMappingException(errorMessage);
         }
         
         // Check for dangerous patterns
-        if (containsDangerousHtmlPatterns(noteContent)) {
-            throw new WiseMappingException("Note content contains potentially dangerous HTML patterns");
+        String dangerousPattern = getDangerousHtmlPattern(noteContent);
+        if (dangerousPattern != null) {
+            String errorMessage = String.format(
+                "Note content contains potentially dangerous HTML patterns: %s. " +
+                "This content is blocked for security reasons. Please remove or modify the content and try again.",
+                dangerousPattern
+            );
+            logger.warn("Note content security validation failed: {}", dangerousPattern);
+            throw new WiseMappingException(errorMessage);
         }
     }
 }
