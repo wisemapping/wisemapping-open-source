@@ -18,6 +18,7 @@
 
 package com.wisemapping.validator;
 
+import com.wisemapping.exceptions.HtmlContentValidationException;
 import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Mindmap;
@@ -71,17 +72,17 @@ public class HtmlContentValidator {
                     validationResult.getViolationDetails()
                 );
                 logger.warn("HTML content validation failed for mindmap {}: {}", mindmap.getId(), errorMessage);
-                throw new WiseMappingException(errorMessage);
+                throw new HtmlContentValidationException(errorMessage, "LENGTH");
             }
             
             // Additional security validations can be added here
             validateHtmlSecurity(xml);
             
-        } catch (InvalidMindmapException e) {
+        } catch (HtmlContentValidationException e) {
             throw e;
         } catch (Exception e) {
             logger.warn("Error validating HTML content for mindmap {}: {}", mindmap.getId(), e.getMessage());
-            throw new WiseMappingException("Error validating HTML content: " + e.getMessage());
+            throw new HtmlContentValidationException("Error validating HTML content: " + e.getMessage(), "UNKNOWN");
         }
     }
     
@@ -89,9 +90,9 @@ public class HtmlContentValidator {
      * Validates HTML content for security issues.
      * 
      * @param xml The XML content to validate
-     * @throws WiseMappingException if security issues are found
+     * @throws HtmlContentValidationException if security issues are found
      */
-    private void validateHtmlSecurity(String xml) throws WiseMappingException {
+    private void validateHtmlSecurity(String xml) throws HtmlContentValidationException {
         // Check for dangerous HTML patterns
         String dangerousPattern = getDangerousHtmlPattern(xml);
         if (dangerousPattern != null) {
@@ -101,7 +102,7 @@ public class HtmlContentValidator {
                 dangerousPattern
             );
             logger.warn("HTML security validation failed: {}", dangerousPattern);
-            throw new WiseMappingException(errorMessage);
+            throw new HtmlContentValidationException(errorMessage, "SECURITY", dangerousPattern);
         }
     }
     
@@ -142,12 +143,41 @@ public class HtmlContentValidator {
         }
         
         // Check for event handlers
-        if (xml.matches(".*on\\w+\\s*=\\s*[\"'][^\"']*[\"'].*")) {
-            return "event handlers (onclick, onload, etc.) - these can execute malicious code";
+        String eventHandler = detectSpecificEventHandler(xml);
+        if (eventHandler != null) {
+            return eventHandler;
         }
         
         // Note: Regular URLs (http://, https://, etc.) are allowed
         // as mindmaps can legitimately contain links on nodes
+        
+        return null;
+    }
+    
+    /**
+     * Detects specific event handlers in the XML content and returns detailed information.
+     * 
+     * @param xml The XML content to check
+     * @return String describing the specific event handler found, or null if none found
+     */
+    private String detectSpecificEventHandler(String xml) {
+        java.util.regex.Pattern eventPattern = java.util.regex.Pattern.compile(
+            "(on\\w+)\\s*=\\s*[\"']([^\"']*)[\"']", 
+            java.util.regex.Pattern.CASE_INSENSITIVE
+        );
+        
+        java.util.regex.Matcher matcher = eventPattern.matcher(xml);
+        if (matcher.find()) {
+            String eventName = matcher.group(1);
+            String eventCode = matcher.group(2);
+            
+            // Truncate long event code for display
+            String displayCode = eventCode.length() > 50 ? 
+                eventCode.substring(0, 47) + "..." : eventCode;
+            
+            return String.format("event handler '%s' with code '%s' - these can execute malicious code", 
+                eventName, displayCode);
+        }
         
         return null;
     }
@@ -167,9 +197,9 @@ public class HtmlContentValidator {
      * Validates a single note content string.
      * 
      * @param noteContent The note content to validate
-     * @throws WiseMappingException if validation fails
+     * @throws HtmlContentValidationException if validation fails
      */
-    public void validateNoteContent(String noteContent) throws WiseMappingException {
+    public void validateNoteContent(String noteContent) throws HtmlContentValidationException {
         if (noteContent == null || noteContent.trim().isEmpty()) {
             return;
         }
@@ -183,7 +213,8 @@ public class HtmlContentValidator {
             );
             logger.warn("Note content length validation failed: {} characters (max: {})", 
                 noteContent.length(), MAX_NOTE_LENGTH);
-            throw new WiseMappingException(errorMessage);
+            throw new HtmlContentValidationException(errorMessage, "LENGTH", 
+                String.format("%d characters (limit: %d)", noteContent.length(), MAX_NOTE_LENGTH));
         }
         
         // Check for dangerous patterns
@@ -195,7 +226,7 @@ public class HtmlContentValidator {
                 dangerousPattern
             );
             logger.warn("Note content security validation failed: {}", dangerousPattern);
-            throw new WiseMappingException(errorMessage);
+            throw new HtmlContentValidationException(errorMessage, "SECURITY", dangerousPattern);
         }
     }
 }
