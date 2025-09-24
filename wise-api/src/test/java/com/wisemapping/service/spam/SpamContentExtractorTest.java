@@ -10,7 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(classes = com.wisemapping.config.AppConfig.class)
 @TestPropertySource(properties = {
     "app.mindmap.note.max-length=10000"
 })
@@ -112,9 +112,27 @@ class SpamContentExtractorTest {
         // Then
         assertNotNull(result);
         assertEquals(44, result.getRawLength()); // Original HTML length
+        assertEquals(20, result.getTextLength()); // "This is HTML content" length
         assertTrue(result.isHtml());
-        assertFalse(result.isOverLimit());
+        assertFalse(result.isOverLimit()); // Should use text length for validation
         assertTrue(result.getTextLength() < result.getRawLength()); // Sanitized text should be shorter
+    }
+
+    @Test
+    void testCountNoteCharacters_HtmlContent_OverLimit() {
+        // Given - HTML content where text content exceeds limit but raw HTML doesn't
+        String longText = "x".repeat(10001); // 10001 characters of text
+        String htmlContent = "<p>" + longText + "</p>"; // HTML adds 7 more characters
+
+        // When
+        SpamContentExtractor.NoteCharacterCount result = extractor.countNoteCharacters(htmlContent);
+
+        // Then
+        assertNotNull(result);
+        assertEquals(10008, result.getRawLength()); // HTML length (10001 + 7)
+        assertEquals(10001, result.getTextLength()); // Text length
+        assertTrue(result.isHtml());
+        assertTrue(result.isOverLimit()); // Should be over limit based on text length
     }
 
     @Test

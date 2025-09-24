@@ -14,7 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(classes = com.wisemapping.config.AppConfig.class)
 @TestPropertySource(properties = {
     "app.mindmap.note.max-length=10000"
 })

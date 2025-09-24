@@ -438,6 +438,30 @@ public class MindmapParser {
             return Jsoup.parse(content).text();
         }
     }
+
+    /**
+     * Extracts plain text content from HTML, similar to how the frontend's textContent property works.
+     * This method strips all HTML tags without including URLs, making it suitable for character counting.
+     *
+     * @param content The content to process (may be plain text or HTML)
+     * @return Plain text content with all HTML tags removed
+     */
+    @NotNull
+    public static String extractPlainTextContent(@NotNull String content) {
+        if (content.trim().isEmpty()) {
+            return "";
+        }
+
+        // Check if content looks like HTML (contains HTML tags)
+        if (isHtmlContent(content)) {
+            // Parse HTML and extract only the text content (like frontend textContent)
+            org.jsoup.nodes.Document doc = Jsoup.parse(content);
+            return doc.text();
+        } else {
+            // Content is plain text, return as-is but decode HTML entities
+            return Jsoup.parse(content).text();
+        }
+    }
     
     /**
      * Fallback method using regex for text extraction when XML parsing fails.
