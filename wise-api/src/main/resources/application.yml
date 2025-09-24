@@ -180,6 +180,10 @@ app:
   #  accounts:
   #    exclusion:
   #      domain:
+  # Mindmap content configuration
+  mindmap:
+    note:
+      max-length: 5000  # Maximum allowed characters in mindmap notes
   # Account registration options dialog
   registration:
     enabled: true
