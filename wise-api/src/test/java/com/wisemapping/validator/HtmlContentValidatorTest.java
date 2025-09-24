@@ -3,32 +3,28 @@ package com.wisemapping.validator;
 import com.wisemapping.exceptions.HtmlContentValidationException;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.service.spam.SpamContentExtractor;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@TestPropertySource(properties = {
+    "app.mindmap.note.max-length=10000"
+})
 class HtmlContentValidatorTest {
-
-    @Mock
-    private SpamContentExtractor contentExtractor;
 
     @Mock
     private Mindmap mindmap;
 
+    @Autowired
     private HtmlContentValidator validator;
-
-    @BeforeEach
-    void setUp() {
-        validator = new HtmlContentValidator(contentExtractor);
-        // Set the maxNoteLength to 5000 using reflection
-        ReflectionTestUtils.setField(validator, "maxNoteLength", 5000);
-    }
 
     @Test
     void testValidateNoteContent_WithinLimit_ShouldNotThrow() {
@@ -42,7 +38,7 @@ class HtmlContentValidatorTest {
     @Test
     void testValidateNoteContent_ExceedsLimit_ShouldThrow() {
         // Given
-        String longNote = "x".repeat(5001); // 5001 characters, exceeding the 5000 limit
+        String longNote = "x".repeat(10001); // 10001 characters, exceeding the 10000 limit
 
         // When & Then
         HtmlContentValidationException exception = assertThrows(
@@ -51,14 +47,14 @@ class HtmlContentValidatorTest {
         );
 
         assertEquals("LENGTH", exception.getValidationType());
-        assertTrue(exception.getMessage().contains("5000"));
-        assertTrue(exception.getMessage().contains("5001"));
+        assertTrue(exception.getMessage().contains("10000"));
+        assertTrue(exception.getMessage().contains("10001"));
     }
 
     @Test
     void testValidateNoteContent_AtLimit_ShouldNotThrow() {
         // Given
-        String noteAtLimit = "x".repeat(5000); // Exactly 5000 characters
+        String noteAtLimit = "x".repeat(10000); // Exactly 10000 characters
 
         // When & Then
         assertDoesNotThrow(() -> validator.validateNoteContent(noteAtLimit));
