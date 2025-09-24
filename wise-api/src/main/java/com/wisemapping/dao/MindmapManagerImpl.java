@@ -235,9 +235,14 @@ public class MindmapManagerImpl
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
         entityManager.persist(mindMap);
         
+        // Flush to ensure the mindmap is persisted and has an ID
+        entityManager.flush();
+        
         // Handle spam info after the mindmap has been persisted and has an ID
         MindmapSpamInfo spamInfo = mindMap.getSpamInfo();
         if (spamInfo != null) {
+            // Ensure the spam info has the correct mindmap ID
+            spamInfo.setMindmapId(mindMap.getId());
             updateMindmapSpamInfo(spamInfo);
         }
     }
@@ -262,6 +267,11 @@ public class MindmapManagerImpl
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateMindmapSpamInfo(@NotNull com.wisemapping.model.MindmapSpamInfo spamInfo) {
         assert spamInfo != null : "Update MindmapSpamInfo: SpamInfo is required!";
+        
+        // Validate that we have a valid mindmap ID
+        if (spamInfo.getMindmapId() == null || spamInfo.getMindmapId() <= 0) {
+            throw new IllegalArgumentException("Invalid mindmap ID for spam info: " + spamInfo.getMindmapId());
+        }
         
         // "Last Win" strategy: Use native SQL to force update regardless of conflicts
         // This ensures the latest data always wins, even in high concurrency scenarios
