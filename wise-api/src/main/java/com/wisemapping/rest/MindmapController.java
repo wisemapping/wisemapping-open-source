@@ -605,7 +605,7 @@ public class MindmapController extends BaseController {
             );
         } catch (Exception e) {
             logger.warn("Error validating note content: {}", e.getMessage());
-            return new NoteValidationResponse(0, 0, false, 1000, false, 0.0);
+            return new NoteValidationResponse(0, 0, false, 5000, false, 0.0);
         }
     }
 

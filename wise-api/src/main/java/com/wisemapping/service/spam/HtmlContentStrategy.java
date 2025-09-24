@@ -51,7 +51,7 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     private double maxHtmlToTextRatio;
     
     
-    @Value("${app.batch.spam-detection.html.max-note-length:1000}")
+    @Value("${app.mindmap.note.max-length:5000}")
     private int maxNoteLength;
     
     // Patterns that indicate HTML-based spam (not security threats)

@@ -205,7 +205,7 @@ public class SpamContentExtractor {
      */
     public NoteCharacterCount countNoteCharacters(String noteContent) {
         if (noteContent == null || noteContent.trim().isEmpty()) {
-            return new NoteCharacterCount(0, 0, false, 1000);
+            return new NoteCharacterCount(0, 0, false, 5000);
         }
         
         boolean isHtml = isHtmlContent(noteContent);
@@ -218,7 +218,7 @@ public class SpamContentExtractor {
             textLength = sanitizedContent.length();
         }
         
-        int remainingChars = 1000 - rawLength;
+        int remainingChars = 5000 - rawLength;
         
         return new NoteCharacterCount(rawLength, textLength, isHtml, remainingChars);
     }
@@ -310,7 +310,7 @@ public class SpamContentExtractor {
         public int getTextLength() { return textLength; }
         public boolean isHtml() { return isHtml; }
         public int getRemainingChars() { return remainingChars; }
-        public boolean isOverLimit() { return rawLength > 1000; }
-        public double getUsagePercentage() { return (rawLength / 1000.0) * 100.0; }
+        public boolean isOverLimit() { return rawLength > 5000; }
+        public double getUsagePercentage() { return (rawLength / 5000.0) * 100.0; }
     }
 }

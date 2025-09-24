@@ -27,6 +27,7 @@ import com.wisemapping.mindmap.utils.MindmapUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,7 +39,8 @@ public class HtmlContentValidator {
     private final static Logger logger = LogManager.getLogger();
     private final SpamContentExtractor contentExtractor;
     
-    private static final int MAX_NOTE_LENGTH = 1000;
+    @Value("${app.mindmap.note.max-length:5000}")
+    private int maxNoteLength;
     
     @Autowired
     public HtmlContentValidator(SpamContentExtractor contentExtractor) {
@@ -64,12 +66,12 @@ public class HtmlContentValidator {
             
             // Validate note content length
             MindmapUtils.NoteValidationResult validationResult = 
-                contentExtractor.validateNoteContentLength(mindmap, MAX_NOTE_LENGTH);
+                contentExtractor.validateNoteContentLength(mindmap, maxNoteLength);
             
             if (!validationResult.isValid()) {
                 String errorMessage = String.format(
                     "Note content exceeds maximum length of %d characters. %s", 
-                    MAX_NOTE_LENGTH, 
+                    maxNoteLength, 
                     validationResult.getViolationDetails()
                 );
                 logger.warn("HTML content validation failed for mindmap {}: {}", mindmap.getId(), errorMessage);
@@ -161,16 +163,16 @@ public class HtmlContentValidator {
         }
         
         // Check length
-        if (noteContent.length() > MAX_NOTE_LENGTH) {
+        if (noteContent.length() > maxNoteLength) {
             String errorMessage = String.format(
                 "Note content exceeds maximum length of %d characters (found %d characters). " +
                 "Please shorten the content and try again.",
-                MAX_NOTE_LENGTH, noteContent.length()
+                maxNoteLength, noteContent.length()
             );
             logger.warn("Note content length validation failed: {} characters (max: {})", 
-                noteContent.length(), MAX_NOTE_LENGTH);
+                noteContent.length(), maxNoteLength);
             throw new HtmlContentValidationException(errorMessage, "LENGTH", 
-                String.format("%d characters (limit: %d)", noteContent.length(), MAX_NOTE_LENGTH));
+                String.format("%d characters (limit: %d)", noteContent.length(), maxNoteLength));
         }
         
         // Check for dangerous patterns
