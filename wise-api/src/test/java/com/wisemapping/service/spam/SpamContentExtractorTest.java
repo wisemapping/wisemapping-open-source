@@ -1,21 +1,23 @@
 package com.wisemapping.service.spam;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@TestPropertySource(properties = {
+    "app.mindmap.note.max-length=10000"
+})
 class SpamContentExtractorTest {
 
+    @Autowired
     private SpamContentExtractor extractor;
-
-    @BeforeEach
-    void setUp() {
-        extractor = new SpamContentExtractor();
-    }
 
     @Test
     void testCountNoteCharacters_WithinLimit() {
@@ -31,21 +33,21 @@ class SpamContentExtractorTest {
         assertEquals(19, result.getTextLength());
         assertFalse(result.isHtml());
         assertFalse(result.isOverLimit());
-        assertTrue(result.getUsagePercentage() < 1.0); // Less than 1% of 5000
+        assertTrue(result.getUsagePercentage() < 1.0); // Less than 1% of 10000
     }
 
     @Test
     void testCountNoteCharacters_AtLimit() {
         // Given
-        String noteAtLimit = "x".repeat(5000);
+        String noteAtLimit = "x".repeat(10000);
 
         // When
         SpamContentExtractor.NoteCharacterCount result = extractor.countNoteCharacters(noteAtLimit);
 
         // Then
         assertNotNull(result);
-        assertEquals(5000, result.getRawLength());
-        assertEquals(5000, result.getTextLength());
+        assertEquals(10000, result.getRawLength());
+        assertEquals(10000, result.getTextLength());
         assertFalse(result.isHtml());
         assertFalse(result.isOverLimit());
         assertEquals(100.0, result.getUsagePercentage(), 0.1);
@@ -54,15 +56,15 @@ class SpamContentExtractorTest {
     @Test
     void testCountNoteCharacters_OverLimit() {
         // Given
-        String noteOverLimit = "x".repeat(5001);
+        String noteOverLimit = "x".repeat(10001);
 
         // When
         SpamContentExtractor.NoteCharacterCount result = extractor.countNoteCharacters(noteOverLimit);
 
         // Then
         assertNotNull(result);
-        assertEquals(5001, result.getRawLength());
-        assertEquals(5001, result.getTextLength());
+        assertEquals(10001, result.getRawLength());
+        assertEquals(10001, result.getTextLength());
         assertFalse(result.isHtml());
         assertTrue(result.isOverLimit());
         assertTrue(result.getUsagePercentage() > 100.0);

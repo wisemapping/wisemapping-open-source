@@ -45,6 +45,9 @@ public class SpamContentExtractor {
 
     @Value("classpath:spam-keywords.properties")
     private Resource spamKeywordsResource;
+    
+    @Value("${app.mindmap.note.max-length:10000}")
+    private int maxNoteLength;
 
     private List<String> spamKeywords;
     
@@ -205,7 +208,7 @@ public class SpamContentExtractor {
      */
     public NoteCharacterCount countNoteCharacters(String noteContent) {
         if (noteContent == null || noteContent.trim().isEmpty()) {
-            return new NoteCharacterCount(0, 0, false, 5000);
+            return new NoteCharacterCount(0, 0, false, maxNoteLength);
         }
         
         boolean isHtml = isHtmlContent(noteContent);
@@ -218,9 +221,9 @@ public class SpamContentExtractor {
             textLength = sanitizedContent.length();
         }
         
-        int remainingChars = 5000 - rawLength;
+        int remainingChars = maxNoteLength - rawLength;
         
-        return new NoteCharacterCount(rawLength, textLength, isHtml, remainingChars);
+        return new NoteCharacterCount(rawLength, textLength, isHtml, remainingChars, maxNoteLength);
     }
 
     /**
@@ -298,19 +301,29 @@ public class SpamContentExtractor {
         private final int textLength;
         private final boolean isHtml;
         private final int remainingChars;
+        private final int maxLength;
         
-        public NoteCharacterCount(int rawLength, int textLength, boolean isHtml, int remainingChars) {
+        public NoteCharacterCount(int rawLength, int textLength, boolean isHtml, int remainingChars, int maxLength) {
             this.rawLength = rawLength;
             this.textLength = textLength;
             this.isHtml = isHtml;
             this.remainingChars = remainingChars;
+            this.maxLength = maxLength;
+        }
+        
+        public NoteCharacterCount(int rawLength, int textLength, boolean isHtml, int maxLength) {
+            this.rawLength = rawLength;
+            this.textLength = textLength;
+            this.isHtml = isHtml;
+            this.remainingChars = maxLength - rawLength;
+            this.maxLength = maxLength;
         }
         
         public int getRawLength() { return rawLength; }
         public int getTextLength() { return textLength; }
         public boolean isHtml() { return isHtml; }
         public int getRemainingChars() { return remainingChars; }
-        public boolean isOverLimit() { return rawLength > 5000; }
-        public double getUsagePercentage() { return (rawLength / 5000.0) * 100.0; }
+        public boolean isOverLimit() { return rawLength > maxLength; }
+        public double getUsagePercentage() { return maxLength > 0 ? (rawLength / (double)maxLength) * 100.0 : 0.0; }
     }
 }

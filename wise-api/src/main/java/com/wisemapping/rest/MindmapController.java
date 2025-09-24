@@ -83,6 +83,9 @@ public class MindmapController extends BaseController {
 
     @Value("${app.accounts.max-inactive:20}")
     private int maxAccountsInactive;
+    
+    @Value("${app.mindmap.note.max-length:10000}")
+    private int maxNoteLength;
 
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
@@ -605,7 +608,7 @@ public class MindmapController extends BaseController {
             );
         } catch (Exception e) {
             logger.warn("Error validating note content: {}", e.getMessage());
-            return new NoteValidationResponse(0, 0, false, 5000, false, 0.0);
+            return new NoteValidationResponse(0, 0, false, maxNoteLength, false, 0.0);
         }
     }
 
