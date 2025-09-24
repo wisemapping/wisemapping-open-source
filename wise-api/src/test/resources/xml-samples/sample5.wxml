@@ -1,0 +1,257 @@
+<map name="110114" version="tango">
+    <topic central="true" text="MBA - Contabilidad" id="1">
+        <topic position="150,-408" order="0" text="Operaciones" id="40">
+            <topic position="253,-421" order="0" id="41">
+                <text><![CDATA[* Conmutativas
+* Permutativas]]></text>
+            </topic>
+            <topic position="254,-391" order="1" text="Modificativas" id="42">
+                <note><![CDATA[Cambia el Patrimonio Neto
+]]>                </note>
+            </topic>
+        </topic>
+        <topic position="-177,-173" order="1" text="Fuentes de Finación" id="13">
+            <note><![CDATA[El origen de donde provienen los recursos
+]]>            </note>
+            <topic position="-331,-229" order="0" text="Financiado por terceros" id="20">
+                <icon id="thumb_thumb_down"/>
+                <topic position="-453,-242" order="0" text="Obligaciones" id="23"/>
+                <topic position="-441,-216" order="1" text="Pasivo" id="24"/>
+            </topic>
+            <topic position="-329,-147" order="1" id="14">
+                <text><![CDATA[Si es finaciado por los
+propietarios]]></text>
+                <icon id="thumb_thumb_up"/>
+                <topic position="-457,-190" order="0" text="Capital Contable" id="17"/>
+                <topic position="-472,-160" order="1" id="18">
+                    <text><![CDATA[Funtes de Financiacion 
+Propias]]></text>
+                </topic>
+                <topic position="-456,-130" order="2" text="Patrimonio Neto" id="19"/>
+                <topic position="-461,-104" order="3" text="Pasivo no Exigible" id="27"/>
+            </topic>
+        </topic>
+        <topic position="188,-326" order="2" text="Conceptos de Contabilidad" id="58">
+            <topic position="370,-365" order="0" text="Principio de Devengo y Correlacion" id="59"/>
+            <topic position="366,-339" order="1" text="Principio de Empresa Funcionado" id="60"/>
+            <topic position="342,-313" order="2" text="Principio de Prudencia" id="61"/>
+            <topic position="347,-287" order="3" text="Principio de Uniformidad" id="62"/>
+        </topic>
+        <topic position="-201,-61" order="3" id="29">
+            <text><![CDATA[* Resultado del Ejercicio
+* Resultado Neto
+* Utilidad Neta
+* Beneficio de Operaciones]]></text>
+            <note><![CDATA[El beneficio final sin todos los gastos.]]></note>
+        </topic>
+        <topic position="158,17" order="4" text="Documentos" shape="rectangle" id="66">
+            <icon id="money_money"/>
+            <topic position="316,-253" order="0" shrink="true" id="28">
+                <text><![CDATA[* Estado de Resultados
+* Estado de Situación
+* Estado de Perdidas y Ganancias]]></text>
+                <note><![CDATA[Estado de Resultado es una lista de todos los asientos del balance realizados durante dicho periodo que afectaron el beneficio no distribuido.
+]]>                </note>
+                <topic position="525,-361" order="0" id="44">
+                    <text><![CDATA[FL = Caja+Creditos de Venta+
+Bienes de Cambios/Pasivos a Corto Plazo]]></text>
+                </topic>
+                <topic position="456,-236" order="1" text="Terminos" id="99">
+                    <topic position="573,-331" order="0" text="Ingresos de Explotacion" id="101">
+                        <icon id="number_1"/>
+                    </topic>
+                    <topic position="579,-305" order="1" text="Costes de Bienes Vendidos" id="102">
+                        <icon id="number_2"/>
+                    </topic>
+                    <topic position="636,-275" order="2" id="43">
+                        <text><![CDATA[= Margen Bruto = Ventas- CMV(Costo Bienes Vendidos)
+   Beneficio Bruto]]></text>
+                    </topic>
+                    <topic position="574,-245" order="3" text="Gastos de Explotacion" id="100">
+                        <note><![CDATA[Cualquier gasto relacionado con la "explocacion" de la empresa, que no has sido incluidos en coste de bienes vendidos
+]]>                        </note>
+                        <icon id="number_3"/>
+                    </topic>
+                    <topic position="709,-219" order="4" text="= Resultado de Explotacion = Ventas - Coste de Bienes Vendidos  - Gastos de Explotacion" id="71"/>
+                    <topic position="565,-193" order="5" text="Intereses a Pagar" id="103">
+                        <note><![CDATA[Pago a Bancos, relacionado con la parte financiera en si
+]]>                        </note>
+                        <icon id="number_4"/>
+                    </topic>
+                    <topic position="586,-167" order="6" text="= Beneficios Antes de Impuestos" id="104"/>
+                    <topic position="544,-141" order="7" text="Impuestos" id="105">
+                        <icon id="number_5"/>
+                    </topic>
+                </topic>
+            </topic>
+            <topic position="286,25" order="1" text="Balance de Situacion" id="2">
+                <note><![CDATA[* Muestra cual es la variacion en del patrimonio neto de la empresa
+* Es una foto de la empresa en un momento dado.
+
+Activos == Patrimonio Neto + Pasivo
+
+]]>                </note>
+                <topic position="395,-5" order="0" text="Contiene" id="8">
+                    <topic position="502,-112" order="0" id="4">
+                        <text><![CDATA[* Pasivos
+* Oblicaciones
+* Pasivo exigible]]></text>
+                        <icon id="chart_curve"/>
+                        <note><![CDATA[Los pasivos son deudas o oblicaciones surgidas de una transaccion "anterior" entre el deudor y accreedor, cuya cancelacion supone el pago de dinero, la entrega de otro activo distinto al dinero o prestación de servicios.]]></note>
+                        <topic position="630,-206" order="0" id="30">
+                            <text><![CDATA[Por determinacion 
+del importe]]></text>
+                            <topic position="724,-219" order="0" text="Ciertos" id="31"/>
+                            <topic position="731,-193" order="1" text="Estimados" id="34"/>
+                        </topic>
+                        <topic position="658,-86" order="1" text="Por el momento de Cancelacion" shape="rounded rectangle" id="35" fontStyle=";;#444444;;;" brColor="#38761d">
+                            <topic position="794,-112" order="0" shape="rounded rectangle" id="36" fontStyle=";;#444444;;;" brColor="#38761d">
+                                <text><![CDATA[* Circulantes
+* Corto Plazo]]></text>
+                                <topic position="904,-167" order="0" text="Dividendos a Pagar" shape="rounded rectangle" id="51" fontStyle=";;#444444;;;" brColor="#38761d"/>
+                                <topic position="965,-133" order="1" shape="rounded rectangle" id="47" fontStyle=";;#444444;;;" brColor="#38761d">
+                                    <text><![CDATA[Devengos: Costes por los cuales todavia no 
+se a emitido factura, pero se sabe que se va a 
+tener que pagar]]></text>
+                                </topic>
+                                <topic position="917,-99" order="2" text="Impuestos de Sociedades" shape="rounded rectangle" id="50" fontStyle=";;#444444;;;" brColor="#38761d"/>
+                                <topic position="921,-65" order="3" shape="rounded rectangle" id="46" fontStyle=";;#444444;;;" brColor="#38761d">
+                                    <text><![CDATA[Acreedores Comerciales:
+Lo que le tengo que pagas 
+a proveedores]]></text>
+                                </topic>
+                            </topic>
+                            <topic position="800,-18" order="1" shape="rounded rectangle" id="37" fontStyle=";;#444444;;;" brColor="#38761d">
+                                <text><![CDATA[* Fijos
+* No Circulantes
+* Largo Plazo]]></text>
+                                <topic position="910,-31" order="0" text="Capital Social" shape="rounded rectangle" id="81" fontStyle=";;#444444;;;" brColor="#38761d">
+                                    <note><![CDATA[«Capital social», que representa los fondos propios correspondientes a las aportaciones realizadas por los socios.]]></note>
+                                </topic>
+                                <topic position="924,-5" order="1" text="Beneficio no distribuido" shape="rounded rectangle" id="82" fontStyle=";;#444444;;;" brColor="#38761d"/>
+                            </topic>
+                        </topic>
+                    </topic>
+                    <topic position="480,115" order="1" text="Activos" id="3">
+                        <note><![CDATA[Los activos son los recursos de dispone la empresa para desarrollar su actividad y los que espera que colaboren en la conscucion de los objetivos empresariales.
+
+Para que fondos invertidos puedan ser considerados activos, deben:
+
+- Ser propiedad de la empresa o controlado por la misma, como consecuencia de una transaccion anterior
+- Tener capacidad de generar servicios futuros o poder ser cambiado por otro recurso futuro o dinero.
+
+
+Solo se lo considera asi si colabora con la generacion de dinero. Es decir:
+- Proporciona servicios futuros
+- Puede ser cambiado por otro activo que proporcione servicios futuros
+- Puede ser cambiado por dinero.]]></note>
+                        <icon id="money_dollar"/>
+                        <topic position="610,81" order="0" id="12">
+                            <text><![CDATA[* Activos Circulantes
+* Bienes de Cambio
+* Activos De Corto Plazo]]></text>
+                            <note><![CDATA[En los activos circulantes incluyen el dinero en un plazo corto de tiempo y que constituyen los elementos con que en un ciclo de explotacion.
+
+Corto plazo es:
+ - Ejercicio econimico(menos de un año)
+ - Periodo de maduracion o ciclo normal de operaciones (es el tiempo desde que la empresa invierte el dinero en su proceso productivo hasta que recupera por el cobro)
+]]>                            </note>
+                            <icon id="money_dollar"/>
+                            <topic position="766,29" order="0" id="53">
+                                <text><![CDATA[* Deudores Comerciales
+* Creditos por Ventas
+* Proveedores]]></text>
+                            </topic>
+                            <topic position="738,76" order="1" id="54">
+                                <text><![CDATA[Existencias
+]]>                                </text>
+                                <topic position="839,63" order="0" text="Bienes de Cambio" id="107"/>
+                                <topic position="834,89" order="1" text="Materias Primas" id="108"/>
+                            </topic>
+                            <topic position="731,115" order="2" text="Efectivo" id="55"/>
+                            <topic position="733,141" order="3" text="Anticipos" id="56"/>
+                        </topic>
+                        <topic position="610,175" order="1" id="5">
+                            <text><![CDATA[* Activos Fijos
+* Activos De Largo Plazo
+* Activos No Circulantes]]></text>
+                            <icon id="hard_computer"/>
+                            <note><![CDATA[Son todos los que que no son Circulantes
+]]>                            </note>
+                            <topic position="745,183" order="0" text="Bienes de Uso" id="106"/>
+                        </topic>
+                        <topic position="557,209" order="2" text="Otros" id="52"/>
+                    </topic>
+                </topic>
+                <topic position="439,252" order="1" id="9">
+                    <text><![CDATA[Grafico
+Masas de Valor Economico]]></text>
+                    <icon id="chart_line"/>
+                    <topic position="608,235" order="0" text="Masa de valor: un caja es una " id="10"/>
+                    <topic position="623,265" order="1" id="11">
+                        <text><![CDATA[Rubo: Masas de valor agrupadas por 
+algun criterio]]></text>
+                    </topic>
+                </topic>
+            </topic>
+            <topic position="335,295" order="2" text="Cuenta de Origen de Applicacion de Fondos" id="65">
+                <note><![CDATA[Nos dice como y por que el efectivo/descubierto de la empresa a cambiado durante el ultimo año.
+Lista de todos los asientos del balande del periodo que afectan al efectivo
+]]>                </note>
+            </topic>
+        </topic>
+        <topic position="-164,-4" order="5" text="Titulos de Cuenta" id="72">
+            <topic position="-288,-17" order="0" text="Debe (Va a la Izq)" id="73"/>
+            <topic position="-282,9" order="1" text="Haber(Derecha)" id="74"/>
+        </topic>
+        <topic position="139,373" order="6" text="Cuentas" id="75">
+            <topic position="219,321" order="0" text="De Pasivo" id="76"/>
+            <topic position="218,347" order="1" text="De Activo" id="77"/>
+            <topic position="239,373" order="2" text="De Patrimonio Neto" id="78"/>
+            <topic position="217,399" order="3" text="De Gasto" id="79"/>
+            <topic position="221,425" order="4" text="De Ingreso" id="80"/>
+        </topic>
+        <topic position="-153,139" order="7" text="Acciones" id="83">
+            <note><![CDATA[ La compra de una acción da derecho al titular a la participación en la propiedad de la empresa, una fracción del poder de decisión y, potencialmente, una fracción de las ganancias, que la compañía puede generar en forma de dividendos.
+
+http://es.wikipedia.org/wiki/Ampliaci%C3%B3n_de_capital]]></note>
+            <link url="http://www.matematicas-financieras.com/Ampliacion-de-Capital-I-P53.htm" urlType="url"/>
+            <topic position="-281,48" order="0" text="Derivados sobre Acciones" id="84">
+                <topic position="-393,35" order="0" text="Opciones" id="85"/>
+                <topic position="-390,61" order="1" text="Futuros" id="86"/>
+            </topic>
+            <topic position="-238,113" order="1" text="Tipos" id="87">
+                <topic position="-320,87" order="0" text="Preferentes" id="88">
+                    <note><![CDATA[El núcleo es el derecho de preferencia en el pago de dividendos y en caso de liquidación de la empresa. Antes de que un dividendo pueda ser declarado en las acciones comunes, cualquier obligación de dividendos a las acciones preferentes deben ser satisfechos con anterioridad.
+]]>                    </note>
+                </topic>
+                <topic position="-317,113" order="1" text="Ordinarias" id="89">
+                    <note><![CDATA[cada acción ordinaria representa un derecho de propiedad sobre la empresa y es un título sobre el ingreso neto residual de la misma. Esto significa que los accionistas poseen el derecho a una porción de los ingresos de la empresa luego de pagar todos los gastos e impuestos. Estos accionistas eligen los directores de la compañía y votan directamente respecto de las políticas de acción. Estos títulos son de carácter residual, lo que significa que en caso de que la compañía quiebre serán los últimos en recuperar su dinero. Sin embargo la responsabilidad es limitada en tanto que no se les exigirá que cubran las deudas de la empresa más allá del valor de sus tenencias.]]></note>
+                </topic>
+                <topic position="-315,139" order="2" text="Participacion" id="90"/>
+            </topic>
+            <topic position="-242,178" order="2" text="Valores" id="93">
+                <topic position="-321,165" order="0" text="Nominal" id="94">
+                    <note><![CDATA[Es el valor inicial o de emisión que tienen las acciones, es decir, es el resultado de dividir el capital de una sociedad por el número de acciones de la misma. Si tomamos como ejemplo la sociedad X, cuyo capital es de 200 millones de euros dividido en 10.000 acciones, el valor nominal de cada acción será de 20.000 euros.
+
+Valor nominal = Capital Social (200 millones) / Número de acciones (10.000) = 20.000]]></note>
+                </topic>
+                <topic position="-322,191" order="1" text="De Mercado" id="95"/>
+            </topic>
+            <topic position="-285,230" order="3" id="96">
+                <text><![CDATA[* Emision
+* Applicacion de Capital]]></text>
+                <note><![CDATA[Normalmente el precio de emisión es inferior al valor de mercado al que cotizan las acciones antiguas. Es por este motivo que los inversores están interesados en adquirir acciones nuevas frente a las que ya están en circulación.]]></note>
+                <topic position="-423,217" order="0" text="PRIMA DE EMISIÓN" id="97"/>
+                <topic position="-451,243" order="1" text="Apalancamiento Financiero" id="98">
+                    <link url="http://www.elblogsalmon.com/conceptos-de-economia/que-es-el-apalancamiento-financiero" urlType="url"/>
+                    <note><![CDATA[El apalancamiento financiero es simplemente usar endeudamiento para financiar una operación.
+
+El apalancamiento financiero es simplemente usar endeudamiento para financiar una operación. Tan sencillo como eso. Es decir, en lugar de realizar una operación con fondos propios, se hará con fondos propios y un crédito. La principal ventaja es que se puede multiplicar la rentabilidad y el principal inconveniente es que la operación no salga bien y se acabe siendo insolvente.]]></note>
+                </topic>
+            </topic>
+        </topic>
+    </topic>
+    <relationship srcTopicId="4" destTopicId="20" lineType="3" srcCtrlPoint="-20,-205" destCtrlPoint="-6,-91" endArrow="false" startArrow="true"/>
+    <relationship srcTopicId="29" destTopicId="28" lineType="3" srcCtrlPoint="61,35" destCtrlPoint="-85,-34" endArrow="false" startArrow="true"/>
+</map>

@@ -23,6 +23,7 @@ import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.service.spam.SpamContentExtractor;
+import com.wisemapping.mindmap.utils.MindmapUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class HtmlContentValidator {
             }
             
             // Validate note content length
-            SpamContentExtractor.NoteValidationResult validationResult = 
+            MindmapUtils.NoteValidationResult validationResult = 
                 contentExtractor.validateNoteContentLength(mindmap, MAX_NOTE_LENGTH);
             
             if (!validationResult.isValid()) {
@@ -142,55 +143,10 @@ public class HtmlContentValidator {
             return "javascript: URLs - these can execute malicious code";
         }
         
-        // Check for event handlers
-        String eventHandler = detectSpecificEventHandler(xml);
-        if (eventHandler != null) {
-            return eventHandler;
-        }
-        
         // Note: Regular URLs (http://, https://, etc.) are allowed
         // as mindmaps can legitimately contain links on nodes
         
         return null;
-    }
-    
-    /**
-     * Detects specific event handlers in the XML content and returns detailed information.
-     * 
-     * @param xml The XML content to check
-     * @return String describing the specific event handler found, or null if none found
-     */
-    private String detectSpecificEventHandler(String xml) {
-        java.util.regex.Pattern eventPattern = java.util.regex.Pattern.compile(
-            "(on\\w+)\\s*=\\s*[\"']([^\"']*)[\"']", 
-            java.util.regex.Pattern.CASE_INSENSITIVE
-        );
-        
-        java.util.regex.Matcher matcher = eventPattern.matcher(xml);
-        if (matcher.find()) {
-            String eventName = matcher.group(1);
-            String eventCode = matcher.group(2);
-            
-            // Truncate long event code for display
-            String displayCode = eventCode.length() > 50 ? 
-                eventCode.substring(0, 47) + "..." : eventCode;
-            
-            return String.format("event handler '%s' with code '%s' - these can execute malicious code", 
-                eventName, displayCode);
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Checks if the XML contains dangerous HTML patterns.
-     * URLs are allowed since mindmaps can contain legitimate links on nodes.
-     * 
-     * @param xml The XML content to check
-     * @return true if dangerous patterns are found
-     */
-    private boolean containsDangerousHtmlPatterns(String xml) {
-        return getDangerousHtmlPattern(xml) != null;
     }
     
     /**

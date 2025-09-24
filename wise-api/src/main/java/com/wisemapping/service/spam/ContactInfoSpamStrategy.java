@@ -20,6 +20,11 @@ package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SpamStrategyType;
+import com.wisemapping.mindmap.parser.MindmapParser;
+import com.wisemapping.mindmap.model.MapModel;
+import com.wisemapping.mindmap.utils.MindmapValidationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

@@ -20,6 +20,7 @@ package com.wisemapping.service.spam;
 
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SpamStrategyType;
+import com.wisemapping.mindmap.utils.MindmapUtils.NoteValidationResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +32,11 @@ import java.util.regex.Pattern;
 
 /**
  * Spam detection strategy that focuses on HTML content in mindmap notes.
- * This strategy detects spam patterns that use HTML to hide malicious content,
- * obfuscate spam keywords, or embed dangerous elements.
+ * This strategy detects spam patterns that use HTML to hide content from users,
+ * obfuscate spam keywords, or create excessive formatting that indicates spam.
+ * 
+ * Note: Security validation (dangerous HTML patterns) is handled by HtmlContentValidator
+ * at save time, not by this spam detection strategy.
  */
 @Component
 public class HtmlContentStrategy implements SpamDetectionStrategy {
@@ -46,13 +50,11 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     @Value("${app.batch.spam-detection.html.max-ratio:0.7}")
     private double maxHtmlToTextRatio;
     
-    @Value("${app.batch.spam-detection.html.suspicious-tags:script,iframe,object,embed,form}")
-    private String suspiciousTags;
     
     @Value("${app.batch.spam-detection.html.max-note-length:1000}")
     private int maxNoteLength;
     
-    // Patterns that indicate HTML-based spam
+    // Patterns that indicate HTML-based spam (not security threats)
     private static final List<Pattern> HTML_SPAM_PATTERNS = Arrays.asList(
         // Hidden text patterns (commonly used to hide spam from users but not from search engines)
         Pattern.compile("style\\s*=\\s*[\"']display\\s*:\\s*none[\"']", Pattern.CASE_INSENSITIVE),
@@ -63,17 +65,6 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
         Pattern.compile("color\\s*:\\s*white[^;]*background\\s*:\\s*white", Pattern.CASE_INSENSITIVE),
         Pattern.compile("color\\s*:\\s*#fff[^;]*background\\s*:\\s*#fff", Pattern.CASE_INSENSITIVE),
         
-        // Note: Links are allowed since mindmaps can contain legitimate URLs on nodes
-        // Only flag excessive links (>10 links per note)
-        // Pattern.compile("<a[^>]*href[^>]*>.*?</a>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL),
-        
-        // JavaScript injection patterns
-        Pattern.compile("javascript\\s*:", Pattern.CASE_INSENSITIVE),
-        Pattern.compile("on\\w+\\s*=\\s*[\"'][^\"']*[\"']", Pattern.CASE_INSENSITIVE),
-        
-        // Data URLs (can be used to embed malicious content)
-        Pattern.compile("data\\s*:\\s*[^;]+;base64,", Pattern.CASE_INSENSITIVE),
-        
         // Excessive use of formatting tags (common spam technique)
         Pattern.compile("(<(strong|b|em|i|u|span|div)>.*?</\\2>)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL),
         
@@ -83,12 +74,8 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
         // Meta refresh redirects (common in spam)
         Pattern.compile("<meta[^>]*http-equiv\\s*=\\s*[\"']refresh[\"'][^>]*>", Pattern.CASE_INSENSITIVE),
         
-        // Script injection attempts
-        Pattern.compile("<script[^>]*>.*?</script>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL),
-        Pattern.compile("<iframe[^>]*>.*?</iframe>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL),
-        Pattern.compile("<object[^>]*>.*?</object>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL),
-        Pattern.compile("<embed[^>]*>", Pattern.CASE_INSENSITIVE),
-        Pattern.compile("<form[^>]*>.*?</form>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL)
+        // Excessive links (more than 10 links in a single note)
+        Pattern.compile("(<a[^>]*href[^>]*>.*?</a>.*?){10,}", Pattern.CASE_INSENSITIVE | Pattern.DOTALL)
     );
     
     public HtmlContentStrategy(SpamContentExtractor contentExtractor) {
@@ -136,11 +123,7 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
                 return ratioResult;
             }
             
-            // Check for suspicious tags
-            SpamDetectionResult suspiciousTagResult = checkSuspiciousTags(htmlContent);
-            if (suspiciousTagResult.isSpam()) {
-                return suspiciousTagResult;
-            }
+            // Note: Security-related tag checking is handled by HtmlContentValidator at save time
             
             // Check note content length limits
             SpamDetectionResult noteLengthResult = checkNoteContentLength(mindmap);
@@ -307,43 +290,13 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
         return SpamDetectionResult.notSpam();
     }
     
-    /**
-     * Checks for suspicious HTML tags that could indicate malicious content.
-     */
-    private SpamDetectionResult checkSuspiciousTags(String htmlContent) {
-        String[] suspiciousTagArray = suspiciousTags.split(",");
-        
-        for (String tag : suspiciousTagArray) {
-            tag = tag.trim();
-            if (tag.isEmpty()) continue;
-            
-            // Check for opening and closing tags
-            String openPattern = "<" + tag + "[^>]*>";
-            String closePattern = "</" + tag + ">";
-            
-            java.util.regex.Pattern openTagPattern = java.util.regex.Pattern.compile(openPattern, java.util.regex.Pattern.CASE_INSENSITIVE);
-            java.util.regex.Pattern closeTagPattern = java.util.regex.Pattern.compile(closePattern, java.util.regex.Pattern.CASE_INSENSITIVE);
-            
-            long openTagCount = openTagPattern.matcher(htmlContent).results().count();
-            long closeTagCount = closeTagPattern.matcher(htmlContent).results().count();
-            
-            if (openTagCount > 0 || closeTagCount > 0) {
-                return new SpamDetectionResult(true, 
-                    "Suspicious HTML tags detected", 
-                    String.format("Found suspicious tag '%s' (opening: %d, closing: %d)", tag, openTagCount, closeTagCount),
-                    SpamStrategyType.HTML_CONTENT);
-            }
-        }
-        
-        return SpamDetectionResult.notSpam();
-    }
     
     /**
      * Checks if any note content exceeds the maximum allowed length.
      * This prevents spam by limiting the size of individual notes.
      */
     private SpamDetectionResult checkNoteContentLength(Mindmap mindmap) {
-        SpamContentExtractor.NoteValidationResult validationResult = 
+        com.wisemapping.mindmap.utils.MindmapUtils.NoteValidationResult validationResult = 
             contentExtractor.validateNoteContentLength(mindmap, maxNoteLength);
         
         if (!validationResult.isValid()) {
