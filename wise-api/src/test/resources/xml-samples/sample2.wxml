@@ -1,0 +1,172 @@
+<map name="164378" version="tango">
+    <topic central="true" id="1">
+        <text><![CDATA[ A New Game
+ For C Players   ]]></text>
+        <topic position="104,-211" order="0" text="Impacto C Players" id="16">
+            <icon id="thumb_thumb_down"/>
+            <topic position="150,-294" order="0" id="10">
+                <text><![CDATA[Ellos en parte son responsables de que la compañia no sea exitosa,
+si no se toma acciones se pone en riesgo a todos los empleados]]></text>
+            </topic>
+            <topic position="277,-265" order="1" text="El costo obvio de tirar abajo la performance global de la compañia. " id="17"/>
+            <topic position="214,-240" order="2" text="Son modelos incorrectos a seguir" id="18"/>
+            <topic position="215,-207" order="3" text="No son  buenos coughs o mentores" id="19">
+                <topic position="412,-211" order="0" id="20">
+                    <text><![CDATA[Empleados directos abandonan la compañía por 
+sentir que no aprenden ni progresan]]></text>
+                </topic>
+            </topic>
+            <topic position="218,-182" order="4" text="C players contratan otros C players" id="21"/>
+            <topic position="261,-157" order="5" text="Dañan la atractividad de la compañía para nuevos talentos" id="22"/>
+            <topic position="232,-128" order="6" id="23">
+                <text><![CDATA[Impactan directamente en la moral de los 
+que mejor se desempeñan.]]></text>
+            </topic>
+        </topic>
+        <topic position="-147,-228" order="1" id="24">
+            <text><![CDATA[Que hacer con los 
+players A y B ]]></text>
+            <topic position="-324,-307" order="0" text="Trabajar con ellos para acelerar su desarrollo" id="72"/>
+            <topic position="-308,-282" order="1" text="Hacer todo lo posible para retenerlos" id="73"/>
+            <topic position="-358,-253" order="2" id="82">
+                <text><![CDATA[Alentarlos a ser parte de tareas fuera de sus responsabilidades
+que los ayude a conectarse y aplicar su red de contactos]]></text>
+            </topic>
+            <topic position="-320,-224" order="3" text="Asignar mentores que ayuden a desarrorse" id="83"/>
+            <topic position="-298,-199" order="4" text="Feedback sobre sus debilidades" id="84"/>
+            <topic position="-282,-174" order="5" text="Resaltar sus fortalezas" id="85"/>
+            <topic position="-315,-149" order="6" text="Reconocer y Premiar sus contribuciones" id="86"/>
+        </topic>
+        <topic position="106,74" order="2" id="27">
+            <text><![CDATA[Proceso sistematico y disciplinado que enfrente a los 
+managers con la dificultad de liderar con este problema.
+Hay 3 pasos a seguir ...]]></text>
+            <icon id="sign_info"/>
+            <topic position="154,-46" order="0" text="1) Identificar" id="29">
+                <topic position="285,-95" order="0" id="33">
+                    <text><![CDATA[Es necesario definir objetivos de performance y 
+el criterio de evaluación.]]></text>
+                </topic>
+                <topic position="278,-62" order="1" id="34">
+                    <text><![CDATA[Claro acuerdo con la alta gerencia en definir 
+las expectativas en forma correcta.]]></text>
+                </topic>
+                <topic position="278,-29" order="2" id="35">
+                    <text><![CDATA[Acordar un nivel de calificación acorde a los 
+niveles de performance definidos]]></text>
+                </topic>
+                <topic position="291,4" order="3" id="36">
+                    <text><![CDATA[Monitorear y trabajar en ubicar a las personas
+en los posiciones correctos. Eg: Campana de Gaus]]></text>
+                    <topic position="479,4" order="0" id="37">
+                        <text><![CDATA[Depende de la 
+madurez de la organizacion]]></text>
+                    </topic>
+                </topic>
+            </topic>
+            <topic position="205,91" order="1" text="2) Definir  un plan de acción" id="30">
+                <topic position="364,37" order="0" id="40">
+                    <text><![CDATA[Es necesario definir un plan definido
+para los proximos 12 meses.]]></text>
+                </topic>
+                <topic position="350,70" order="1" id="41">
+                    <text><![CDATA[El plan depende de multiples
+factores]]></text>
+                </topic>
+                <topic position="320,124" order="2" text="Alternativas" id="42">
+                    <topic position="446,99" order="0" text="Mejorar la performance de C a B." id="43"/>
+                    <topic position="451,124" order="1" text="Cambiar el manager a otra posicion" id="44"/>
+                    <topic position="446,149" order="2" id="45">
+                        <text><![CDATA[Ofrecerle abandonar la compañia
+]]>                        </text>
+                    </topic>
+                </topic>
+            </topic>
+            <topic position="240,211" order="2" id="31">
+                <text><![CDATA[3) Asignar a los managers la responsabilidad
+de llevar a cabo el plan]]></text>
+                <topic position="415,178" order="0" id="48">
+                    <text><![CDATA[Es necesario compromiso
+de la alta dirección ]]></text>
+                </topic>
+                <topic position="433,211" order="1" id="49">
+                    <text><![CDATA[Tip: Bonos asociados al manejo del 
+grupo de talentos asignados]]></text>
+                </topic>
+                <topic position="420,244" order="2" id="50">
+                    <text><![CDATA[Suporte de HR y la dirección 
+en el proceso]]></text>
+                </topic>
+            </topic>
+        </topic>
+        <topic position="-104,-33" order="3" id="5">
+            <text><![CDATA[Por que es dificil 
+lidear con C players ?]]></text>
+            <icon id="weather_showers-scattered"/>
+            <topic position="-151,-124" order="0" text="Falta de riguroso seguimiento" id="4"/>
+            <topic position="-192,-99" order="1" text="Razones emocionales" id="6"/>
+            <topic position="-207,-74" order="2" text="Amistad creada durante años" id="7"/>
+            <topic position="-219,-45" order="3" id="8">
+                <text><![CDATA[Barreras ideológicas en la creencia 
+que pueden volver a ser A y B]]></text>
+            </topic>
+            <topic position="-211,-12" order="4" id="9">
+                <text><![CDATA[Creencia que hay que ser leal a 
+la persona en forma indefinida]]></text>
+            </topic>
+            <topic position="-169,38" order="5" text="Practicas" id="11">
+                <topic position="-301,21" order="0" id="12">
+                    <text><![CDATA[Miedo a que tenga un impacto negativo
+en el resto de los empleados
+]]>                    </text>
+                </topic>
+                <topic position="-287,54" order="1" id="15">
+                    <text><![CDATA[Demandas por racismo, edad o 
+Genero ]]></text>
+                </topic>
+            </topic>
+        </topic>
+        <topic position="247,286" order="4" id="3">
+            <text><![CDATA[El éxito de una organización depende principalmente 
+del cuidado de managers A y B, pero 
+tambien de la reduccion de los C]]></text>
+        </topic>
+        <topic position="-174,170" order="5" id="53">
+            <text><![CDATA[Respecto y Justicia
+son Claves al Momento
+de Trabajar la Performance 
+de C Players.]]></text>
+            <topic position="-324,100" order="0" text="Feedback genuino" id="54">
+                <topic position="-481,87" order="0" id="55">
+                    <text><![CDATA[Honest and constructivo de forma escrita 
+como parte de su performance anual review]]></text>
+                </topic>
+                <topic position="-474,116" order="1" text="Despido no debe ser nunca una sorpresa" id="56"/>
+            </topic>
+            <topic position="-380,157" order="1" id="59">
+                <text><![CDATA[No tiene sentido decirle a alguien
+que mejore sin coaching y ayuda.
+Es necesario dar guia especifica de como
+hacer las cosas en forma distinta para mojorar
+su performance
+]]>                </text>
+            </topic>
+            <topic position="-351,227" order="2" id="64">
+                <text><![CDATA[Dar un generoso soporte al 
+separarlo. No solo económicas.]]></text>
+                <topic position="-487,202" order="0" id="67">
+                    <text><![CDATA[Ayudarlo a buscar 
+nuevo trabajo]]></text>
+                </topic>
+                <topic position="-469,231" order="1" text="Consejos" id="68"/>
+                <topic position="-507,256" order="2" text="Ir mas alla de los estupulado" id="71"/>
+            </topic>
+        </topic>
+        <topic position="-105,294" order="7" id="26">
+            <text><![CDATA[Quitar low performers de 
+las posiciones de liderazgo. Es necesario para 
+garantizar el exito de las compañia.]]></text>
+            <icon id="sign_warning"/>
+        </topic>
+    </topic>
+</map>

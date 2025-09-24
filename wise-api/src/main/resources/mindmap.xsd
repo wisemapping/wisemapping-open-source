@@ -1,70 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema
-        attributeFormDefault="unqualified"
-        elementFormDefault="qualified"
-        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           targetNamespace="http://www.wisemapping.org/mindmap"
+           xmlns:wm="http://www.wisemapping.org/mindmap"
+           elementFormDefault="qualified">
 
-    <xsd:element name="map">
-        <xsd:complexType>
-            <xsd:sequence>
-                <xsd:element ref="topic" minOccurs="1" maxOccurs='unbounded'/>
-                <xsd:element ref="relationship" minOccurs="0" maxOccurs='unbounded'/>
-            </xsd:sequence>
-            <xsd:attribute name="name" type="xsd:string"/>
-            <xsd:attribute name="version" type="xsd:string"/>
-        </xsd:complexType>
-    </xsd:element>
+  <!-- Root element: map -->
+  <xs:element name="map" type="wm:MapType"/>
 
-    <xsd:element name="topic" type="topicType"/>
+  <!-- Map type definition -->
+  <xs:complexType name="MapType">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="topic" type="wm:TopicType" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="relationship" type="wm:RelationshipType" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:element name="node" type="wm:NodeType" minOccurs="1" maxOccurs="1"/>
+    </xs:choice>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="version" type="xs:string" use="optional"/>
+  </xs:complexType>
 
-    <xsd:complexType name="topicType">
-        <xsd:sequence>
-            <xsd:element minOccurs='0' maxOccurs='1' type="xsd:string" name="text"/>
-            <xsd:element minOccurs='0' maxOccurs='unbounded' type="icon" name="icon"/>
-            <xsd:element minOccurs='0' maxOccurs='1' type="link" name="link"/>
-            <xsd:element minOccurs='0' maxOccurs='1' type="note" name="note"/>
-            <xsd:element minOccurs='0' maxOccurs='unbounded' ref="topic"/>
-        </xsd:sequence>
-        <xsd:attribute name="text" type="xsd:string"/>
-        <xsd:attribute name="shape" type="xsd:string"/>
-        <xsd:attribute name="fontStyle" type="xsd:string"/>
-        <xsd:attribute name="bgColor" type="xsd:string"/>
-        <xsd:attribute name="brColor" type="xsd:string"/>
-        <xsd:attribute name="order" type="xsd:int"/>
-        <xsd:attribute name="position" type="xsd:string"/>
-        <xsd:attribute name="central" type="xsd:boolean"/>
-        <xsd:attribute name="id" type="xsd:string" use="optional"/>
-        <xsd:attribute name="shrink" type="xsd:boolean"/>
-    </xsd:complexType>
+  <!-- Topic type definition -->
+  <xs:complexType name="TopicType">
+    <xs:sequence>
+      <xs:element name="text" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="note" type="wm:NoteType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="link" type="wm:LinkType" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="icon" type="wm:IconType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="topic" type="wm:TopicType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="central" type="xs:boolean" use="optional"/>
+    <xs:attribute name="text" type="xs:string" use="optional"/>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="position" type="wm:PositionType" use="optional"/>
+    <xs:attribute name="order" type="xs:nonNegativeInteger" use="optional"/>
+    <xs:attribute name="shape" type="wm:ShapeType" use="optional"/>
+    <xs:attribute name="fontStyle" type="xs:string" use="optional"/>
+    <xs:attribute name="bgColor" type="wm:ColorType" use="optional"/>
+    <xs:attribute name="brColor" type="wm:ColorType" use="optional"/>
+    <xs:attribute name="connColor" type="wm:ColorType" use="optional"/>
+    <xs:attribute name="connStyle" type="xs:nonNegativeInteger" use="optional"/>
+    <xs:attribute name="shrink" type="xs:boolean" use="optional"/>
+    <xs:attribute name="image" type="xs:string" use="optional"/>
+    <xs:attribute name="metadata" type="xs:string" use="optional"/>
+  </xs:complexType>
 
-    <xsd:complexType name="icon">
-        <xsd:attribute name="id" type="xsd:string"/>
-        <xsd:attribute name="order" type="xsd:string"/>
-    </xsd:complexType>
+  <!-- Note type definition -->
+  <xs:complexType name="NoteType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="contentType" type="wm:ContentType" use="optional" default="text"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
 
-    <xsd:complexType name="link">
-        <xsd:attribute name="url" type="xsd:string"/>
-        <xsd:attribute name="order" type="xsd:string"/>
-    </xsd:complexType>
+  <!-- Link type definition -->
+  <xs:complexType name="LinkType">
+    <xs:attribute name="url" type="xs:anyURI" use="required"/>
+    <xs:attribute name="urlType" type="wm:UrlType" use="optional"/>
+    <xs:attribute name="type" type="wm:UrlType" use="optional"/>
+  </xs:complexType>
 
-    <xsd:complexType name="note">
-        <xsd:simpleContent>
-            <xsd:extension base="xsd:string">
-                <xsd:attribute name="text" type="xsd:string"/>
-            </xsd:extension>
-        </xsd:simpleContent>
-    </xsd:complexType>
+  <!-- Icon type definition -->
+  <xs:complexType name="IconType">
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+  </xs:complexType>
 
-    <xsd:element name="relationship" type="relationshipType"/>
-    <xsd:complexType name="relationshipType">
-        <xsd:attribute name="id" type="xsd:string"/>
-        <xsd:attribute name="srcTopicId" type="xsd:string"/>
-        <xsd:attribute name="destTopicId" type="xsd:string"/>
-        <xsd:attribute name="lineType" type="xsd:string"/>
-        <xsd:attribute name="srcCtrlPoint" type="xsd:string"/>
-        <xsd:attribute name="destCtrlPoint" type="xsd:string"/>
-        <xsd:attribute name="endArrow" type="xsd:boolean"/>
-        <xsd:attribute name="startArrow" type="xsd:boolean"/>
-    </xsd:complexType>
+  <!-- Relationship type definition -->
+  <xs:complexType name="RelationshipType">
+    <xs:attribute name="srcTopicId" type="xs:IDREF" use="required"/>
+    <xs:attribute name="destTopicId" type="xs:IDREF" use="required"/>
+    <xs:attribute name="lineType" type="xs:nonNegativeInteger" use="optional"/>
+    <xs:attribute name="srcCtrlPoint" type="wm:PositionType" use="optional"/>
+    <xs:attribute name="destCtrlPoint" type="wm:PositionType" use="optional"/>
+    <xs:attribute name="endArrow" type="xs:boolean" use="optional"/>
+    <xs:attribute name="startArrow" type="xs:boolean" use="optional"/>
+  </xs:complexType>
 
-</xsd:schema>
+  <!-- Node type definition (for simple maps) -->
+  <xs:complexType name="NodeType">
+    <xs:attribute name="TEXT" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Simple types for attributes -->
+  <xs:simpleType name="PositionType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="-?\d+,-?\d+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ShapeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="line"/>
+      <xs:enumeration value="rounded"/>
+      <xs:enumeration value="rectangle"/>
+      <xs:enumeration value="ellipse"/>
+      <xs:enumeration value="elipse"/>
+      <xs:enumeration value="rounded rectangle"/>
+      <xs:enumeration value="image"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ContentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="text"/>
+      <xs:enumeration value="html"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="UrlType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="url"/>
+      <xs:enumeration value="email"/>
+      <xs:enumeration value="file"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ColorType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="#[0-9a-fA-F]{6}"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="rgb\(\d+,\d+,\d+\)"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+</xs:schema>
