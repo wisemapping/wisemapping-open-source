@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STOMP WebSocket Test - WiseMapping</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .messages { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background: #f9f9f9; }
+        .message { margin: 5px 0; padding: 5px; background: white; border-radius: 3px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .connected { background-color: #d4edda; color: #155724; }
+        .disconnected { background-color: #f8d7da; color: #721c24; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; }
+        .user-list { background: #e9ecef; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>STOMP WebSocket Test for WiseMapping</h1>
+        
+        <div id="status" class="status disconnected">Disconnected</div>
+        
+        <div class="section">
+            <h3>Connection</h3>
+            <input type="text" id="mindmapId" placeholder="Mind Map ID" value="test-mindmap">
+            <input type="text" id="userId" placeholder="User ID" value="test-user">
+            <button onclick="connect()">Connect</button>
+            <button onclick="disconnect()">Disconnect</button>
+        </div>
+
+        <div class="section">
+            <h3>Active Users</h3>
+            <div id="userList" class="user-list">No active users</div>
+            <button onclick="refreshUsers()">Refresh Users</button>
+        </div>
+
+        <div class="section">
+            <h3>Send Commands</h3>
+            <select id="commandType" onchange="updateCommandData()">
+                <option value="ADD_TOPIC">Add Topic</option>
+                <option value="CHANGE_FEATURE">Change Feature</option>
+                <option value="DELETE">Delete</option>
+                <option value="DRAG_TOPIC">Drag Topic</option>
+                <option value="ADD_RELATIONSHIP">Add Relationship</option>
+            </select>
+            <textarea id="messageData" placeholder="Command data (JSON)"></textarea>
+            <button onclick="sendCommand()">Send Command</button>
+            <button onclick="sendPresence()">Send Presence</button>
+            <button onclick="sendCursor()">Send Cursor</button>
+        </div>
+
+        <div class="section">
+            <h3>Messages</h3>
+            <div id="messages" class="messages"></div>
+            <button onclick="clearMessages()">Clear Messages</button>
+        </div>
+    </div>
+
+    <script>
+        let stompClient = null;
+        let mindmapId = 'test-mindmap';
+        let userId = 'test-user';
+
+        function connect() {
+            mindmapId = document.getElementById('mindmapId').value;
+            userId = document.getElementById('userId').value;
+            
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                setStatus('Connected', true);
+                
+                // Subscribe to mind map commands
+                stompClient.subscribe('/topic/mindmap/' + mindmapId + '/commands', function (message) {
+                    addMessage('COMMAND: ' + message.body);
+                });
+                
+                // Subscribe to presence updates
+                stompClient.subscribe('/topic/mindmap/' + mindmapId + '/presence', function (message) {
+                    addMessage('PRESENCE: ' + message.body);
+                    refreshUsers();
+                });
+                
+                // Subscribe to cursor updates
+                stompClient.subscribe('/topic/mindmap/' + mindmapId + '/cursor', function (message) {
+                    addMessage('CURSOR: ' + message.body);
+                });
+                
+                // Send initial presence message
+                sendPresenceMessage('join');
+                
+            }, function (error) {
+                console.log('Connection error: ' + error);
+                setStatus('Connection Error', false);
+            });
+        }
+
+        function disconnect() {
+            if (stompClient !== null) {
+                sendPresenceMessage('leave');
+                stompClient.disconnect();
+            }
+            setStatus('Disconnected', false);
+            addMessage('Disconnected from WebSocket');
+        }
+
+        function sendCommand() {
+            if (stompClient !== null) {
+                const messageData = document.getElementById('messageData').value;
+                try {
+                    const message = JSON.parse(messageData);
+                    message.mindmapId = mindmapId;
+                    message.userId = userId;
+                    
+                    stompClient.send('/app/mindmap/' + mindmapId + '/command', {}, JSON.stringify(message));
+                    addMessage('Sent command: ' + JSON.stringify(message));
+                } catch (e) {
+                    addMessage('Error parsing message: ' + e.message);
+                }
+            }
+        }
+
+        function updateCommandData() {
+            const commandType = document.getElementById('commandType').value;
+            const messageDataTextarea = document.getElementById('messageData');
+            
+            let sampleData;
+            switch (commandType) {
+                case 'ADD_TOPIC':
+                    sampleData = {
+                        "type": "ADD_TOPIC",
+                        "text": "New Topic",
+                        "positionX": 100,
+                        "positionY": 100,
+                        "fontSize": "14px",
+                        "fontColor": "#000000",
+                        "bold": false,
+                        "italic": false
+                    };
+                    break;
+                case 'CHANGE_FEATURE':
+                    sampleData = {
+                        "type": "CHANGE_FEATURE",
+                        "topicId": 1,
+                        "featureId": 1,
+                        "featureType": "font",
+                        "newValue": "16px",
+                        "oldValue": "14px"
+                    };
+                    break;
+                case 'DELETE':
+                    sampleData = {
+                        "type": "DELETE",
+                        "topicIds": [1, 2],
+                        "relationshipIds": []
+                    };
+                    break;
+                case 'DRAG_TOPIC':
+                    sampleData = {
+                        "type": "DRAG_TOPIC",
+                        "topicId": 1,
+                        "newPositionX": 150,
+                        "newPositionY": 150,
+                        "oldPositionX": 100,
+                        "oldPositionY": 100
+                    };
+                    break;
+                case 'ADD_RELATIONSHIP':
+                    sampleData = {
+                        "type": "ADD_RELATIONSHIP",
+                        "fromTopicId": 1,
+                        "toTopicId": 2,
+                        "relationshipType": "line",
+                        "color": "#000000",
+                        "lineWidth": 2.0
+                    };
+                    break;
+                default:
+                    sampleData = {};
+            }
+            
+            messageDataTextarea.value = JSON.stringify(sampleData, null, 2);
+        }
+
+        function sendPresence() {
+            sendPresenceMessage('active');
+        }
+
+        function sendCursor() {
+            if (stompClient !== null) {
+                const cursorData = JSON.stringify({
+                    x: Math.random() * 800,
+                    y: Math.random() * 600,
+                    elementId: 'topic-' + Math.floor(Math.random() * 10)
+                });
+                
+                stompClient.send('/app/mindmap/' + mindmapId + '/cursor', {}, cursorData);
+                addMessage('Sent cursor: ' + cursorData);
+            }
+        }
+
+        function sendPresenceMessage(action) {
+            if (stompClient !== null) {
+                const message = {
+                    action: action,
+                    mindmapId: mindmapId,
+                    userId: userId,
+                    userDisplayName: 'Test User ' + userId,
+                    userColor: '#FF5733'
+                };
+                
+                stompClient.send('/app/mindmap/' + mindmapId + '/presence', {}, JSON.stringify(message));
+                addMessage('Sent presence: ' + JSON.stringify(message));
+            }
+        }
+
+        function refreshUsers() {
+            fetch('/api/stomp/mindmap/' + mindmapId + '/active-users')
+                .then(response => response.json())
+                .then(data => {
+                    const userList = document.getElementById('userList');
+                    if (data.activeUsers && data.activeUsers.length > 0) {
+                        userList.innerHTML = 'Active users: ' + data.activeUsers.join(', ') + 
+                                          ' (Total: ' + data.userCount + ')';
+                    } else {
+                        userList.innerHTML = 'No active users';
+                    }
+                })
+                .catch(error => {
+                    addMessage('Error fetching users: ' + error);
+                });
+        }
+
+        function addMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            messageDiv.textContent = new Date().toLocaleTimeString() + ': ' + message;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function setStatus(message, connected) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + (connected ? 'connected' : 'disconnected');
+        }
+
+        function clearMessages() {
+            document.getElementById('messages').innerHTML = '';
+        }
+
+        // Initialize command data
+        updateCommandData();
+        
+        // Auto-refresh users every 5 seconds
+        setInterval(refreshUsers, 5000);
+    </script>
+</body>
+</html>

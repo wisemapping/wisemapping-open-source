@@ -1,5 +1,11 @@
 package com.wisemapping.mindmap.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,9 +27,13 @@ public class MapMetadata implements Serializable {
     private String theme;
 
     @Nullable
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdDate;
 
     @Nullable
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime lastModifiedDate;
 
     @Nullable
@@ -33,6 +43,21 @@ public class MapMetadata implements Serializable {
     private Map<String, String> customProperties = new HashMap<>();
 
     public MapMetadata() {
+    }
+
+    @JsonCreator
+    public MapMetadata(@JsonProperty("version") @Nullable String version,
+                      @JsonProperty("theme") @Nullable String theme,
+                      @JsonProperty("createdDate") @Nullable LocalDateTime createdDate,
+                      @JsonProperty("lastModifiedDate") @Nullable LocalDateTime lastModifiedDate,
+                      @JsonProperty("author") @Nullable String author,
+                      @JsonProperty("customProperties") @NotNull Map<String, String> customProperties) {
+        this.version = version;
+        this.theme = theme;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+        this.author = author;
+        this.customProperties = customProperties != null ? customProperties : new HashMap<>();
     }
 
     @Nullable

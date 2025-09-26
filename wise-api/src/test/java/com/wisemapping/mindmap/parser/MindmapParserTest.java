@@ -58,13 +58,12 @@ public class MindmapParserTest {
                 assertNotNull(extractedText, "Extracted text should not be null for " + fileName);
                 
                 // Test HTML content detection
-                boolean hasHtml = MindmapParser.hasHtmlContent(xmlContent);
+                MindmapParser.hasHtmlContent(xmlContent);
                 // This should not throw an exception
                 
                 System.out.println("✓ Successfully parsed " + fileName + 
                     " - Topics: " + mapModel.getTotalTopicCount() + 
-                    ", Text length: " + extractedText.length() + 
-                    ", Has HTML: " + hasHtml);
+                    ", Text length: " + extractedText.length());
                 
             } catch (MindmapValidationException e) {
                 fail("Failed to parse " + fileName + ": " + e.getMessage());
@@ -100,8 +99,6 @@ public class MindmapParserTest {
         });
         
         assertDoesNotThrow(() -> {
-            boolean hasHtml = MindmapParser.hasHtmlContent(malformedXml);
-            // Should not throw an exception
         });
     }
     

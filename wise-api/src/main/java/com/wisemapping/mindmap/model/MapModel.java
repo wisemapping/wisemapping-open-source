@@ -18,6 +18,9 @@
 
 package com.wisemapping.mindmap.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,6 +48,17 @@ public class MapModel implements Serializable {
     private MapMetadata metadata = new MapMetadata();
     
     public MapModel() {
+    }
+    
+    @JsonCreator
+    public MapModel(@JsonProperty("title") @Nullable String title,
+                   @JsonProperty("description") @Nullable String description,
+                   @JsonProperty("topics") @NotNull List<Topic> topics,
+                   @JsonProperty("metadata") @NotNull MapMetadata metadata) {
+        this.title = title;
+        this.description = description;
+        this.topics = topics != null ? topics : new ArrayList<>();
+        this.metadata = metadata != null ? metadata : new MapMetadata();
     }
     
     public MapModel(@NotNull String title) {
@@ -102,6 +116,7 @@ public class MapModel implements Serializable {
      * @return The central topic, or null if not found
      */
     @Nullable
+    @JsonIgnore
     public Topic getCentralTopic() {
         return topics.stream()
                 .filter(Topic::isCentral)
@@ -115,6 +130,7 @@ public class MapModel implements Serializable {
      * @return List of all topics in the mindmap
      */
     @NotNull
+    @JsonIgnore
     public List<Topic> getAllTopics() {
         List<Topic> allTopics = new ArrayList<>();
         for (Topic topic : topics) {
@@ -129,6 +145,7 @@ public class MapModel implements Serializable {
      * 
      * @return Total topic count
      */
+    @JsonIgnore
     public int getTotalTopicCount() {
         return getAllTopics().size();
     }
@@ -139,6 +156,7 @@ public class MapModel implements Serializable {
      * @return List of all text content
      */
     @NotNull
+    @JsonIgnore
     public List<String> getAllTextContent() {
         return getAllTopics().stream()
                 .map(Topic::getText)
@@ -152,6 +170,7 @@ public class MapModel implements Serializable {
      * @return List of all note content
      */
     @NotNull
+    @JsonIgnore
     public List<String> getAllNoteContent() {
         return getAllTopics().stream()
                 .map(Topic::getNote)
@@ -165,6 +184,7 @@ public class MapModel implements Serializable {
      * @return List of all link URLs
      */
     @NotNull
+    @JsonIgnore
     public List<String> getAllLinkUrls() {
         return getAllTopics().stream()
                 .map(Topic::getLinkUrl)
@@ -177,6 +197,7 @@ public class MapModel implements Serializable {
      * 
      * @return Number of topics with content
      */
+    @JsonIgnore
     public int countTopicsWithContent() {
         return (int) getAllTopics().stream()
                 .filter(Topic::hasContent)
@@ -188,6 +209,7 @@ public class MapModel implements Serializable {
      * 
      * @return Number of topics with notes
      */
+    @JsonIgnore
     public int countTopicsWithNotes() {
         return (int) getAllTopics().stream()
                 .filter(topic -> topic.getNote() != null && !topic.getNote().trim().isEmpty())
@@ -199,6 +221,7 @@ public class MapModel implements Serializable {
      * 
      * @return Number of topics with links
      */
+    @JsonIgnore
     public int countTopicsWithLinks() {
         return (int) getAllTopics().stream()
                 .filter(topic -> topic.getLinkUrl() != null && !topic.getLinkUrl().trim().isEmpty())

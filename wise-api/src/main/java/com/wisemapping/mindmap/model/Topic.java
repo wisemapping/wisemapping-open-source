@@ -1,5 +1,8 @@
 package com.wisemapping.mindmap.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +34,21 @@ public class Topic implements Serializable {
     private List<Topic> children = new ArrayList<>();
 
     public Topic() {
+    }
+
+    @JsonCreator
+    public Topic(@JsonProperty("id") @Nullable String id,
+                @JsonProperty("text") @Nullable String text,
+                @JsonProperty("note") @Nullable String note,
+                @JsonProperty("linkUrl") @Nullable String linkUrl,
+                @JsonProperty("central") boolean central,
+                @JsonProperty("children") @NotNull List<Topic> children) {
+        this.id = id;
+        this.text = text;
+        this.note = note;
+        this.linkUrl = linkUrl;
+        this.central = central;
+        this.children = children != null ? children : new ArrayList<>();
     }
 
     public Topic(@Nullable String text) {
@@ -116,6 +134,7 @@ public class Topic implements Serializable {
      * @return List of all child topics
      */
     @NotNull
+    @JsonIgnore
     public List<Topic> getAllChildTopics() {
         List<Topic> allChildren = new ArrayList<>();
         for (Topic child : children) {
@@ -130,6 +149,7 @@ public class Topic implements Serializable {
      * 
      * @return true if the topic has content, false otherwise
      */
+    @JsonIgnore
     public boolean hasContent() {
         return (text != null && !text.trim().isEmpty()) ||
                (note != null && !note.trim().isEmpty()) ||
@@ -141,6 +161,7 @@ public class Topic implements Serializable {
      * 
      * @return true if the topic has a note, false otherwise
      */
+    @JsonIgnore
     public boolean hasNote() {
         return note != null && !note.trim().isEmpty();
     }
@@ -150,6 +171,7 @@ public class Topic implements Serializable {
      * 
      * @return true if the topic has a link, false otherwise
      */
+    @JsonIgnore
     public boolean hasLink() {
         return linkUrl != null && !linkUrl.trim().isEmpty();
     }
@@ -159,6 +181,7 @@ public class Topic implements Serializable {
      * 
      * @return Total character count
      */
+    @JsonIgnore
     public int getContentLength() {
         int length = 0;
         if (text != null) {
@@ -179,6 +202,7 @@ public class Topic implements Serializable {
      * @return The effective text content
      */
     @Nullable
+    @JsonIgnore
     public String getEffectiveText() {
         if (text != null && !text.trim().isEmpty()) {
             return text;
@@ -192,6 +216,7 @@ public class Topic implements Serializable {
      * @return The note content
      */
     @Nullable
+    @JsonIgnore
     public String getNoteContent() {
         return note;
     }
