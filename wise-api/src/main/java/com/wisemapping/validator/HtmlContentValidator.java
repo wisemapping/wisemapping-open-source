@@ -24,6 +24,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.service.spam.SpamContentExtractor;
 import com.wisemapping.mindmap.utils.MindmapUtils;
+import com.wisemapping.mindmap.parser.MindmapParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,17 +163,24 @@ public class HtmlContentValidator {
             return;
         }
         
-        // Check length
-        if (noteContent.length() > maxNoteLength) {
+        // Check length - use text content length to align with frontend
+        int contentLength = noteContent.length();
+        if (contentExtractor.isHtmlContent(noteContent)) {
+            // For HTML content, count characters in the text content (stripped of HTML tags)
+            String plainTextContent = MindmapParser.extractPlainTextContent(noteContent);
+            contentLength = plainTextContent.length();
+        }
+        
+        if (contentLength > maxNoteLength) {
             String errorMessage = String.format(
                 "Note content exceeds maximum length of %d characters (found %d characters). " +
                 "Please shorten the content and try again.",
-                maxNoteLength, noteContent.length()
+                maxNoteLength, contentLength
             );
             logger.warn("Note content length validation failed: {} characters (max: {})", 
-                noteContent.length(), maxNoteLength);
+                contentLength, maxNoteLength);
             throw new HtmlContentValidationException(errorMessage, "LENGTH", 
-                String.format("%d characters (limit: %d)", noteContent.length(), maxNoteLength));
+                String.format("%d characters (limit: %d)", contentLength, maxNoteLength));
         }
         
         // Check for dangerous patterns

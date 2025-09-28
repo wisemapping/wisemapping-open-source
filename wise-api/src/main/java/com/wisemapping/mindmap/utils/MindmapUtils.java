@@ -23,7 +23,6 @@ import com.wisemapping.mindmap.model.Topic;
 import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.mindmap.parser.MindmapParser;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -308,11 +307,12 @@ public class MindmapUtils {
                 totalNotes++;
                 
                 if (isHtmlContent(noteContent)) {
-                    // For HTML content, count characters in the raw HTML
-                    int htmlLength = noteContent.length();
-                    if (htmlLength > maxLength) {
+                    // For HTML content, count characters in the text content (stripped of HTML tags)
+                    String plainTextContent = MindmapParser.extractPlainTextContent(noteContent);
+                    int textLength = plainTextContent.length();
+                    if (textLength > maxLength) {
                         oversizedNotes++;
-                        violations.append(String.format("HTML note %d: %d chars (limit: %d), ", totalNotes, htmlLength, maxLength));
+                        violations.append(String.format("HTML note %d: %d chars (limit: %d), ", totalNotes, textLength, maxLength));
                     }
                 } else {
                     // For plain text, count characters in the text content

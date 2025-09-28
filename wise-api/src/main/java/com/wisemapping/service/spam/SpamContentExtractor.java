@@ -217,11 +217,12 @@ public class SpamContentExtractor {
         // For HTML content, also count the text content length
         int textLength = rawLength;
         if (isHtml) {
-            String sanitizedContent = sanitizeHtmlContent(noteContent);
-            textLength = sanitizedContent.length();
+            String plainTextContent = MindmapParser.extractPlainTextContent(noteContent);
+            textLength = plainTextContent.length();
         }
         
-        int remainingChars = maxNoteLength - rawLength;
+        // Use text content length for remaining chars calculation to align with frontend
+        int remainingChars = maxNoteLength - textLength;
         
         return new NoteCharacterCount(rawLength, textLength, isHtml, remainingChars, maxNoteLength);
     }
@@ -323,7 +324,8 @@ public class SpamContentExtractor {
         public int getTextLength() { return textLength; }
         public boolean isHtml() { return isHtml; }
         public int getRemainingChars() { return remainingChars; }
-        public boolean isOverLimit() { return rawLength > maxLength; }
-        public double getUsagePercentage() { return maxLength > 0 ? (rawLength / (double)maxLength) * 100.0 : 0.0; }
+        public int getMaxLength() { return maxLength; }
+        public boolean isOverLimit() { return textLength > maxLength; }
+        public double getUsagePercentage() { return maxLength > 0 ? (textLength / (double)maxLength) * 100.0 : 0.0; }
     }
 }
