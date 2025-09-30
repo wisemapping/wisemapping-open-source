@@ -3,9 +3,11 @@ package com.wisemapping.config;
 import com.wisemapping.dao.LabelManagerImpl;
 import com.wisemapping.filter.JwtAuthenticationFilter;
 import com.wisemapping.rest.MindmapController;
+import com.wisemapping.scheduler.InactiveUserSuspensionScheduler;
 import com.wisemapping.scheduler.SpamDetectionScheduler;
 import com.wisemapping.scheduler.SpamUserSuspensionScheduler;
 import com.wisemapping.security.AuthenticationProvider;
+import com.wisemapping.service.InactiveUserService;
 import com.wisemapping.service.MindmapServiceImpl;
 import com.wisemapping.service.SpamDetectionService;
 import com.wisemapping.service.spam.ContactInfoSpamStrategy;
@@ -44,7 +46,7 @@ import java.util.Locale;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @SpringBootApplication(
-    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, com.wisemapping.util.VelocityEngineWrapper.class, SpamDetectionService.class, SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class, ContactInfoSpamStrategy.class, GlobalExceptionHandler.class, com.wisemapping.validator.HtmlContentValidator.class}
+    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, com.wisemapping.util.VelocityEngineWrapper.class, SpamDetectionService.class, SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class, ContactInfoSpamStrategy.class, GlobalExceptionHandler.class, com.wisemapping.validator.HtmlContentValidator.class, InactiveUserService.class, InactiveUserSuspensionScheduler.class}
 )
 @Import({com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class})
 @EnableScheduling

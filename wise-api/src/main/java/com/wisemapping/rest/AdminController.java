@@ -25,6 +25,7 @@ import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.service.MindmapService;
+import com.wisemapping.service.MetricsService;
 import com.wisemapping.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class AdminController extends BaseController {
     @Qualifier("mindmapService")
     @Autowired
     private MindmapService mindmapService;
+
+    @Autowired
+    private MetricsService metricsService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
     @ResponseBody

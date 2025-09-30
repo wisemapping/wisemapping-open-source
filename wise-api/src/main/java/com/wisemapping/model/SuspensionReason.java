@@ -23,6 +23,7 @@ public enum SuspensionReason {
     TERMS_VIOLATION("T"),
     SECURITY_CONCERN("S"),
     MANUAL_REVIEW("M"),
+    INACTIVITY("I"),
     OTHER("O");
 
     private final String code;
