@@ -26,6 +26,7 @@ import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
 import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.*;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.validator.Messages;
 import com.wisemapping.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
@@ -58,6 +59,12 @@ public class UserController extends BaseController {
 
     @Autowired
     private DisposableEmailService disposableEmailService;
+
+    @Autowired
+    private MetricsService metricsService;
+
+    @Autowired
+    private MindmapService mindmapService;
 
     @Qualifier("authenticationManager")
     @Autowired

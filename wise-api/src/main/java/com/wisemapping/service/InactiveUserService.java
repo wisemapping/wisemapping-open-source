@@ -1,0 +1,196 @@
+/*
+ *    Copyright [2022] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       http://www.wisemapping.org/license
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+
+package com.wisemapping.service;
+
+import com.wisemapping.dao.UserManager;
+import com.wisemapping.model.Account;
+import com.wisemapping.model.SuspensionReason;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import java.util.Calendar;
+import java.util.List;
+
+@Service
+public class InactiveUserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(InactiveUserService.class);
+
+    @Autowired
+    private EntityManager entityManager;
+
+    @Autowired
+    private UserManager userManager;
+
+    @Autowired
+    private MetricsService metricsService;
+
+    @Value("${app.batch.inactive-user-suspension.inactivity-years:3}")
+    private int inactivityYears;
+
+    @Value("${app.batch.inactive-user-suspension.batch-size:100}")
+    private int batchSize;
+
+    @Value("${app.batch.inactive-user-suspension.dry-run:false}")
+    private boolean dryRun;
+
+    @Transactional
+    public void processInactiveUsers() {
+        logger.info("Starting inactive user suspension process - inactivity threshold: {} years, batch size: {}, dry run: {}",
+                inactivityYears, batchSize, dryRun);
+
+        Calendar cutoffDate = Calendar.getInstance();
+        cutoffDate.add(Calendar.YEAR, -inactivityYears);
+
+        int totalProcessed = 0;
+        int totalSuspended = 0;
+        int offset = 0;
+
+        List<Account> inactiveUsers;
+        do {
+            inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
+            
+            for (Account user : inactiveUsers) {
+                try {
+                    if (dryRun) {
+                        logger.info("DRY RUN - Would suspend inactive user: {} (ID: {})", 
+                                user.getEmail(), user.getId());
+                    } else {
+                        suspendInactiveUser(user);
+                        
+                        metricsService.trackUserSuspension(user, "inactivity");
+                        logger.info("Suspended inactive user: {} (ID: {})", user.getEmail(), user.getId());
+                        totalSuspended++;
+                    }
+                    totalProcessed++;
+                } catch (Exception e) {
+                    logger.error("Failed to process inactive user: {} (ID: {})", 
+                            user.getEmail(), user.getId(), e);
+                }
+            }
+            
+            offset += batchSize;
+            
+        } while (inactiveUsers.size() == batchSize);
+
+        logger.info("Inactive user suspension process completed - Total processed: {}, Total suspended: {}", 
+                totalProcessed, totalSuspended);
+    }
+
+    public List<Account> findInactiveUsers(Calendar cutoffDate, int offset, int limit) {
+        String jpql = """
+            SELECT DISTINCT a FROM com.wisemapping.model.Account a
+            WHERE a.suspended = false
+              AND a.activationDate IS NOT NULL
+              AND a.id NOT IN (
+                  SELECT DISTINCT aa.user_id FROM ACCESS_AUDITORY aa 
+                  WHERE aa.login_date >= :cutoffDate
+              )
+              AND a.id NOT IN (
+                  SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
+                  WHERE m.lastModificationTime >= :cutoffDate
+              )
+            ORDER BY a.id
+            """;
+
+        TypedQuery<Account> query = entityManager.createQuery(jpql, Account.class);
+        query.setParameter("cutoffDate", cutoffDate);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+
+        return query.getResultList();
+    }
+
+    public long countInactiveUsers(Calendar cutoffDate) {
+        String jpql = """
+            SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a
+            WHERE a.suspended = false
+              AND a.activationDate IS NOT NULL
+              AND a.id NOT IN (
+                  SELECT DISTINCT aa.user_id FROM ACCESS_AUDITORY aa 
+                  WHERE aa.login_date >= :cutoffDate
+              )
+              AND a.id NOT IN (
+                  SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
+                  WHERE m.lastModificationTime >= :cutoffDate
+              )
+            """;
+
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        query.setParameter("cutoffDate", cutoffDate);
+
+        return query.getSingleResult();
+    }
+
+    private void suspendInactiveUser(Account user) {
+        user.setSuspended(true);
+        user.setSuspensionReason(SuspensionReason.INACTIVITY);
+        
+        int clearedHistoryCount = clearUserMindmapHistory(user);
+        
+        userManager.updateUser(user);
+        
+        logger.debug("User {} suspended due to inactivity and {} history entries cleared", 
+                user.getEmail(), clearedHistoryCount);
+    }
+
+    private int clearUserMindmapHistory(Account user) {
+        String deleteHistorySql = """
+            DELETE FROM MINDMAP_HISTORY 
+            WHERE mindmap_id IN (
+                SELECT id FROM MINDMAP WHERE creator_id = :userId
+            )
+            """;
+
+        int deletedCount = entityManager.createNativeQuery(deleteHistorySql)
+                .setParameter("userId", user.getId())
+                .executeUpdate();
+
+        logger.debug("Cleared {} history entries for user {}", deletedCount, user.getEmail());
+        return deletedCount;
+    }
+
+    public void previewInactiveUsers() {
+        Calendar cutoffDate = Calendar.getInstance();
+        cutoffDate.add(Calendar.YEAR, -inactivityYears);
+
+        long totalCount = countInactiveUsers(cutoffDate);
+        logger.info("Preview: Found {} inactive users that would be suspended (inactive for {} years)", 
+                totalCount, inactivityYears);
+
+        if (totalCount > 0) {
+            List<Account> sampleUsers = findInactiveUsers(cutoffDate, 0, Math.min(10, (int) totalCount));
+            logger.info("Sample of users that would be suspended:");
+            for (Account user : sampleUsers) {
+                logger.info("- {} (ID: {}, Created: {})", 
+                        user.getEmail(), user.getId(), user.getCreationDate());
+            }
+            
+            if (totalCount > 10) {
+                logger.info("... and {} more users", totalCount - 10);
+            }
+        }
+    }
+}

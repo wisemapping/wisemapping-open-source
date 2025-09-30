@@ -27,6 +27,9 @@ class SpamDetectionServiceTest {
     @Mock
     private Resource spamKeywordsResource;
 
+    @Mock
+    private MetricsService metricsService;
+
     @BeforeEach
     void setUp() throws Exception {
         // Mock spam keywords file content
@@ -61,6 +64,9 @@ class SpamDetectionServiceTest {
         
         // Create service with strategies (excluding UserBehaviorStrategy for unit tests)
         spamDetectionService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
+        
+        // Inject the mocked MetricsService
+        ReflectionTestUtils.setField(spamDetectionService, "metricsService", metricsService);
     }
 
     @Test
@@ -295,6 +301,7 @@ class SpamDetectionServiceTest {
         ReflectionTestUtils.setField(keywordPatternStrategy, "minNodesExemption", 16);
         
         SpamDetectionService testService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
+        ReflectionTestUtils.setField(testService, "metricsService", metricsService);
         
         // Create a mindmap with spam keywords but high node count
         Mindmap mindmap = createMindmap("Business Plan", "CEO opportunity make money fast", xml);
@@ -324,6 +331,7 @@ class SpamDetectionServiceTest {
         ReflectionTestUtils.setField(keywordPatternStrategy, "minNodesExemption", 5);
         
         SpamDetectionService testService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
+        ReflectionTestUtils.setField(testService, "metricsService", metricsService);
         
         // Create a mindmap with spam keywords and low node count
         Mindmap mindmap = createMindmap("Opportunity", "CEO make money fast investment", xml);
@@ -355,6 +363,7 @@ class SpamDetectionServiceTest {
         ReflectionTestUtils.setField(keywordPatternStrategy, "minNodesExemption", 5);
         
         SpamDetectionService testService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
+        ReflectionTestUtils.setField(testService, "metricsService", metricsService);
         
         // Create a mindmap with spam keywords and exactly threshold node count
         Mindmap mindmap = createMindmap("Business", "CEO investment make money fast", xml);

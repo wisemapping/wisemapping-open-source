@@ -169,6 +169,14 @@ app:
       retention-days: 90  # Keep history entries for 90 days
       max-entries-per-map: 10  # Maximum number of history entries per mindmap
       batch-size: 100  # Number of mindmaps to process in each batch to prevent memory issues
+    inactive-user-suspension:
+      enabled: true
+      cron-expression: "0 0 2 * * SAT"  # Every Saturday at 2:00 AM
+      preview-enabled: false  # Enable preview task on Fridays
+      preview-cron-expression: "0 0 10 * * FRI"  # Every Friday at 10:00 AM
+      inactivity-years: 3  # Number of years of inactivity before suspension
+      batch-size: 100  # Number of users to process in each batch
+      dry-run: false  # Set to true to preview changes without actually suspending users
     oauth2:
       google:
         clientSecret: <google-oath>
