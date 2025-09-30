@@ -14,15 +14,15 @@ The application tracks the following mindmap creation events:
 
 - **New Mindmaps**: Created via the REST API (`POST /api/restful/maps`)
 - **Duplicate Mindmaps**: Created by duplicating existing mindmaps (`POST /api/restful/maps/{id}`)
-- **Tutorial Mindmaps**: Automatically created when new users register
 - **Public Mindmaps**: Mindmaps made public by users
+
+Note: Tutorial mindmaps are automatically created when new users register but are not tracked in telemetry metrics as they are not considered user-created content.
 
 The metrics include:
 
 ```
 wisemapping.api.mindmaps.created{type="new"}           # New mindmaps created
 wisemapping.api.mindmaps.created{type="duplicate"}     # Mindmaps created by duplication
-wisemapping.api.mindmaps.created{type="tutorial"}      # Tutorial mindmaps for new users
 wisemapping.api.mindmaps.made_public{user_type="D", has_description="true"} # Mindmaps made public
 ```
 
@@ -261,12 +261,13 @@ The metrics tracking is implemented in the following locations:
 
 1. **MindmapServiceImpl.addMindmap()**: Tracks new mindmap creation
 2. **MindmapController.createDuplicate()**: Tracks mindmap duplication
-3. **UserServiceImpl.createUser()**: Tracks tutorial mindmap creation
-4. **JwtTokenUtil.doLogin()**: Tracks user logins
-5. **JwtAuthController.logout()**: Tracks user logouts
-6. **SpamDetectionService.detectSpam()**: Tracks spam analysis for all analyzed mindmaps
-7. **MindmapController.updatePublishStateInternal()**: Tracks mindmaps made public and spam prevention
-8. **MindmapController.updatePublishStateInternal()**: Tracks publish attempts and spam detection
+3. **JwtTokenUtil.doLogin()**: Tracks user logins
+4. **JwtAuthController.logout()**: Tracks user logouts
+5. **SpamDetectionService.detectSpam()**: Tracks spam analysis for all analyzed mindmaps
+6. **MindmapController.updatePublishStateInternal()**: Tracks mindmaps made public and spam prevention
+7. **MindmapController.updatePublishStateInternal()**: Tracks publish attempts and spam detection
+
+Note: Tutorial mindmaps are no longer tracked in telemetry metrics as they are automatically generated system content, not user-created content.
 
 ### Metric Creation
 

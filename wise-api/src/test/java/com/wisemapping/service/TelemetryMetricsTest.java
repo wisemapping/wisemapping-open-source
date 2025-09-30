@@ -119,22 +119,14 @@ class TelemetryMetricsTest {
                 .tag("type", "duplicate")
                 .register(meterRegistry);
         
-        // Tutorial mindmap
-        Counter tutorialCounter = Counter.builder("wisemapping.api.mindmaps.created")
-                .description("Total number of mindmaps created")
-                .tag("type", "tutorial")
-                .register(meterRegistry);
-
         // Increment counters
         newCounter.increment();
         newCounter.increment();
         duplicateCounter.increment();
-        tutorialCounter.increment();
 
         // Verify counts
         assertEquals(2.0, newCounter.count());
         assertEquals(1.0, duplicateCounter.count());
-        assertEquals(1.0, tutorialCounter.count());
     }
 
     @Test

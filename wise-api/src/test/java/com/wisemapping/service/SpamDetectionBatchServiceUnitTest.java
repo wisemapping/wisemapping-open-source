@@ -128,7 +128,7 @@ class SpamDetectionBatchServiceUnitTest {
         when(mindmapManager.countPublicMindmapsNeedingSpamDetection(any(Calendar.class), anyInt())).thenReturn(1L);
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(any(Calendar.class), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
-        when(spamDetectionService.detectSpam(testMindmap)).thenReturn(
+        when(spamDetectionService.detectSpam(testMindmap, "batch_scan")).thenReturn(
             com.wisemapping.service.spam.SpamDetectionResult.notSpam());
 
         // Act
@@ -144,7 +144,7 @@ class SpamDetectionBatchServiceUnitTest {
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
-        when(spamDetectionService.detectSpam(testMindmap)).thenReturn(
+        when(spamDetectionService.detectSpam(testMindmap, "batch_scan")).thenReturn(
             com.wisemapping.service.spam.SpamDetectionResult.spam("Test spam", "Test details", com.wisemapping.model.SpamStrategyType.CONTACT_INFO));
 
         // Act
@@ -164,7 +164,7 @@ class SpamDetectionBatchServiceUnitTest {
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
-        when(spamDetectionService.detectSpam(testMindmap)).thenReturn(
+        when(spamDetectionService.detectSpam(testMindmap, "batch_scan")).thenReturn(
             com.wisemapping.service.spam.SpamDetectionResult.notSpam());
 
         // Act
@@ -184,7 +184,7 @@ class SpamDetectionBatchServiceUnitTest {
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
-        when(spamDetectionService.detectSpam(testMindmap)).thenThrow(new RuntimeException("Spam detection error"));
+        when(spamDetectionService.detectSpam(testMindmap, "batch_scan")).thenThrow(new RuntimeException("Spam detection error"));
 
         // Act
         SpamDetectionBatchService.BatchResult result = spamDetectionBatchService.processBatch(cutoffDate, 0, 10);
@@ -251,7 +251,7 @@ class SpamDetectionBatchServiceUnitTest {
         Calendar cutoffDate = Calendar.getInstance();
         when(mindmapManager.findPublicMindmapsNeedingSpamDetection(eq(cutoffDate), anyInt(), anyInt(), anyInt()))
                 .thenReturn(Collections.singletonList(testMindmap));
-        when(spamDetectionService.detectSpam(testMindmap)).thenReturn(
+        when(spamDetectionService.detectSpam(testMindmap, "batch_scan")).thenReturn(
             com.wisemapping.service.spam.SpamDetectionResult.notSpam());
 
         // Act
