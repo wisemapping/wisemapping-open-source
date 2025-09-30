@@ -1,5 +1,7 @@
 package com.wisemapping.security;
 
+import com.wisemapping.model.Account;
+import com.wisemapping.service.MetricsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -33,6 +35,9 @@ public class JwtTokenUtil implements Serializable {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private MetricsService metricsService;
 
 
     public String generateJwtToken(@NotNull final UserDetails user) {
@@ -78,6 +83,12 @@ public class JwtTokenUtil implements Serializable {
     public String doLogin(@NotNull HttpServletResponse response, @NotNull String email) {
         logger.debug("Performing login:" + email);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+        // Track login telemetry
+        if (userDetails instanceof Account) {
+            Account account = (Account) userDetails;
+            metricsService.trackUserLogin(account, "jwt");
+        }
 
         // Add JWT in the HTTP header ...
         final String token = generateJwtToken(userDetails);

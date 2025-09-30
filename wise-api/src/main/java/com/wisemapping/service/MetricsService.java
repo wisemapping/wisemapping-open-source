@@ -51,8 +51,13 @@ public class MetricsService {
 
     // Metric names as constants to avoid typos
     private static final String USER_LOGINS = "wisemapping.api.user.logins";
+    private static final String USER_LOGOUTS = "wisemapping.api.user.logouts";
     private static final String USER_REGISTRATIONS = "wisemapping.api.user.registrations";
+    private static final String USER_SUSPENSIONS = "wisemapping.api.user.suspensions";
     private static final String MINDMAPS_CREATED = "wisemapping.api.mindmaps.created";
+    private static final String MINDMAPS_MADE_PUBLIC = "wisemapping.api.mindmaps.made_public";
+    private static final String MINDMAPS_SHARED = "wisemapping.api.mindmaps.shared";
+    private static final String SPAM_ANALYZED = "wisemapping.api.spam.analyzed";
     private static final String SPAM_DETECTED = "wisemapping.api.spam.detected";
     private static final String SPAM_PREVENTED = "wisemapping.api.spam.prevented";
     
@@ -73,6 +78,26 @@ public class MetricsService {
             logger.debug("Tracked login for user {} with auth type {}", user.getEmail(), authType);
         } catch (Exception e) {
             logger.warn("Failed to track login metric for user {}: {}", user.getEmail(), e.getMessage());
+        }
+    }
+
+    /**
+     * Track a user logout event
+     * @param user The user who logged out
+     * @param logoutType The logout type (e.g., "manual", "session_expired", "admin")
+     */
+    public void trackUserLogout(@NotNull Account user, @NotNull String logoutType) {
+        try {
+            Counter.builder(USER_LOGOUTS)
+                    .description("Total number of user logouts")
+                    .tag("logout_type", logoutType)
+                    .tag("user_type", String.valueOf(user.getAuthenticationType().getCode()))
+                    .register(meterRegistry)
+                    .increment();
+            
+            logger.debug("Tracked logout for user {} with logout type {}", user.getEmail(), logoutType);
+        } catch (Exception e) {
+            logger.warn("Failed to track logout metric for user {}: {}", user.getEmail(), e.getMessage());
         }
     }
 
@@ -121,6 +146,104 @@ public class MetricsService {
                 mindmap.getTitle(), user.getEmail(), creationType, visibility);
         } catch (Exception e) {
             logger.warn("Failed to track mindmap creation metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
+        }
+    }
+
+    /**
+     * Track when a user is suspended/disabled
+     * @param user The user who was suspended
+     * @param reason The suspension reason
+     */
+    public void trackUserSuspension(@NotNull Account user, @NotNull String reason) {
+        try {
+            String emailProvider = extractEmailProvider(user.getEmail());
+            
+            Counter.builder(USER_SUSPENSIONS)
+                    .description("Total number of users suspended")
+                    .tag("reason", reason.toLowerCase())
+                    .tag("user_type", String.valueOf(user.getAuthenticationType().getCode()))
+                    .tag("email_provider", emailProvider)
+                    .register(meterRegistry)
+                    .increment();
+            
+            logger.debug("Tracked user suspension: {} suspended for reason {}", user.getEmail(), reason);
+        } catch (Exception e) {
+            logger.warn("Failed to track user suspension metric for user {}: {}", user.getEmail(), e.getMessage());
+        }
+    }
+
+    /**
+     * Track when a mindmap is made public
+     * @param mindmap The mindmap that was made public
+     * @param user The user who made it public
+     */
+    public void trackMindmapMadePublic(@NotNull Mindmap mindmap, @NotNull Account user) {
+        try {
+            Counter.builder(MINDMAPS_MADE_PUBLIC)
+                    .description("Total number of mindmaps made public")
+                    .tag("user_type", String.valueOf(user.getAuthenticationType().getCode()))
+                    .tag("has_description", mindmap.getDescription() != null && !mindmap.getDescription().trim().isEmpty() ? "true" : "false")
+                    .register(meterRegistry)
+                    .increment();
+            
+            logger.debug("Tracked mindmap made public: {} by user {}", mindmap.getTitle(), user.getEmail());
+        } catch (Exception e) {
+            logger.warn("Failed to track mindmap made public metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
+        }
+    }
+
+    /**
+     * Track when a mindmap is shared with a collaborator
+     * @param mindmap The mindmap that was shared
+     * @param collaboratorEmail The email of the collaborator
+     * @param role The collaboration role granted
+     * @param sharedBy The user who shared the mindmap
+     */
+    public void trackMindmapShared(@NotNull Mindmap mindmap, @NotNull String collaboratorEmail, @NotNull String role, @NotNull Account sharedBy) {
+        try {
+            String emailProvider = extractEmailProvider(collaboratorEmail);
+            
+            Counter.builder(MINDMAPS_SHARED)
+                    .description("Total number of mindmaps shared with collaborators")
+                    .tag("role", role.toLowerCase())
+                    .tag("collaborator_email_provider", emailProvider)
+                    .tag("sharer_type", String.valueOf(sharedBy.getAuthenticationType().getCode()))
+                    .tag("mindmap_visibility", mindmap.isPublic() ? "public" : "private")
+                    .register(meterRegistry)
+                    .increment();
+            
+            logger.debug("Tracked mindmap shared: {} shared with {} (role: {}) by user {}", 
+                mindmap.getTitle(), collaboratorEmail, role, sharedBy.getEmail());
+        } catch (Exception e) {
+            logger.warn("Failed to track mindmap shared metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
+        }
+    }
+
+    /**
+     * Track a spam analysis event - unified metric that captures all spam analysis results
+     * @param mindmap The mindmap that was analyzed
+     * @param spamResult The spam detection result
+     * @param context The context where spam analysis was performed (e.g., "creation", "update", "batch_scan")
+     */
+    public void trackSpamAnalysis(@NotNull Mindmap mindmap, @NotNull SpamDetectionResult spamResult, @NotNull String context) {
+        try {
+            String isSpam = spamResult.isSpam() ? "yes" : "no";
+            String spamType = spamResult.isSpam() && spamResult.getStrategyType() != null ? 
+                spamResult.getStrategyType().name() : "none";
+            
+            Counter.builder(SPAM_ANALYZED)
+                    .description("Total number of spam analyses performed")
+                    .tag("context", context)
+                    .tag("is_spam", isSpam)
+                    .tag("spam_type", spamType)
+                    .tag("visibility", mindmap.isPublic() ? "public" : "private")
+                    .register(meterRegistry)
+                    .increment();
+            
+            logger.debug("Tracked spam analysis: mindmap {} analyzed in context {} - spam: {} type: {}", 
+                mindmap.getId(), context, isSpam, spamType);
+        } catch (Exception e) {
+            logger.warn("Failed to track spam analysis metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
         }
     }
 

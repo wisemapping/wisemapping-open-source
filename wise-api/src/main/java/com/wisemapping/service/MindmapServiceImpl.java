@@ -212,9 +212,6 @@ public class MindmapServiceImpl
         mindmap.getCollaborations().add(collaboration);
 
         mindmapManager.addMindmap(dbUser, mindmap);
-
-        // Track mindmap creation with enhanced metrics
-        metricsService.trackMindmapCreation(mindmap, dbUser, "new");
     }
 
     @Override

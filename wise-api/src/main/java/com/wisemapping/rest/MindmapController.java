@@ -358,6 +358,9 @@ public class MindmapController extends BaseController {
             final CollaborationRole role = CollaborationRole.valueOf(roleStr.toUpperCase());
             if (role != CollaborationRole.OWNER) {
                 mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role, restCollabs.getMessage());
+                
+                // Track mindmap sharing
+                metricsService.trackMindmapShared(mindMap, restCollab.getEmail(), role.name(), user);
             }
         }
 
@@ -430,6 +433,9 @@ public class MindmapController extends BaseController {
                     mindmapService.removeCollaboration(mindMap, currentCollab);
                 }
                 mindmapService.addCollaboration(mindMap, collabEmail, newRole, restCollabs.getMessage());
+                
+                // Track mindmap sharing (role change is also a sharing event)
+                metricsService.trackMindmapShared(mindMap, collabEmail, newRole.name(), user);
             }
         }
     }
@@ -483,7 +489,7 @@ public class MindmapController extends BaseController {
 
         // Check for spam content when trying to make public
         if (isPublic) {
-            SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap);
+            SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap, "publish");
             if (spamResult.isSpam()) {
                 // Mark the map as spam detected and throw exception
                 mindMap.setSpamDetected(true);
@@ -501,6 +507,9 @@ public class MindmapController extends BaseController {
                 mindMap.setSpamDetected(false);
                 mindMap.setSpamDescription(null);
                 mindMap.setPublic(true);
+                
+                // Track mindmap made public
+                metricsService.trackMindmapMadePublic(mindMap, user);
             }
         } else {
             // Making private - only update public flag, preserve existing spam flag
@@ -662,7 +671,7 @@ public class MindmapController extends BaseController {
 
         // Check for spam content during creation
         if (mindmap.isPublic()) {
-            SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
+            SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap, "creation");
             if (spamResult.isSpam()) {
                 mindmap.setSpamDetected(true);
                 mindmap.setSpamDescription(spamResult.getDetails());
@@ -711,7 +720,7 @@ public class MindmapController extends BaseController {
         clonedMap.setDescription(restMindmap.getDescription());
 
         // Check for spam content in the duplicated map
-        SpamDetectionResult spamResult = spamDetectionService.detectSpam(clonedMap);
+        SpamDetectionResult spamResult = spamDetectionService.detectSpam(clonedMap, "duplicate");
         if (spamResult.isSpam()) {
             clonedMap.setSpamDetected(true);
             clonedMap.setSpamDescription(spamResult.getDetails());
@@ -792,7 +801,7 @@ public class MindmapController extends BaseController {
 
         // Check for spam content during updates
         if (mindMap.isPublic()) {
-            SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap);
+            SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap, "update");
             if (spamResult.isSpam()) {
                 // If the map is currently public but now detected as spam, make it private
                 mindMap.setPublic(false);

@@ -104,6 +104,19 @@ public class UserController extends BaseController {
 
         user.setAuthenticationType(AuthenticationType.DATABASE);
         userService.createUser(user, false, true);
+        
+        // Track user registration
+        String emailProvider = metricsService.extractEmailProvider(user.getEmail());
+        metricsService.trackUserRegistration(user, emailProvider);
+        
+        // Track tutorial mindmap creation
+        // Get the tutorial mindmap (the first/only mindmap for a new user)
+        var userMindmaps = mindmapService.findMindmapsByUser(user);
+        if (!userMindmaps.isEmpty()) {
+            Mindmap tutorialMindmap = userMindmaps.get(0);
+            metricsService.trackMindmapCreation(tutorialMindmap, user, "tutorial");
+        }
+        
         response.setHeader("Location", "/api/restful/users/" + user.getId());
         response.setHeader("ResourceId", Integer.toString(user.getId()));
 
