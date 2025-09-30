@@ -55,6 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         classes = {AppConfig.class, UserController.class, TestDataManager.class},
         properties = {
             "app.api.http-basic-enabled=true",
+            "app.registration.enabled=true",
             "app.registration.disposable-email.blocking.enabled=true"
         }
 )
