@@ -15,23 +15,41 @@ The application tracks the following mindmap creation events:
 - **New Mindmaps**: Created via the REST API (`POST /api/restful/maps`)
 - **Duplicate Mindmaps**: Created by duplicating existing mindmaps (`POST /api/restful/maps/{id}`)
 - **Tutorial Mindmaps**: Automatically created when new users register
+- **Public Mindmaps**: Mindmaps made public by users
 
-All metrics use the counter name `mindmaps.created` with different tags to distinguish between types:
+The metrics include:
 
 ```
-mindmaps.created{type="new"}        # New mindmaps created
-mindmaps.created{type="duplicate"}  # Mindmaps created by duplication
-mindmaps.created{type="tutorial"}   # Tutorial mindmaps for new users
+wisemapping.api.mindmaps.created{type="new"}           # New mindmaps created
+wisemapping.api.mindmaps.created{type="duplicate"}     # Mindmaps created by duplication
+wisemapping.api.mindmaps.created{type="tutorial"}      # Tutorial mindmaps for new users
+wisemapping.api.mindmaps.made_public{user_type="D", has_description="true"} # Mindmaps made public
 ```
 
 ### User Authentication Metrics
 
-The application tracks user login events:
+The application tracks user authentication events:
 
 - **User Logins**: Tracked whenever a user successfully authenticates
+- **User Logouts**: Tracked whenever a user explicitly logs out
 
 ```
-user.logins                        # Total number of user logins
+wisemapping.api.user.logins{auth_type="jwt", user_type="D"}     # User logins by auth and user type
+wisemapping.api.user.logouts{logout_type="manual", user_type="D"} # User logouts by logout and user type
+```
+
+### Spam Detection Metrics
+
+The application tracks spam analysis and detection events:
+
+- **Spam Analysis**: Every time spam detection is performed on a mindmap
+- **Spam Detection**: Number of maps marked as spam
+- **Spam Prevention**: Actions blocked due to spam detection
+
+```
+wisemapping.api.spam.analyzed{context="creation", result="clean", strategy="none", visibility="public"}  # All spam analysis
+wisemapping.api.spam.detected{context="creation", strategy="CONTACT_INFO", visibility="public"}         # Spam detected
+wisemapping.api.spam.prevented{action="publish", spam_type="CONTACT_INFO"}                             # Actions prevented
 ```
 
 ### Mindmap Publishing Metrics
@@ -130,12 +148,37 @@ curl http://localhost:8080/actuator/metrics
 
 #### View Mindmap Creation Metrics
 ```bash
-curl http://localhost:8080/actuator/metrics/mindmaps.created
+curl http://localhost:8080/actuator/metrics/wisemapping.api.mindmaps.created
+```
+
+#### View Mindmaps Made Public Metrics
+```bash
+curl http://localhost:8080/actuator/metrics/wisemapping.api.mindmaps.made_public
 ```
 
 #### View User Login Metrics
 ```bash
-curl http://localhost:8080/actuator/metrics/user.logins
+curl http://localhost:8080/actuator/metrics/wisemapping.api.user.logins
+```
+
+#### View User Logout Metrics
+```bash
+curl http://localhost:8080/actuator/metrics/wisemapping.api.user.logouts
+```
+
+#### View Spam Analysis Metrics
+```bash
+curl http://localhost:8080/actuator/metrics/wisemapping.api.spam.analyzed
+```
+
+#### View Spam Detection Metrics
+```bash
+curl http://localhost:8080/actuator/metrics/wisemapping.api.spam.detected
+```
+
+#### View Spam Prevention Metrics
+```bash
+curl http://localhost:8080/actuator/metrics/wisemapping.api.spam.prevented
 ```
 
 #### View Mindmap Publishing Metrics
@@ -157,17 +200,47 @@ Example Prometheus queries:
 
 Get total mindmaps created:
 ```
-sum(mindmaps.created_total)
+sum(wisemapping_api_mindmaps_created_total)
 ```
 
 Get mindmaps created by type:
 ```
-sum by (type) (mindmaps.created_total)
+sum by (type) (wisemapping_api_mindmaps_created_total)
+```
+
+Get total mindmaps made public:
+```
+sum(wisemapping_api_mindmaps_made_public_total)
 ```
 
 Get total user logins:
 ```
-sum(user_logins_total)
+sum(wisemapping_api_user_logins_total)
+```
+
+Get total user logouts:
+```
+sum(wisemapping_api_user_logouts_total)
+```
+
+Get total spam analyses:
+```
+sum(wisemapping_api_spam_analyzed_total)
+```
+
+Get spam analyses by result:
+```
+sum by (result) (wisemapping_api_spam_analyzed_total)
+```
+
+Get total spam detections:
+```
+sum(wisemapping_api_spam_detected_total)
+```
+
+Get total spam preventions:
+```
+sum(wisemapping_api_spam_prevented_total)
 ```
 
 Get total publish attempts:
@@ -189,8 +262,11 @@ The metrics tracking is implemented in the following locations:
 1. **MindmapServiceImpl.addMindmap()**: Tracks new mindmap creation
 2. **MindmapController.createDuplicate()**: Tracks mindmap duplication
 3. **UserServiceImpl.createUser()**: Tracks tutorial mindmap creation
-4. **UserServiceImpl.auditLogin()**: Tracks user logins
-5. **MindmapController.updatePublishStateInternal()**: Tracks publish attempts and spam detection
+4. **JwtTokenUtil.doLogin()**: Tracks user logins
+5. **JwtAuthController.logout()**: Tracks user logouts
+6. **SpamDetectionService.detectSpam()**: Tracks spam analysis for all analyzed mindmaps
+7. **MindmapController.updatePublishStateInternal()**: Tracks mindmaps made public and spam prevention
+8. **MindmapController.updatePublishStateInternal()**: Tracks publish attempts and spam detection
 
 ### Metric Creation
 
@@ -198,15 +274,43 @@ Metrics are created using Micrometer's Counter builder:
 
 ```java
 // Mindmap creation metrics
-Counter.builder("mindmaps.created")
+Counter.builder("wisemapping.api.mindmaps.created")
     .description("Total number of mindmaps created")
     .tag("type", "new")  // or "duplicate", "tutorial"
     .register(meterRegistry)
     .increment();
 
+// Mindmap made public metrics
+Counter.builder("wisemapping.api.mindmaps.made_public")
+    .description("Total number of mindmaps made public")
+    .tag("user_type", "D")          // Database user type
+    .tag("has_description", "true") // or "false"
+    .register(meterRegistry)
+    .increment();
+
 // User login metrics
-Counter.builder("user.logins")
+Counter.builder("wisemapping.api.user.logins")
     .description("Total number of user logins")
+    .tag("auth_type", "jwt")
+    .tag("user_type", "D")  // Database user type
+    .register(meterRegistry)
+    .increment();
+
+// User logout metrics
+Counter.builder("wisemapping.api.user.logouts")
+    .description("Total number of user logouts")
+    .tag("logout_type", "manual")
+    .tag("user_type", "D")  // Database user type
+    .register(meterRegistry)
+    .increment();
+
+// Spam analysis metrics
+Counter.builder("wisemapping.api.spam.analyzed")
+    .description("Total number of spam analyses performed")
+    .tag("context", "creation")  // or "update", "publish", "batch_scan"
+    .tag("result", "clean")      // or "spam"
+    .tag("strategy", "none")     // or specific strategy name
+    .tag("visibility", "public") // or "private"
     .register(meterRegistry)
     .increment();
 
@@ -245,7 +349,7 @@ groups:
   - name: wisemapping
     rules:
       - alert: HighMindmapCreationRate
-        expr: rate(mindmaps.created_total[5m]) > 100
+        expr: rate(wisemapping_api_mindmaps_created_total[5m]) > 100
         for: 5m
         labels:
           severity: warning
@@ -263,13 +367,22 @@ groups:
           description: "Spam detection rate is {{ $value }} per second"
       
       - alert: UnusualLoginActivity
-        expr: rate(user_logins_total[5m]) > 50
+        expr: rate(wisemapping_api_user_logins_total[5m]) > 50
         for: 5m
         labels:
           severity: warning
         annotations:
           summary: "Unusual login activity detected"
           description: "Login rate is {{ $value }} per second"
+      
+      - alert: HighLogoutRate
+        expr: rate(wisemapping_api_user_logouts_total[5m]) > 30
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High logout rate detected"
+          description: "Logout rate is {{ $value }} per second"
 ```
 
 ## Testing

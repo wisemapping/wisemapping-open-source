@@ -98,6 +98,8 @@
       <xs:enumeration value="elipse"/>
       <xs:enumeration value="rounded rectangle"/>
       <xs:enumeration value="image"/>
+      <xs:enumeration value="star"/>
+      <xs:enumeration value="diamond"/>
     </xs:restriction>
   </xs:simpleType>
 

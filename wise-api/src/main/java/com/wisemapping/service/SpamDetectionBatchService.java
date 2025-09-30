@@ -135,7 +135,7 @@ public class SpamDetectionBatchService {
                 SpamStrategyType spamTypeCode = null;
 
                 // Check for spam content only if not already marked as spam
-                SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap);
+                SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindmap, "batch_scan");
                 if (spamResult.isSpam()) {
                     // Get strategy name as enum
                     spamTypeCode = spamResult.getStrategyType();

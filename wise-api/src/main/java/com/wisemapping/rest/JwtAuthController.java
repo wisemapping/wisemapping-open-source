@@ -20,11 +20,16 @@ package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.UserCouldNotBeAuthException;
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.security.JwtTokenUtil;
+import com.wisemapping.service.MetricsService;
+import com.wisemapping.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -42,6 +47,12 @@ public class JwtAuthController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private MetricsService metricsService;
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<String> createAuthenticationToken(@RequestBody RestJwtUser user,
             @NotNull HttpServletResponse response) throws WiseMappingException {
@@ -50,6 +61,28 @@ public class JwtAuthController {
         final String result = jwtTokenUtil.doLogin(response, user.getEmail());
 
         return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public ResponseEntity<Void> logout(@NotNull HttpServletRequest request) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authHeader != null && authHeader.startsWith(JwtTokenUtil.BEARER_TOKEN_PREFIX)) {
+            String token = authHeader.substring(JwtTokenUtil.BEARER_TOKEN_PREFIX.length());
+            String email = jwtTokenUtil.extractFromJwtToken(token);
+            
+            if (email != null) {
+                try {
+                    Account user = userService.getUserBy(email);
+                    if (user != null) {
+                        metricsService.trackUserLogout(user, "manual");
+                    }
+                } catch (Exception e) {
+                    // Log error but don't fail logout
+                }
+            }
+        }
+        
+        return ResponseEntity.ok().build();
     }
 
     private void authenticate(@NotNull String username, @NotNull String password) throws WiseMappingException {

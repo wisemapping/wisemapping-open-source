@@ -49,6 +49,9 @@ public class SpamUserSuspensionService {
     @Autowired
     private TransactionTemplate transactionTemplate;
 
+    @Autowired
+    private MetricsService metricsService;
+
     @Value("${app.batch.spam-user-suspension.enabled:true}")
     private boolean enabled;
 
@@ -162,6 +165,9 @@ public class SpamUserSuspensionService {
                 // Suspend the user
                 user.suspend(SuspensionReason.ABUSE);
                 usersToSuspend.add(user);
+                
+                // Track user suspension
+                metricsService.trackUserSuspension(user, "ABUSE");
 
                 suspendedCount++;
                 logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps out of {} total public ({}% spam ratio)",
@@ -252,6 +258,9 @@ public class SpamUserSuspensionService {
                 // Suspend the user
                 user.suspend(SuspensionReason.ABUSE);
                 usersToSuspend.add(user);
+                
+                // Track user suspension
+                metricsService.trackUserSuspension(user, "ABUSE");
 
                 suspendedCount++;
                 logger.warn("Suspended user {} (created: {}) due to {} spam public mindmaps",
@@ -424,6 +433,9 @@ public class SpamUserSuspensionService {
                 // Suspend the user
                 user.suspend(suspensionReason);
                 usersToSuspend.add(user);
+                
+                // Track user suspension
+                metricsService.trackUserSuspension(user, suspensionReason.name());
 
                 suspendedCount++;
                 logger.warn("Suspended user {} (created: {}) due to {} public spam mindmaps of types: {}",

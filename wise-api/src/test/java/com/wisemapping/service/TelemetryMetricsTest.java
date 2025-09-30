@@ -21,6 +21,7 @@ package com.wisemapping.service;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.SpamStrategyType;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -88,7 +89,7 @@ class TelemetryMetricsTest {
         // In a real scenario, you would use @SpringBootTest with proper test configuration
         
         // Verify that the counter metric exists and can be created
-        Counter counter = Counter.builder("mindmaps.created")
+        Counter counter = Counter.builder("wisemapping.api.mindmaps.created")
                 .description("Total number of mindmaps created")
                 .tag("type", "new")
                 .register(meterRegistry);
@@ -107,19 +108,19 @@ class TelemetryMetricsTest {
         // Test different types of mindmap creation metrics
         
         // New mindmap
-        Counter newCounter = Counter.builder("mindmaps.created")
+        Counter newCounter = Counter.builder("wisemapping.api.mindmaps.created")
                 .description("Total number of mindmaps created")
                 .tag("type", "new")
                 .register(meterRegistry);
         
         // Duplicate mindmap
-        Counter duplicateCounter = Counter.builder("mindmaps.created")
+        Counter duplicateCounter = Counter.builder("wisemapping.api.mindmaps.created")
                 .description("Total number of mindmaps created")
                 .tag("type", "duplicate")
                 .register(meterRegistry);
         
         // Tutorial mindmap
-        Counter tutorialCounter = Counter.builder("mindmaps.created")
+        Counter tutorialCounter = Counter.builder("wisemapping.api.mindmaps.created")
                 .description("Total number of mindmaps created")
                 .tag("type", "tutorial")
                 .register(meterRegistry);
@@ -207,6 +208,134 @@ class TelemetryMetricsTest {
         
         assertEquals(2.0, databaseLogins);
         assertEquals(1.0, googleLogins);
+    }
+
+    @Test
+    void testUserLogoutMetrics() {
+        Account user = createTestUser("test@example.com", AuthenticationType.DATABASE);
+        
+        // Test manual logout
+        metricsService.trackUserLogout(user, "manual");
+        metricsService.trackUserLogout(user, "manual");
+        
+        // Test session expired logout
+        metricsService.trackUserLogout(user, "session_expired");
+        
+        // Verify metrics
+        Double manualLogouts = meterRegistry.find("wisemapping.api.user.logouts")
+                .tag("logout_type", "manual")
+                .counter().count();
+        
+        Double expiredLogouts = meterRegistry.find("wisemapping.api.user.logouts")
+                .tag("logout_type", "session_expired")
+                .counter().count();
+        
+        assertEquals(2.0, manualLogouts);
+        assertEquals(1.0, expiredLogouts);
+    }
+
+    @Test
+    void testMindmapMadePublicMetrics() {
+        Account user = createTestUser("test@example.com", AuthenticationType.DATABASE);
+        Mindmap mindmapWithDescription = createTestMindmap();
+        mindmapWithDescription.setDescription("Test description");
+        
+        Mindmap mindmapWithoutDescription = createTestMindmap();
+        mindmapWithoutDescription.setDescription("");
+        
+        // Test tracking mindmap made public with description
+        metricsService.trackMindmapMadePublic(mindmapWithDescription, user);
+        
+        // Test tracking mindmap made public without description
+        metricsService.trackMindmapMadePublic(mindmapWithoutDescription, user);
+        
+        // Verify metrics
+        Double withDescription = meterRegistry.find("wisemapping.api.mindmaps.made_public")
+                .tag("has_description", "true")
+                .counter().count();
+        
+        Double withoutDescription = meterRegistry.find("wisemapping.api.mindmaps.made_public")
+                .tag("has_description", "false")
+                .counter().count();
+        
+        assertEquals(1.0, withDescription);
+        assertEquals(1.0, withoutDescription);
+    }
+
+    @Test
+    void testMindmapSharedMetrics() {
+        Account sharer = createTestUser("sharer@example.com", AuthenticationType.DATABASE);
+        Mindmap mindmap = createTestMindmap();
+        
+        // Test sharing with different roles and email providers
+        metricsService.trackMindmapShared(mindmap, "collaborator@gmail.com", "VIEWER", sharer);
+        metricsService.trackMindmapShared(mindmap, "editor@company.com", "EDITOR", sharer);
+        
+        // Verify metrics
+        Double viewerShares = meterRegistry.find("wisemapping.api.mindmaps.shared")
+                .tag("role", "viewer")
+                .tag("collaborator_email_provider", "gmail")
+                .counter().count();
+        
+        Double editorShares = meterRegistry.find("wisemapping.api.mindmaps.shared")
+                .tag("role", "editor")
+                .tag("collaborator_email_provider", "other")
+                .counter().count();
+        
+        assertEquals(1.0, viewerShares);
+        assertEquals(1.0, editorShares);
+    }
+
+    @Test
+    void testUserSuspensionMetrics() {
+        Account user = createTestUser("suspended@example.com", AuthenticationType.DATABASE);
+        
+        // Test user suspension for different reasons
+        metricsService.trackUserSuspension(user, "ABUSE");
+        metricsService.trackUserSuspension(user, "SPAM");
+        
+        // Verify metrics
+        Double abuseSuspensions = meterRegistry.find("wisemapping.api.user.suspensions")
+                .tag("reason", "abuse")
+                .counter().count();
+        
+        Double spamSuspensions = meterRegistry.find("wisemapping.api.user.suspensions")
+                .tag("reason", "spam")
+                .counter().count();
+        
+        assertEquals(1.0, abuseSuspensions);
+        assertEquals(1.0, spamSuspensions);
+    }
+
+    @Test
+    void testSpamAnalysisMetrics() {
+        Mindmap mindmap = createTestMindmap();
+        
+        // Create spam detection results
+        SpamDetectionResult spamResult = SpamDetectionResult.spam("Test reason", "Test details", SpamStrategyType.CONTACT_INFO);
+        SpamDetectionResult cleanResult = SpamDetectionResult.notSpam();
+        
+        // Test spam analysis for spam detection
+        metricsService.trackSpamAnalysis(mindmap, spamResult, "creation");
+        
+        // Test spam analysis for clean result
+        metricsService.trackSpamAnalysis(mindmap, cleanResult, "update");
+        
+        // Verify unified spam analysis metrics
+        Double spamAnalyzed = meterRegistry.find("wisemapping.api.spam.analyzed")
+                .tag("context", "creation")
+                .tag("is_spam", "yes")
+                .tag("spam_type", "CONTACT_INFO")
+                .counter().count();
+        
+        Double cleanAnalyzed = meterRegistry.find("wisemapping.api.spam.analyzed")
+                .tag("context", "update")
+                .tag("is_spam", "no")
+                .tag("spam_type", "none")
+                .counter().count();
+        
+        assertEquals(1.0, spamAnalyzed);
+        assertEquals(1.0, cleanAnalyzed);
     }
 
     @Test

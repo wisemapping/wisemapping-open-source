@@ -171,10 +171,6 @@ public class UserServiceImpl
         final Mindmap mindMap = buildTutorialMindmap(user.getFirstname());
         mindmapService.addMindmap(mindMap, user);
 
-        // Track tutorial mindmap creation and user registration
-        metricsService.trackMindmapCreation(mindMap, user, "tutorial");
-        String emailProvider = metricsService.extractEmailProvider(user.getEmail());
-        metricsService.trackUserRegistration(user, emailProvider);
 
         // Send registration email.
         if (emailConfirmEnabled) {

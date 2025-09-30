@@ -101,6 +101,19 @@ public class AdminController extends BaseController {
         // Finally create the user ...
         delegated.setAuthenticationType(AuthenticationType.DATABASE);
         userService.createUser(delegated, false, true);
+        
+        // Track user registration
+        String emailProvider = metricsService.extractEmailProvider(delegated.getEmail());
+        metricsService.trackUserRegistration(delegated, emailProvider);
+        
+        // Track tutorial mindmap creation
+        // Get the tutorial mindmap (the first/only mindmap for a new user)
+        var userMindmaps = mindmapService.findMindmapsByUser(delegated);
+        if (!userMindmaps.isEmpty()) {
+            Mindmap tutorialMindmap = userMindmaps.get(0);
+            metricsService.trackMindmapCreation(tutorialMindmap, delegated, "tutorial");
+        }
+        
         response.setHeader("Location", "/api/restful/admin/users/" + user.getId());
     }
 
