@@ -39,7 +39,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/restful/admin")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
-public class AdminController extends BaseController {
+public class AdminController {
     @Qualifier("userService")
     @Autowired
     private UserService userService;

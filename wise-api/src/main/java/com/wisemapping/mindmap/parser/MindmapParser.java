@@ -300,85 +300,6 @@ public class MindmapParser {
     }
     
     /**
-     * Recursively extracts text content from topic elements.
-     */
-    private static void extractTextFromTopics(@NotNull Element element, @NotNull StringBuilder text) {
-        String tagName = element.getTagName();
-        
-        // Extract text attribute
-        String textAttr = element.getAttribute("text");
-        if (!textAttr.isEmpty()) {
-            text.append(textAttr).append(" ");
-        }
-        
-        // Extract URL attribute from link elements
-        if ("link".equals(tagName)) {
-            String urlAttr = element.getAttribute("url");
-            if (!urlAttr.isEmpty()) {
-                text.append(urlAttr).append(" ");
-            }
-        }
-        
-        // Process child elements
-        NodeList children = element.getChildNodes();
-        for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);
-            
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                Element childElement = (Element) child;
-                String childTagName = childElement.getTagName();
-                
-                if ("text".equals(childTagName)) {
-                    String textContent = childElement.getTextContent();
-                    if (textContent != null && !textContent.trim().isEmpty()) {
-                        text.append(textContent.trim()).append(" ");
-                    }
-                } else if ("note".equals(childTagName)) {
-                    String noteContent = extractNoteContent(childElement);
-                    if (!noteContent.isEmpty()) {
-                        text.append(noteContent).append(" ");
-                    }
-                } else if ("link".equals(childTagName)) {
-                    String urlAttr = childElement.getAttribute("url");
-                    if (!urlAttr.isEmpty()) {
-                        text.append(urlAttr).append(" ");
-                    }
-                } else if ("topic".equals(childTagName)) {
-                    extractTextFromTopics(childElement, text);
-                }
-            }
-        }
-    }
-    
-    /**
-     * Checks for HTML content in a parsed XML document.
-     */
-    private static boolean hasHtmlContentInDocument(@NotNull Element element) {
-        NodeList children = element.getChildNodes();
-        for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);
-            
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                Element childElement = (Element) child;
-                String tagName = childElement.getTagName();
-                
-                if ("note".equals(tagName)) {
-                    String noteContent = extractNoteContent(childElement);
-                    if (isHtmlContent(noteContent)) {
-                        return true;
-                    }
-                } else if ("topic".equals(tagName)) {
-                    if (hasHtmlContentInDocument(childElement)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        
-        return false;
-    }
-    
-    /**
      * Determines if content contains HTML markup.
      */
     private static boolean isHtmlContent(@NotNull String content) {
@@ -492,21 +413,5 @@ public class MindmapParser {
         }
         
         return text.toString().trim();
-    }
-    
-    /**
-     * Fallback method using regex to check for HTML content.
-     */
-    private static boolean hasHtmlContentFallback(@NotNull String xmlContent) {
-        java.util.regex.Pattern notePattern = java.util.regex.Pattern.compile("<note[^>]*>\\s*<!\\[CDATA\\[([^\\]]*?)\\]\\]>\\s*</note>", java.util.regex.Pattern.CASE_INSENSITIVE | java.util.regex.Pattern.DOTALL);
-        java.util.regex.Matcher matcher = notePattern.matcher(xmlContent);
-        while (matcher.find()) {
-            String noteContent = matcher.group(1);
-            if (isHtmlContent(noteContent)) {
-                return true;
-            }
-        }
-        
-        return false;
     }
 }

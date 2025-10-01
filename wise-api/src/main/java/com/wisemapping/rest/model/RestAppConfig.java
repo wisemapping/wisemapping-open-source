@@ -149,8 +149,6 @@ public class RestAppConfig {
         private String captchaSiteKey;
         private String analyticsAccount;
 
-        private int jwtExpirationMin;
-
         public RestAppConfigBuilder setCaptchaSiteKey(@NotNull String captchaSiteKey) {
             this.captchaSiteKey = captchaSiteKey;
             this.isCatchaEnabled = true;
@@ -168,7 +166,6 @@ public class RestAppConfig {
         }
 
         public RestAppConfigBuilder setJwtExpirationMin(@NotNull int value) {
-            this.jwtExpirationMin = value;
             return this;
         }
 

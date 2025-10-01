@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
-import javax.crypto.SecretKey;
 
 @Component
 public class JwtTokenUtil implements Serializable {

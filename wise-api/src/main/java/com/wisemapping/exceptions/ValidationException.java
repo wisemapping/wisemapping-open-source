@@ -19,7 +19,6 @@
 package com.wisemapping.exceptions;
 
 
-import com.wisemapping.exceptions.WiseMappingException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.validation.Errors;
 

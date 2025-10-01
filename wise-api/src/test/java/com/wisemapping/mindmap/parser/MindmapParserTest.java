@@ -100,7 +100,7 @@ public class MindmapParserTest {
         });
         
         assertDoesNotThrow(() -> {
-            boolean hasHtml = MindmapParser.hasHtmlContent(malformedXml);
+            MindmapParser.hasHtmlContent(malformedXml);
             // Should not throw an exception
         });
     }

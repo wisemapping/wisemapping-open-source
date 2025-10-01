@@ -19,8 +19,6 @@
 package com.wisemapping.exceptions;
 
 
-import org.springframework.lang.Nullable;
-
 import jakarta.validation.constraints.NotNull;
 
 public class InvalidEmailException

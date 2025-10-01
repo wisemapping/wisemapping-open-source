@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.model.Account;
 import com.wisemapping.rest.UserController;
-import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.UserService;
 import org.junit.jupiter.api.*;
@@ -40,11 +39,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.stream.Stream;
 
-import static com.wisemapping.test.rest.RestHelper.createDummyUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -86,23 +82,6 @@ class RestUserControllerTest {
         testDataManager.cleanupTestData();
     }
 
-
-    private RestUser createUser() throws Exception {
-        final RestUser result = createDummyUser();
-        final String userJson = objectMapper.writeValueAsString(result);
-
-        mockMvc.perform(
-                        post("/api/restful/admin/users").
-                                contentType(MediaType.APPLICATION_JSON)
-                                .content(userJson)
-                                .with(user("test@wisemapping.org").roles("ADMIN")))
-                .andExpect(status().isCreated());
-
-        // Check dao ...
-        Account userBy = userService.getUserBy(result.getEmail());
-        assertNotNull(userBy);
-        return result;
-    }
 
     @Test
     @Order(1)

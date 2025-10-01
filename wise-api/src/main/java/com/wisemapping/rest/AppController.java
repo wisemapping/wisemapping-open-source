@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/restful/app")
-public class AppController extends BaseController {
+public class AppController {
 
     @Value("${app.security.oauth2.google.enabled:false}")
     private Boolean isGoogleOauth2Enabled;

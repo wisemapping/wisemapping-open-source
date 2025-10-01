@@ -2,7 +2,6 @@ package com.wisemapping.validator;
 
 import com.wisemapping.exceptions.HtmlContentValidationException;
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.service.spam.SpamContentExtractor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

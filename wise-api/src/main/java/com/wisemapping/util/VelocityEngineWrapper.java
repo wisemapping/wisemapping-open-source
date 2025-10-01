@@ -18,7 +18,6 @@
 package com.wisemapping.util;
 
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 

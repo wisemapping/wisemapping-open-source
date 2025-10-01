@@ -42,7 +42,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/restful/labels")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
-public class LabelController extends BaseController {
+public class LabelController {
 
     @Qualifier("labelService")
     @Autowired

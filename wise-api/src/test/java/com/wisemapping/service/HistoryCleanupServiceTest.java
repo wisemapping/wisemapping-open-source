@@ -93,7 +93,6 @@ class HistoryCleanupServiceTest {
         
         // Verify the cutoff date is approximately 90 days ago
         verify(mindmapManager).cleanupOldMindmapHistory(argThat(calendar -> {
-            Calendar now = Calendar.getInstance();
             Calendar expectedCutoff = Calendar.getInstance();
             expectedCutoff.add(Calendar.DAY_OF_MONTH, -90);
             

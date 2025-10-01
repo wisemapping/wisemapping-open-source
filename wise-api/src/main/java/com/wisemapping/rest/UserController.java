@@ -26,7 +26,6 @@ import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
 import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.*;
-import com.wisemapping.model.Mindmap;
 import com.wisemapping.validator.Messages;
 import com.wisemapping.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
@@ -48,7 +47,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/restful/users")
-public class UserController extends BaseController {
+public class UserController {
 
     @Qualifier("userService")
     @Autowired

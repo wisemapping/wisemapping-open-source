@@ -24,9 +24,6 @@ import com.wisemapping.model.Collaborator;
 import com.wisemapping.util.TimeUtils;
 import org.jetbrains.annotations.NotNull;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
 
 @JsonAutoDetect(

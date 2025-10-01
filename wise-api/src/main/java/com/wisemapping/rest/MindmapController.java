@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/restful/maps")
-public class MindmapController extends BaseController {
+public class MindmapController {
     private final Logger logger = LogManager.getLogger();
 
     private static final String LATEST_HISTORY_REVISION = "latest";

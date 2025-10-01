@@ -2,12 +2,8 @@ package com.wisemapping.test.rest;
 
 import com.wisemapping.rest.model.RestUser;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -18,9 +18,6 @@
 
 package com.wisemapping.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MindMapCriteria {
     private String title;
     private String description;
