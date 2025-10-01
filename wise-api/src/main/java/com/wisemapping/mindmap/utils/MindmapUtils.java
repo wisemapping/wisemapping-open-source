@@ -283,8 +283,7 @@ public class MindmapUtils {
     @NotNull
     public static NoteValidationResult validateNoteContentLength(@NotNull String xmlContent, int maxLength) {
         try {
-            MindmapParser parser = new MindmapParser();
-            MapModel mapModel = parser.parseXml(xmlContent);
+            MapModel mapModel = MindmapParser.parseXml(xmlContent);
             return validateNoteContentLengthFromModel(mapModel, maxLength);
         } catch (MindmapValidationException e) {
             // Fallback to regex-based validation

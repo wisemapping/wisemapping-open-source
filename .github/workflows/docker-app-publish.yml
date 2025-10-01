@@ -1,0 +1,43 @@
+name: Docker App Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: true
+        type: string
+        default: "latest"
+      frontend_branch:
+        required: false
+        type: string
+        default: "main"
+
+jobs:
+  docker-app-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: jar-artifact
+          path: wise-api/target/
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build the Full Stack Docker image
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --build-arg FRONTEND_BRANCH=${{ inputs.frontend_branch }} \
+            --build-arg CACHEBUST=$(date +%s) \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/wisemapping:${{ inputs.tag }} \
+            -f distribution/app/Dockerfile .
+
+      - name: Push Image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/wisemapping:${{ inputs.tag }}

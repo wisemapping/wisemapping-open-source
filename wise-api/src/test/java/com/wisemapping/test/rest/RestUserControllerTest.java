@@ -129,7 +129,7 @@ class RestUserControllerTest {
         RestUserRegistration userRegistration = testDataManager.createTestUserRegistration();
         String userJson = objectMapper.writeValueAsString(userRegistration);
 
-        MvcResult result = mockMvc.perform(
+       mockMvc.perform(
                 post("/api/restful/users/")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(userJson))

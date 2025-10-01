@@ -1,4 +1,4 @@
-name: Docker Publish
+name: Docker API Publish
 
 on:
   workflow_call:
@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  docker-publish:
+  docker-api-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.DOCR_ACCESS_TOKEN }}
 
       - name: Build the Docker image
-        run: docker buildx build --platform linux/amd64 --build-arg ENABLE_NEWRELIC=true -t wisemapping/wisemapping-api:${{ inputs.tag }} -f distribution/api/wise-api.Dockerfile .
+        run: docker buildx build --platform linux/amd64 --build-arg ENABLE_NEWRELIC=true -t wisemapping/wisemapping-api:${{ inputs.tag }} -f distribution/api/Dockerfile .
 
       - name: Tag Docker image
         run: docker tag wisemapping/wisemapping-api:${{ inputs.tag }} registry.digitalocean.com/wise-registry/wisemapping/wisemapping-api:${{ inputs.tag }}
