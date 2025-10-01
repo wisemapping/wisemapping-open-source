@@ -35,8 +35,8 @@ jobs:
             --platform linux/amd64 \
             --build-arg FRONTEND_BRANCH=${{ inputs.frontend_branch }} \
             --build-arg CACHEBUST=$(date +%s) \
-            -t ${{ secrets.DOCKERHUB_USERNAME }}/wisemapping:${{ inputs.tag }} \
+            -t wisemapping/wisemapping:${{ inputs.tag }} \
             -f distribution/app/Dockerfile .
 
       - name: Push Image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/wisemapping:${{ inputs.tag }}
+        run: docker push wisemapping/wisemapping:${{ inputs.tag }}
