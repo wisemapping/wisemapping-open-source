@@ -11,6 +11,18 @@ name: Compile & Run Tests
 on:
   push:
     branches: [ "develop","main" ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Docker tag for app publishing'
+        required: false
+        default: 'latest'
+        type: string
+      frontend_branch:
+        description: 'Frontend branch to use'
+        required: false
+        default: 'main'
+        type: string
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -47,6 +59,15 @@ jobs:
     uses: ./.github/workflows/docker-api-publish.yml
     with:
       tag: stable
+    secrets: inherit
+
+  docker-app-publish:
+    if: github.event_name == 'workflow_dispatch'
+    needs: build
+    uses: ./.github/workflows/docker-app-publish.yml
+    with:
+      tag: ${{ github.event.inputs.tag || 'latest' }}
+      frontend_branch: ${{ github.event.inputs.frontend_branch || 'main' }}
     secrets: inherit
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive

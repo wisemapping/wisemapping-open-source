@@ -1,12 +1,11 @@
 name: Docker App Publish
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       tag:
         required: true
         type: string
-        default: "latest"
       frontend_branch:
         required: false
         type: string
