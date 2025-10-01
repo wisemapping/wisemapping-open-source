@@ -36,7 +36,7 @@ jobs:
   docker-publish-dev:
     if: github.ref == 'refs/heads/develop'
     needs: build
-    uses: ./.github/workflows/docker-publish.yml
+    uses: ./.github/workflows/docker-api-publish.yml
     with:
       tag: latest
     secrets: inherit
@@ -44,7 +44,7 @@ jobs:
   docker-publish-prod:
     if: github.ref == 'refs/heads/main'
     needs: build
-    uses: ./.github/workflows/docker-publish.yml
+    uses: ./.github/workflows/docker-api-publish.yml
     with:
       tag: stable
     secrets: inherit
