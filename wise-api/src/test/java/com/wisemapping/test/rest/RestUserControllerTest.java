@@ -1,5 +1,5 @@
 /*
- *    Copyright [2022] [wisemapping]
+ *    Copyright [2007-2025] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -7,7 +7,7 @@
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the license at
  *
- *       http://www.wisemapping.org/license
+ *       https://github.com/wisemapping/wisemapping-open-source/blob/main/LICENSE.md
  *
  *   Unless required by applicable law or agreed to in writing, software
  *   distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.model.Account;
 import com.wisemapping.rest.UserController;
-import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.UserService;
 import org.junit.jupiter.api.*;
@@ -40,11 +39,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.stream.Stream;
 
-import static com.wisemapping.test.rest.RestHelper.createDummyUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -86,23 +82,6 @@ class RestUserControllerTest {
         testDataManager.cleanupTestData();
     }
 
-
-    private RestUser createUser() throws Exception {
-        final RestUser result = createDummyUser();
-        final String userJson = objectMapper.writeValueAsString(result);
-
-        mockMvc.perform(
-                        post("/api/restful/admin/users").
-                                contentType(MediaType.APPLICATION_JSON)
-                                .content(userJson)
-                                .with(user("test@wisemapping.org").roles("ADMIN")))
-                .andExpect(status().isCreated());
-
-        // Check dao ...
-        Account userBy = userService.getUserBy(result.getEmail());
-        assertNotNull(userBy);
-        return result;
-    }
 
     @Test
     @Order(1)
@@ -150,7 +129,7 @@ class RestUserControllerTest {
         RestUserRegistration userRegistration = testDataManager.createTestUserRegistration();
         String userJson = objectMapper.writeValueAsString(userRegistration);
 
-        MvcResult result = mockMvc.perform(
+       mockMvc.perform(
                 post("/api/restful/users/")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(userJson))

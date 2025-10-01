@@ -1,5 +1,5 @@
 /*
-*    Copyright [2022] [wisemapping]
+*    Copyright [2007-2025] [wisemapping]
 *
 *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
 *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -7,7 +7,7 @@
 *   you may not use this file except in compliance with the License.
 *   You may obtain a copy of the license at
 *
-*       http://www.wisemapping.org/license
+*       https://github.com/wisemapping/wisemapping-open-source/blob/main/LICENSE.md
 *
 *   Unless required by applicable law or agreed to in writing, software
 *   distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,9 +24,6 @@ import com.wisemapping.model.Collaborator;
 import com.wisemapping.util.TimeUtils;
 import org.jetbrains.annotations.NotNull;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
 
 @JsonAutoDetect(

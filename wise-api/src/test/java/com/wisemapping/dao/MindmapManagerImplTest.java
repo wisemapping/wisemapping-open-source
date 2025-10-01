@@ -2,7 +2,6 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Collaborator;
-import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.AuthenticationType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +13,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;

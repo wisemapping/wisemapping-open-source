@@ -1,7 +1,6 @@
 package com.wisemapping.service;
 
 import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.SpamStrategyType;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.service.spam.SpamDetectionStrategy;
 import org.apache.logging.log4j.LogManager;

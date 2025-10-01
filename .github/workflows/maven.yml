@@ -6,11 +6,23 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: WiseMapping API
+name: Compile & Run Tests
 
 on:
   push:
     branches: [ "develop","main" ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Docker tag for app publishing'
+        required: false
+        default: 'latest'
+        type: string
+      frontend_branch:
+        description: 'Frontend branch to use'
+        required: false
+        default: 'main'
+        type: string
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,7 +48,7 @@ jobs:
   docker-publish-dev:
     if: github.ref == 'refs/heads/develop'
     needs: build
-    uses: ./.github/workflows/docker-publish.yml
+    uses: ./.github/workflows/docker-api-publish.yml
     with:
       tag: latest
     secrets: inherit
@@ -44,9 +56,18 @@ jobs:
   docker-publish-prod:
     if: github.ref == 'refs/heads/main'
     needs: build
-    uses: ./.github/workflows/docker-publish.yml
+    uses: ./.github/workflows/docker-api-publish.yml
     with:
       tag: stable
+    secrets: inherit
+
+  docker-app-publish:
+    if: github.event_name == 'workflow_dispatch'
+    needs: build
+    uses: ./.github/workflows/docker-app-publish.yml
+    with:
+      tag: ${{ github.event.inputs.tag || 'latest' }}
+      frontend_branch: ${{ github.event.inputs.frontend_branch || 'main' }}
     secrets: inherit
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
