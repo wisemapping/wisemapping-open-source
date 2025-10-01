@@ -9,8 +9,8 @@ RUN addgroup -g 1001 -S wisemapping && \
     adduser -S -u 1001 -G wisemapping wisemapping
 
 VOLUME /tmp
-COPY --chown=wisemapping:wisemapping env-config.sh /app/config-gen.sh
-COPY --chown=wisemapping:wisemapping ../wise-api/target/wisemapping-api.jar /app/wisemapping-api.jar
+COPY --chown=wisemapping:wisemapping distribution/api/env-config.sh /app/config-gen.sh
+COPY --chown=wisemapping:wisemapping wise-api/target/wisemapping-api.jar /app/wisemapping-api.jar
 RUN chmod +x /app/config-gen.sh
 
 # Create app directory and conditionally download New Relic agent
