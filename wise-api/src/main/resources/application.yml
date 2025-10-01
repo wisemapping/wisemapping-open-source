@@ -179,7 +179,7 @@ app:
       dry-run: false  # Set to true to preview changes without actually suspending users
     oauth2:
       google:
-        enabled: true
+        enabled: false
         clientSecret: <google-oath>
         confirmUrl: https://oauth2.googleapis.com/token
         userinfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
