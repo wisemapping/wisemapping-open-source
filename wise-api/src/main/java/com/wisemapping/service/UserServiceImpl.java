@@ -28,6 +28,8 @@ import com.wisemapping.rest.model.RestResetPasswordResponse;
 import com.wisemapping.service.google.GoogleAccountBasicData;
 import com.wisemapping.service.google.GoogleService;
 import com.wisemapping.service.google.http.HttpInvokerException;
+import com.wisemapping.service.facebook.FacebookAccountBasicData;
+import com.wisemapping.service.facebook.FacebookService;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
 import org.apache.logging.log4j.LogManager;
@@ -61,6 +63,8 @@ public class UserServiceImpl
     private VelocityEngineWrapper velocityEngineWrapper;
     @Autowired
     private GoogleService googleService;
+    @Autowired
+    private FacebookService facebookService;
     @Autowired
     private MetricsService metricsService;
 
@@ -229,6 +233,50 @@ public class UserServiceImpl
         return result;
     }
 
+    public Account createAndAuthUserFromFacebook(@NotNull String callbackCode) throws WiseMappingException {
+        FacebookAccountBasicData data;
+        try {
+            data = facebookService.processCallback(callbackCode);
+        } catch (HttpInvokerException e) {
+            logger.debug(e.getMessage(), e);
+            throw new OAuthAuthenticationException(e);
+        }
+        // Callback is successful, the email of the user exits. Is an existing account ?
+        Account result = userManager.getUserBy(data.getEmail());
+        if (result == null) {
+            // Check if there's an existing collaborator with this email
+            Collaborator existingCollaborator = userManager.getCollaboratorBy(data.getEmail());
+
+            Account newUser = new Account();
+            // new registrations from facebook starts sync
+            newUser.setGoogleSync(true);
+            newUser.setEmail(data.getEmail());
+            newUser.setFirstname(data.getName());
+            newUser.setLastname(data.getLastName());
+            newUser.setAuthenticationType(AuthenticationType.FACEBOOK_OAUTH2);
+            newUser.setGoogleToken(data.getAccessToken());
+
+            if (existingCollaborator != null) {
+                // Migrate existing collaborator to account
+                logger.debug("Migrating existing collaborator to Facebook OAuth account for email: " + data.getEmail());
+                result = userManager.createUser(newUser, existingCollaborator);
+            } else {
+                // Create new account
+                result = this.createUser(newUser, false, true);
+            }
+            logger.debug("Facebook account successfully created");
+        }
+
+        // Is the user a non-oauth user ?
+        if (result.getGoogleSync() == null || !result.getGoogleSync()) {
+            result.setGoogleSync(false);
+            result.setSyncCode(callbackCode);
+            result.setGoogleToken(data.getAccessToken());
+            userManager.updateUser(result);
+        }
+        return result;
+    }
+
     public Account confirmGoogleAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
         final Account existingUser = userManager.getUserBy(email);
         // additional security check
@@ -310,6 +358,10 @@ public class UserServiceImpl
 
     public void setGoogleService(GoogleService googleService) {
         this.googleService = googleService;
+    }
+
+    public void setFacebookService(FacebookService facebookService) {
+        this.facebookService = facebookService;
     }
 
     @Override

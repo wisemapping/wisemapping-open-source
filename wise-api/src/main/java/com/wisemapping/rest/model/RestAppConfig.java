@@ -35,6 +35,9 @@ public class RestAppConfig {
     private String apiBaseUrl;
     private String uiBaseUrl;
     private String googleOauth2Url;
+    private boolean googleOauth2Enabled;
+    private String facebookOauth2Url;
+    private boolean facebookOauth2Enabled;
     private boolean registrationEnabled;
     private boolean recaptcha2Enabled;
     private String recaptcha2SiteKey;
@@ -60,6 +63,30 @@ public class RestAppConfig {
 
     public void setGoogleOauth2Url(String googleOauth2Url) {
         this.googleOauth2Url = googleOauth2Url;
+    }
+
+    public String getFacebookOauth2Url() {
+        return facebookOauth2Url;
+    }
+
+    public void setFacebookOauth2Url(String facebookOauth2Url) {
+        this.facebookOauth2Url = facebookOauth2Url;
+    }
+
+    public boolean isGoogleOauth2Enabled() {
+        return googleOauth2Enabled;
+    }
+
+    public void setGoogleOauth2Enabled(boolean googleOauth2Enabled) {
+        this.googleOauth2Enabled = googleOauth2Enabled;
+    }
+
+    public boolean isFacebookOauth2Enabled() {
+        return facebookOauth2Enabled;
+    }
+
+    public void setFacebookOauth2Enabled(boolean facebookOauth2Enabled) {
+        this.facebookOauth2Enabled = facebookOauth2Enabled;
     }
 
     public boolean isRegistrationEnabled() {
@@ -114,6 +141,9 @@ public class RestAppConfig {
         private String apiBaseUrl;
         private String uiBaseUrl;
         private String googleOauth2Url;
+        private boolean googleOauth2Enabled;
+        private String facebookOauth2Url;
+        private boolean facebookOauth2Enabled;
         private boolean registrationEnabled;
         private boolean isCatchaEnabled = false;
         private String captchaSiteKey;
@@ -147,6 +177,21 @@ public class RestAppConfig {
             return this;
         }
 
+        public RestAppConfigBuilder setFacebookOauth2Url(@NotNull String facebookOauth2Url) {
+            this.facebookOauth2Url = facebookOauth2Url;
+            return this;
+        }
+
+        public RestAppConfigBuilder setGoogleOauth2Enabled(boolean googleOauth2Enabled) {
+            this.googleOauth2Enabled = googleOauth2Enabled;
+            return this;
+        }
+
+        public RestAppConfigBuilder setFacebookOauth2Enabled(boolean facebookOauth2Enabled) {
+            this.facebookOauth2Enabled = facebookOauth2Enabled;
+            return this;
+        }
+
         private void setGoogleAnalyticsAccount(@NotNull String analyticsAccount) {
             this.analyticsAccount = analyticsAccount;
         }
@@ -165,6 +210,9 @@ public class RestAppConfig {
         public RestAppConfig build() {
             final RestAppConfig result = new RestAppConfig();
             result.googleOauth2Url = googleOauth2Url;
+            result.googleOauth2Enabled = googleOauth2Enabled;
+            result.facebookOauth2Url = facebookOauth2Url;
+            result.facebookOauth2Enabled = facebookOauth2Enabled;
             result.recaptcha2SiteKey = captchaSiteKey;
             result.recaptcha2Enabled = isCatchaEnabled;
             result.uiBaseUrl = uiBaseUrl;
