@@ -1,24 +1,28 @@
-FROM node:18.12.1-alpine AS builder
-
-# Set the working directory in the container
-WORKDIR /app
-
-ARG VERSION="6.0.1"
-
-# Install dependencies
-RUN mkdir webapp && npm pack @wisemapping/webapp@${VERSION} && tar -xvzf wisemapping-webapp-${VERSION}.tgz -C webapp
-
-# Use Nginx as the production server
-FROM nginx:alpine
+FROM eclipse-temurin:24-jre-alpine
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
-## Copy the built React app to Nginx's web server directory
-COPY --from=builder /app/webapp/package/dist /usr/share/nginx/html/
+# Build argument to optionally download New Relic
+ARG ENABLE_NEWRELIC=false
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Create non-root user for security
+RUN addgroup -g 1001 -S wisemapping && \
+    adduser -S -u 1001 -G wisemapping wisemapping
 
-# Expose port 80 for the Nginx server
-EXPOSE 80
+VOLUME /tmp
+COPY --chown=wisemapping:wisemapping env-config.sh /app/config-gen.sh
+COPY --chown=wisemapping:wisemapping ../wise-api/target/wisemapping-api.jar /app/wisemapping-api.jar
+RUN chmod +x /app/config-gen.sh
 
-# Start Nginx when the container runs
-CMD ["nginx", "-g", "daemon off;"]
+# Create app directory and conditionally download New Relic agent
+RUN mkdir -p /app && \
+    if [ "$ENABLE_NEWRELIC" = "true" ]; then \
+        apk add --no-cache curl && \
+        curl -o /app/newrelic.jar https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar && \
+        chown wisemapping:wisemapping /app/newrelic.jar && \
+        apk del curl; \
+    fi
+
+WORKDIR /app
+USER wisemapping
+
+ENTRYPOINT ["sh", "-c", "/app/config-gen.sh && java ${JAVA_OPTS} ${NEW_RELIC_OPTS} -jar wisemapping-api.jar"]
