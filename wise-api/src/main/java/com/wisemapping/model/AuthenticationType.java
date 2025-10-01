@@ -23,7 +23,8 @@ import org.jetbrains.annotations.NotNull;
 public enum AuthenticationType {
     DATABASE('D'),
     LDAP('L'),
-    GOOGLE_OAUTH2('G');
+    GOOGLE_OAUTH2('G'),
+    FACEBOOK_OAUTH2('F');
 	
     private final char schemaCode;
 

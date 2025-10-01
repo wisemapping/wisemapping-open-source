@@ -30,8 +30,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/restful/app")
 public class AppController extends BaseController {
 
+    @Value("${app.security.oauth2.google.enabled:false}")
+    private Boolean isGoogleOauth2Enabled;
+
     @Value("${app.security.oauth2.google.url:}")
     private String googleOauth2Url;
+
+    @Value("${app.security.oauth2.facebook.enabled:false}")
+    private Boolean isFacebookOauth2Enabled;
+
+    @Value("${app.security.oauth2.facebook.url:}")
+    private String facebookOauth2Url;
 
     @Value("${app.registration.enabled:true}")
     private Boolean isRegistrationEnabled;
@@ -62,6 +71,9 @@ public class AppController extends BaseController {
                 .setUiUrl(uiBaseUrl)
                 .setCaptchaSiteKey(captchaSiteKey)
                 .setGoogleOauth2Url(googleOauth2Url)
+                .setGoogleOauth2Enabled(isGoogleOauth2Enabled)
+                .setFacebookOauth2Url(facebookOauth2Url)
+                .setFacebookOauth2Enabled(isFacebookOauth2Enabled)
                 .setAnalyticsAccount(analyticsAccount)
                 .setRegistrationEnabled(isRegistrationEnabled)
                 .setJwtExpirationMin(jwtExpirationMin)

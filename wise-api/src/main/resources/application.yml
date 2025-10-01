@@ -179,12 +179,21 @@ app:
       dry-run: false  # Set to true to preview changes without actually suspending users
     oauth2:
       google:
+        enabled: true
         clientSecret: <google-oath>
         confirmUrl: https://oauth2.googleapis.com/token
         userinfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
         callbackUrl: https://app.wisemapping.com/c/registration-google
         clientId: 625682766634-cocbbbbb403iuvps1evecdk6d7phvbkf.apps.googleusercontent.com
         url: https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${app.security.oauth2.google.callbackUrl}&prompt=consent&response_type=code&client_id=${app.security.oauth2.google.clientId}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&state=wisemapping&include_granted_scopes=true
+      facebook:
+        enabled: false
+        clientSecret: <facebook-oauth-secret>
+        confirmUrl: https://graph.facebook.com/v18.0/oauth/access_token
+        userinfoUrl: https://graph.facebook.com/me?fields=id,email,first_name,last_name
+        callbackUrl: https://app.wisemapping.com/c/registration-facebook
+        clientId: <facebook-app-id>
+        url: https://www.facebook.com/v18.0/dialog/oauth?redirect_uri=${app.security.oauth2.facebook.callbackUrl}&client_id=${app.security.oauth2.facebook.clientId}&scope=email&response_type=code&state=wisemapping
   #  accounts:
   #    exclusion:
   #      domain:

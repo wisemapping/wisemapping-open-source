@@ -71,6 +71,24 @@ public class OAuth2Controller extends BaseController {
         return new RestOath2CallbackResponse(user, jwtToken);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "facebookcallback", produces = {"application/json"})
+    @ResponseStatus(value = HttpStatus.OK)
+    public RestOath2CallbackResponse processFacebookCallback(@NotNull @RequestParam String code, @NotNull HttpServletResponse response, @NotNull HttpServletRequest request) throws WiseMappingException {
+        logger.debug("ProcessFacebookCallback:" + code);
+        if (code == null) {
+            throw new WiseMappingException("Illegal argument exception: " + code);
+        }
+
+        final Account user = userService.createAndAuthUserFromFacebook(code);
+        String jwtToken = null;
+        if (user.getGoogleSync()) {
+            jwtToken = jwtTokenUtil.doLogin(response, user.getEmail());
+        }
+
+        // Response ...
+        return new RestOath2CallbackResponse(user, jwtToken);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "confirmaccountsync", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public RestOath2CallbackResponse confirmAccountSync(@NotNull @RequestParam String email, @NotNull @RequestParam String code, @NotNull HttpServletResponse response) throws WiseMappingException {
