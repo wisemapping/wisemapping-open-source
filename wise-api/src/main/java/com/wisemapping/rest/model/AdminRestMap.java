@@ -51,6 +51,7 @@ public class AdminRestMap {
     private boolean isPublic;
     private boolean isSpam;
     private String spamType;
+    private String spamDetectedDate;
     private String spamReason;
 
     // Default constructor for Jackson deserialization
@@ -108,6 +109,15 @@ public class AdminRestMap {
             if (mindmap.getSpamInfo().getSpamTypeCode() != null) {
                 this.spamType = mindmap.getSpamInfo().getSpamTypeCode().name();
             }
+            
+            // Set spam detected date
+            if (mindmap.getSpamInfo().getUpdatedAt() != null) {
+                LocalDateTime dateTime = LocalDateTime.ofInstant(
+                    mindmap.getSpamInfo().getUpdatedAt().toInstant(), 
+                    ZoneId.systemDefault());
+                this.spamDetectedDate = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            }
+            
             // Note: getSpamReason() method may not exist in current model
             // this.spamReason = mindmap.getSpamInfo().getSpamReason();
         }
@@ -213,6 +223,14 @@ public class AdminRestMap {
 
     public void setSpamType(String spamType) {
         this.spamType = spamType;
+    }
+
+    public String getSpamDetectedDate() {
+        return spamDetectedDate;
+    }
+
+    public void setSpamDetectedDate(String spamDetectedDate) {
+        this.spamDetectedDate = spamDetectedDate;
     }
 
     public void setSpamReason(String spamReason) {

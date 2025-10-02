@@ -378,7 +378,7 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/spam", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
-    public com.wisemapping.rest.model.RestMap updateMapSpamStatus(@RequestBody Map<String, Boolean> spamData, @PathVariable int id) throws WiseMappingException {
+    public com.wisemapping.rest.model.AdminRestMap updateMapSpamStatus(@RequestBody Map<String, Boolean> spamData, @PathVariable int id) throws WiseMappingException {
         if (spamData == null || !spamData.containsKey("isSpam")) {
             throw new IllegalArgumentException("Spam status data is required");
         }
@@ -391,10 +391,19 @@ public class AdminController {
         Boolean isSpam = spamData.get("isSpam");
         if (isSpam != null) {
             existingMap.setSpamDetected(isSpam);
+            if (isSpam) {
+                // When manually marking as spam, set the spam type to UNKNOWN (manual)
+                existingMap.setSpamTypeCode(com.wisemapping.model.SpamStrategyType.UNKNOWN);
+                existingMap.setSpamDescription("Manually marked as spam by admin");
+            } else {
+                // When unmarking as spam, clear the spam type and description
+                existingMap.setSpamTypeCode(null);
+                existingMap.setSpamDescription(null);
+            }
             mindmapService.updateMindmap(existingMap, true);
         }
 
-        return new com.wisemapping.rest.model.RestMap(existingMap);
+        return new com.wisemapping.rest.model.AdminRestMap(existingMap);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
