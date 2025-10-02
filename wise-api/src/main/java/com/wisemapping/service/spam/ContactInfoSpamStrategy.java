@@ -135,22 +135,22 @@ public class ContactInfoSpamStrategy implements SpamDetectionStrategy {
             if (hasWebsite && hasPhone && hasAddress) {
                 isContactInfoSpam = true;
                 reason = "Contact info spam detected - contains address, website, and phone";
-                details = String.format("Content: '%s', HasWebsite: %s, HasPhone: %s, HasAddress: %s", 
-                                      content, hasWebsite, hasPhone, hasAddress);
+                details = String.format("HasWebsite: %s, HasPhone: %s, HasAddress: %s", 
+                                      hasWebsite, hasPhone, hasAddress);
             }
             // Rule 2: Has website + phone with contact keywords (secondary detection)
             else if (hasWebsite && hasPhone && contactKeywordMatches > 0) {
                 isContactInfoSpam = true;
                 reason = "Website and phone with contact keywords detected";
-                details = String.format("Content: '%s', HasWebsite: %s, HasPhone: %s, ContactKeywords: %d", 
-                                      content, hasWebsite, hasPhone, contactKeywordMatches);
+                details = String.format("HasWebsite: %s, HasPhone: %s, ContactKeywords: %d", 
+                                      hasWebsite, hasPhone, contactKeywordMatches);
             }
             // Rule 3: Multiple contact patterns with contact keywords (secondary detection)
             else if (contactPatternMatches >= 3 && contactKeywordMatches >= 2) {
                 isContactInfoSpam = true;
                 reason = "Multiple contact patterns with contact keywords detected";
-                details = String.format("Content: '%s', ContactPatterns: %d, ContactKeywords: %d", 
-                                      content, contactPatternMatches, contactKeywordMatches);
+                details = String.format("ContactPatterns: %d, ContactKeywords: %d", 
+                                      contactPatternMatches, contactKeywordMatches);
             }
             // Rule 4: Very high contact pattern count (likely spam)
             else if (contactPatternMatches >= 5) {

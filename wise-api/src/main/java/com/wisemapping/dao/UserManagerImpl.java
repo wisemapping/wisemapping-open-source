@@ -183,4 +183,49 @@ public class UserManagerImpl
         }
         return user;
     }
+
+    @Override
+    public List<Account> getAllUsers(int offset, int limit) {
+        final TypedQuery<Account> query = entityManager.createQuery(
+            "SELECT u FROM com.wisemapping.model.Account u ORDER BY u.id DESC", 
+            Account.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countAllUsers() {
+        final TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(u) FROM com.wisemapping.model.Account u", 
+            Long.class);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public List<Account> searchUsers(String search, int offset, int limit) {
+        final TypedQuery<Account> query = entityManager.createQuery(
+            "SELECT u FROM com.wisemapping.model.Account u " +
+            "WHERE LOWER(u.email) LIKE LOWER(:search) " +
+            "   OR LOWER(u.firstname) LIKE LOWER(:search) " +
+            "   OR LOWER(u.lastname) LIKE LOWER(:search) " +
+            "ORDER BY u.id DESC", 
+            Account.class);
+        query.setParameter("search", "%" + search + "%");
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countUsersBySearch(String search) {
+        final TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(u) FROM com.wisemapping.model.Account u " +
+            "WHERE LOWER(u.email) LIKE LOWER(:search) " +
+            "   OR LOWER(u.firstname) LIKE LOWER(:search) " +
+            "   OR LOWER(u.lastname) LIKE LOWER(:search)", 
+            Long.class);
+        query.setParameter("search", "%" + search + "%");
+        return query.getSingleResult();
+    }
 }

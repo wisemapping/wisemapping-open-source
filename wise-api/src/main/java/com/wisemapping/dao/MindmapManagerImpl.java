@@ -363,7 +363,7 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationDate >= :cutoffDate " +
+            "AND m.creator.creationTime >= :cutoffDate " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold", 
             Object[].class);
@@ -392,7 +392,7 @@ public class MindmapManagerImpl
             "FROM com.wisemapping.model.Mindmap m " +
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
-            "AND m.creator.creationDate >= :cutoffDate " +
+            "AND m.creator.creationTime >= :cutoffDate " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold " +
             "ORDER BY m.creator.id", 
@@ -425,7 +425,7 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationDate >= :cutoffDate " +
+            "AND m.creator.creationTime >= :cutoffDate " +
             "AND (:lastUserId IS NULL OR m.creator.id > :lastUserId) " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold " +
@@ -459,7 +459,7 @@ public class MindmapManagerImpl
             "       COUNT(m.id) as totalCount " +
             "FROM com.wisemapping.model.Mindmap m " +
             "LEFT JOIN m.spamInfo s " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "WHERE m.creator.creationTime >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "GROUP BY m.creator " +
             "HAVING COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
@@ -493,13 +493,13 @@ public class MindmapManagerImpl
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
             "FROM com.wisemapping.model.Mindmap m " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "WHERE m.creator.creationTime >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "AND m.creator IN (" +
             "    SELECT m2.creator " +
             "    FROM com.wisemapping.model.Mindmap m2 " +
             "    LEFT JOIN m2.spamInfo s2 " +
-            "    WHERE m2.creator.creationDate >= :cutoffDate " +
+            "    WHERE m2.creator.creationTime >= :cutoffDate " +
             "      AND m2.isPublic = true " +
             "    GROUP BY m2.creator " +
             "    HAVING COUNT(CASE WHEN s2.spamDetected = true THEN 1 END) >= :minSpamCount " +
@@ -526,14 +526,14 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationDate >= :cutoffDate " +
+            "AND m.creator.creationTime >= :cutoffDate " +
             "AND m.creator IN (" +
             "    SELECT m2.creator " +
             "    FROM com.wisemapping.model.Mindmap m2 " +
             "    JOIN m2.spamInfo s2 " +
             "    WHERE s2.spamDetected = true " +
             "      AND m2.isPublic = true " +
-            "    AND m2.creator.creationDate >= :cutoffDate " +
+            "    AND m2.creator.creationTime >= :cutoffDate " +
             "    GROUP BY m2.creator " +
             "    HAVING COUNT(m2.id) >= :spamThreshold" +
             ")",
@@ -649,7 +649,7 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "  AND m.creator.creationDate >= :cutoffDate " +
+            "  AND m.creator.creationTime >= :cutoffDate " +
             "  AND s.spamTypeCode IN (" + inClause.toString() + ") " +
             "GROUP BY m.creator " +
             "ORDER BY m.creator.id", 
@@ -695,7 +695,7 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "  AND m.creator.creationDate >= :cutoffDate " +
+            "  AND m.creator.creationTime >= :cutoffDate " +
             "  AND s.spamTypeCode IN (" + inClause.toString() + ")", 
             Long.class);
         
@@ -785,7 +785,83 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> getAllMindmaps() {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m ORDER BY m.creationDate DESC", Mindmap.class);
+            "SELECT m FROM com.wisemapping.model.Mindmap m ORDER BY m.creationTime DESC", Mindmap.class);
         return query.getResultList();
+    }
+
+    @Override
+    public List<Mindmap> getAllMindmaps(int offset, int limit) {
+        final TypedQuery<Mindmap> query = entityManager.createQuery(
+            "SELECT m FROM com.wisemapping.model.Mindmap m ORDER BY m.creationTime DESC", Mindmap.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countAllMindmaps() {
+        final TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m", Long.class);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, int offset, int limit) {
+        StringBuilder queryString = new StringBuilder(
+            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+        
+        if (search != null && !search.trim().isEmpty()) {
+            queryString.append(" AND (LOWER(m.title) LIKE LOWER(:search) OR LOWER(m.description) LIKE LOWER(:search))");
+        }
+        
+        if (filterPublic != null) {
+            queryString.append(" AND m.isPublic = :filterPublic");
+        }
+        
+        // Note: Locked status would need to be determined by checking the lock manager
+        // For now, we'll implement a basic version that doesn't filter by locked status
+        // This could be enhanced later by joining with a locks table or checking lock status
+        
+        queryString.append(" ORDER BY m.creationTime DESC");
+        
+        final TypedQuery<Mindmap> query = entityManager.createQuery(queryString.toString(), Mindmap.class);
+        
+        if (search != null && !search.trim().isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        
+        if (filterPublic != null) {
+            query.setParameter("filterPublic", filterPublic);
+        }
+        
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked) {
+        StringBuilder queryString = new StringBuilder(
+            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+        
+        if (search != null && !search.trim().isEmpty()) {
+            queryString.append(" AND (LOWER(m.title) LIKE LOWER(:search) OR LOWER(m.description) LIKE LOWER(:search))");
+        }
+        
+        if (filterPublic != null) {
+            queryString.append(" AND m.isPublic = :filterPublic");
+        }
+        
+        final TypedQuery<Long> query = entityManager.createQuery(queryString.toString(), Long.class);
+        
+        if (search != null && !search.trim().isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        
+        if (filterPublic != null) {
+            query.setParameter("filterPublic", filterPublic);
+        }
+        
+        return query.getSingleResult();
     }
 }

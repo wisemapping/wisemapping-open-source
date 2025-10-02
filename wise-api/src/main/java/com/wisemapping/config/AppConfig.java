@@ -81,10 +81,9 @@ public class AppConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/restful/users/resetPassword").permitAll()
                         .requestMatchers("/api/restful/oauth2/googlecallback").permitAll()
                         .requestMatchers("/api/restful/oauth2/confirmaccountsync").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/api/restful/admin/**").permitAll()
                         .requestMatchers("/api/restful/admin/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
                 .logout(logout -> logout.permitAll()
                         .logoutSuccessHandler((request, response, authentication) -> {
@@ -121,11 +120,17 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(@NotNull CorsRegistry registry) {
         if (!corsAllowedOrigins.isEmpty()) {
+            // Split comma-separated origins and trim whitespace
+            String[] origins = corsAllowedOrigins.split(",");
+            for (int i = 0; i < origins.length; i++) {
+                origins[i] = origins[i].trim();
+            }
+            
             registry.addMapping("/api/**")
                     .exposedHeaders("*")
                     .allowedHeaders("*")
                     .allowedMethods("*")
-                    .allowedOrigins(corsAllowedOrigins)
+                    .allowedOrigins(origins)
                     .maxAge(3600);
         }
     }

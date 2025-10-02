@@ -229,4 +229,38 @@ public interface MindmapManager {
      * @return list of all mindmaps in the system
      */
     List<Mindmap> getAllMindmaps();
+
+    /**
+     * Get all mindmaps with pagination support (admin only)
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of mindmaps for the given page
+     */
+    List<Mindmap> getAllMindmaps(int offset, int limit);
+
+    /**
+     * Count total number of mindmaps (admin only)
+     * @return total count of mindmaps
+     */
+    long countAllMindmaps();
+
+    /**
+     * Search mindmaps with filtering and pagination (admin only)
+     * @param search search term for title or description
+     * @param filterPublic filter by public status (null for all)
+     * @param filterLocked filter by locked status (null for all)
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of filtered mindmaps for the given page
+     */
+    List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, int offset, int limit);
+
+    /**
+     * Count mindmaps matching search criteria (admin only)
+     * @param search search term for title or description
+     * @param filterPublic filter by public status (null for all)
+     * @param filterLocked filter by locked status (null for all)
+     * @return total count of matching mindmaps
+     */
+    long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked);
 }
