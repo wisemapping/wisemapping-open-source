@@ -141,4 +141,28 @@ public class RestMap {
         // This would need to be implemented in the future
         // No-op for now
     }
+
+    public boolean isSpam() {
+        return mindmap.isSpamDetected();
+    }
+
+    public String getSpamType() {
+        if (mindmap.getSpamInfo() != null && mindmap.getSpamInfo().getSpamTypeCode() != null) {
+            return mindmap.getSpamInfo().getSpamTypeCode().name();
+        }
+        return null;
+    }
+
+    public String getSpamDetectedDate() {
+        if (mindmap.getSpamInfo() != null && mindmap.getSpamInfo().getCreatedAt() != null) {
+            Calendar spamDate = mindmap.getSpamInfo().getCreatedAt();
+            LocalDateTime dateTime = LocalDateTime.ofInstant(spamDate.toInstant(), ZoneId.systemDefault());
+            return dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        }
+        return null;
+    }
+
+    public String getSpamDescription() {
+        return mindmap.getSpamDescription();
+    }
 }
