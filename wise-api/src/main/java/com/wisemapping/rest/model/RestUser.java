@@ -133,7 +133,7 @@ public class RestUser {
     }
 
     public boolean isAdmin() {
-        return isAdmin != null ? isAdmin : false;
+        return this.isAdmin;
     }
 
     public void setAdmin(boolean admin) {
