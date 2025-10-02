@@ -716,4 +716,74 @@ public class AdminControllerTest {
                 "Unauthenticated user should not be able to update map spam status");
     }
 
+    @Test
+    public void testUpdateUserSuspension_AdminAccess_Success() {
+        // Test that admin can suspend users
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Object> suspensionData = new HashMap<>();
+        suspensionData.put("suspended", true);
+        suspensionData.put("suspensionReason", "ABUSE");
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(suspensionData, headers);
+
+        ResponseEntity<RestUser> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .exchange(
+                        "/api/restful/admin/users/1/suspension",
+                        HttpMethod.PUT,
+                        entity,
+                        RestUser.class
+                );
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().isSuspended());
+        assertEquals("ABUSE", response.getBody().getSuspensionReason());
+    }
+
+    @Test
+    public void testUpdateUserSuspension_RegularUserAccess_Forbidden() {
+        // Test that regular user cannot suspend users
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Object> suspensionData = new HashMap<>();
+        suspensionData.put("suspended", true);
+        suspensionData.put("suspensionReason", "ABUSE");
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(suspensionData, headers);
+
+        ResponseEntity<String> response = restTemplate.withBasicAuth(REGULAR_USER, REGULAR_PASSWORD)
+                .exchange(
+                        "/api/restful/admin/users/1/suspension",
+                        HttpMethod.PUT,
+                        entity,
+                        String.class
+                );
+
+        // Should be either 401 (unauthorized) or 403 (forbidden)
+        assertTrue(response.getStatusCode() == HttpStatus.UNAUTHORIZED || 
+                  response.getStatusCode() == HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    public void testUpdateUserSuspension_NoAuth_Unauthorized() {
+        // Test that unauthenticated requests are rejected
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Object> suspensionData = new HashMap<>();
+        suspensionData.put("suspended", true);
+        suspensionData.put("suspensionReason", "ABUSE");
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(suspensionData, headers);
+
+        ResponseEntity<String> response = restTemplate
+                .exchange(
+                        "/api/restful/admin/users/1/suspension",
+                        HttpMethod.PUT,
+                        entity,
+                        String.class
+                );
+
+        // Should be 401 (unauthorized)
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode(),
+                "Unauthenticated user should not be able to update user suspension status");
+    }
+
 }

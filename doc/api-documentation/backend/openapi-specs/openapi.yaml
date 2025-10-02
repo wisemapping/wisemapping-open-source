@@ -1,0 +1,416 @@
+openapi: 3.0.3
+info:
+  title: Wisemapping API
+  description: |
+    RESTful API for Wisemapping - a collaborative mind mapping platform.
+    
+    This API provides comprehensive functionality for managing mind maps, users, labels, and collaboration features.
+    
+    ## Authentication
+    The API uses JWT (JSON Web Token) authentication. Include the token in the Authorization header:
+    ```
+    Authorization: Bearer <your-jwt-token>
+    ```
+    
+    ## Base URL
+    The API base URL is typically: `https://your-domain.com/api/restful`
+    
+    ## Rate Limiting
+    API requests are rate limited. Check response headers for rate limit information.
+    
+    ## Error Handling
+    The API returns standard HTTP status codes and detailed error messages in JSON format.
+  version: 6.5.0
+  contact:
+    name: Wisemapping Support
+    url: https://github.com/wisemapping/wisemapping-open-source
+    email: support@wisemapping.com
+  license:
+    name: WiseMapping Public License
+    url: https://github.com/wisemapping/wisemapping-open-source/blob/main/LICENSE.md
+
+servers:
+  - url: https://your-domain.com/api/restful
+    description: Production server
+  - url: http://localhost:8080/api/restful
+    description: Development server
+
+security:
+  - BearerAuth: []
+  - {}
+
+paths:
+  # Authentication endpoints
+  /authenticate:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate user and get JWT token
+      description: Authenticate a user with email and password to receive a JWT token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+            example:
+              email: "user@example.com"
+              password: "password123"
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: JWT token
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout user
+      description: Logout the current user and invalidate the JWT token
+      responses:
+        '200':
+          description: Logout successful
+
+  # Application configuration
+  /app/config:
+    get:
+      tags:
+        - Configuration
+      summary: Get application configuration
+      description: Retrieve public application configuration including OAuth settings, registration status, etc.
+      security: []
+      responses:
+        '200':
+          description: Configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+
+  # Account management
+  /account:
+    get:
+      tags:
+        - Account
+      summary: Get current user account information
+      description: Retrieve the authenticated user's account information
+      responses:
+        '200':
+          description: Account information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Account
+      summary: Delete current user account
+      description: Permanently delete the current user's account and all associated data
+      responses:
+        '204':
+          description: Account deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /account/password:
+    put:
+      tags:
+        - Account
+      summary: Change user password
+      description: Change the password for the current user
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: New password
+      responses:
+        '204':
+          description: Password changed successfully
+        '400':
+          description: Invalid password or password change not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /account/firstname:
+    put:
+      tags:
+        - Account
+      summary: Update user first name
+      description: Update the first name of the current user
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: New first name
+      responses:
+        '204':
+          description: First name updated successfully
+
+  /account/lastname:
+    put:
+      tags:
+        - Account
+      summary: Update user last name
+      description: Update the last name of the current user
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: New last name
+      responses:
+        '204':
+          description: Last name updated successfully
+
+  /account/locale:
+    put:
+      tags:
+        - Account
+      summary: Update user locale
+      description: Update the locale/language preference of the current user
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: Locale code (e.g., 'en', 'es', 'fr')
+      responses:
+        '204':
+          description: Locale updated successfully
+
+  # User registration
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Register new user
+      description: Register a new user account
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '201':
+          description: User registered successfully
+          headers:
+            Location:
+              description: URL of the created user resource
+              schema:
+                type: string
+            ResourceId:
+              description: ID of the created user
+              schema:
+                type: string
+        '400':
+          description: Registration failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/resetPassword:
+    put:
+      tags:
+        - Users
+      summary: Reset user password
+      description: Send password reset email to user
+      security: []
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+            format: email
+          description: User email address
+      responses:
+        '200':
+          description: Password reset email sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordResetResponse'
+        '400':
+          description: Invalid email or user not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from /authenticate endpoint
+
+  schemas:
+    AuthRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address
+        password:
+          type: string
+          description: User password
+          minLength: 1
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique user identifier
+        email:
+          type: string
+          format: email
+          description: User email address
+        firstname:
+          type: string
+          description: User first name
+        lastname:
+          type: string
+          description: User last name
+        locale:
+          type: string
+          description: User locale preference
+        authenticationType:
+          type: string
+          enum: [DATABASE, GOOGLE_OAUTH2, FACEBOOK_OAUTH2, LDAP]
+          description: Authentication method used
+        admin:
+          type: boolean
+          description: Whether user has admin privileges
+        allowSendEmail:
+          type: boolean
+          description: Whether user allows email notifications
+        creationDate:
+          type: string
+          format: date-time
+          description: Account creation date
+        suspended:
+          type: boolean
+          description: Whether account is suspended
+        active:
+          type: boolean
+          description: Whether account is active
+
+    UserRegistration:
+      type: object
+      required:
+        - email
+        - password
+        - firstname
+        - lastname
+      properties:
+        email:
+          type: string
+          format: email
+          description: User email address
+        password:
+          type: string
+          description: User password
+          minLength: 1
+        firstname:
+          type: string
+          description: User first name
+        lastname:
+          type: string
+          description: User last name
+        recaptcha:
+          type: string
+          description: reCAPTCHA response token (if enabled)
+
+    AppConfig:
+      type: object
+      properties:
+        apiUrl:
+          type: string
+          description: API base URL
+        uiUrl:
+          type: string
+          description: UI base URL
+        captchaSiteKey:
+          type: string
+          description: reCAPTCHA site key
+        googleOauth2Url:
+          type: string
+          description: Google OAuth2 URL
+        googleOauth2Enabled:
+          type: boolean
+          description: Whether Google OAuth2 is enabled
+        facebookOauth2Url:
+          type: string
+          description: Facebook OAuth2 URL
+        facebookOauth2Enabled:
+          type: boolean
+          description: Whether Facebook OAuth2 is enabled
+        analyticsAccount:
+          type: string
+          description: Analytics account ID
+        registrationEnabled:
+          type: boolean
+          description: Whether user registration is enabled
+        jwtExpirationMin:
+          type: integer
+          description: JWT token expiration time in minutes
+
+    PasswordResetResponse:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [EMAIL_SENT, OAUTH2_USER]
+          description: Action taken for password reset
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        details:
+          type: object
+          description: Additional error details

@@ -1,0 +1,725 @@
+# Mindmap API Endpoints - Part 2 of OpenAPI Specification
+# This file contains all mindmap-related endpoints
+
+paths:
+  # Mindmap management
+  /maps:
+    get:
+      tags:
+        - Mindmaps
+      summary: Get user's mindmaps
+      description: Retrieve a list of mindmaps accessible to the current user
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search query to filter mindmaps
+      responses:
+        '200':
+          description: Mindmaps retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MindmapList'
+
+    post:
+      tags:
+        - Mindmaps
+      summary: Create new mindmap
+      description: Create a new mindmap
+      requestBody:
+        required: false
+        content:
+          application/xml:
+            schema:
+              type: string
+              description: Mindmap XML content
+          application/json:
+            schema:
+              type: string
+              description: Mindmap XML content
+      parameters:
+        - name: title
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Mindmap title
+        - name: description
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Mindmap description
+      responses:
+        '201':
+          description: Mindmap created successfully
+          headers:
+            Location:
+              description: URL of the created mindmap
+              schema:
+                type: string
+            ResourceId:
+              description: ID of the created mindmap
+              schema:
+                type: string
+
+  /maps/{id}:
+    get:
+      tags:
+        - Mindmaps
+      summary: Get mindmap details
+      description: Retrieve detailed information about a specific mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '200':
+          description: Mindmap details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mindmap'
+        '404':
+          description: Mindmap not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Mindmaps
+      summary: Update mindmap properties
+      description: Update mindmap properties (title, description, etc.)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+        - name: minor
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: Whether this is a minor update (affects history)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MindmapUpdate'
+      responses:
+        '204':
+          description: Mindmap updated successfully
+        '404':
+          description: Mindmap not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Mindmaps
+      summary: Delete mindmap
+      description: Delete a mindmap permanently
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '204':
+          description: Mindmap deleted successfully
+        '404':
+          description: Mindmap not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /maps/{id}/metadata:
+    get:
+      tags:
+        - Mindmaps
+      summary: Get mindmap metadata
+      description: Get public metadata about a mindmap (no authentication required for public maps)
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '200':
+          description: Mindmap metadata retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MindmapMetadata'
+        '404':
+          description: Mindmap not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /maps/{id}/document:
+    put:
+      tags:
+        - Mindmaps
+      summary: Update mindmap document
+      description: Update the complete mindmap document (XML + properties)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+        - name: minor
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: Whether this is a minor update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MindmapDocument'
+      responses:
+        '204':
+          description: Mindmap document updated successfully
+
+  /maps/{id}/document/xml:
+    get:
+      tags:
+        - Mindmaps
+      summary: Get mindmap XML
+      description: Retrieve the XML content of a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '200':
+          description: Mindmap XML retrieved successfully
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: Mindmap XML content
+        '404':
+          description: Mindmap not found
+
+    put:
+      tags:
+        - Mindmaps
+      summary: Update mindmap XML
+      description: Update only the XML content of a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: Mindmap XML content
+      responses:
+        '204':
+          description: Mindmap XML updated successfully
+
+  /maps/{id}/title:
+    put:
+      tags:
+        - Mindmaps
+      summary: Update mindmap title
+      description: Update the title of a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: New mindmap title
+      responses:
+        '204':
+          description: Mindmap title updated successfully
+
+  /maps/{id}/description:
+    put:
+      tags:
+        - Mindmaps
+      summary: Update mindmap description
+      description: Update the description of a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: New mindmap description
+      responses:
+        '204':
+          description: Mindmap description updated successfully
+
+  /maps/{id}/publish:
+    put:
+      tags:
+        - Mindmaps
+      summary: Update mindmap publish status
+      description: Make a mindmap public or private
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isPublic:
+                  type: boolean
+                  description: Whether the mindmap should be public
+      responses:
+        '204':
+          description: Mindmap publish status updated successfully
+        '400':
+          description: Spam content detected (if trying to make public)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /maps/{id}/starred:
+    get:
+      tags:
+        - Mindmaps
+      summary: Get mindmap starred status
+      description: Check if the current user has starred this mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '200':
+          description: Starred status retrieved successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum: ["true", "false"]
+
+    put:
+      tags:
+        - Mindmaps
+      summary: Update mindmap starred status
+      description: Star or unstar a mindmap for the current user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: ["true", "false"]
+              description: Whether to star the mindmap
+      responses:
+        '204':
+          description: Starred status updated successfully
+
+  /maps/{id}/lock:
+    put:
+      tags:
+        - Mindmaps
+      summary: Lock/unlock mindmap
+      description: Lock or unlock a mindmap for editing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              enum: ["true", "false"]
+              description: Whether to lock the mindmap
+      responses:
+        '200':
+          description: Lock status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LockInfo'
+        '204':
+          description: Mindmap unlocked successfully
+
+  /maps/{id}/history:
+    get:
+      tags:
+        - Mindmaps
+      summary: Get mindmap history
+      description: Retrieve the version history of a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '200':
+          description: Mindmap history retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MindmapHistoryList'
+
+  /maps/{id}/history/{hid}:
+    post:
+      tags:
+        - Mindmaps
+      summary: Revert mindmap to history version
+      description: Revert a mindmap to a specific version from history
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+        - name: hid
+          in: path
+          required: true
+          schema:
+            type: string
+          description: History version ID or 'latest'
+      responses:
+        '204':
+          description: Mindmap reverted successfully
+
+  /maps/{id}/{hid}/document/xml:
+    get:
+      tags:
+        - Mindmaps
+      summary: Get mindmap XML from history
+      description: Retrieve the XML content of a mindmap from a specific history version
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+        - name: hid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: History version ID
+      responses:
+        '200':
+          description: Historical mindmap XML retrieved successfully
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: Mindmap XML content from history
+
+  /maps/{id}:
+    post:
+      tags:
+        - Mindmaps
+      summary: Duplicate mindmap
+      description: Create a copy of an existing mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Source mindmap ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MindmapInfo'
+      responses:
+        '201':
+          description: Mindmap duplicated successfully
+          headers:
+            Location:
+              description: URL of the duplicated mindmap
+              schema:
+                type: string
+            ResourceId:
+              description: ID of the duplicated mindmap
+              schema:
+                type: string
+
+  /maps/batch:
+    delete:
+      tags:
+        - Mindmaps
+      summary: Delete multiple mindmaps
+      description: Delete multiple mindmaps in a single request
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Comma-separated list of mindmap IDs
+      responses:
+        '204':
+          description: Mindmaps deleted successfully
+
+  /maps/validate-note:
+    post:
+      tags:
+        - Mindmaps
+      summary: Validate note content
+      description: Validate note content and get character count information
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: Note content to validate
+      responses:
+        '200':
+          description: Note validation completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteValidationResponse'
+
+components:
+  schemas:
+    Mindmap:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique mindmap identifier
+        title:
+          type: string
+          description: Mindmap title
+        description:
+          type: string
+          description: Mindmap description
+        creator:
+          type: string
+          description: Creator email address
+        creationTime:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        lastModificationTime:
+          type: string
+          format: date-time
+          description: Last modification timestamp
+        lastEditor:
+          type: string
+          description: Last editor email address
+        isPublic:
+          type: boolean
+          description: Whether mindmap is public
+        isLocked:
+          type: boolean
+          description: Whether mindmap is currently locked
+        lockedBy:
+          type: string
+          description: Email of user who locked the mindmap
+        starred:
+          type: boolean
+          description: Whether current user has starred this mindmap
+        properties:
+          type: string
+          description: Mindmap properties (JSON string)
+        xml:
+          type: string
+          description: Mindmap XML content
+
+    MindmapList:
+      type: object
+      properties:
+        mindmaps:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mindmap'
+
+    MindmapMetadata:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Mindmap title
+        creator:
+          type: string
+          description: Creator full name
+        properties:
+          type: string
+          description: Mindmap properties (JSON string)
+        isLocked:
+          type: boolean
+          description: Whether mindmap is currently locked
+        lockedBy:
+          type: string
+          description: Full name of user who locked the mindmap
+
+    MindmapUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          description: New mindmap title
+        description:
+          type: string
+          description: New mindmap description
+        xml:
+          type: string
+          description: New mindmap XML content
+        properties:
+          type: string
+          description: New mindmap properties (JSON string)
+
+    MindmapDocument:
+      type: object
+      properties:
+        xml:
+          type: string
+          description: Mindmap XML content
+        properties:
+          type: string
+          description: Mindmap properties (JSON string)
+
+    MindmapInfo:
+      type: object
+      properties:
+        title:
+          type: string
+          description: New mindmap title
+        description:
+          type: string
+          description: New mindmap description
+
+    MindmapHistoryList:
+      type: object
+      properties:
+        histories:
+          type: array
+          items:
+            $ref: '#/components/schemas/MindmapHistory'
+
+    MindmapHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: History version ID
+        creationTime:
+          type: string
+          format: date-time
+          description: Version creation timestamp
+        editor:
+          type: string
+          description: Editor email address
+        comment:
+          type: string
+          description: Version comment
+
+    LockInfo:
+      type: object
+      properties:
+        lockedBy:
+          type: string
+          description: Email of user who locked the mindmap
+        lockedAt:
+          type: string
+          format: date-time
+          description: Lock timestamp
+
+    NoteValidationResponse:
+      type: object
+      properties:
+        rawLength:
+          type: integer
+          description: Raw character count including HTML
+        textLength:
+          type: integer
+          description: Text character count excluding HTML
+        isHtml:
+          type: boolean
+          description: Whether content contains HTML
+        remainingChars:
+          type: integer
+          description: Remaining characters before limit
+        isOverLimit:
+          type: boolean
+          description: Whether content exceeds character limit
+        usagePercentage:
+          type: number
+          format: float
+          description: Percentage of character limit used

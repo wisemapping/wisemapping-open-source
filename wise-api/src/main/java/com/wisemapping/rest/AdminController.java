@@ -24,6 +24,7 @@ import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.Account;
+import com.wisemapping.model.SuspensionReason;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.rest.model.PaginatedResponse;
 import com.wisemapping.service.MindmapService;
@@ -217,6 +218,50 @@ public class AdminController {
 
         userService.updateUser(existingUser);
         return new RestUser(existingUser);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/suspension", consumes = {"application/json"}, produces = {"application/json"})
+    @ResponseBody
+    public RestUser updateUserSuspension(@RequestBody Map<String, Object> suspensionData, @PathVariable int id) {
+        if (suspensionData == null) {
+            throw new IllegalArgumentException("Suspension data can not be null");
+        }
+
+        final Account existingUser = userService.getUserBy(id);
+        if (existingUser == null) {
+            throw new IllegalArgumentException("User '" + id + "' could not be found");
+        }
+
+        // Update suspension status
+        if (suspensionData.containsKey("suspended")) {
+            Boolean suspended = (Boolean) suspensionData.get("suspended");
+            if (suspended != null) {
+                if (suspended) {
+                    // Suspend user
+                    if (suspensionData.containsKey("suspensionReason")) {
+                        String reasonStr = (String) suspensionData.get("suspensionReason");
+                        if (reasonStr != null && !reasonStr.isEmpty()) {
+                            try {
+                                SuspensionReason reason = SuspensionReason.valueOf(reasonStr.toUpperCase());
+                                existingUser.suspend(reason);
+                            } catch (IllegalArgumentException e) {
+                                throw new IllegalArgumentException("Invalid suspension reason: " + reasonStr);
+                            }
+                        } else {
+                            existingUser.suspend();
+                        }
+                    } else {
+                        existingUser.suspend();
+                    }
+                } else {
+                    // Unsuspend user
+                    existingUser.unsuspend();
+                }
+            }
+        }
+
+        userService.updateUser(existingUser);
+        return new RestUser(existingUser, isAdmin(existingUser.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/password", consumes = {"text/plain"})
