@@ -32,7 +32,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 
-import static com.wisemapping.test.rest.RestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(

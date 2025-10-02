@@ -19,7 +19,6 @@
 package com.wisemapping.validator;
 
 import com.wisemapping.exceptions.HtmlContentValidationException;
-import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.service.spam.SpamContentExtractor;

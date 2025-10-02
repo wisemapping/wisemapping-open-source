@@ -37,8 +37,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import io.micrometer.core.instrument.MeterRegistry;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,12 +60,6 @@ public class AdminController {
 
     @Autowired
     private MetricsService metricsService;
-
-    @Autowired
-    private MeterRegistry meterRegistry;
-
-    @Autowired
-    private com.wisemapping.security.UserDetailsService userDetailsService;
 
     @Value("${app.admin.user:}")
     private String adminUser;
@@ -183,6 +176,7 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
+    @Transactional
     public RestUser updateUser(@RequestBody RestUser userUpdate, @PathVariable int id) {
         if (userUpdate == null) {
             throw new IllegalArgumentException("User data can not be null");
@@ -217,11 +211,13 @@ public class AdminController {
         }
 
         userService.updateUser(existingUser);
-        return new RestUser(existingUser);
+        final Account currentUser = com.wisemapping.security.Utils.getUser(true);
+        return new RestUser(existingUser, isAdmin(currentUser.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/suspension", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
+    @Transactional
     public RestUser updateUserSuspension(@RequestBody Map<String, Object> suspensionData, @PathVariable int id) {
         if (suspensionData == null) {
             throw new IllegalArgumentException("Suspension data can not be null");
@@ -261,7 +257,11 @@ public class AdminController {
         }
 
         userService.updateUser(existingUser);
-        return new RestUser(existingUser, isAdmin(existingUser.getEmail()));
+        
+        // Fetch the user again to ensure we have the latest state from the database
+        final Account updatedUser = userService.getUserBy(id);
+        final Account currentUser = com.wisemapping.security.Utils.getUser(true);
+        return new RestUser(updatedUser, isAdmin(currentUser.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/password", consumes = {"text/plain"})
