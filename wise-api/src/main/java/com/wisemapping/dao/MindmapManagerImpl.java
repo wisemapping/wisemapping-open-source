@@ -781,4 +781,11 @@ public class MindmapManagerImpl
         
         return totalDeleted;
     }
+
+    @Override
+    public List<Mindmap> getAllMindmaps() {
+        final TypedQuery<Mindmap> query = entityManager.createQuery(
+            "SELECT m FROM com.wisemapping.model.Mindmap m ORDER BY m.creationDate DESC", Mindmap.class);
+        return query.getResultList();
+    }
 }

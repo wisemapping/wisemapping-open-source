@@ -30,11 +30,19 @@ import com.wisemapping.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import io.micrometer.core.instrument.MeterRegistry;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.OperatingSystemMXBean;
 
 @RestController
 @RequestMapping("/api/restful/admin")
@@ -50,6 +58,34 @@ public class AdminController {
 
     @Autowired
     private MetricsService metricsService;
+
+    @Autowired
+    private MeterRegistry meterRegistry;
+
+    @Value("${spring.datasource.url:}")
+    private String datasourceUrl;
+
+    @Value("${spring.datasource.driver-class-name:}")
+    private String datasourceDriver;
+
+    @Value("${spring.datasource.username:}")
+    private String datasourceUsername;
+
+    @Value("${spring.jpa.hibernate.ddl-auto:}")
+    private String hibernateDdlAuto;
+
+    @Value("${spring.application.name:}")
+    private String applicationName;
+
+    @Value("${server.port:8080}")
+    private String serverPort;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/users", produces = {"application/json"})
+    @ResponseBody
+    public List<RestUser> getAllUsers() {
+        final List<Account> users = userService.getAllUsers();
+        return users.stream().map(RestUser::new).collect(java.util.stream.Collectors.toList());
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
     @ResponseBody
@@ -113,6 +149,45 @@ public class AdminController {
         response.setHeader("Location", "/api/restful/admin/users/" + user.getId());
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}", consumes = {"application/json"}, produces = {"application/json"})
+    @ResponseBody
+    public RestUser updateUser(@RequestBody RestUser userUpdate, @PathVariable int id) {
+        if (userUpdate == null) {
+            throw new IllegalArgumentException("User data can not be null");
+        }
+
+        final Account existingUser = userService.getUserBy(id);
+        if (existingUser == null) {
+            throw new IllegalArgumentException("User '" + id + "' could not be found");
+        }
+
+        // Update user fields
+        final Account delegated = userUpdate.getDelegated();
+        if (delegated.getFirstname() != null) {
+            existingUser.setFirstname(delegated.getFirstname());
+        }
+        if (delegated.getLastname() != null) {
+            existingUser.setLastname(delegated.getLastname());
+        }
+        if (delegated.getEmail() != null && !delegated.getEmail().equals(existingUser.getEmail())) {
+            // Check if email is already taken by another user
+            final Account userWithEmail = userService.getUserBy(delegated.getEmail());
+            if (userWithEmail != null && !userWithEmail.equals(existingUser)) {
+                throw new IllegalArgumentException("Email already exists");
+            }
+            existingUser.setEmail(delegated.getEmail());
+        }
+        if (delegated.getLocale() != null) {
+            existingUser.setLocale(delegated.getLocale());
+        }
+        if (delegated.isAllowSendEmail() != existingUser.isAllowSendEmail()) {
+            existingUser.setAllowSendEmail(delegated.isAllowSendEmail());
+        }
+
+        userService.updateUser(existingUser);
+        return new RestUser(existingUser);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody String password, @PathVariable int id) {
@@ -142,5 +217,192 @@ public class AdminController {
             mindmapService.removeMindmap(mindmap, user);
         }
         userService.removeUser(user);
+    }
+
+    // Maps management endpoints
+    @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"application/json"})
+    @ResponseBody
+    public List<com.wisemapping.rest.model.RestMap> getAllMaps(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
+            @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder,
+            @RequestParam(value = "filterPublic", required = false) Boolean filterPublic,
+            @RequestParam(value = "filterLocked", required = false) Boolean filterLocked) {
+        
+        // For now, return all maps with basic filtering
+        // In a real implementation, you would add pagination and filtering logic here
+        final List<Mindmap> allMaps = mindmapService.getAllMindmaps();
+        
+        return allMaps.stream()
+                .map(com.wisemapping.rest.model.RestMap::new)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json"})
+    @ResponseBody
+    public com.wisemapping.rest.model.RestMap getMapById(@PathVariable int id) {
+        final Mindmap mindmap = mindmapService.findMindmapById(id);
+        if (mindmap == null) {
+            throw new IllegalArgumentException("Map could not be found");
+        }
+        return new com.wisemapping.rest.model.RestMap(mindmap);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/json"}, produces = {"application/json"})
+    @ResponseBody
+    public com.wisemapping.rest.model.RestMap updateMap(@RequestBody com.wisemapping.rest.model.RestMap mapUpdate, @PathVariable int id) throws WiseMappingException {
+        if (mapUpdate == null) {
+            throw new IllegalArgumentException("Map data can not be null");
+        }
+
+        final Mindmap existingMap = mindmapService.findMindmapById(id);
+        if (existingMap == null) {
+            throw new IllegalArgumentException("Map '" + id + "' could not be found");
+        }
+
+        // Update map fields
+        final Mindmap delegated = mapUpdate.getDelegated();
+        if (delegated.getTitle() != null) {
+            existingMap.setTitle(delegated.getTitle());
+        }
+        if (delegated.getDescription() != null) {
+            existingMap.setDescription(delegated.getDescription());
+        }
+        if (delegated.isPublic() != existingMap.isPublic()) {
+            existingMap.setPublic(delegated.isPublic());
+        }
+        // Lock functionality not implemented yet in Mindmap model
+        // if (delegated.isLocked() != existingMap.isLocked()) {
+        //     existingMap.setLocked(delegated.isLocked());
+        // }
+
+        mindmapService.updateMindmap(existingMap, true);
+        return new com.wisemapping.rest.model.RestMap(existingMap);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteMap(@PathVariable int id) throws WiseMappingException {
+        final Mindmap mindmap = mindmapService.findMindmapById(id);
+        if (mindmap == null) {
+            throw new IllegalArgumentException("Map '" + id + "' could not be found");
+        }
+
+        // Get the admin user to perform the deletion
+        final Account adminUser = userService.getUserBy(1); // Assuming admin user ID is 1
+        mindmapService.removeMindmap(mindmap, adminUser);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}/xml", produces = {"application/xml"})
+    @ResponseBody
+    public String getMapXml(@PathVariable int id) {
+        final Mindmap mindmap = mindmapService.findMindmapById(id);
+        if (mindmap == null) {
+            throw new IllegalArgumentException("Map could not be found");
+        }
+        
+        try {
+            // Return the XML content of the mindmap
+            return mindmap.getXmlStr();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to retrieve map XML content", e);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/system/info", produces = {"application/json"})
+    @ResponseBody
+    public Map<String, Object> getSystemInfo() {
+        Map<String, Object> systemInfo = new HashMap<>();
+        
+        // Application Info
+        Map<String, Object> appInfo = new HashMap<>();
+        appInfo.put("name", applicationName.isEmpty() ? "WiseMapping API" : applicationName);
+        appInfo.put("port", serverPort);
+        systemInfo.put("application", appInfo);
+        
+        // Database Info
+        Map<String, Object> dbInfo = new HashMap<>();
+        dbInfo.put("driver", datasourceDriver);
+        dbInfo.put("url", maskSensitiveInfo(datasourceUrl));
+        dbInfo.put("username", datasourceUsername);
+        dbInfo.put("hibernateDdlAuto", hibernateDdlAuto);
+        systemInfo.put("database", dbInfo);
+        
+        // JVM Info
+        RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
+        MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
+        
+        Map<String, Object> jvmInfo = new HashMap<>();
+        jvmInfo.put("javaVersion", System.getProperty("java.version"));
+        jvmInfo.put("javaVendor", System.getProperty("java.vendor"));
+        jvmInfo.put("uptime", runtimeBean.getUptime());
+        jvmInfo.put("startTime", runtimeBean.getStartTime());
+        jvmInfo.put("maxMemory", memoryBean.getHeapMemoryUsage().getMax());
+        jvmInfo.put("usedMemory", memoryBean.getHeapMemoryUsage().getUsed());
+        jvmInfo.put("totalMemory", memoryBean.getHeapMemoryUsage().getCommitted());
+        jvmInfo.put("availableProcessors", osBean.getAvailableProcessors());
+        jvmInfo.put("systemLoadAverage", osBean.getSystemLoadAverage());
+        systemInfo.put("jvm", jvmInfo);
+        
+        // System Stats
+        Map<String, Object> stats = new HashMap<>();
+        try {
+            List<Account> users = userService.getAllUsers();
+            stats.put("totalUsers", users.size());
+            
+            List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(null); // Get all mindmaps
+            stats.put("totalMindmaps", mindmaps.size());
+        } catch (Exception e) {
+            stats.put("error", "Failed to retrieve stats: " + e.getMessage());
+        }
+        systemInfo.put("statistics", stats);
+        
+        return systemInfo;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/system/health", produces = {"application/json"})
+    @ResponseBody
+    public Map<String, Object> getSystemHealth() {
+        Map<String, Object> health = new HashMap<>();
+        
+        // Database Health
+        try {
+            userService.getAllUsers(); // Simple database connectivity test
+            health.put("database", "UP");
+        } catch (Exception e) {
+            health.put("database", "DOWN");
+            health.put("databaseError", e.getMessage());
+        }
+        
+        // Memory Health
+        MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+        long maxMemory = memoryBean.getHeapMemoryUsage().getMax();
+        long usedMemory = memoryBean.getHeapMemoryUsage().getUsed();
+        double memoryUsagePercent = (double) usedMemory / maxMemory * 100;
+        
+        health.put("memory", "UP");
+        health.put("memoryUsagePercent", Math.round(memoryUsagePercent * 100.0) / 100.0);
+        
+        if (memoryUsagePercent > 90) {
+            health.put("memory", "WARNING");
+        }
+        
+        return health;
+    }
+
+    private String maskSensitiveInfo(String url) {
+        if (url == null || url.isEmpty()) {
+            return "Not configured";
+        }
+        
+        // Mask password in JDBC URL
+        if (url.contains("password=")) {
+            return url.replaceAll("password=[^;]*", "password=***");
+        }
+        
+        return url;
     }
 }

@@ -332,6 +332,11 @@ public class UserServiceImpl
     }
 
     @Override
+    public java.util.List<Account> getAllUsers() {
+        return userManager.getAllUsers();
+    }
+
+    @Override
     public void updateUser(@NotNull Account user) {
         userManager.updateUser(user);
     }

@@ -223,4 +223,10 @@ public interface MindmapManager {
      * @return number of history entries deleted
      */
     int cleanupOldMindmapHistory(Calendar cutoffDate, int maxEntriesPerMap, int batchSize);
+
+    /**
+     * Get all mindmaps (admin only)
+     * @return list of all mindmaps in the system
+     */
+    List<Mindmap> getAllMindmaps();
 }

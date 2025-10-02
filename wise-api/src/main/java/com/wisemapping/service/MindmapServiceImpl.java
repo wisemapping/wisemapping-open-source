@@ -106,6 +106,11 @@ public class MindmapServiceImpl
     }
 
     @Override
+    public List<Mindmap> getAllMindmaps() {
+        return mindmapManager.getAllMindmaps();
+    }
+
+    @Override
     @PreAuthorize("hasPermission(#user, 'READ')")
     public Mindmap getMindmapByTitle(String title, Account user) {
         return mindmapManager.getMindmapByTitle(title, user);
