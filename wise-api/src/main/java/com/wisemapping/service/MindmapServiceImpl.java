@@ -355,4 +355,26 @@ public class MindmapServiceImpl
     public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked) {
         return mindmapManager.countMindmapsBySearch(search, filterPublic, filterLocked);
     }
+
+    @Override
+    public List<Mindmap> getAllMindmaps(Boolean filterSpam, int page, int pageSize) {
+        int offset = page * pageSize;
+        return mindmapManager.getAllMindmaps(filterSpam, offset, pageSize);
+    }
+
+    @Override
+    public long countAllMindmaps(Boolean filterSpam) {
+        return mindmapManager.countAllMindmaps(filterSpam);
+    }
+
+    @Override
+    public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int page, int pageSize) {
+        int offset = page * pageSize;
+        return mindmapManager.searchMindmaps(search, filterPublic, filterLocked, filterSpam, offset, pageSize);
+    }
+
+    @Override
+    public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam) {
+        return mindmapManager.countMindmapsBySearch(search, filterPublic, filterLocked, filterSpam);
+    }
 }

@@ -257,20 +257,21 @@ public class AdminController {
             @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
             @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder,
             @RequestParam(value = "filterPublic", required = false) Boolean filterPublic,
-            @RequestParam(value = "filterLocked", required = false) Boolean filterLocked) {
+            @RequestParam(value = "filterLocked", required = false) Boolean filterLocked,
+            @RequestParam(value = "filterSpam", required = false) Boolean filterSpam) {
         
         if (search != null && !search.trim().isEmpty()) {
             // Search mindmaps
-            final List<Mindmap> mindmaps = mindmapService.searchMindmaps(search, filterPublic, filterLocked, page, pageSize);
-            final long totalElements = mindmapService.countMindmapsBySearch(search, filterPublic, filterLocked);
+            final List<Mindmap> mindmaps = mindmapService.searchMindmaps(search, filterPublic, filterLocked, filterSpam, page, pageSize);
+            final long totalElements = mindmapService.countMindmapsBySearch(search, filterPublic, filterLocked, filterSpam);
             final List<com.wisemapping.rest.model.RestMap> restMaps = mindmaps.stream()
                     .map(com.wisemapping.rest.model.RestMap::new)
                     .collect(java.util.stream.Collectors.toList());
             return new PaginatedResponse<>(restMaps, page, pageSize, totalElements);
         } else {
             // Get all mindmaps with pagination
-            final List<Mindmap> mindmaps = mindmapService.getAllMindmaps(page, pageSize);
-            final long totalElements = mindmapService.countAllMindmaps();
+            final List<Mindmap> mindmaps = mindmapService.getAllMindmaps(filterSpam, page, pageSize);
+            final long totalElements = mindmapService.countAllMindmaps(filterSpam);
             final List<com.wisemapping.rest.model.RestMap> restMaps = mindmaps.stream()
                     .map(com.wisemapping.rest.model.RestMap::new)
                     .collect(java.util.stream.Collectors.toList());
@@ -317,6 +318,27 @@ public class AdminController {
         // }
 
         mindmapService.updateMindmap(existingMap, true);
+        return new com.wisemapping.rest.model.RestMap(existingMap);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/spam", consumes = {"application/json"}, produces = {"application/json"})
+    @ResponseBody
+    public com.wisemapping.rest.model.RestMap updateMapSpamStatus(@RequestBody Map<String, Boolean> spamData, @PathVariable int id) throws WiseMappingException {
+        if (spamData == null || !spamData.containsKey("isSpam")) {
+            throw new IllegalArgumentException("Spam status data is required");
+        }
+
+        final Mindmap existingMap = mindmapService.findMindmapById(id);
+        if (existingMap == null) {
+            throw new IllegalArgumentException("Map '" + id + "' could not be found");
+        }
+
+        Boolean isSpam = spamData.get("isSpam");
+        if (isSpam != null) {
+            existingMap.setSpamDetected(isSpam);
+            mindmapService.updateMindmap(existingMap, true);
+        }
+
         return new com.wisemapping.rest.model.RestMap(existingMap);
     }
 

@@ -263,4 +263,42 @@ public interface MindmapManager {
      * @return total count of matching mindmaps
      */
     long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked);
+
+    /**
+     * Get all mindmaps with pagination and spam filtering support (admin only)
+     * @param filterSpam filter by spam status (null for all, true for spam only, false for non-spam only)
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of mindmaps for the given page
+     */
+    List<Mindmap> getAllMindmaps(Boolean filterSpam, int offset, int limit);
+
+    /**
+     * Count total number of mindmaps with spam filtering (admin only)
+     * @param filterSpam filter by spam status (null for all, true for spam only, false for non-spam only)
+     * @return total count of mindmaps
+     */
+    long countAllMindmaps(Boolean filterSpam);
+
+    /**
+     * Search mindmaps with filtering and pagination including spam filter (admin only)
+     * @param search search term for title or description
+     * @param filterPublic filter by public status (null for all)
+     * @param filterLocked filter by locked status (null for all)
+     * @param filterSpam filter by spam status (null for all, true for spam only, false for non-spam only)
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of filtered mindmaps for the given page
+     */
+    List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int offset, int limit);
+
+    /**
+     * Count mindmaps matching search criteria including spam filter (admin only)
+     * @param search search term for title or description
+     * @param filterPublic filter by public status (null for all)
+     * @param filterLocked filter by locked status (null for all)
+     * @param filterSpam filter by spam status (null for all, true for spam only, false for non-spam only)
+     * @return total count of matching mindmaps
+     */
+    long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam);
 }

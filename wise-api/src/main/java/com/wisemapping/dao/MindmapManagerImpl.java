@@ -792,7 +792,8 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> getAllMindmaps(int offset, int limit) {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m ORDER BY m.creationTime DESC", Mindmap.class);
+            "SELECT m FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN FETCH m.spamInfo ORDER BY m.creationTime DESC", Mindmap.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
         return query.getResultList();
@@ -850,6 +851,118 @@ public class MindmapManagerImpl
         
         if (filterPublic != null) {
             queryString.append(" AND m.isPublic = :filterPublic");
+        }
+        
+        final TypedQuery<Long> query = entityManager.createQuery(queryString.toString(), Long.class);
+        
+        if (search != null && !search.trim().isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        
+        if (filterPublic != null) {
+            query.setParameter("filterPublic", filterPublic);
+        }
+        
+        return query.getSingleResult();
+    }
+
+    @Override
+    public List<Mindmap> getAllMindmaps(Boolean filterSpam, int offset, int limit) {
+        StringBuilder queryString = new StringBuilder(
+            "SELECT m FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN FETCH m.spamInfo WHERE 1=1");
+        
+        if (filterSpam != null) {
+            if (filterSpam) {
+                queryString.append(" AND m.spamInfo.spamDetected = true");
+            } else {
+                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+            }
+        }
+        
+        queryString.append(" ORDER BY m.creationTime DESC");
+        
+        final TypedQuery<Mindmap> query = entityManager.createQuery(queryString.toString(), Mindmap.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countAllMindmaps(Boolean filterSpam) {
+        StringBuilder queryString = new StringBuilder(
+            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+        
+        if (filterSpam != null) {
+            if (filterSpam) {
+                queryString.append(" AND m.spamInfo.spamDetected = true");
+            } else {
+                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+            }
+        }
+        
+        final TypedQuery<Long> query = entityManager.createQuery(queryString.toString(), Long.class);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int offset, int limit) {
+        StringBuilder queryString = new StringBuilder(
+            "SELECT m FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN FETCH m.spamInfo WHERE 1=1");
+        
+        if (search != null && !search.trim().isEmpty()) {
+            queryString.append(" AND (LOWER(m.title) LIKE LOWER(:search) OR LOWER(m.description) LIKE LOWER(:search))");
+        }
+        
+        if (filterPublic != null) {
+            queryString.append(" AND m.isPublic = :filterPublic");
+        }
+        
+        if (filterSpam != null) {
+            if (filterSpam) {
+                queryString.append(" AND m.spamInfo.spamDetected = true");
+            } else {
+                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+            }
+        }
+        
+        queryString.append(" ORDER BY m.creationTime DESC");
+        
+        final TypedQuery<Mindmap> query = entityManager.createQuery(queryString.toString(), Mindmap.class);
+        
+        if (search != null && !search.trim().isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        
+        if (filterPublic != null) {
+            query.setParameter("filterPublic", filterPublic);
+        }
+        
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam) {
+        StringBuilder queryString = new StringBuilder(
+            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+        
+        if (search != null && !search.trim().isEmpty()) {
+            queryString.append(" AND (LOWER(m.title) LIKE LOWER(:search) OR LOWER(m.description) LIKE LOWER(:search))");
+        }
+        
+        if (filterPublic != null) {
+            queryString.append(" AND m.isPublic = :filterPublic");
+        }
+        
+        if (filterSpam != null) {
+            if (filterSpam) {
+                queryString.append(" AND m.spamInfo.spamDetected = true");
+            } else {
+                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+            }
         }
         
         final TypedQuery<Long> query = entityManager.createQuery(queryString.toString(), Long.class);

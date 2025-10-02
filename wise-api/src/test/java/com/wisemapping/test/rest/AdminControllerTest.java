@@ -23,6 +23,8 @@ import com.wisemapping.rest.AdminController;
 import com.wisemapping.rest.model.RestMap;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.model.Mindmap;
+import java.util.Map;
+import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -667,6 +669,51 @@ public class AdminControllerTest {
         // Should be either 401 (unauthorized) or 403 (forbidden)
         assertTrue(response.getStatusCode() == HttpStatus.UNAUTHORIZED || 
                   response.getStatusCode() == HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    public void testUpdateMapSpamStatus_RegularUserAccess_Forbidden() {
+        // Test that regular user cannot update map spam status
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Boolean> spamData = new HashMap<>();
+        spamData.put("isSpam", true);
+        HttpEntity<Map<String, Boolean>> entity = new HttpEntity<>(spamData, headers);
+
+        ResponseEntity<String> response = restTemplate.withBasicAuth(REGULAR_USER, REGULAR_PASSWORD)
+                .exchange(
+                        "/api/restful/admin/maps/1/spam",
+                        HttpMethod.PUT,
+                        entity,
+                        String.class
+                );
+
+        // Should be either 401 (unauthorized) or 403 (forbidden)
+        assertTrue(response.getStatusCode() == HttpStatus.UNAUTHORIZED || 
+                  response.getStatusCode() == HttpStatus.FORBIDDEN,
+                  "Regular user should not be able to update map spam status");
+    }
+
+    @Test
+    public void testUpdateMapSpamStatus_UnauthenticatedAccess_Forbidden() {
+        // Test that unauthenticated user cannot update map spam status
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Boolean> spamData = new HashMap<>();
+        spamData.put("isSpam", true);
+        HttpEntity<Map<String, Boolean>> entity = new HttpEntity<>(spamData, headers);
+
+        ResponseEntity<String> response = restTemplate
+                .exchange(
+                        "/api/restful/admin/maps/1/spam",
+                        HttpMethod.PUT,
+                        entity,
+                        String.class
+                );
+
+        // Should be 401 (unauthorized)
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode(),
+                "Unauthenticated user should not be able to update map spam status");
     }
 
 }
