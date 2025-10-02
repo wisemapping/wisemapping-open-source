@@ -98,6 +98,26 @@ public class RestUser {
         return password;
     }
 
+    public boolean isAllowSendEmail() {
+        return user.isAllowSendEmail();
+    }
+
+    public void setAllowSendEmail(boolean allowSendEmail) {
+        user.setAllowSendEmail(allowSendEmail);
+    }
+
+    public boolean isActive() {
+        return user.isActive();
+    }
+
+    public boolean isSuspended() {
+        return user.isSuspended();
+    }
+
+    public String getFullName() {
+        return user.getFullName();
+    }
+
     @JsonIgnore
     public Account getDelegated() {
         return this.user;

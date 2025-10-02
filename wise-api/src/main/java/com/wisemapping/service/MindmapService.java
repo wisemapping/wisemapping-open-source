@@ -66,4 +66,6 @@ public interface MindmapService {
     LockManager getLockManager();
 
     boolean isAdmin(@Nullable Account user);
+
+    List<Mindmap> getAllMindmaps();
 }

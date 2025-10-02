@@ -42,6 +42,8 @@ public interface UserService {
 
     Account getUserBy(int id);
 
+    java.util.List<Account> getAllUsers();
+
     void updateUser(Account user);
 
     RestResetPasswordResponse resetPassword(@NotNull String email) throws InvalidUserEmailException, InvalidAuthSchemaException;
