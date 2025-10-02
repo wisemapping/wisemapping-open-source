@@ -2,6 +2,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.model.Account;
+import com.wisemapping.service.MetricsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,9 @@ class AuthenticationProviderTest {
     private PasswordEncoder encoder;
     
     @Mock
+    private MetricsService metricsService;
+    
+    @Mock
     private UserDetails userDetails;
     
     @Mock
@@ -35,6 +39,7 @@ class AuthenticationProviderTest {
         authenticationProvider = new AuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setEncoder(encoder);
+        authenticationProvider.setMetricsService(metricsService);
     }
 
     @Test
@@ -84,5 +89,6 @@ class AuthenticationProviderTest {
         assertNotNull(result);
         assertTrue(result.isAuthenticated());
         verify(userDetailsService).getUserService();
+        verify(metricsService).trackUserLogin(account, "database");
     }
 }
