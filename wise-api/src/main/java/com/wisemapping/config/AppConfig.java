@@ -44,10 +44,14 @@ import java.util.Locale;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@SpringBootApplication(
-    scanBasePackageClasses = {MindmapController.class, JwtAuthenticationFilter.class, AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class, com.wisemapping.util.VelocityEngineWrapper.class, SpamDetectionService.class, SpamUserSuspensionScheduler.class, com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class, ContactInfoSpamStrategy.class, GlobalExceptionHandler.class, com.wisemapping.validator.HtmlContentValidator.class, InactiveUserService.class, InactiveUserSuspensionScheduler.class}
-)
-@Import({com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class})
+@SpringBootApplication(scanBasePackageClasses = { MindmapController.class, JwtAuthenticationFilter.class,
+        AuthenticationProvider.class, MindmapServiceImpl.class, LabelManagerImpl.class,
+        com.wisemapping.util.VelocityEngineWrapper.class, SpamDetectionService.class, SpamUserSuspensionScheduler.class,
+        com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class,
+        ContactInfoSpamStrategy.class, GlobalExceptionHandler.class,
+        com.wisemapping.validator.HtmlContentValidator.class, InactiveUserService.class,
+        InactiveUserSuspensionScheduler.class })
+@Import({ com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class })
 @EnableScheduling
 @EnableAsync
 @EnableWebSecurity
@@ -64,7 +68,6 @@ public class AppConfig implements WebMvcConfigurer {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
         http
@@ -72,6 +75,7 @@ public class AppConfig implements WebMvcConfigurer {
                 .securityMatcher("/**")
                 .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/restful/authenticate").permitAll()
                         .requestMatchers("/api/restful/users/").permitAll()
@@ -83,7 +87,6 @@ public class AppConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/restful/oauth2/confirmaccountsync").permitAll()
                         .requestMatchers("/api/restful/admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
                 .logout(logout -> logout.permitAll()
                         .logoutSuccessHandler((request, response, authentication) -> {
@@ -94,7 +97,8 @@ public class AppConfig implements WebMvcConfigurer {
                 .headers(headers -> headers
                         // Content Security Policy for HTML content
                         .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';"))
+                                .policyDirectives(
+                                        "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';"))
                         // Prevent MIME type sniffing
                         .contentTypeOptions(Customizer.withDefaults())
                         // Prevent clickjacking
@@ -106,8 +110,7 @@ public class AppConfig implements WebMvcConfigurer {
                         .referrerPolicy(referrerPolicy -> referrerPolicy
                                 .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
                         // Custom headers
-                        .addHeaderWriter((request, response) -> response.setHeader("Server", "WiseMapping"))
-                );
+                        .addHeaderWriter((request, response) -> response.setHeader("Server", "WiseMapping")));
 
         // Http basic is mainly used by automation tests.
         if (enableHttpBasic) {
@@ -125,7 +128,7 @@ public class AppConfig implements WebMvcConfigurer {
             for (int i = 0; i < origins.length; i++) {
                 origins[i] = origins[i].trim();
             }
-            
+
             registry.addMapping("/api/**")
                     .exposedHeaders("*")
                     .allowedHeaders("*")
