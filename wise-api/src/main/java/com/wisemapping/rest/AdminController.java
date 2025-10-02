@@ -330,8 +330,8 @@ public class AdminController {
             return new PaginatedResponse<>(restMaps, page, pageSize, totalElements);
         } else {
             // Get all mindmaps with pagination and date filtering - using optimized AdminRestMap DTO
-            final List<Mindmap> mindmaps = mindmapService.getAllMindmaps(filterSpam, dateFilter, page, pageSize);
-            final long totalElements = mindmapService.countAllMindmaps(filterSpam, dateFilter);
+            final List<Mindmap> mindmaps = mindmapService.getAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter, page, pageSize);
+            final long totalElements = mindmapService.countAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter);
             final List<com.wisemapping.rest.model.AdminRestMap> restMaps = mindmaps.stream()
                     .map(com.wisemapping.rest.model.AdminRestMap::new)
                     .collect(java.util.stream.Collectors.toList());
@@ -384,21 +384,14 @@ public class AdminController {
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/spam", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
     public com.wisemapping.rest.model.AdminRestMap updateMapSpamStatus(@RequestBody Map<String, Boolean> spamData, @PathVariable int id) throws WiseMappingException {
-        logger.info("🔍 SPAM ENDPOINT CALLED: Map ID: {}, Spam Data: {}", id, spamData);
-        
         if (spamData == null || !spamData.containsKey("isSpam")) {
-            logger.error("❌ SPAM ENDPOINT ERROR: Invalid spam data provided: {}", spamData);
             throw new IllegalArgumentException("Spam status data is required");
         }
 
         final Mindmap existingMap = mindmapService.findMindmapById(id);
         if (existingMap == null) {
-            logger.error("❌ SPAM ENDPOINT ERROR: Map with ID {} not found", id);
             throw new IllegalArgumentException("Map '" + id + "' could not be found");
         }
-        
-        logger.info("🔍 SPAM ENDPOINT: Found map '{}' (ID: {}), current spam status: {}", 
-                   existingMap.getTitle(), id, existingMap.isSpamDetected());
 
         Boolean isSpam = spamData.get("isSpam");
         if (isSpam != null) {
@@ -407,23 +400,15 @@ public class AdminController {
                 // When manually marking as spam, set the spam type to UNKNOWN (manual)
                 existingMap.setSpamTypeCode(com.wisemapping.model.SpamStrategyType.UNKNOWN);
                 existingMap.setSpamDescription("Manually marked as spam by admin");
-                logger.info("✅ MARK AS SPAM ENDPOINT WORKING: Map '{}' (ID: {}) successfully marked as spam by admin", 
-                           existingMap.getTitle(), id);
             } else {
                 // When unmarking as spam, clear the spam type and description
                 existingMap.setSpamTypeCode(null);
                 existingMap.setSpamDescription(null);
-                logger.info("✅ MARK AS SPAM ENDPOINT WORKING: Map '{}' (ID: {}) successfully unmarked as spam by admin", 
-                           existingMap.getTitle(), id);
             }
-            logger.info("🔍 SPAM ENDPOINT: Updating mindmap with new spam status: {}", isSpam);
             mindmapService.updateMindmap(existingMap, true);
-            logger.info("🔍 SPAM ENDPOINT: Mindmap updated successfully");
         }
 
-        com.wisemapping.rest.model.AdminRestMap result = new com.wisemapping.rest.model.AdminRestMap(existingMap);
-        logger.info("🔍 SPAM ENDPOINT: Returning AdminRestMap with spam status: {}", result.isSpam());
-        return result;
+        return new com.wisemapping.rest.model.AdminRestMap(existingMap);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")

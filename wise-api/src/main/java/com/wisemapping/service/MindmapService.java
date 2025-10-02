@@ -94,7 +94,7 @@ public interface MindmapService {
      * @param pageSize number of mindmaps per page
      * @return list of mindmaps for the given page
      */
-    List<Mindmap> getAllMindmaps(Boolean filterSpam, String dateFilter, int page, int pageSize);
+    List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter, int page, int pageSize);
 
     /**
      * Count total number of mindmaps (admin only)
@@ -115,7 +115,7 @@ public interface MindmapService {
      * @param dateFilter filter by creation date ("1" = last 1 month, "3" = last 3 months, "6" = last 6 months, "all" = no filter)
      * @return total count of mindmaps
      */
-    long countAllMindmaps(Boolean filterSpam, String dateFilter);
+    long countAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter);
 
     /**
      * Search mindmaps with filtering and pagination (admin only)

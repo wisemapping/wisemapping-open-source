@@ -905,9 +905,25 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public List<Mindmap> getAllMindmaps(Boolean filterSpam, String dateFilter, int offset, int limit) {
+    public List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
             "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+        
+        if (filterPublic != null) {
+            if (filterPublic) {
+                queryString.append(" AND m.isPublic = true");
+            } else {
+                queryString.append(" AND m.isPublic = false");
+            }
+        }
+        
+        if (filterLocked != null) {
+            if (filterLocked) {
+                queryString.append(" AND m.isLocked = true");
+            } else {
+                queryString.append(" AND m.isLocked = false");
+            }
+        }
         
         if (filterSpam != null) {
             if (filterSpam) {
@@ -949,9 +965,25 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public long countAllMindmaps(Boolean filterSpam, String dateFilter) {
+    public long countAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter) {
         StringBuilder queryString = new StringBuilder(
             "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+        
+        if (filterPublic != null) {
+            if (filterPublic) {
+                queryString.append(" AND m.isPublic = true");
+            } else {
+                queryString.append(" AND m.isPublic = false");
+            }
+        }
+        
+        if (filterLocked != null) {
+            if (filterLocked) {
+                queryString.append(" AND m.isLocked = true");
+            } else {
+                queryString.append(" AND m.isLocked = false");
+            }
+        }
         
         if (filterSpam != null) {
             if (filterSpam) {
