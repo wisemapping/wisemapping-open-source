@@ -793,9 +793,6 @@ public class MindmapManagerImpl
     public List<Mindmap> getAllMindmaps(int offset, int limit) {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
             "SELECT m FROM com.wisemapping.model.Mindmap m " +
-            "LEFT JOIN FETCH m.spamInfo " +
-            "LEFT JOIN FETCH m.creator " +
-            "LEFT JOIN FETCH m.lastEditor " +
             "ORDER BY m.creationTime DESC", Mindmap.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
@@ -872,11 +869,7 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> getAllMindmaps(Boolean filterSpam, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
-            "SELECT m FROM com.wisemapping.model.Mindmap m " +
-            "LEFT JOIN FETCH m.spamInfo " +
-            "LEFT JOIN FETCH m.creator " +
-            "LEFT JOIN FETCH m.lastEditor " +
-            "WHERE 1=1");
+            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");
         
         if (filterSpam != null) {
             if (filterSpam) {
@@ -914,8 +907,7 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
-            "SELECT m FROM com.wisemapping.model.Mindmap m " +
-            "LEFT JOIN FETCH m.spamInfo WHERE 1=1");
+            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");
         
         if (search != null && !search.trim().isEmpty()) {
             queryString.append(" AND (LOWER(m.title) LIKE LOWER(:search) OR LOWER(m.description) LIKE LOWER(:search))");
