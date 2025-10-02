@@ -98,6 +98,14 @@ public class RestUser {
         return password;
     }
 
+    public String getAuthenticationType() {
+        return user.getAuthenticationType().name();
+    }
+
+    public void setAuthenticationType(String authenticationType) {
+        user.setAuthenticationType(AuthenticationType.valueOf(authenticationType));
+    }
+
     public boolean isAllowSendEmail() {
         return user.isAllowSendEmail();
     }
@@ -122,10 +130,6 @@ public class RestUser {
     public Account getDelegated() {
         return this.user;
     }
-
-	public AuthenticationType getAuthenticationType() {
-		return user.getAuthenticationType();
-	}
 
     @Override
     public boolean equals(Object o) {

@@ -19,6 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.exceptions.PasswordChangeNotAllowedException;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
@@ -190,7 +191,7 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody String password, @PathVariable int id) {
+    public void changePassword(@RequestBody String password, @PathVariable int id) throws PasswordChangeNotAllowedException {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null");
         }
@@ -199,6 +200,13 @@ public class AdminController {
         if (user == null) {
             throw new IllegalArgumentException("User '" + id + "' could not be found");
         }
+        
+        // Check if password changes are allowed for this user's authentication type
+        if (!user.isPasswordChangeAllowed()) {
+            throw new PasswordChangeNotAllowedException("Cannot change password for user '" + user.getEmail() + 
+                "' - password changes are not allowed for external authentication providers (Google, LDAP, Facebook).");
+        }
+        
         user.setPassword(password);
         userService.changePassword(user);
     }

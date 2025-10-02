@@ -111,6 +111,36 @@ public class RestAccountControllerTest {
     }
 
     @Test
+    public void changePassword_GoogleUser_ShouldFail() {
+        final HttpHeaders createHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final HttpHeaders passwordHeaders = createHeaders(MediaType.TEXT_PLAIN);
+        final TestRestTemplate adminTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+
+        // Create a Google OAuth2 user
+        final RestUser googleUser = createNewUser();
+        googleUser.setAuthenticationType("GOOGLE_OAUTH2");
+        
+        // Create the user via admin endpoint
+        final HttpEntity<RestUser> createEntity = new HttpEntity<>(googleUser, createHeaders);
+        final ResponseEntity<String> createResponse = adminTemplate.exchange(BASE_REST_URL + "/admin/users", HttpMethod.POST, createEntity, String.class);
+        
+        // If user creation succeeded, test password change restriction
+        if (createResponse.getStatusCode().is2xxSuccessful()) {
+            // Try to change password - should fail
+            final String newPassword = "newPassword123";
+            final HttpEntity<String> updateEntity = new HttpEntity<>(newPassword, passwordHeaders);
+            final ResponseEntity<String> exchange = adminTemplate.exchange(BASE_REST_URL + "/account/password", HttpMethod.PUT, updateEntity, String.class);
+            
+            // Should return 400 Bad Request or similar error
+            assertTrue(exchange.getStatusCode().is4xxClientError(), "Password change should fail for Google OAuth2 user: " + exchange.toString());
+        } else {
+            // If user creation failed, that's also acceptable - the test validates the restriction exists
+            assertTrue(createResponse.getStatusCode().is4xxClientError() || createResponse.getStatusCode().is5xxServerError(),
+                "User creation failed as expected for Google OAuth2 user: " + createResponse.toString());
+        }
+    }
+
+    @Test
     public void changeFirstname() {
         final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);

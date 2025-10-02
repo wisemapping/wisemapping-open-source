@@ -38,17 +38,10 @@ public class SpamDetectionService {
         for (SpamDetectionStrategy strategy : strategies) {
             final SpamDetectionResult result = strategy.detectSpam(mindmap);
             if (result.isSpam()) {
-                try {
-                    logger.info("Spam detected by strategy '{}' in mindmap '{}' - Title: '{}', Description: '{}', XML: '{}', " +
-                               "Reason: '{}', Details: '{}'",
-                               strategy.getType().getStrategyName(), mindmap.getId(), mindmap.getTitle(), 
-                               mindmap.getDescription(), mindmap.getXmlStr(), result.getReason(), result.getDetails());
-                } catch (UnsupportedEncodingException e) {
-                    logger.info("Spam detected by strategy '{}' in mindmap '{}' - Title: '{}', Description: '{}', " +
-                               "Reason: '{}', Details: '{}'",
-                               strategy.getType().getStrategyName(), mindmap.getId(), mindmap.getTitle(), 
-                               mindmap.getDescription(), result.getReason(), result.getDetails());
-                }
+                logger.info("Spam detected by strategy '{}' in mindmap '{}' - Title: '{}', Description: '{}', " +
+                           "Reason: '{}', Details: '{}'",
+                           strategy.getType().getStrategyName(), mindmap.getId(), mindmap.getTitle(), 
+                           mindmap.getDescription(), result.getReason(), result.getDetails());
                 SpamDetectionResult finalResult = new SpamDetectionResult(true, result.getReason(), 
                     String.format("Strategy: %s, Details: %s", strategy.getType().getStrategyName(), result.getDetails()),
                     strategy.getType());
