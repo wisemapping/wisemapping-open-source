@@ -187,7 +187,9 @@ public class UserManagerImpl
     @Override
     public List<Account> getAllUsers(int offset, int limit) {
         final TypedQuery<Account> query = entityManager.createQuery(
-            "SELECT u FROM com.wisemapping.model.Account u ORDER BY u.id DESC", 
+            "SELECT u FROM com.wisemapping.model.Account u " +
+            "LEFT JOIN FETCH u.collaborator " +
+            "ORDER BY u.id DESC", 
             Account.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
@@ -206,6 +208,7 @@ public class UserManagerImpl
     public List<Account> searchUsers(String search, int offset, int limit) {
         final TypedQuery<Account> query = entityManager.createQuery(
             "SELECT u FROM com.wisemapping.model.Account u " +
+            "LEFT JOIN FETCH u.collaborator " +
             "WHERE LOWER(u.email) LIKE LOWER(:search) " +
             "   OR LOWER(u.firstname) LIKE LOWER(:search) " +
             "   OR LOWER(u.lastname) LIKE LOWER(:search) " +
