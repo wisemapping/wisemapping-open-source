@@ -40,13 +40,19 @@ public class RestUser {
 
     private final Account user;
     private String password;
+    private boolean isAdmin;
 
     public RestUser() {
-        this(new Account());
+        this(new Account(), false);
     }
 
     public RestUser(@NotNull Account user) {
+        this(user, false);
+    }
+
+    public RestUser(@NotNull Account user, boolean isAdmin) {
         this.user = user;
+        this.isAdmin = isAdmin;
     }
 
     public Calendar getCreationDate() {
@@ -124,6 +130,14 @@ public class RestUser {
 
     public String getFullName() {
         return user.getFullName();
+    }
+
+    public boolean isAdmin() {
+        return isAdmin != null ? isAdmin : false;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.isAdmin = admin;
     }
 
     @JsonIgnore
