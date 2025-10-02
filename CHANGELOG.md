@@ -2,7 +2,7 @@
 
 All notable changes to the Wisemapping Frontend project are documented in this file.
 
-## Week of September 24 - October 1, 2025
+## September, 2025
 
 ### 🚀 Major Features & Enhancements
 
@@ -21,6 +21,13 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 - **Relationship Styling**: Added enhanced styling options for mindmap relationships
 - **Image Support**: Completed emoji-based image support implementation
 - **Background Colors**: Added support for custom background colors in themes
+
+#### Docker Distribution & Deployment
+- **Full Stack Docker Image**: Added comprehensive Docker distribution with both frontend and backend in a single container
+- **Multi-stage Build**: Implemented optimized multi-stage Dockerfile for efficient image building
+- **All-in-One Deployment**: Created complete application deployment solution with Nginx reverse proxy
+- **Container Orchestration**: Added Supervisor configuration for process management within containers
+- **Production Ready**: Full stack Docker image ready for production deployment with persistent data support
 
 ### 🔧 Technical Improvements
 
@@ -68,6 +75,13 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 - **NodePropertyBuilder**: Updated to pass variant when getting color values
 - **MindplotWebComponent**: Improved theme resolution and variant handling
 
+#### Infrastructure & Deployment
+- **Docker Distribution**: Created comprehensive Docker distribution system with multiple deployment options
+- **CI/CD Integration**: Updated GitHub Actions workflows for automated Docker image building and publishing
+- **Multi-stage Builds**: Implemented efficient multi-stage Docker builds for both API-only and full-stack deployments
+- **Container Orchestration**: Added Supervisor configuration for managing multiple processes in containers
+- **Nginx Configuration**: Optimized Nginx reverse proxy setup for production deployments
+
 ### 📁 Files Modified
 
 #### Core Theme Files
@@ -93,6 +107,15 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 - `packages/editor/src/classes/model/node-property-builder/index.ts`
 - Multiple editor component files updated for theme consistency
 
+#### Docker Distribution Files
+- `distribution/README.md` - Comprehensive Docker distribution documentation
+- `distribution/app/Dockerfile` - Full stack multi-stage Docker build configuration
+- `distribution/app/nginx.conf` - Production-ready Nginx reverse proxy configuration
+- `distribution/app/supervisord.conf` - Container process management configuration
+- `distribution/app/.dockerignore` - Docker build optimization
+- `.github/workflows/docker-app-publish.yml` - Automated Docker image publishing workflow
+- `.github/workflows/docker-api-publish.yml` - API-only Docker image publishing workflow
+
 ### 🎯 Impact Summary
 
 This week's changes represent a major milestone in the Wisemapping Frontend project:
@@ -102,6 +125,7 @@ This week's changes represent a major milestone in the Wisemapping Frontend proj
 3. **Improved Maintainability**: JSON-based theme configuration and better type safety make the codebase more maintainable
 4. **Social Integration**: Facebook support expands collaboration capabilities
 5. **Quality Assurance**: Comprehensive testing improvements ensure more reliable functionality
+6. **Production Deployment**: Docker distribution system enables easy deployment and scaling in production environments
 
 ### 🔮 Future Considerations
 
