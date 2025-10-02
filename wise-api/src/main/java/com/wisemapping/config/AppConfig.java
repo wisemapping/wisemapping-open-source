@@ -86,6 +86,7 @@ public class AppConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/restful/oauth2/googlecallback").permitAll()
                         .requestMatchers("/api/restful/oauth2/confirmaccountsync").permitAll()
                         .requestMatchers("/api/restful/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
                 .logout(logout -> logout.permitAll()
