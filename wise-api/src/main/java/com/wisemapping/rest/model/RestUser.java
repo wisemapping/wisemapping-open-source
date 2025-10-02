@@ -120,12 +120,19 @@ public class RestUser {
         user.setAllowSendEmail(allowSendEmail);
     }
 
-    public boolean isActive() {
-        return user.isActive();
-    }
-
     public boolean isSuspended() {
         return user.isSuspended();
+    }
+
+    public String getSuspensionReason() {
+        return user.getSuspensionReason() != null ? user.getSuspensionReason().name() : null;
+    }
+
+    public String getSuspendedDate() {
+        if (user.getSuspendedDate() != null) {
+            return user.getSuspendedDate().getTime().toString();
+        }
+        return null;
     }
 
     public String getFullName() {

@@ -2,6 +2,14 @@
 
 WiseMapping is an open-source web-based mind mapping tool that harnesses the potential of Mind Maps by blending together open standards technologies like SVG and React. It is built upon the foundation of the code supporting http://www.wisemapping.com, ensuring reliability and continuity in its development.
 
+## 📚 Documentation
+
+- **[Documentation Hub](doc/README.md)** - Complete documentation index and navigation
+- **[API Documentation](doc/api-documentation/README.md)** - Complete REST API documentation with examples
+- **[Backend Documentation](doc/api-documentation/backend/README.md)** - Backend-specific documentation including telemetry and OpenAPI specs
+- **[Database Configuration](config/database/)** - Database setup and migration scripts
+- **[Deployment Guide](distribution/)** - Docker and deployment documentation
+
 # Build and Start Application
 
 The following section describes the steps to check out, compile, and start WiseMapping locally. If you are interested in deploying it, I recommend using the already published images https://hub.docker.com/r/wisemapping/wisemapping.

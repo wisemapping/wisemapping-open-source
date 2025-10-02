@@ -1,0 +1,850 @@
+# Collaboration and Admin API Endpoints - Part 3 of OpenAPI Specification
+# This file contains collaboration, labels, and admin endpoints
+
+paths:
+  # Collaboration management
+  /maps/{id}/collabs:
+    get:
+      tags:
+        - Collaboration
+      summary: Get mindmap collaborators
+      description: Retrieve the list of collaborators for a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '200':
+          description: Collaborators retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollaborationList'
+
+    post:
+      tags:
+        - Collaboration
+      summary: Add mindmap collaborators
+      description: Add new collaborators to a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaborationList'
+      responses:
+        '204':
+          description: Collaborators added successfully
+
+    put:
+      tags:
+        - Collaboration
+      summary: Update mindmap collaborators
+      description: Update the collaborators for a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollaborationList'
+      responses:
+        '204':
+          description: Collaborators updated successfully
+
+    delete:
+      tags:
+        - Collaboration
+      summary: Remove mindmap collaborator
+      description: Remove a specific collaborator from a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+            format: email
+          description: Email of collaborator to remove
+      responses:
+        '204':
+          description: Collaborator removed successfully
+
+  # Label management
+  /labels:
+    get:
+      tags:
+        - Labels
+      summary: Get user labels
+      description: Retrieve all labels created by the current user
+      responses:
+        '200':
+          description: Labels retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabelList'
+
+    post:
+      tags:
+        - Labels
+      summary: Create new label
+      description: Create a new label
+      parameters:
+        - name: title
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Label title (overrides request body)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Label'
+      responses:
+        '201':
+          description: Label created successfully
+          headers:
+            Location:
+              description: URL of the created label
+              schema:
+                type: string
+            ResourceId:
+              description: ID of the created label
+              schema:
+                type: string
+
+  /labels/{id}:
+    delete:
+      tags:
+        - Labels
+      summary: Delete label
+      description: Delete a label permanently
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Label ID
+      responses:
+        '204':
+          description: Label deleted successfully
+        '404':
+          description: Label not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /maps/{id}/labels:
+    post:
+      tags:
+        - Labels
+      summary: Add label to mindmap
+      description: Add a label to a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: integer
+              description: Label ID
+      responses:
+        '200':
+          description: Label added to mindmap successfully
+
+  /maps/{id}/labels/{lid}:
+    delete:
+      tags:
+        - Labels
+      summary: Remove label from mindmap
+      description: Remove a label from a mindmap
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+        - name: lid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Label ID
+      responses:
+        '204':
+          description: Label removed from mindmap successfully
+
+  # Admin endpoints
+  /admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Get all users (Admin only)
+      description: Retrieve a paginated list of all users in the system
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          description: Page number (0-based)
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+          description: Number of users per page
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search query to filter users
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserResponse'
+        '403':
+          description: Admin access required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags:
+        - Admin
+      summary: Create new user (Admin only)
+      description: Create a new user account (admin only)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created successfully
+          headers:
+            Location:
+              description: URL of the created user
+              schema:
+                type: string
+        '403':
+          description: Admin access required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /admin/users/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Get user by ID (Admin only)
+      description: Retrieve a specific user by ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Admin
+      summary: Update user (Admin only)
+      description: Update user information
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+    delete:
+      tags:
+        - Admin
+      summary: Delete user (Admin only)
+      description: Delete a user and all associated data
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '204':
+          description: User deleted successfully
+
+  /admin/users/email/{email}:
+    get:
+      tags:
+        - Admin
+      summary: Get user by email (Admin only)
+      description: Retrieve a specific user by email address
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+            format: email
+          description: User email address
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /admin/users/{id}/password:
+    put:
+      tags:
+        - Admin
+      summary: Change user password (Admin only)
+      description: Change a user's password
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: New password
+      responses:
+        '204':
+          description: Password changed successfully
+
+  /admin/maps:
+    get:
+      tags:
+        - Admin
+      summary: Get all mindmaps (Admin only)
+      description: Retrieve a paginated list of all mindmaps in the system
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          description: Page number (0-based)
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+          description: Number of mindmaps per page
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Search query to filter mindmaps
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+            default: title
+          description: Field to sort by
+        - name: sortOrder
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+          description: Sort order
+        - name: filterPublic
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Filter by public status
+        - name: filterLocked
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Filter by locked status
+        - name: filterSpam
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Filter by spam status
+      responses:
+        '200':
+          description: Mindmaps retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMapResponse'
+
+  /admin/maps/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Get mindmap by ID (Admin only)
+      description: Retrieve a specific mindmap by ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '200':
+          description: Mindmap retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminMap'
+
+    put:
+      tags:
+        - Admin
+      summary: Update mindmap (Admin only)
+      description: Update mindmap information
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminMap'
+      responses:
+        '200':
+          description: Mindmap updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminMap'
+
+    delete:
+      tags:
+        - Admin
+      summary: Delete mindmap (Admin only)
+      description: Delete a mindmap permanently
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '204':
+          description: Mindmap deleted successfully
+
+  /admin/maps/{id}/xml:
+    get:
+      tags:
+        - Admin
+      summary: Get mindmap XML (Admin only)
+      description: Retrieve the XML content of a mindmap
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      responses:
+        '200':
+          description: Mindmap XML retrieved successfully
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: Mindmap XML content
+
+  /admin/maps/{id}/spam:
+    put:
+      tags:
+        - Admin
+      summary: Update mindmap spam status (Admin only)
+      description: Update the spam detection status of a mindmap
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Mindmap ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isSpam:
+                  type: boolean
+                  description: Whether the mindmap is spam
+      responses:
+        '200':
+          description: Spam status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminMap'
+
+  /admin/system/info:
+    get:
+      tags:
+        - Admin
+      summary: Get system information (Admin only)
+      description: Retrieve system information including JVM stats, database info, etc.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: System information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemInfo'
+
+  /admin/system/health:
+    get:
+      tags:
+        - Admin
+      summary: Get system health (Admin only)
+      description: Check system health including database connectivity and memory usage
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: System health retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealth'
+
+components:
+  schemas:
+    CollaborationList:
+      type: object
+      properties:
+        collaborations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Collaboration'
+        message:
+          type: string
+          description: Message to send to collaborators
+
+    Collaboration:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: Collaborator email address
+        role:
+          type: string
+          enum: [OWNER, EDITOR, VIEWER]
+          description: Collaboration role
+
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique label identifier
+        title:
+          type: string
+          description: Label title
+        color:
+          type: string
+          description: Label color (hex code)
+
+    LabelList:
+      type: object
+      properties:
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+
+    PaginatedUserResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        page:
+          type: integer
+          description: Current page number
+        pageSize:
+          type: integer
+          description: Number of items per page
+        totalElements:
+          type: integer
+          description: Total number of users
+        totalPages:
+          type: integer
+          description: Total number of pages
+
+    PaginatedMapResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMap'
+        page:
+          type: integer
+          description: Current page number
+        pageSize:
+          type: integer
+          description: Number of items per page
+        totalElements:
+          type: integer
+          description: Total number of mindmaps
+        totalPages:
+          type: integer
+          description: Total number of pages
+
+    AdminMap:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique mindmap identifier
+        title:
+          type: string
+          description: Mindmap title
+        description:
+          type: string
+          description: Mindmap description
+        createdBy:
+          type: string
+          description: Creator email address
+        createdById:
+          type: integer
+          description: Creator user ID
+        creationTime:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        lastModificationBy:
+          type: string
+          description: Last editor email address
+        lastModificationById:
+          type: integer
+          description: Last editor user ID
+        lastModificationTime:
+          type: string
+          format: date-time
+          description: Last modification timestamp
+        isPublic:
+          type: boolean
+          description: Whether mindmap is public
+        isSpam:
+          type: boolean
+          description: Whether mindmap is marked as spam
+
+    SystemInfo:
+      type: object
+      properties:
+        application:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Application name
+            port:
+              type: string
+              description: Server port
+        database:
+          type: object
+          properties:
+            driver:
+              type: string
+              description: Database driver
+            url:
+              type: string
+              description: Database URL (masked)
+            username:
+              type: string
+              description: Database username
+            hibernateDdlAuto:
+              type: string
+              description: Hibernate DDL auto setting
+        jvm:
+          type: object
+          properties:
+            javaVersion:
+              type: string
+              description: Java version
+            javaVendor:
+              type: string
+              description: Java vendor
+            uptime:
+              type: integer
+              description: JVM uptime in milliseconds
+            startTime:
+              type: integer
+              description: JVM start time
+            maxMemory:
+              type: integer
+              description: Maximum heap memory
+            usedMemory:
+              type: integer
+              description: Used heap memory
+            totalMemory:
+              type: integer
+              description: Total committed memory
+            availableProcessors:
+              type: integer
+              description: Number of available processors
+            systemLoadAverage:
+              type: number
+              description: System load average
+        statistics:
+          type: object
+          properties:
+            totalUsers:
+              type: integer
+              description: Total number of users
+            totalMindmaps:
+              type: integer
+              description: Total number of mindmaps
+
+    SystemHealth:
+      type: object
+      properties:
+        database:
+          type: string
+          enum: [UP, DOWN]
+          description: Database connectivity status
+        databaseError:
+          type: string
+          description: Database error message (if any)
+        memory:
+          type: string
+          enum: [UP, WARNING]
+          description: Memory status
+        memoryUsagePercent:
+          type: number
+          format: float
+          description: Memory usage percentage
