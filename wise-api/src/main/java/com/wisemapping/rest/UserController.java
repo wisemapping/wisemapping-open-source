@@ -62,9 +62,6 @@ public class UserController {
     @Autowired
     private MetricsService metricsService;
 
-    @Autowired
-    private MindmapService mindmapService;
-
     @Qualifier("authenticationManager")
     @Autowired
     private AuthenticationManager authManager;

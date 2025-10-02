@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Account;
+import com.wisemapping.model.SuspensionReason;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
@@ -126,6 +127,22 @@ public class RestUser {
 
     public String getSuspensionReason() {
         return user.getSuspensionReason() != null ? user.getSuspensionReason().name() : null;
+    }
+
+    public void setSuspensionReason(String reason) {
+        if (reason != null && !reason.isEmpty()) {
+            try {
+                user.setSuspensionReason(SuspensionReason.valueOf(reason.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                // Invalid suspension reason, ignore
+            }
+        } else {
+            user.setSuspensionReason(null);
+        }
+    }
+
+    public void setSuspended(boolean suspended) {
+        user.setSuspended(suspended);
     }
 
     public String getSuspendedDate() {

@@ -47,13 +47,12 @@ class TelemetryMetricsTest {
     private NotificationService notificationService;
 
     private MeterRegistry meterRegistry;
-    private MindmapServiceImpl mindmapServiceImpl;
     private MetricsService metricsService;
 
     @BeforeEach
     void setUp() {
         meterRegistry = new SimpleMeterRegistry();
-        mindmapServiceImpl = new MindmapServiceImpl();
+        new MindmapServiceImpl();
         metricsService = new MetricsService();
         
         // Use reflection to inject the meterRegistry since it's private

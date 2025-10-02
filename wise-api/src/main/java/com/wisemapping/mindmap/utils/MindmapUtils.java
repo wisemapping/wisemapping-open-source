@@ -258,22 +258,6 @@ public class MindmapUtils {
     }
     
     /**
-     * Fallback method for HTML content detection when XML parsing fails.
-     */
-    private static boolean hasHtmlContentFallback(@NotNull String xmlContent) {
-        java.util.regex.Pattern notePattern = java.util.regex.Pattern.compile("<note[^>]*>\\s*<!\\[CDATA\\[([^\\]]*?)\\]\\]>\\s*</note>", java.util.regex.Pattern.CASE_INSENSITIVE | java.util.regex.Pattern.DOTALL);
-        java.util.regex.Matcher matcher = notePattern.matcher(xmlContent);
-        while (matcher.find()) {
-            String noteContent = matcher.group(1);
-            if (isHtmlContent(noteContent)) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-    
-    /**
      * Validates note content length for HTML notes.
      * 
      * @param xmlContent The XML content to validate
