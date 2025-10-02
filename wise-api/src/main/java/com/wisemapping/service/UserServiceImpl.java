@@ -374,4 +374,26 @@ public class UserServiceImpl
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public List<Account> getAllUsers(int page, int pageSize) {
+        int offset = page * pageSize;
+        return userManager.getAllUsers(offset, pageSize);
+    }
+
+    @Override
+    public long countAllUsers() {
+        return userManager.countAllUsers();
+    }
+
+    @Override
+    public List<Account> searchUsers(String search, int page, int pageSize) {
+        int offset = page * pageSize;
+        return userManager.searchUsers(search, offset, pageSize);
+    }
+
+    @Override
+    public long countUsersBySearch(String search) {
+        return userManager.countUsersBySearch(search);
+    }
 }

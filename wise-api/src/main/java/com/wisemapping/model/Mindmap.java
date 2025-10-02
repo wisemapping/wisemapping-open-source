@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -53,11 +54,13 @@ public class Mindmap implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "creator_id")
+    @JsonIgnore
     private Account creator;
 
     @ManyToOne
     @JoinColumn(name = "last_editor_id", nullable = false)
     @NotFound(action = NotFoundAction.IGNORE)
+    @JsonIgnore
     private Account lastEditor;
 
     private String description;
@@ -66,10 +69,12 @@ public class Mindmap implements Serializable {
     private boolean isPublic;
 
     @OneToOne(mappedBy = "mindmap", fetch = FetchType.LAZY)
+    @JsonIgnore
     private MindmapSpamInfo spamInfo;
 
     @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
+    @JsonIgnore
     private Set<Collaboration> collaborations = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
@@ -78,12 +83,14 @@ public class Mindmap implements Serializable {
             name = "R_LABEL_MINDMAP",
             joinColumns = @JoinColumn(name = "mindmap_id"),
             inverseJoinColumns = @JoinColumn(name = "label_id"))
+    @JsonIgnore
     private Set<MindmapLabel> labels = new LinkedHashSet<>();
 
     private String title;
 
     @Column(name = "xml")
     @Basic(fetch = FetchType.LAZY)
+    @JsonIgnore
     private byte[] zippedXml;
 
     public Mindmap() {

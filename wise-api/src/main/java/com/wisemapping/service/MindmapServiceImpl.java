@@ -333,4 +333,26 @@ public class MindmapServiceImpl
     public String getAdminUser() {
         return adminUser;
     }
+
+    @Override
+    public List<Mindmap> getAllMindmaps(int page, int pageSize) {
+        int offset = page * pageSize;
+        return mindmapManager.getAllMindmaps(offset, pageSize);
+    }
+
+    @Override
+    public long countAllMindmaps() {
+        return mindmapManager.countAllMindmaps();
+    }
+
+    @Override
+    public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, int page, int pageSize) {
+        int offset = page * pageSize;
+        return mindmapManager.searchMindmaps(search, filterPublic, filterLocked, offset, pageSize);
+    }
+
+    @Override
+    public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked) {
+        return mindmapManager.countMindmapsBySearch(search, filterPublic, filterLocked);
+    }
 }

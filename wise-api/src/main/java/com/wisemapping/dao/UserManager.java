@@ -47,4 +47,34 @@ public interface UserManager {
 
     void removeUser(@NotNull Account user);
 
+    /**
+     * Get all users with pagination support
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of users for the given page
+     */
+    List<Account> getAllUsers(int offset, int limit);
+
+    /**
+     * Count total number of users
+     * @return total count of users
+     */
+    long countAllUsers();
+
+    /**
+     * Get users with search filtering and pagination
+     * @param search search term for email, firstname, or lastname
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of filtered users for the given page
+     */
+    List<Account> searchUsers(String search, int offset, int limit);
+
+    /**
+     * Count users matching search criteria
+     * @param search search term for email, firstname, or lastname
+     * @return total count of matching users
+     */
+    long countUsersBySearch(String search);
+
 }

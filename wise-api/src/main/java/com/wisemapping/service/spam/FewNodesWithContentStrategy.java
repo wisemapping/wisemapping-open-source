@@ -69,13 +69,13 @@ public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
                                            hasLinks ? "Few nodes with links and spam keywords" :
                                            "Few nodes with notes and spam keywords";
                             result = SpamDetectionResult.spam(reason,
-                                    "XML: " + xml + ", TopicCount: " + topicCount, getType());
+                                    "TopicCount: " + topicCount, getType());
                         }
                     }
                 } catch (MindmapValidationException e) {
                     // Log the parsing error with map content and assume safe content
-                    logger.warn("Failed to parse mindmap XML for spam detection. Mindmap ID: {}, XML content: {}, Error: {}", 
-                               mindmap.getId(), xml, e.getMessage());
+                    logger.warn("Failed to parse mindmap XML for spam detection. Mindmap ID: {}, Error: {}", 
+                               mindmap.getId(), e.getMessage());
                     
                     // Fallback to XML parsing if model parsing fails
                     int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
@@ -94,7 +94,7 @@ public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
                                            hasLinks ? "Few nodes with links and spam keywords" :
                                            "Few nodes with notes and spam keywords";
                             result = SpamDetectionResult.spam(reason,
-                                    "XML: " + xml + ", TopicCount: " + topicCount, getType());
+                                    "TopicCount: " + topicCount, getType());
                         }
                     }
                 }

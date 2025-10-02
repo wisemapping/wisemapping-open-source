@@ -142,7 +142,7 @@ app:
     max-inactive: 20
   # Google OAuth Authentication
   security:
-    #    corsAllowedOrigins: https://dev.wisemapping.com
+    corsAllowedOrigins: https://app.wisemapping.com,https://wisemapping.com,https://dev.wisemapping.com,http://localhost:3000
   # Batch task configuration
   batch:
     spam-user-suspension:

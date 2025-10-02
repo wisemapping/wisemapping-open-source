@@ -25,6 +25,7 @@ import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestUser;
+import com.wisemapping.rest.model.PaginatedResponse;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.MetricsService;
 import com.wisemapping.service.UserService;
@@ -83,9 +84,28 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users", produces = {"application/json"})
     @ResponseBody
-    public List<RestUser> getAllUsers() {
-        final List<Account> users = userService.getAllUsers();
-        return users.stream().map(RestUser::new).collect(java.util.stream.Collectors.toList());
+    public PaginatedResponse<RestUser> getAllUsers(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "search", required = false) String search) {
+        
+        if (search != null && !search.trim().isEmpty()) {
+            // Search users
+            final List<Account> users = userService.searchUsers(search, page, pageSize);
+            final long totalElements = userService.countUsersBySearch(search);
+            final List<RestUser> restUsers = users.stream()
+                    .map(RestUser::new)
+                    .collect(java.util.stream.Collectors.toList());
+            return new PaginatedResponse<>(restUsers, page, pageSize, totalElements);
+        } else {
+            // Get all users with pagination
+            final List<Account> users = userService.getAllUsers(page, pageSize);
+            final long totalElements = userService.countAllUsers();
+            final List<RestUser> restUsers = users.stream()
+                    .map(RestUser::new)
+                    .collect(java.util.stream.Collectors.toList());
+            return new PaginatedResponse<>(restUsers, page, pageSize, totalElements);
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
@@ -230,8 +250,8 @@ public class AdminController {
     // Maps management endpoints
     @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"application/json"})
     @ResponseBody
-    public List<com.wisemapping.rest.model.RestMap> getAllMaps(
-            @RequestParam(value = "page", defaultValue = "1") int page,
+    public PaginatedResponse<com.wisemapping.rest.model.RestMap> getAllMaps(
+            @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
@@ -239,13 +259,23 @@ public class AdminController {
             @RequestParam(value = "filterPublic", required = false) Boolean filterPublic,
             @RequestParam(value = "filterLocked", required = false) Boolean filterLocked) {
         
-        // For now, return all maps with basic filtering
-        // In a real implementation, you would add pagination and filtering logic here
-        final List<Mindmap> allMaps = mindmapService.getAllMindmaps();
-        
-        return allMaps.stream()
-                .map(com.wisemapping.rest.model.RestMap::new)
-                .collect(java.util.stream.Collectors.toList());
+        if (search != null && !search.trim().isEmpty()) {
+            // Search mindmaps
+            final List<Mindmap> mindmaps = mindmapService.searchMindmaps(search, filterPublic, filterLocked, page, pageSize);
+            final long totalElements = mindmapService.countMindmapsBySearch(search, filterPublic, filterLocked);
+            final List<com.wisemapping.rest.model.RestMap> restMaps = mindmaps.stream()
+                    .map(com.wisemapping.rest.model.RestMap::new)
+                    .collect(java.util.stream.Collectors.toList());
+            return new PaginatedResponse<>(restMaps, page, pageSize, totalElements);
+        } else {
+            // Get all mindmaps with pagination
+            final List<Mindmap> mindmaps = mindmapService.getAllMindmaps(page, pageSize);
+            final long totalElements = mindmapService.countAllMindmaps();
+            final List<com.wisemapping.rest.model.RestMap> restMaps = mindmaps.stream()
+                    .map(com.wisemapping.rest.model.RestMap::new)
+                    .collect(java.util.stream.Collectors.toList());
+            return new PaginatedResponse<>(restMaps, page, pageSize, totalElements);
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json"})

@@ -556,4 +556,117 @@ public class AdminControllerTest {
                   response.getStatusCode() == HttpStatus.FORBIDDEN);
     }
 
+    // Pagination Tests
+    @Test
+    public void testGetAllUsers_WithPagination_AdminAccess_Success() {
+        // Test that admin can access paginated users endpoint
+        ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .getForEntity("/api/restful/admin/users?page=0&pageSize=5", String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        
+        // Verify response contains pagination fields
+        String responseBody = response.getBody();
+        assertTrue(responseBody.contains("\"page\""));
+        assertTrue(responseBody.contains("\"pageSize\""));
+        assertTrue(responseBody.contains("\"totalElements\""));
+        assertTrue(responseBody.contains("\"totalPages\""));
+        assertTrue(responseBody.contains("\"data\""));
+    }
+
+    @Test
+    public void testGetAllUsers_WithSearch_AdminAccess_Success() {
+        // Test that admin can search users with pagination
+        ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .getForEntity("/api/restful/admin/users?page=0&pageSize=10&search=admin", String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        
+        // Verify response contains pagination fields
+        String responseBody = response.getBody();
+        assertTrue(responseBody.contains("\"page\""));
+        assertTrue(responseBody.contains("\"pageSize\""));
+        assertTrue(responseBody.contains("\"totalElements\""));
+        assertTrue(responseBody.contains("\"totalPages\""));
+        assertTrue(responseBody.contains("\"data\""));
+    }
+
+    @Test
+    public void testGetAllMaps_WithPagination_AdminAccess_Success() {
+        // Test that admin can access paginated maps endpoint
+        ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .getForEntity("/api/restful/admin/maps?page=0&pageSize=5", String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        
+        // Verify response contains pagination fields
+        String responseBody = response.getBody();
+        assertTrue(responseBody.contains("\"page\""));
+        assertTrue(responseBody.contains("\"pageSize\""));
+        assertTrue(responseBody.contains("\"totalElements\""));
+        assertTrue(responseBody.contains("\"totalPages\""));
+        assertTrue(responseBody.contains("\"data\""));
+    }
+
+    @Test
+    public void testGetAllMaps_WithSearch_AdminAccess_Success() {
+        // Test that admin can search maps with pagination
+        ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .getForEntity("/api/restful/admin/maps?page=0&pageSize=10&search=test", String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        
+        // Verify response contains pagination fields
+        String responseBody = response.getBody();
+        assertTrue(responseBody.contains("\"page\""));
+        assertTrue(responseBody.contains("\"pageSize\""));
+        assertTrue(responseBody.contains("\"totalElements\""));
+        assertTrue(responseBody.contains("\"totalPages\""));
+        assertTrue(responseBody.contains("\"data\""));
+    }
+
+    @Test
+    public void testGetAllMaps_WithFilters_AdminAccess_Success() {
+        // Test that admin can filter maps with pagination
+        ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .getForEntity("/api/restful/admin/maps?page=0&pageSize=10&filterPublic=true", String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        
+        // Verify response contains pagination fields
+        String responseBody = response.getBody();
+        assertTrue(responseBody.contains("\"page\""));
+        assertTrue(responseBody.contains("\"pageSize\""));
+        assertTrue(responseBody.contains("\"totalElements\""));
+        assertTrue(responseBody.contains("\"totalPages\""));
+        assertTrue(responseBody.contains("\"data\""));
+    }
+
+    @Test
+    public void testGetAllUsers_Pagination_RegularUserAccess_Forbidden() {
+        // Test that regular user cannot access paginated users endpoint
+        ResponseEntity<String> response = restTemplate.withBasicAuth(REGULAR_USER, REGULAR_PASSWORD)
+                .getForEntity("/api/restful/admin/users?page=0&pageSize=5", String.class);
+
+        // Should be either 401 (unauthorized) or 403 (forbidden)
+        assertTrue(response.getStatusCode() == HttpStatus.UNAUTHORIZED || 
+                  response.getStatusCode() == HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    public void testGetAllMaps_Pagination_RegularUserAccess_Forbidden() {
+        // Test that regular user cannot access paginated maps endpoint
+        ResponseEntity<String> response = restTemplate.withBasicAuth(REGULAR_USER, REGULAR_PASSWORD)
+                .getForEntity("/api/restful/admin/maps?page=0&pageSize=5", String.class);
+
+        // Should be either 401 (unauthorized) or 403 (forbidden)
+        assertTrue(response.getStatusCode() == HttpStatus.UNAUTHORIZED || 
+                  response.getStatusCode() == HttpStatus.FORBIDDEN);
+    }
+
 }

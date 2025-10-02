@@ -68,4 +68,38 @@ public interface MindmapService {
     boolean isAdmin(@Nullable Account user);
 
     List<Mindmap> getAllMindmaps();
+
+    /**
+     * Get all mindmaps with pagination support (admin only)
+     * @param page page number (0-based)
+     * @param pageSize number of mindmaps per page
+     * @return list of mindmaps for the given page
+     */
+    List<Mindmap> getAllMindmaps(int page, int pageSize);
+
+    /**
+     * Count total number of mindmaps (admin only)
+     * @return total count of mindmaps
+     */
+    long countAllMindmaps();
+
+    /**
+     * Search mindmaps with filtering and pagination (admin only)
+     * @param search search term for title or description
+     * @param filterPublic filter by public status (null for all)
+     * @param filterLocked filter by locked status (null for all)
+     * @param page page number (0-based)
+     * @param pageSize number of mindmaps per page
+     * @return list of filtered mindmaps for the given page
+     */
+    List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, int page, int pageSize);
+
+    /**
+     * Count mindmaps matching search criteria (admin only)
+     * @param search search term for title or description
+     * @param filterPublic filter by public status (null for all)
+     * @param filterLocked filter by locked status (null for all)
+     * @return total count of matching mindmaps
+     */
+    long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked);
 }
