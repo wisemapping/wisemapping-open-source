@@ -363,8 +363,19 @@ public class MindmapServiceImpl
     }
 
     @Override
+    public List<Mindmap> getAllMindmaps(Boolean filterSpam, String dateFilter, int page, int pageSize) {
+        int offset = page * pageSize;
+        return mindmapManager.getAllMindmaps(filterSpam, dateFilter, offset, pageSize);
+    }
+
+    @Override
     public long countAllMindmaps(Boolean filterSpam) {
         return mindmapManager.countAllMindmaps(filterSpam);
+    }
+
+    @Override
+    public long countAllMindmaps(Boolean filterSpam, String dateFilter) {
+        return mindmapManager.countAllMindmaps(filterSpam, dateFilter);
     }
 
     @Override

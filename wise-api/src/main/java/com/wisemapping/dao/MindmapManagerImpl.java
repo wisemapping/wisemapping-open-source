@@ -905,6 +905,90 @@ public class MindmapManagerImpl
     }
 
     @Override
+    public List<Mindmap> getAllMindmaps(Boolean filterSpam, String dateFilter, int offset, int limit) {
+        StringBuilder queryString = new StringBuilder(
+            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+        
+        if (filterSpam != null) {
+            if (filterSpam) {
+                queryString.append(" AND m.spamInfo.spamDetected = true");
+            } else {
+                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+            }
+        }
+        
+        // Add date filter
+        if (dateFilter != null && !dateFilter.equals("all")) {
+            try {
+                Integer.parseInt(dateFilter); // Validate it's a number
+                queryString.append(" AND m.creationTime >= :dateThreshold");
+            } catch (NumberFormatException e) {
+                // Invalid date filter, ignore it
+            }
+        }
+        
+        queryString.append(" ORDER BY m.creationTime DESC");
+        
+        final TypedQuery<Mindmap> query = entityManager.createQuery(queryString.toString(), Mindmap.class);
+        
+        // Set date parameter if needed
+        if (dateFilter != null && !dateFilter.equals("all")) {
+            try {
+                int months = Integer.parseInt(dateFilter);
+                java.util.Calendar threshold = java.util.Calendar.getInstance();
+                threshold.add(java.util.Calendar.MONTH, -months);
+                query.setParameter("dateThreshold", threshold);
+            } catch (NumberFormatException e) {
+                // Invalid date filter, ignore it
+            }
+        }
+        
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countAllMindmaps(Boolean filterSpam, String dateFilter) {
+        StringBuilder queryString = new StringBuilder(
+            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+        
+        if (filterSpam != null) {
+            if (filterSpam) {
+                queryString.append(" AND m.spamInfo.spamDetected = true");
+            } else {
+                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+            }
+        }
+        
+        // Add date filter
+        if (dateFilter != null && !dateFilter.equals("all")) {
+            try {
+                Integer.parseInt(dateFilter); // Validate it's a number
+                queryString.append(" AND m.creationTime >= :dateThreshold");
+            } catch (NumberFormatException e) {
+                // Invalid date filter, ignore it
+            }
+        }
+        
+        final TypedQuery<Long> query = entityManager.createQuery(queryString.toString(), Long.class);
+        
+        // Set date parameter if needed
+        if (dateFilter != null && !dateFilter.equals("all")) {
+            try {
+                int months = Integer.parseInt(dateFilter);
+                java.util.Calendar threshold = java.util.Calendar.getInstance();
+                threshold.add(java.util.Calendar.MONTH, -months);
+                query.setParameter("dateThreshold", threshold);
+            } catch (NumberFormatException e) {
+                // Invalid date filter, ignore it
+            }
+        }
+        
+        return query.getSingleResult();
+    }
+
+    @Override
     public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
             "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");

@@ -716,6 +716,28 @@ public class AdminControllerTest {
     }
 
     @Test
+    public void testUpdateMapSpamStatus_AdminAccess_Success() {
+        // Test that admin can update map spam status
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        
+        Map<String, Boolean> spamData = new HashMap<>();
+        spamData.put("isSpam", true);
+        
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .exchange(
+                    "/api/restful/admin/maps/1/spam",
+                    HttpMethod.PUT,
+                    new HttpEntity<>(spamData, headers),
+                    String.class);
+        
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        System.out.println("Spam update response: " + response.getBody());
+    }
+
+    @Test
     public void testUpdateUserSuspension_AdminAccess_Success() {
         // Test that admin can suspend users
         HttpHeaders headers = new HttpHeaders();
