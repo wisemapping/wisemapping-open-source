@@ -21,6 +21,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.model.Account;
+import com.wisemapping.service.MetricsService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +33,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
     private UserDetailsService userDetailsService;
     private PasswordEncoder encoder;
+    private MetricsService metricsService;
 
     @Override()
     public Authentication authenticate(@NotNull final Authentication auth) throws AuthenticationException {
@@ -58,6 +60,10 @@ public class AuthenticationProvider implements org.springframework.security.auth
         }
 
         userDetailsService.getUserService().auditLogin(user);
+        
+        // Track database authentication login telemetry
+        metricsService.trackUserLogin(user, "database");
+        
         return new UsernamePasswordAuthenticationToken(userDetails, credentials, userDetails.getAuthorities());
     }
 
@@ -76,5 +82,9 @@ public class AuthenticationProvider implements org.springframework.security.auth
 
     public void setUserDetailsService(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
+    }
+
+    public void setMetricsService(MetricsService metricsService) {
+        this.metricsService = metricsService;
     }
 }

@@ -1,6 +1,7 @@
 package com.wisemapping.config.common;
 
 import com.wisemapping.security.*;
+import com.wisemapping.service.MetricsService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +35,9 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private MetricsService metricsService;
+
     @Bean
     protected MethodSecurityExpressionHandler createExpressionHandler() {
         DefaultMethodSecurityExpressionHandler expressionHandler =
@@ -50,8 +54,7 @@ public class SecurityConfig {
     }
 
     private AuthenticationProvider googleAuthenticationProvider() {
-        return new GoogleAuthenticationProvider(userDetailsService, null); // Telemetry will be optional for now
-
+        return new GoogleAuthenticationProvider(userDetailsService, metricsService);
     }
 
     private AuthenticationProvider dbAuthenticationProvider() {
@@ -59,6 +62,7 @@ public class SecurityConfig {
                 new com.wisemapping.security.AuthenticationProvider();
         provider.setEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService);
+        provider.setMetricsService(metricsService);
         return provider;
     }
 
