@@ -102,7 +102,7 @@ public class MindmapServiceImpl
     }
 
     public boolean isAdmin(@Nullable Account user) {
-        return user != null && user.getEmail() != null && user.getEmail().equals(adminUser);
+        return user != null && user.getEmail() != null && user.getEmail().trim().endsWith(adminUser);
     }
 
     @Override
