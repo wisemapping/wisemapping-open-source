@@ -162,6 +162,15 @@ public class Account
         return this.getAuthenticationType() == AuthenticationType.DATABASE;
     }
 
+    /**
+     * Check if password changes are allowed for this user.
+     * Password changes are only allowed for DATABASE authentication type users.
+     * External providers (Google, LDAP, Facebook) manage their own passwords.
+     */
+    public boolean isPasswordChangeAllowed() {
+        return this.getAuthenticationType() == AuthenticationType.DATABASE;
+    }
+
     public String getAuthenticatorUri() {
         return authenticatorUri;
     }

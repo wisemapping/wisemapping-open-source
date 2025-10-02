@@ -28,7 +28,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RestMap {
-    private final Mindmap mindmap;
+    private Mindmap mindmap;
+
+    // Default constructor for Jackson deserialization
+    public RestMap() {
+        this.mindmap = new Mindmap();
+    }
 
     public RestMap(Mindmap mindmap) {
         this.mindmap = mindmap;
@@ -46,16 +51,30 @@ public class RestMap {
         return mindmap.getTitle();
     }
 
+    public void setTitle(String title) {
+        mindmap.setTitle(title);
+    }
+
     public String getDescription() {
         return mindmap.getDescription();
     }
 
+    public void setDescription(String description) {
+        mindmap.setDescription(description);
+    }
+
     public String getCreatedBy() {
-        return mindmap.getCreator().getEmail();
+        if (mindmap.getCreator() != null) {
+            return mindmap.getCreator().getEmail();
+        }
+        return null;
     }
 
     public int getCreatedById() {
-        return mindmap.getCreator().getId();
+        if (mindmap.getCreator() != null) {
+            return mindmap.getCreator().getId();
+        }
+        return 0;
     }
 
     public String getCreationTime() {
@@ -112,15 +131,7 @@ public class RestMap {
                 .collect(Collectors.toList());
     }
 
-    // Setters for testing and updates
-    public void setTitle(String title) {
-        mindmap.setTitle(title);
-    }
-
-    public void setDescription(String description) {
-        mindmap.setDescription(description);
-    }
-
+    // Additional setters for testing and updates
     public void setPublic(boolean isPublic) {
         mindmap.setPublic(isPublic);
     }
