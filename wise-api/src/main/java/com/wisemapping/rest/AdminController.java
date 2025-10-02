@@ -64,8 +64,18 @@ public class AdminController {
     @Autowired
     private MeterRegistry meterRegistry;
 
+    @Autowired
+    private com.wisemapping.security.UserDetailsService userDetailsService;
+
+    @Value("${app.admin.user:}")
+    private String adminUser;
+
     @Value("${spring.datasource.url:}")
     private String datasourceUrl;
+
+    private boolean isAdmin(String email) {
+        return email != null && adminUser != null && email.trim().endsWith(adminUser);
+    }
 
     @Value("${spring.datasource.driver-class-name:}")
     private String datasourceDriver;
@@ -94,7 +104,7 @@ public class AdminController {
             final List<Account> users = userService.searchUsers(search, page, pageSize);
             final long totalElements = userService.countUsersBySearch(search);
             final List<RestUser> restUsers = users.stream()
-                    .map(RestUser::new)
+                    .map(user -> new RestUser(user, isAdmin(user.getEmail())))
                     .collect(java.util.stream.Collectors.toList());
             return new PaginatedResponse<>(restUsers, page, pageSize, totalElements);
         } else {
@@ -102,7 +112,7 @@ public class AdminController {
             final List<Account> users = userService.getAllUsers(page, pageSize);
             final long totalElements = userService.countAllUsers();
             final List<RestUser> restUsers = users.stream()
-                    .map(RestUser::new)
+                    .map(user -> new RestUser(user, isAdmin(user.getEmail())))
                     .collect(java.util.stream.Collectors.toList());
             return new PaginatedResponse<>(restUsers, page, pageSize, totalElements);
         }
@@ -115,7 +125,7 @@ public class AdminController {
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
         }
-        return new RestUser(userBy);
+        return new RestUser(userBy, isAdmin(userBy.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/email/{email:.+}", produces = {"application/json"})
@@ -125,7 +135,7 @@ public class AdminController {
         if (user == null) {
             throw new IllegalArgumentException("User '" + email + "' could not be found");
         }
-        return new RestUser(user);
+        return new RestUser(user, isAdmin(user.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users", consumes = {"application/json"}, produces = {"application/json"})

@@ -32,6 +32,7 @@ import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +54,13 @@ public class AccountController {
     @Qualifier("labelService")
     @Autowired
     private LabelService labelService;
+
+    @Value("${app.admin.user:}")
+    private String adminUser;
+
+    private boolean isAdmin(String email) {
+        return email != null && adminUser != null && email.trim().endsWith(adminUser);
+    }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -79,7 +87,7 @@ public class AccountController {
     @RequestMapping(method = RequestMethod.GET, value = "", produces = {"application/json"})
     public RestUser fetchAccount() {
         final Account user = Utils.getUser(true);
-        return new RestUser(user);
+        return new RestUser(user, isAdmin(user.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/firstname", consumes = {"text/plain"})
