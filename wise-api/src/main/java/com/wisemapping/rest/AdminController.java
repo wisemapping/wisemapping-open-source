@@ -465,11 +465,12 @@ public class AdminController {
         // System Stats
         Map<String, Object> stats = new HashMap<>();
         try {
-            List<Account> users = userService.getAllUsers();
-            stats.put("totalUsers", users.size());
+            // Use count queries instead of loading all records
+            long totalUsers = userService.countAllUsers();
+            stats.put("totalUsers", totalUsers);
             
-            List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(null); // Get all mindmaps
-            stats.put("totalMindmaps", mindmaps.size());
+            long totalMindmaps = mindmapService.countAllMindmaps(false); // false = include non-spam
+            stats.put("totalMindmaps", totalMindmaps);
         } catch (Exception e) {
             stats.put("error", "Failed to retrieve stats: " + e.getMessage());
         }
@@ -485,7 +486,8 @@ public class AdminController {
         
         // Database Health
         try {
-            userService.getAllUsers(); // Simple database connectivity test
+            // Use a lightweight count query instead of loading all users
+            userService.countAllUsers(); // Simple database connectivity test
             health.put("database", "UP");
         } catch (Exception e) {
             health.put("database", "DOWN");
