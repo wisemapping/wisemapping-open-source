@@ -53,6 +53,7 @@ public class AdminRestMap {
     private String spamType;
     private String spamDetectedDate;
     private String spamReason;
+    private boolean isCreatorSuspended;
 
     // Default constructor for Jackson deserialization
     public AdminRestMap() {
@@ -73,6 +74,7 @@ public class AdminRestMap {
         if (mindmap.getCreator() != null) {
             this.createdBy = mindmap.getCreator().getEmail();
             this.createdById = mindmap.getCreator().getId();
+            this.isCreatorSuspended = mindmap.getCreator().isSuspended();
         }
         
         // Safe access to eagerly loaded last editor
@@ -235,5 +237,13 @@ public class AdminRestMap {
 
     public void setSpamReason(String spamReason) {
         this.spamReason = spamReason;
+    }
+
+    public boolean isCreatorSuspended() {
+        return isCreatorSuspended;
+    }
+
+    public void setCreatorSuspended(boolean isCreatorSuspended) {
+        this.isCreatorSuspended = isCreatorSuspended;
     }
 }
