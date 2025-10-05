@@ -93,8 +93,9 @@ public class InactiveUserService {
 
                     if (dryRun) {
                         logger.info(
-                                "DRY RUN - Would suspend user due to inactivity: email={}, id={}, lastLogin={}, lastContentActivity={}",
+                                "DRY RUN - Would suspend user due to inactivity: email={}, id={}, creationDate={}, lastLogin={}, lastContentActivity={}",
                                 user.getEmail(), user.getId(),
+                                user.getCreationDate() != null ? user.getCreationDate().getTime() : null,
                                 lastLogin != null ? lastLogin.getTime() : null,
                                 lastContentActivity != null ? lastContentActivity.getTime() : null);
                     } else {
@@ -102,8 +103,9 @@ public class InactiveUserService {
                         
                         metricsService.trackUserSuspension(user, "inactivity");
                         logger.info(
-                                "Suspended user due to inactivity: email={}, id={}, lastLogin={}, lastContentActivity={}",
+                                "Suspended user due to inactivity: email={}, id={}, creationDate={}, lastLogin={}, lastContentActivity={}",
                                 user.getEmail(), user.getId(),
+                                user.getCreationDate() != null ? user.getCreationDate().getTime() : null,
                                 lastLogin != null ? lastLogin.getTime() : null,
                                 lastContentActivity != null ? lastContentActivity.getTime() : null);
                         totalSuspended++;
@@ -128,6 +130,7 @@ public class InactiveUserService {
             SELECT DISTINCT a FROM com.wisemapping.model.Account a
             WHERE a.suspended = false
               AND a.activationDate IS NOT NULL
+              AND a.creationDate <= :cutoffDate
               AND a.id NOT IN (
                   SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
                   WHERE aa.loginDate >= :cutoffDate
@@ -138,7 +141,6 @@ public class InactiveUserService {
               )
             ORDER BY a.id
             """;
-
         TypedQuery<Account> query = entityManager.createQuery(jpql, Account.class);
         query.setParameter("cutoffDate", cutoffDate);
         query.setFirstResult(offset);
@@ -152,6 +154,7 @@ public class InactiveUserService {
             SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a
             WHERE a.suspended = false
               AND a.activationDate IS NOT NULL
+              AND a.creationDate <= :cutoffDate
               AND a.id NOT IN (
                   SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
                   WHERE aa.loginDate >= :cutoffDate
