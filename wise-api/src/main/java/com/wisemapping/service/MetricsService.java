@@ -49,8 +49,8 @@ public class MetricsService {
     private MeterRegistry meterRegistry;
 
     // Metric names as constants to avoid typos
-    private static final String USER_LOGINS = "wisemapping.api.user.logins";
-    private static final String USER_LOGOUTS = "wisemapping.api.user.logouts";
+    private static final String USER_LOGINS = "wisemapping.auth.session.created";
+    private static final String USER_LOGOUTS = "wisemapping.auth.session.terminated";
     private static final String USER_REGISTRATIONS = "wisemapping.api.user.registrations";
     private static final String USER_SUSPENSIONS = "wisemapping.api.user.suspensions";
     private static final String MINDMAPS_CREATED = "wisemapping.api.mindmaps.created";
