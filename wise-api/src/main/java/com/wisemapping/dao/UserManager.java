@@ -90,6 +90,22 @@ public interface UserManager {
     List<Account> findUsersInactiveSince(Calendar cutoffDate, int offset, int limit);
 
     /**
+     * Find suspended users for mindmap migration
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of suspended users
+     */
+    List<Account> findSuspendedUsers(int offset, int limit);
+
+    /**
+     * Find users suspended for inactivity with pagination.
+     * @param offset starting position
+     * @param limit maximum number of results
+     * @return list of users suspended for inactivity
+     */
+    List<Account> findUsersSuspendedForInactivity(int offset, int limit);
+
+    /**
      * Count users who are inactive since a specific date
      * @param cutoffDate users created before this date and with no activity since
      * @return total count of inactive users
@@ -110,5 +126,12 @@ public interface UserManager {
      * @param reason the suspension reason
      */
     void suspendUser(@NotNull Account user, @NotNull SuspensionReason reason);
+
+    /**
+     * Unsuspend a user and restore their mindmaps if they were suspended for inactivity
+     * @param user the user to unsuspend
+     * @return number of mindmaps restored, or 0 if none were restored
+     */
+    int unsuspendUser(@NotNull Account user);
 
 }

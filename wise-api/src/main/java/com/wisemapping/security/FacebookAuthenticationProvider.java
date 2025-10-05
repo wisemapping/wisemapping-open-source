@@ -23,7 +23,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.model.Account;
 import com.wisemapping.service.MetricsService;
 
@@ -54,14 +53,12 @@ public class FacebookAuthenticationProvider implements org.springframework.secur
 
         // Allow OAuth login for suspended users and remove suspension
         if (user.isSuspended()) {
-            user.unsuspend();
-            userDetailsService.getUserService().updateUser(user);
+            userDetailsService.getUserService().unsuspendUser(user);
         }
 
         PreAuthenticatedAuthenticationToken resultToken = new PreAuthenticatedAuthenticationToken(userDetails,
                 inputToken.getCredentials(), userDetails.getAuthorities());
         resultToken.setDetails(userDetails);
-
         userDetailsService.getUserService().auditLogin(user);
 
         metricsService.trackUserLogin(user, "facebook_oauth");

@@ -258,9 +258,8 @@ public class InactiveUserServiceTest {
         assertEquals(SuspensionReason.INACTIVITY, inactiveUser1.getSuspensionReason(), "User1 should be suspended for inactivity");
         assertEquals(SuspensionReason.INACTIVITY, inactiveUser2.getSuspensionReason(), "User2 should be suspended for inactivity");
 
-        // Verify history is cleared
-        assertEquals(0, getHistoryCountForMindmap(mindmap1.getId()), "Mindmap1 history should be cleared");
-        assertEquals(0, getHistoryCountForMindmap(mindmap2.getId()), "Mindmap2 history should be cleared");
+        // Note: History removal is no longer handled by InactiveUserService
+        // History cleanup is now handled separately by HistoryPurgeService
     }
 
     @Test
@@ -442,11 +441,13 @@ public class InactiveUserServiceTest {
         // Call suspendInactiveUser directly - this should work without TransactionRequiredException
         inactiveUserService.suspendInactiveUser(testUser);
         
-        // Verify the user was suspended and history was removed
+        // Verify the user was suspended
         entityManager.refresh(testUser);
         assertTrue(testUser.isSuspended(), "User should be suspended after processing");
         assertEquals(SuspensionReason.INACTIVITY, testUser.getSuspensionReason(), "User should be suspended for inactivity");
-        assertEquals(0, getHistoryCountForMindmap(mindmap.getId()), "History should be cleared after suspension");
+        
+        // Note: History removal is no longer handled by InactiveUserService
+        // History cleanup is now handled separately by HistoryPurgeService
     }
 
     @Test

@@ -42,6 +42,7 @@ import java.util.Optional;
 public class MindmapManagerImpl
         implements MindmapManager {
 
+
     @Autowired
     private EntityManager entityManager;
 
@@ -718,70 +719,78 @@ public class MindmapManagerImpl
         entityManager.merge(history);
     }
 
+    /**
+     * Clean up old mindmap history entries.
+     * Iterates through mindmaps in batches and removes history based on criteria.
+     * - Cleans ALL history for mindmaps not modified in over 2 years
+     * - Only cleans up history for mindmaps that haven't been modified in the last 1 week
+     * - Cleans history with excess entries or old entries for mindmaps between 1 week and 2 years old
+     *
+     * @param cutoffDate entries older than this date will be deleted
+     * @param maxEntriesPerMap maximum number of entries to keep per mindmap
+     * @param batchSize number of mindmaps to process in each batch
+     * @return total number of history entries deleted
+     */
+    @Override
+    public List<Integer> getMindmapIdsWithHistory(int offset, int batchSize) {
+        final TypedQuery<Integer> mindmapIdsQuery = entityManager.createQuery(
+            "SELECT DISTINCT h.mindmapId FROM com.wisemapping.model.MindMapHistory h", Integer.class);
+        mindmapIdsQuery.setFirstResult(offset);
+        mindmapIdsQuery.setMaxResults(batchSize);
+        return mindmapIdsQuery.getResultList();
+    }
+
+    @Override
+    public Calendar getMindmapLastModificationTime(int mindmapId) {
+        final TypedQuery<Calendar> lastModQuery = entityManager.createQuery(
+            "SELECT m.lastModificationTime FROM com.wisemapping.model.Mindmap m " +
+            "WHERE m.id = :mindmapId", Calendar.class);
+        lastModQuery.setParameter("mindmapId", mindmapId);
+        List<Calendar> results = lastModQuery.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+
+    /**
+     * Remove excess history entries for a mindmap, keeping only the most recent ones
+     * @param mindmapId the mindmap ID
+     * @param maxEntries maximum number of entries to keep
+     * @return number of entries deleted
+     */
     @Override
     @Transactional
-    public int cleanupOldMindmapHistory(Calendar cutoffDate, int maxEntriesPerMap, int batchSize) {
-        int totalDeleted = 0;
+    public int removeExcessHistoryByMindmapId(int mindmapId, int maxEntries) {
+        // First, count total entries
+        final TypedQuery<Long> countQuery = entityManager.createQuery(
+            "SELECT COUNT(h) FROM com.wisemapping.model.MindMapHistory h " +
+            "WHERE h.mindmapId = :mindmapId", Long.class);
+        countQuery.setParameter("mindmapId", mindmapId);
+        long totalCount = countQuery.getSingleResult();
         
-        // First, delete entries older than cutoff date
-        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        final CriteriaDelete<MindMapHistory> deleteOldEntries = cb.createCriteriaDelete(MindMapHistory.class);
-        final Root<MindMapHistory> root = deleteOldEntries.from(MindMapHistory.class);
+        // If we don't have excess entries, nothing to do
+        if (totalCount <= maxEntries) {
+            return 0;
+        }
         
-        deleteOldEntries.where(cb.lessThan(root.get("creationTime"), cutoffDate));
-        int deletedByDate = entityManager.createQuery(deleteOldEntries).executeUpdate();
-        totalDeleted += deletedByDate;
+        // Get the IDs of the most recent entries we want to keep
+        final TypedQuery<Integer> keepQuery = entityManager.createQuery(
+            "SELECT h.id FROM com.wisemapping.model.MindMapHistory h " +
+            "WHERE h.mindmapId = :mindmapId " +
+            "ORDER BY h.creationTime DESC", Integer.class);
+        keepQuery.setParameter("mindmapId", mindmapId);
+        keepQuery.setMaxResults(maxEntries);
+        List<Integer> keepIds = keepQuery.getResultList();
         
-        // Second, for each mindmap, keep only the most recent maxEntriesPerMap entries
-        // Process mindmap IDs in batches to avoid loading all into memory
-        int offset = 0;
-        List<Integer> mindmapIds;
+        // Delete all entries except the ones we want to keep
+        final Query deleteQuery = entityManager.createQuery(
+            "DELETE FROM com.wisemapping.model.MindMapHistory h " +
+            "WHERE h.mindmapId = :mindmapId AND h.id NOT IN :keepIds");
+        deleteQuery.setParameter("mindmapId", mindmapId);
+        deleteQuery.setParameter("keepIds", keepIds);
         
-        do {
-            // Get a batch of unique mindmap IDs that have history
-            final TypedQuery<Integer> mindmapIdsQuery = entityManager.createQuery(
-                "SELECT DISTINCT h.mindmapId FROM com.wisemapping.model.MindMapHistory h", Integer.class);
-            mindmapIdsQuery.setFirstResult(offset);
-            mindmapIdsQuery.setMaxResults(batchSize);
-            mindmapIds = mindmapIdsQuery.getResultList();
-            
-            for (Integer mindmapId : mindmapIds) {
-                // Count total history entries for this mindmap
-                final TypedQuery<Long> countQuery = entityManager.createQuery(
-                    "SELECT COUNT(h) FROM com.wisemapping.model.MindMapHistory h " +
-                    "WHERE h.mindmapId = :mindmapId", Long.class);
-                countQuery.setParameter("mindmapId", mindmapId);
-                long totalCount = countQuery.getSingleResult();
-                
-                // If we have more entries than allowed, delete the excess
-                if (totalCount > maxEntriesPerMap) {
-                    // Get the IDs of entries to delete (oldest ones beyond the limit)
-                    final TypedQuery<Integer> toDeleteQuery = entityManager.createQuery(
-                        "SELECT h.id FROM com.wisemapping.model.MindMapHistory h " +
-                        "WHERE h.mindmapId = :mindmapId " +
-                        "ORDER BY h.creationTime ASC", Integer.class);
-                    toDeleteQuery.setParameter("mindmapId", mindmapId);
-                    toDeleteQuery.setFirstResult(maxEntriesPerMap); // Skip the newest entries
-                    toDeleteQuery.setMaxResults((int) (totalCount - maxEntriesPerMap)); // Get the rest to delete
-                    
-                    final List<Integer> idsToDelete = toDeleteQuery.getResultList();
-                    
-                    // Delete the excess entries by ID
-                    for (Integer historyId : idsToDelete) {
-                        final MindMapHistory history = entityManager.find(MindMapHistory.class, historyId);
-                        if (history != null) {
-                            entityManager.remove(history);
-                            totalDeleted++;
-                        }
-                    }
-                }
-            }
-            
-            offset += batchSize;
-        } while (mindmapIds.size() == batchSize); // Continue while we get a full batch
-        
-        return totalDeleted;
+        return deleteQuery.executeUpdate();
     }
+
 
     @Override
     public List<Mindmap> getAllMindmaps() {
