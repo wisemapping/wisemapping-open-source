@@ -165,6 +165,7 @@ public class UserManagerImpl
         }
 
         entityManager.merge(user);
+        entityManager.flush();
     }
 
     public Account getUserByActivationCode(long code) {
