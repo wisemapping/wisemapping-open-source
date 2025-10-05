@@ -206,14 +206,7 @@ public class InactiveUserService {
         user.setSuspensionReason(SuspensionReason.INACTIVITY);
         userManager.updateUser(user);
         
-        // Clear history after user is successfully updated
-        int clearedHistoryCount = clearUserMindmapHistory(user);
-        
-        logger.debug("User {} suspended due to inactivity and {} history entries cleared", 
-                user.getEmail(), clearedHistoryCount);
-    }
-
-    private int clearUserMindmapHistory(Account user) {
+        // Clear history after user is successfully updated - inline to ensure transaction context
         String deleteHistoryJpql = """
             DELETE FROM com.wisemapping.model.MindMapHistory mh 
             WHERE mh.mindmapId IN (
@@ -221,12 +214,12 @@ public class InactiveUserService {
             )
             """;
 
-        int deletedCount = entityManager.createQuery(deleteHistoryJpql)
+        int clearedHistoryCount = entityManager.createQuery(deleteHistoryJpql)
                 .setParameter("userId", user.getId())
                 .executeUpdate();
-
-        logger.debug("Cleared {} history entries for user {}", deletedCount, user.getEmail());
-        return deletedCount;
+        
+        logger.debug("User {} suspended due to inactivity and {} history entries cleared", 
+                user.getEmail(), clearedHistoryCount);
     }
 
     public void previewInactiveUsers() {
