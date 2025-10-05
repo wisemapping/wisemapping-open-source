@@ -285,7 +285,7 @@ public class HistoryCleanupSchedulerIntegrationTest {
         mindmap.setLastModificationTime(now);
 
         try {
-            mindmap.setXmlStr("<map>test content</map>");
+            mindmap.setXmlStr("<?xml version=\"1.0\" encoding=\"UTF-8\"?><map name=\"test\" version=\"tango\"><topic central=\"true\" text=\"Test Topic\" id=\"1\"/></map>");
         } catch (Exception e) {
             throw new RuntimeException("Failed to set XML content", e);
         }
