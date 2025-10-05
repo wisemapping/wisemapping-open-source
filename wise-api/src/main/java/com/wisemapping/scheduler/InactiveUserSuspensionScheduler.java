@@ -53,7 +53,7 @@ public class InactiveUserSuspensionScheduler {
     @EventListener(ApplicationReadyEvent.class)
     @Async
     public void processInactiveUserSuspensionOnStartup() {
-        if (!enabled || !runOnStartup) {
+        if (!enabled || !startupEnabled) {
             logger.debug("Inactive user suspension on startup is disabled");
             return;
         }
