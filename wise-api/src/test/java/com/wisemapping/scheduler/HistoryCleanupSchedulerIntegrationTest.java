@@ -38,9 +38,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class HistoryCleanupSchedulerIntegrationTest {
 
     @Autowired
-    private HistoryCleanupScheduler historyCleanupScheduler;
-
-    @Autowired
     private HistoryPurgeService historyPurgeService;
 
     @Autowired
@@ -285,7 +282,7 @@ public class HistoryCleanupSchedulerIntegrationTest {
         mindmap.setLastModificationTime(now);
 
         try {
-            mindmap.setXmlStr("<map>test content</map>");
+            mindmap.setXmlStr("<map name=\"test\" version=\"tango\"><topic central=\"true\" text=\"Test Topic\" id=\"1\"></topic></map>");
         } catch (Exception e) {
             throw new RuntimeException("Failed to set XML content", e);
         }
