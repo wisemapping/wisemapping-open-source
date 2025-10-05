@@ -213,9 +213,6 @@ public class InactiveUserService {
     }
 
     private int clearUserMindmapHistory(Account user) {
-        // Flush any pending changes first
-        entityManager.flush();
-        
         String deleteHistoryJpql = """
             DELETE FROM com.wisemapping.model.MindMapHistory mh 
             WHERE mh.mindmapId IN (
