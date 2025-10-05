@@ -201,7 +201,7 @@ public class InactiveUserService {
         
         // Clear history for each mindmap using MindmapManager
         for (Mindmap mindmap : userMindmaps) {
-            int deletedCount = mindmapManager.deleteHistoryByMindmapId(mindmap.getId());
+            int deletedCount = mindmapManager.removeHistoryByMindmapId(mindmap.getId());
             clearedCount += deletedCount;
         }
 

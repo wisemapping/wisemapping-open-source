@@ -336,9 +336,9 @@ public interface MindmapManager {
     Calendar findLastModificationTimeByCreator(int userId);
 
     /**
-     * Delete history entries for a specific mindmap
+     * Remove history entries for a specific mindmap
      * @param mindmapId the mindmap ID
-     * @return number of history entries deleted
+     * @return number of history entries removed
      */
-    int deleteHistoryByMindmapId(int mindmapId);
+    int removeHistoryByMindmapId(int mindmapId);
 }
