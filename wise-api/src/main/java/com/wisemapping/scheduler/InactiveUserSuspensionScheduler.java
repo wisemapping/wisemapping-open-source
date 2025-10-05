@@ -43,8 +43,8 @@ public class InactiveUserSuspensionScheduler {
     @Value("${app.batch.inactive-user-suspension.preview-enabled:false}")
     private boolean previewEnabled;
 
-    @Value("${app.batch.inactive-user-suspension.startup-enabled:true}")
-    private boolean startupEnabled;
+    @Value("${app.batch.inactive-user-suspension.run-on-startup:true}")
+    private boolean runOnStartup;
 
     /**
      * Kick off the inactive user suspension process once the application is ready.
@@ -53,7 +53,7 @@ public class InactiveUserSuspensionScheduler {
     @EventListener(ApplicationReadyEvent.class)
     @Async
     public void processInactiveUserSuspensionOnStartup() {
-        if (!enabled || !startupEnabled) {
+        if (!enabled || !runOnStartup) {
             logger.debug("Inactive user suspension on startup is disabled");
             return;
         }

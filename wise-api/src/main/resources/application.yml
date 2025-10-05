@@ -201,12 +201,8 @@ app:
       batch-size: 100  # Number of mindmaps to process in each batch to prevent memory issues
     inactive-user-suspension:
       enabled: true
-      startup-enabled: true  # Enable inactive user suspension on application startup (async)
       cron-expression: "0 0 2 * * SAT"  # Every Saturday at 2:00 AM
       preview-enabled: false  # Enable preview task on Fridays
-      inactivity-years: 7  # Users inactive for this many years will be suspended
-      batch-size: 100  # Number of users to process in each batch
-      dry-run: false  # Set to true for testing without actual suspension
     inactive-mindmap-migration:
       enabled: true
       startup-enabled: false  # Disable startup execution by default (weekend-only task)
