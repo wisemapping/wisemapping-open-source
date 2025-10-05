@@ -59,6 +59,10 @@ public class MetricsService {
     private static final String SPAM_ANALYZED = "wisemapping.api.spam.analyzed";
     private static final String SPAM_DETECTED = "wisemapping.api.spam.detected";
     private static final String SPAM_PREVENTED = "wisemapping.api.spam.prevented";
+    private static final String INACTIVE_USERS_PROCESSED = "wisemapping.api.inactive_users.processed";
+    private static final String INACTIVE_USERS_SUSPENDED = "wisemapping.api.inactive_users.suspended";
+    private static final String INACTIVE_USERS_BATCH_SUSPENDED = "wisemapping.api.inactive_users.batch_suspended";
+    private static final String INACTIVE_USERS_DRY_RUN_CANDIDATES = "wisemapping.api.inactive_users.dry_run_candidates";
     
     /**
      * Track a user login event
@@ -288,6 +292,69 @@ public class MetricsService {
             logger.debug("Tracked spam prevention: {} action blocked for mindmap {}", action, mindmap.getId());
         } catch (Exception e) {
             logger.warn("Failed to track spam prevention metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
+        }
+    }
+
+    /**
+     * Track inactive user processing metrics
+     * @param processed Total number of users processed in the batch
+     * @param suspended Total number of users suspended in the batch
+     */
+    public void trackInactiveUserProcessing(int processed, int suspended) {
+        try {
+            Counter.builder(INACTIVE_USERS_PROCESSED)
+                    .description("Total number of inactive users processed")
+                    .register(meterRegistry)
+                    .increment(processed);
+            
+            if (suspended > 0) {
+                Counter.builder(INACTIVE_USERS_SUSPENDED)
+                        .description("Total number of inactive users suspended")
+                        .register(meterRegistry)
+                        .increment(suspended);
+            }
+            
+            logger.debug("Tracked inactive user processing: {} processed, {} suspended", processed, suspended);
+        } catch (Exception e) {
+            logger.warn("Failed to track inactive user processing metrics: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Track batch-level inactive user suspension
+     * @param suspended Number of users suspended in this batch
+     */
+    public void trackInactiveUserBatchSuspension(int suspended) {
+        try {
+            if (suspended > 0) {
+                Counter.builder(INACTIVE_USERS_BATCH_SUSPENDED)
+                        .description("Total number of inactive users suspended per batch")
+                        .register(meterRegistry)
+                        .increment(suspended);
+                
+                logger.debug("Tracked inactive user batch suspension: {} users", suspended);
+            }
+        } catch (Exception e) {
+            logger.warn("Failed to track inactive user batch suspension metric: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Track dry run candidates for inactive user suspension
+     * @param candidates Number of users identified as suspension candidates in dry run
+     */
+    public void trackInactiveUserDryRunCandidates(int candidates) {
+        try {
+            if (candidates > 0) {
+                Counter.builder(INACTIVE_USERS_DRY_RUN_CANDIDATES)
+                        .description("Total number of inactive users identified as suspension candidates in dry run")
+                        .register(meterRegistry)
+                        .increment(candidates);
+                
+                logger.debug("Tracked inactive user dry run candidates: {} users", candidates);
+            }
+        } catch (Exception e) {
+            logger.warn("Failed to track inactive user dry run candidates metric: {}", e.getMessage());
         }
     }
 

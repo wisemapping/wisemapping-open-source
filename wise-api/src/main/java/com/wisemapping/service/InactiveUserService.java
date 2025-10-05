@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
@@ -75,6 +74,8 @@ public class InactiveUserService {
             logger.info(
                     "Inactive user suspension summary: cutoffDate={}, dryRun={}, batchSize={}, inactivityYears={}, totalCandidates={}",
                     cutoffDate.getTime(), dryRun, batchSize, inactivityYears, totalCandidates);
+            
+            logger.info("Telemetry: Found {} total inactive user candidates for suspension", totalCandidates);
         } catch (Exception e) {
             logger.warn("Could not compute count of inactive users prior to processing", e);
         }
@@ -101,6 +102,10 @@ public class InactiveUserService {
 
         logger.info("Inactive user suspension process completed - Total processed: {}, Total suspended: {}",
                 totalProcessed, totalSuspended);
+        
+        // Track telemetry metrics for inactive users marked
+        metricsService.trackInactiveUserProcessing(totalProcessed, totalSuspended);
+        logger.info("Telemetry: Marked {} inactive users for suspension out of {} processed", totalSuspended, totalProcessed);
     }
 
     @Transactional
@@ -121,6 +126,10 @@ public class InactiveUserService {
                             user.getCreationDate() != null ? user.getCreationDate().getTime() : null,
                             lastLogin != null ? lastLogin.getTime() : null,
                             lastContentActivity != null ? lastContentActivity.getTime() : null);
+                    
+                    // Track dry run telemetry
+                    metricsService.trackInactiveUserDryRunCandidates(1);
+                    batchSuspended++; // Count as would-be suspended for dry run metrics
                 } else {
                     suspendInactiveUser(user);
 
@@ -142,6 +151,10 @@ public class InactiveUserService {
         }
 
         logger.debug("Batch completed - Processed: {}, Suspended: {}", batchProcessed, batchSuspended);
+        
+        // Track batch-level telemetry
+        metricsService.trackInactiveUserBatchSuspension(batchSuspended);
+        
         return new BatchResult(batchProcessed, batchSuspended);
     }
 
@@ -202,7 +215,6 @@ public class InactiveUserService {
         return query.getSingleResult();
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     private void suspendInactiveUser(Account user) {
         // Update user first to ensure consistency
         user.setSuspended(true);
