@@ -254,8 +254,9 @@ public class AdminController {
                         existingUser.suspend();
                     }
                 } else {
-                    // Unsuspend user
-                    existingUser.unsuspend();
+                    // Unsuspend user using centralized method that handles mindmap restoration
+                    userService.unsuspendUser(existingUser);
+                    return new RestUser(existingUser, isAdmin(existingUser.getEmail()));
                 }
             }
         }

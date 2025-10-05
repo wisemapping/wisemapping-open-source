@@ -83,4 +83,11 @@ public interface UserService {
      * @return total count of matching users
      */
     long countUsersBySearch(String search);
+
+    /**
+     * Unsuspend a user and restore their mindmaps if they were suspended for inactivity
+     * @param user the user to unsuspend
+     * @return number of mindmaps restored, or 0 if none were restored
+     */
+    int unsuspendUser(@NotNull Account user);
 }

@@ -21,11 +21,14 @@ package com.wisemapping.dao;
 import com.wisemapping.model.*;
 import com.wisemapping.security.DefaultPasswordEncoderFactories;
 import com.wisemapping.security.LegacyPasswordEncoder;
+import com.wisemapping.service.InactiveMindmapMigrationService;
+import com.wisemapping.service.MetricsService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +45,11 @@ public class UserManagerImpl
     private EntityManager entityManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    @Lazy
+    private InactiveMindmapMigrationService inactiveMindmapMigrationService;
+    @Autowired
+    private MetricsService metricsService;
 
     public UserManagerImpl() {
     }
@@ -256,6 +264,32 @@ public class UserManagerImpl
     }
 
     @Override
+    public List<Account> findSuspendedUsers(int offset, int limit) {
+        final TypedQuery<Account> query = entityManager.createQuery(
+            "SELECT a FROM com.wisemapping.model.Account a " +
+            "WHERE a.suspended = true " +
+            "ORDER BY a.id", 
+            Account.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Account> findUsersSuspendedForInactivity(int offset, int limit) {
+        final TypedQuery<Account> query = entityManager.createQuery(
+            "SELECT a FROM com.wisemapping.model.Account a " +
+            "WHERE a.suspended = true " +
+            "AND a.suspensionReasonCode = :inactivityCode " +
+            "ORDER BY a.id", 
+            Account.class);
+        query.setParameter("inactivityCode", SuspensionReason.INACTIVITY.getCode().charAt(0));
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
     public long countUsersInactiveSince(Calendar cutoffDate) {
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a " +
@@ -295,5 +329,34 @@ public class UserManagerImpl
         user.setSuspended(true);
         user.setSuspensionReason(reason);
         entityManager.merge(user);
+    }
+
+    @Override
+    @Transactional
+    public int unsuspendUser(@NotNull Account user) {
+        // Store the previous suspension reason before unsuspending
+        SuspensionReason previousSuspensionReason = user.getSuspensionReason();
+        
+        // Unsuspend the user
+        user.unsuspend();
+        entityManager.merge(user);
+        entityManager.flush();
+
+        // Restore mindmaps if user was suspended for inactivity
+        int restoredCount = 0;
+        if (previousSuspensionReason == SuspensionReason.INACTIVITY) {
+            try {
+                restoredCount = inactiveMindmapMigrationService.restoreUserMindmaps(user);
+                if (restoredCount > 0) {
+                    // Log mindmap restoration for inactive user reactivation
+                    metricsService.trackInactiveMindmapMigration(1, -restoredCount); // Negative count indicates restoration
+                }
+            } catch (Exception e) {
+                // Log error but don't fail the unsuspension - mindmaps can be restored later manually if needed
+                // The user unsuspension should succeed even if mindmap restoration fails
+            }
+        }
+
+        return restoredCount;
     }
 }

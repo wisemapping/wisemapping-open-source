@@ -396,4 +396,9 @@ public class UserServiceImpl
     public long countUsersBySearch(String search) {
         return userManager.countUsersBySearch(search);
     }
+
+    @Override
+    public int unsuspendUser(@NotNull Account user) {
+        return userManager.unsuspendUser(user);
+    }
 }

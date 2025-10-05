@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -37,6 +39,29 @@ public class SpamUserSuspensionScheduler {
 
     @Value("${app.batch.spam-user-suspension.enabled:true}")
     private boolean enabled;
+
+    @Value("${app.batch.spam-user-suspension.startup-enabled:true}")
+    private boolean startupEnabled;
+
+    /**
+     * Execute spam user suspension task once at application startup (async to not block startup)
+     */
+    @EventListener(ApplicationReadyEvent.class)
+    @Async
+    public void processSpamUserSuspensionOnStartup() {
+        if (!enabled || !startupEnabled) {
+            logger.info("Spam user suspension scheduler is disabled or startup is disabled.");
+            return;
+        }
+        logger.info("Executing spam user suspension task on application startup.");
+        
+        try {
+            spamUserSuspensionService.processSpamUserSuspension();
+            logger.info("Startup spam user suspension task completed.");
+        } catch (Exception e) {
+            logger.error("Startup spam user suspension task failed", e);
+        }
+    }
 
     /**
      * Scheduled task that runs every 6 hours to check for users with multiple spam mindmaps

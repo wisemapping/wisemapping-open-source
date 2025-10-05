@@ -21,7 +21,6 @@ package com.wisemapping.service;
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.dao.UserManager;
 import com.wisemapping.model.Account;
-import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SuspensionReason;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -177,35 +176,12 @@ public class InactiveUserService {
     // This follows proper separation of concerns: UserManager handles data access, InactiveUserService handles business logic
 
     public void suspendInactiveUser(Account user) {
-        // Update user first to ensure consistency - use userManager for reliable entity state management
+        // Update user to suspend them due to inactivity
         user.setSuspended(true);
         user.setSuspensionReason(SuspensionReason.INACTIVITY);
         userManager.updateUser(user);
 
-        // Clear history using enhanced JPA entity relationships
-        int clearedHistoryCount = clearUserMindmapHistory(user);
-
-        logger.debug("User {} suspended due to inactivity and {} history entries cleared",
-                user.getEmail(), clearedHistoryCount);
-    }
-
-    /**
-     * Clear mindmap history for a user using MindmapManager
-     * This approach uses the proper DAO layer for data access
-     */
-    private int clearUserMindmapHistory(Account user) {
-        // Get all mindmaps created by the user using MindmapManager
-        List<Mindmap> userMindmaps = mindmapManager.findByCreator(user.getId());
-
-        int clearedCount = 0;
-        
-        // Clear history for each mindmap using MindmapManager
-        for (Mindmap mindmap : userMindmaps) {
-            int deletedCount = mindmapManager.removeHistoryByMindmapId(mindmap.getId());
-            clearedCount += deletedCount;
-        }
-
-        return clearedCount;
+        logger.debug("User {} suspended due to inactivity", user.getEmail());
     }
 
     public void previewInactiveUsers() {

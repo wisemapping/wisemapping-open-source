@@ -142,11 +142,29 @@ app:
     max-inactive: 20
   # Google OAuth Authentication
   security:
+    oauth2:
+      google:
+        enabled: false
+        clientSecret: <google-oath>
+        confirmUrl: https://oauth2.googleapis.com/token
+        userinfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
+        callbackUrl: https://app.wisemapping.com/c/registration-google
+        clientId: 625682766634-cocbbbbb403iuvps1evecdk6d7phvbkf.apps.googleusercontent.com
+        url: https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${app.security.oauth2.google.callbackUrl}&prompt=consent&response_type=code&client_id=${app.security.oauth2.google.clientId}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&state=wisemapping&include_granted_scopes=true
+      facebook:
+        enabled: false
+        clientSecret: <facebook-oauth-secret>
+        confirmUrl: https://graph.facebook.com/v18.0/oauth/access_token
+        userinfoUrl: https://graph.facebook.com/me?fields=id,email,first_name,last_name
+        callbackUrl: https://app.wisemapping.com/c/registration-facebook
+        clientId: <facebook-app-id>
+        url: https://www.facebook.com/v18.0/dialog/oauth?redirect_uri=${app.security.oauth2.facebook.callbackUrl}&client_id=${app.security.oauth2.facebook.clientId}&scope=email&response_type=code&state=wisemapping
     #corsAllowedOrigins: https://app.wisemapping.com,https://wisemapping.com,https://dev.wisemapping.com,http://localhost:3000
   # Batch task configuration
   batch:
     spam-user-suspension:
       enabled: true
+      startup-enabled: true  # Enable spam user suspension on application startup (async)
       cron-expression: "0 0 */6 * * *"  # Every 6 hours
       spam-threshold: 2  # Number of spam mindmaps before suspension
       months-back: 45  # Only process accounts created since 2022 (approximately 45 months)
@@ -165,36 +183,33 @@ app:
       version: 4  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
     history-cleanup:
       enabled: true
-      cron-expression: "0 0 2 * * *"  # Every 24 hours at 2:00 AM
-      retention-days: 90  # Keep history entries for 90 days
-      max-entries-per-map: 10  # Maximum number of history entries per mindmap
+      startup-enabled: false  # Disable startup execution by default (can be heavy)
+      cron-expression: "0 0 2 * * SAT,SUN"  # Every Saturday and Sunday at 2:00 AM
+      # Two-phase history cleanup approach:
+      # Phase 1: Complete history removal for old mindmaps
+      #   - Maps between phase1-lower-boundary-years and phase1-upper-boundary-years have ALL history removed
+      #   - This targets mindmaps that are old enough that detailed history is no longer valuable
+      #   - Example: Maps between 3-17 years old get all history deleted
+      phase1-lower-boundary-years: 3  # Lower boundary for Phase 1 (maps older than this)
+      phase1-upper-boundary-years: 17  # Upper boundary for Phase 1 (maps older than this are excluded)
+      # Phase 2: Selective history retention for recent mindmaps  
+      #   - Maps newer than phase2-starting-point-years keep only the most recent entries
+      #   - This preserves recent activity while removing older history to save space
+      #   - Example: Maps newer than 1 year keep only the 4 most recent history entries
+      phase2-starting-point-years: 1  # Starting point for Phase 2 (maps newer than this)
+      phase2-max-entries: 4  # Maximum number of recent entries to keep per mindmap
       batch-size: 100  # Number of mindmaps to process in each batch to prevent memory issues
     inactive-user-suspension:
       enabled: true
       cron-expression: "0 0 2 * * SAT"  # Every Saturday at 2:00 AM
       preview-enabled: false  # Enable preview task on Fridays
-      preview-cron-expression: "0 0 10 * * FRI"  # Every Friday at 10:00 AM
-      run-on-startup: true  # Enable/disable execution on application startup
-      inactivity-years: 7  # Number of years of inactivity before suspension
-      batch-size: 100  # Number of users to process in each batch
-      dry-run: false  # Set to true to preview changes without actually suspending users
-    oauth2:
-      google:
-        enabled: false
-        clientSecret: <google-oath>
-        confirmUrl: https://oauth2.googleapis.com/token
-        userinfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
-        callbackUrl: https://app.wisemapping.com/c/registration-google
-        clientId: 625682766634-cocbbbbb403iuvps1evecdk6d7phvbkf.apps.googleusercontent.com
-        url: https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${app.security.oauth2.google.callbackUrl}&prompt=consent&response_type=code&client_id=${app.security.oauth2.google.clientId}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&state=wisemapping&include_granted_scopes=true
-      facebook:
-        enabled: false
-        clientSecret: <facebook-oauth-secret>
-        confirmUrl: https://graph.facebook.com/v18.0/oauth/access_token
-        userinfoUrl: https://graph.facebook.com/me?fields=id,email,first_name,last_name
-        callbackUrl: https://app.wisemapping.com/c/registration-facebook
-        clientId: <facebook-app-id>
-        url: https://www.facebook.com/v18.0/dialog/oauth?redirect_uri=${app.security.oauth2.facebook.callbackUrl}&client_id=${app.security.oauth2.facebook.clientId}&scope=email&response_type=code&state=wisemapping
+    inactive-mindmap-migration:
+      enabled: true
+      startup-enabled: false  # Disable startup execution by default (weekend-only task)
+      cron-expression: "0 0 2 * * SUN"  # Every Sunday at 2:00 AM
+      batch-size: 25  # Number of users to process in each batch (reduced for memory efficiency)
+      mindmap-batch-size: 10  # Number of mindmaps to process in each sub-batch (memory optimization)
+      dry-run: false  # Set to true for testing without actual migration
   #  accounts:
   #    exclusion:
   #      domain:

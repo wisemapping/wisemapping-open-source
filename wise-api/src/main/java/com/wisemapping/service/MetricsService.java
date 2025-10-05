@@ -63,6 +63,8 @@ public class MetricsService {
     private static final String INACTIVE_USERS_SUSPENDED = "wisemapping.api.inactive_users.suspended";
     private static final String INACTIVE_USERS_BATCH_SUSPENDED = "wisemapping.api.inactive_users.batch_suspended";
     private static final String INACTIVE_USERS_DRY_RUN_CANDIDATES = "wisemapping.api.inactive_users.dry_run_candidates";
+    private static final String INACTIVE_MINDMAPS_MIGRATED = "wisemapping.api.inactive_mindmaps.migrated";
+    private static final String INACTIVE_MINDMAPS_USERS_PROCESSED = "wisemapping.api.inactive_mindmaps.users_processed";
     
     /**
      * Track a user login event
@@ -355,6 +357,32 @@ public class MetricsService {
             }
         } catch (Exception e) {
             logger.warn("Failed to track inactive user dry run candidates metric: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Track inactive mindmap migration metrics
+     * @param usersProcessed Total number of inactive users processed for migration
+     * @param mindmapsMigrated Total number of mindmaps migrated to inactive table
+     */
+    public void trackInactiveMindmapMigration(int usersProcessed, int mindmapsMigrated) {
+        try {
+            Counter.builder(INACTIVE_MINDMAPS_USERS_PROCESSED)
+                    .description("Total number of inactive users processed for mindmap migration")
+                    .register(meterRegistry)
+                    .increment(usersProcessed);
+            
+            if (mindmapsMigrated > 0) {
+                Counter.builder(INACTIVE_MINDMAPS_MIGRATED)
+                        .description("Total number of mindmaps migrated to inactive table")
+                        .register(meterRegistry)
+                        .increment(mindmapsMigrated);
+            }
+            
+            logger.debug("Tracked inactive mindmap migration: {} users processed, {} mindmaps migrated", 
+                        usersProcessed, mindmapsMigrated);
+        } catch (Exception e) {
+            logger.warn("Failed to track inactive mindmap migration metrics: {}", e.getMessage());
         }
     }
 

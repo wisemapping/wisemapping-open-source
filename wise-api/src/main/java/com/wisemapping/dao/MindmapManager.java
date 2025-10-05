@@ -216,13 +216,22 @@ public interface MindmapManager {
     long countUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack);
 
     /**
-     * Clean up old mindmap history entries
-     * @param cutoffDate delete history entries older than this date
-     * @param maxEntriesPerMap maximum number of history entries to keep per mindmap
-     * @param batchSize number of mindmaps to process in each batch to prevent memory issues
-     * @return number of history entries deleted
+     * Get all mindmap IDs that have history entries, for batch processing
+     * 
+     * @param offset starting position for pagination
+     * @param batchSize maximum number of IDs to return
+     * @return list of mindmap IDs that have history
      */
-    int cleanupOldMindmapHistory(Calendar cutoffDate, int maxEntriesPerMap, int batchSize);
+    List<Integer> getMindmapIdsWithHistory(int offset, int batchSize);
+
+    /**
+     * Get the last modification time of a mindmap
+     * 
+     * @param mindmapId the mindmap ID
+     * @return the last modification time, or null if not found
+     */
+    @Nullable
+    Calendar getMindmapLastModificationTime(int mindmapId);
 
     /**
      * Get all mindmaps (admin only)
@@ -341,4 +350,12 @@ public interface MindmapManager {
      * @return number of history entries removed
      */
     int removeHistoryByMindmapId(int mindmapId);
+
+    /**
+     * Remove excess history entries for a mindmap, keeping only the most recent ones
+     * @param mindmapId the mindmap ID
+     * @param maxEntries maximum number of entries to keep
+     * @return number of history entries removed
+     */
+    int removeExcessHistoryByMindmapId(int mindmapId, int maxEntries);
 }
