@@ -101,6 +101,7 @@ public class InactiveUserService {
                 totalProcessed, totalSuspended);
     }
 
+    @Transactional
     public BatchResult processBatch(Calendar cutoffDate, int offset, int batchSize) {
         List<Account> inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
         int batchProcessed = 0;
@@ -142,7 +143,7 @@ public class InactiveUserService {
         return new BatchResult(batchProcessed, batchSuspended);
     }
 
-    private static class BatchResult {
+    public static class BatchResult {
         final int processed;
         final int suspended;
         
@@ -199,7 +200,6 @@ public class InactiveUserService {
         return query.getSingleResult();
     }
 
-    @Transactional
     private void suspendInactiveUser(Account user) {
         // Update user first to ensure consistency
         user.setSuspended(true);
