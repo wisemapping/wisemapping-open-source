@@ -26,10 +26,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -86,18 +88,18 @@ public class InactiveUserService {
             BatchResult result = processBatch(cutoffDate, offset, batchSize);
             totalProcessed += result.processed;
             totalSuspended += result.suspended;
-            
+
             // Only increment offset if in dry run mode, otherwise suspended users are filtered out
             if (dryRun) {
                 offset += batchSize;
             }
-            
+
             // Check if there are more users to process
             inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
-            
+
         } while (inactiveUsers.size() == batchSize);
 
-        logger.info("Inactive user suspension process completed - Total processed: {}, Total suspended: {}", 
+        logger.info("Inactive user suspension process completed - Total processed: {}, Total suspended: {}",
                 totalProcessed, totalSuspended);
     }
 
@@ -106,7 +108,7 @@ public class InactiveUserService {
         List<Account> inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
         int batchProcessed = 0;
         int batchSuspended = 0;
-        
+
         for (Account user : inactiveUsers) {
             try {
                 Calendar lastLogin = findLastLoginDate(user.getId());
@@ -121,7 +123,7 @@ public class InactiveUserService {
                             lastContentActivity != null ? lastContentActivity.getTime() : null);
                 } else {
                     suspendInactiveUser(user);
-                    
+
                     metricsService.trackUserSuspension(user, "inactivity");
                     logger.info(
                             "Suspended user due to inactivity: email={}, id={}, creationDate={}, lastLogin={}, lastContentActivity={}",
@@ -133,12 +135,12 @@ public class InactiveUserService {
                 }
                 batchProcessed++;
             } catch (Exception e) {
-                logger.error("Failed to process inactive user: {} (ID: {}) - continuing with batch", 
+                logger.error("Failed to process inactive user: {} (ID: {}) - continuing with batch",
                         user.getEmail(), user.getId(), e);
                 // Continue processing other users in the batch rather than failing the entire batch
             }
         }
-        
+
         logger.debug("Batch completed - Processed: {}, Suspended: {}", batchProcessed, batchSuspended);
         return new BatchResult(batchProcessed, batchSuspended);
     }
@@ -146,7 +148,7 @@ public class InactiveUserService {
     public static class BatchResult {
         final int processed;
         final int suspended;
-        
+
         BatchResult(int processed, int suspended) {
             this.processed = processed;
             this.suspended = suspended;
@@ -155,20 +157,20 @@ public class InactiveUserService {
 
     public List<Account> findInactiveUsers(Calendar cutoffDate, int offset, int limit) {
         String jpql = """
-            SELECT DISTINCT a FROM com.wisemapping.model.Account a
-            WHERE a.suspended = false
-              AND a.activationDate IS NOT NULL
-              AND a.creationDate <= :cutoffDate
-              AND a.id NOT IN (
-                  SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
-                  WHERE aa.loginDate >= :cutoffDate
-              )
-              AND a.id NOT IN (
-                  SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
-                  WHERE m.lastModificationTime >= :cutoffDate
-              )
-            ORDER BY a.id
-            """;
+                SELECT DISTINCT a FROM com.wisemapping.model.Account a
+                WHERE a.suspended = false
+                  AND a.activationDate IS NOT NULL
+                  AND a.creationDate <= :cutoffDate
+                  AND a.id NOT IN (
+                      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
+                      WHERE aa.loginDate >= :cutoffDate
+                  )
+                  AND a.id NOT IN (
+                      SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
+                      WHERE m.lastModificationTime >= :cutoffDate
+                  )
+                ORDER BY a.id
+                """;
         TypedQuery<Account> query = entityManager.createQuery(jpql, Account.class);
         query.setParameter("cutoffDate", cutoffDate);
         query.setFirstResult(offset);
@@ -180,19 +182,19 @@ public class InactiveUserService {
 
     public long countInactiveUsers(Calendar cutoffDate) {
         String jpql = """
-            SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a
-            WHERE a.suspended = false
-              AND a.activationDate IS NOT NULL
-              AND a.creationDate <= :cutoffDate
-              AND a.id NOT IN (
-                  SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
-                  WHERE aa.loginDate >= :cutoffDate
-              )
-              AND a.id NOT IN (
-                  SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
-                  WHERE m.lastModificationTime >= :cutoffDate
-              )
-            """;
+                SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a
+                WHERE a.suspended = false
+                  AND a.activationDate IS NOT NULL
+                  AND a.creationDate <= :cutoffDate
+                  AND a.id NOT IN (
+                      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
+                      WHERE aa.loginDate >= :cutoffDate
+                  )
+                  AND a.id NOT IN (
+                      SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
+                      WHERE m.lastModificationTime >= :cutoffDate
+                  )
+                """;
 
         TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
         query.setParameter("cutoffDate", cutoffDate);
@@ -200,25 +202,26 @@ public class InactiveUserService {
         return query.getSingleResult();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     private void suspendInactiveUser(Account user) {
         // Update user first to ensure consistency
         user.setSuspended(true);
         user.setSuspensionReason(SuspensionReason.INACTIVITY);
         userManager.updateUser(user);
-        
+
         // Clear history after user is successfully updated - inline to ensure transaction context
         String deleteHistoryJpql = """
-            DELETE FROM com.wisemapping.model.MindMapHistory mh 
-            WHERE mh.mindmapId IN (
-                SELECT m.id FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = :userId
-            )
-            """;
+                DELETE FROM com.wisemapping.model.MindMapHistory mh 
+                WHERE mh.mindmapId IN (
+                    SELECT m.id FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = :userId
+                )
+                """;
 
         int clearedHistoryCount = entityManager.createQuery(deleteHistoryJpql)
                 .setParameter("userId", user.getId())
                 .executeUpdate();
-        
-        logger.debug("User {} suspended due to inactivity and {} history entries cleared", 
+
+        logger.debug("User {} suspended due to inactivity and {} history entries cleared",
                 user.getEmail(), clearedHistoryCount);
     }
 
@@ -227,17 +230,17 @@ public class InactiveUserService {
         cutoffDate.add(Calendar.YEAR, -inactivityYears);
 
         long totalCount = countInactiveUsers(cutoffDate);
-        logger.info("Preview: Found {} inactive users that would be suspended (inactive for {} years)", 
+        logger.info("Preview: Found {} inactive users that would be suspended (inactive for {} years)",
                 totalCount, inactivityYears);
 
         if (totalCount > 0) {
             List<Account> sampleUsers = findInactiveUsers(cutoffDate, 0, Math.min(10, (int) totalCount));
             logger.info("Sample of users that would be suspended:");
             for (Account user : sampleUsers) {
-                logger.info("- {} (ID: {}, Created: {})", 
+                logger.info("- {} (ID: {}, Created: {})",
                         user.getEmail(), user.getId(), user.getCreationDate());
             }
-            
+
             if (totalCount > 10) {
                 logger.info("... and {} more users", totalCount - 10);
             }
@@ -247,9 +250,9 @@ public class InactiveUserService {
     private Calendar findLastLoginDate(int userId) {
         try {
             String jpql = """
-                SELECT MAX(aa.loginDate) FROM com.wisemapping.model.AccessAuditory aa
-                WHERE aa.user.id = :userId
-                """;
+                    SELECT MAX(aa.loginDate) FROM com.wisemapping.model.AccessAuditory aa
+                    WHERE aa.user.id = :userId
+                    """;
             TypedQuery<Calendar> query = entityManager.createQuery(jpql, Calendar.class);
             query.setParameter("userId", userId);
             return query.getSingleResult();
@@ -262,9 +265,9 @@ public class InactiveUserService {
     private Calendar findLastMindmapActivity(int userId) {
         try {
             String jpql = """
-                SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m
-                WHERE m.creator.id = :userId
-                """;
+                    SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m
+                    WHERE m.creator.id = :userId
+                    """;
             TypedQuery<Calendar> query = entityManager.createQuery(jpql, Calendar.class);
             query.setParameter("userId", userId);
             return query.getSingleResult();

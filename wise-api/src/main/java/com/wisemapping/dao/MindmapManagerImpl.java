@@ -363,7 +363,7 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationTime >= :cutoffDate " +
+            "AND m.creator.creationDate >= :cutoffDate " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold", 
             Object[].class);
@@ -392,7 +392,7 @@ public class MindmapManagerImpl
             "FROM com.wisemapping.model.Mindmap m " +
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
-            "AND m.creator.creationTime >= :cutoffDate " +
+            "AND m.creator.creationDate >= :cutoffDate " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold " +
             "ORDER BY m.creator.id", 
@@ -425,7 +425,7 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationTime >= :cutoffDate " +
+            "AND m.creator.creationDate >= :cutoffDate " +
             "AND (:lastUserId IS NULL OR m.creator.id > :lastUserId) " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold " +
@@ -459,7 +459,7 @@ public class MindmapManagerImpl
             "       COUNT(m.id) as totalCount " +
             "FROM com.wisemapping.model.Mindmap m " +
             "LEFT JOIN m.spamInfo s " +
-            "WHERE m.creator.creationTime >= :cutoffDate " +
+            "WHERE m.creator.creationDate >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "GROUP BY m.creator " +
             "HAVING COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
@@ -493,13 +493,13 @@ public class MindmapManagerImpl
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
             "FROM com.wisemapping.model.Mindmap m " +
-            "WHERE m.creator.creationTime >= :cutoffDate " +
+            "WHERE m.creator.creationDate >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "AND m.creator IN (" +
             "    SELECT m2.creator " +
             "    FROM com.wisemapping.model.Mindmap m2 " +
             "    LEFT JOIN m2.spamInfo s2 " +
-            "    WHERE m2.creator.creationTime >= :cutoffDate " +
+            "    WHERE m2.creator.creationDate >= :cutoffDate " +
             "      AND m2.isPublic = true " +
             "    GROUP BY m2.creator " +
             "    HAVING COUNT(CASE WHEN s2.spamDetected = true THEN 1 END) >= :minSpamCount " +
@@ -526,14 +526,14 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationTime >= :cutoffDate " +
+            "AND m.creator.creationDate >= :cutoffDate " +
             "AND m.creator IN (" +
             "    SELECT m2.creator " +
             "    FROM com.wisemapping.model.Mindmap m2 " +
             "    JOIN m2.spamInfo s2 " +
             "    WHERE s2.spamDetected = true " +
             "      AND m2.isPublic = true " +
-            "    AND m2.creator.creationTime >= :cutoffDate " +
+            "    AND m2.creator.creationDate >= :cutoffDate " +
             "    GROUP BY m2.creator " +
             "    HAVING COUNT(m2.id) >= :spamThreshold" +
             ")",
@@ -649,7 +649,7 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "  AND m.creator.creationTime >= :cutoffDate " +
+            "  AND m.creator.creationDate >= :cutoffDate " +
             "  AND s.spamTypeCode IN (" + inClause.toString() + ") " +
             "GROUP BY m.creator " +
             "ORDER BY m.creator.id", 
@@ -695,7 +695,7 @@ public class MindmapManagerImpl
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "  AND m.creator.creationTime >= :cutoffDate " +
+            "  AND m.creator.creationDate >= :cutoffDate " +
             "  AND s.spamTypeCode IN (" + inClause.toString() + ")", 
             Long.class);
         
