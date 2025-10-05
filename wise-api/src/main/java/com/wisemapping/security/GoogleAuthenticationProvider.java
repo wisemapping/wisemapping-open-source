@@ -41,9 +41,10 @@ public class GoogleAuthenticationProvider implements org.springframework.securit
             throw new BadCredentialsException("User has been disabled for login " + inputToken.getName());
         }
 
-        // Check if account is suspended
+        // Allow OAuth login for suspended users and remove suspension
         if (user.isSuspended()) {
-            throw new AccountDisabledException("ACCOUNT_SUSPENDED");
+            user.unsuspend();
+            userDetailsService.getUserService().updateUser(user);
         }
 
         PreAuthenticatedAuthenticationToken resultToken = new PreAuthenticatedAuthenticationToken(userDetails,

@@ -101,7 +101,6 @@ public class InactiveUserService {
                 totalProcessed, totalSuspended);
     }
 
-    @Transactional
     public BatchResult processBatch(Calendar cutoffDate, int offset, int batchSize) {
         List<Account> inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
         int batchProcessed = 0;
@@ -133,8 +132,9 @@ public class InactiveUserService {
                 }
                 batchProcessed++;
             } catch (Exception e) {
-                logger.error("Failed to process inactive user: {} (ID: {})", 
+                logger.error("Failed to process inactive user: {} (ID: {}) - continuing with batch", 
                         user.getEmail(), user.getId(), e);
+                // Continue processing other users in the batch rather than failing the entire batch
             }
         }
         
@@ -201,12 +201,13 @@ public class InactiveUserService {
 
     @Transactional
     private void suspendInactiveUser(Account user) {
+        // Update user first to ensure consistency
         user.setSuspended(true);
         user.setSuspensionReason(SuspensionReason.INACTIVITY);
-        
-        int clearedHistoryCount = clearUserMindmapHistory(user);
-        
         userManager.updateUser(user);
+        
+        // Clear history after user is successfully updated
+        int clearedHistoryCount = clearUserMindmapHistory(user);
         
         logger.debug("User {} suspended due to inactivity and {} history entries cleared", 
                 user.getEmail(), clearedHistoryCount);

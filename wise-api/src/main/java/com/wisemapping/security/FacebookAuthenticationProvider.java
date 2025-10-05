@@ -52,8 +52,10 @@ public class FacebookAuthenticationProvider implements org.springframework.secur
             throw new BadCredentialsException("User has been disabled for login " + inputToken.getName());
         }
 
+        // Allow OAuth login for suspended users and remove suspension
         if (user.isSuspended()) {
-            throw new AccountDisabledException("ACCOUNT_SUSPENDED");
+            user.unsuspend();
+            userDetailsService.getUserService().updateUser(user);
         }
 
         PreAuthenticatedAuthenticationToken resultToken = new PreAuthenticatedAuthenticationToken(userDetails,
