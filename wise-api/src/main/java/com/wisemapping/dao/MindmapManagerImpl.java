@@ -1117,7 +1117,8 @@ public class MindmapManagerImpl
     }
 
     @Override
-    public int deleteHistoryByMindmapId(int mindmapId) {
+    @Transactional
+    public int removeHistoryByMindmapId(int mindmapId) {
         final Query query = entityManager.createQuery(
             "DELETE FROM com.wisemapping.model.MindMapHistory mh WHERE mh.mindmapId = :mindmapId");
         query.setParameter("mindmapId", mindmapId);
