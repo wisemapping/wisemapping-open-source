@@ -30,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -228,5 +229,70 @@ public class UserManagerImpl
             Long.class);
         query.setParameter("search", "%" + search + "%");
         return query.getSingleResult();
+    }
+
+    @Override
+    public List<Account> findUsersInactiveSince(Calendar cutoffDate, int offset, int limit) {
+        final TypedQuery<Account> query = entityManager.createQuery(
+            "SELECT DISTINCT a FROM com.wisemapping.model.Account a " +
+            "WHERE a.suspended = false " +
+            "  AND a.activationDate IS NOT NULL " +
+            "  AND a.creationDate <= :cutoffDate " +
+            "  AND a.id NOT IN (" +
+            "      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa " +
+            "      WHERE aa.loginDate >= :cutoffDate" +
+            "  ) " +
+            "  AND a.id NOT IN (" +
+            "      SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m " +
+            "      WHERE m.lastModificationTime >= :cutoffDate" +
+            "  ) " +
+            "ORDER BY a.id", 
+            Account.class);
+        query.setParameter("cutoffDate", cutoffDate);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countUsersInactiveSince(Calendar cutoffDate) {
+        final TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a " +
+            "WHERE a.suspended = false " +
+            "  AND a.activationDate IS NOT NULL " +
+            "  AND a.creationDate <= :cutoffDate " +
+            "  AND a.id NOT IN (" +
+            "      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa " +
+            "      WHERE aa.loginDate >= :cutoffDate" +
+            "  ) " +
+            "  AND a.id NOT IN (" +
+            "      SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m " +
+            "      WHERE m.lastModificationTime >= :cutoffDate" +
+            "  )", 
+            Long.class);
+        query.setParameter("cutoffDate", cutoffDate);
+        return query.getSingleResult();
+    }
+
+    @Override
+    @Nullable
+    public Calendar findLastLoginDate(int userId) {
+        try {
+            final TypedQuery<Calendar> query = entityManager.createQuery(
+                "SELECT MAX(aa.loginDate) FROM com.wisemapping.model.AccessAuditory aa WHERE aa.user.id = :userId", 
+                Calendar.class);
+            query.setParameter("userId", userId);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    public void suspendUser(@NotNull Account user, @NotNull SuspensionReason reason) {
+        user.setSuspended(true);
+        user.setSuspensionReason(reason);
+        entityManager.merge(user);
     }
 }

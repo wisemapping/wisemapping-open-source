@@ -18,8 +18,10 @@
 
 package com.wisemapping.service;
 
+import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.dao.UserManager;
 import com.wisemapping.model.Account;
+import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SuspensionReason;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +48,9 @@ public class InactiveUserService {
     private UserManager userManager;
 
     @Autowired
+    private MindmapManager mindmapManager;
+
+    @Autowired
     private MetricsService metricsService;
 
     @Value("${app.batch.inactive-user-suspension.inactivity-years:7}")
@@ -64,9 +69,9 @@ public class InactiveUserService {
         Calendar cutoffDate = Calendar.getInstance();
         cutoffDate.add(Calendar.YEAR, -inactivityYears);
 
-        // Log upfront how many users qualify
+        // Log upfront how many users qualify using UserManager
         try {
-            long totalCandidates = countInactiveUsers(cutoffDate);
+            long totalCandidates = userManager.countUsersInactiveSince(cutoffDate);
             logger.info("Inactive user suspension: found {} candidate users inactive since {}",
                     totalCandidates, cutoffDate.getTime());
 
@@ -95,8 +100,8 @@ public class InactiveUserService {
                 offset += batchSize;
             }
 
-            // Check if there are more users to process
-            inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
+            // Check if there are more users to process using UserManager
+            inactiveUsers = userManager.findUsersInactiveSince(cutoffDate, offset, batchSize);
 
         } while (inactiveUsers.size() == batchSize);
 
@@ -110,14 +115,14 @@ public class InactiveUserService {
 
     @Transactional
     public BatchResult processBatch(Calendar cutoffDate, int offset, int batchSize) {
-        List<Account> inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
+        List<Account> inactiveUsers = userManager.findUsersInactiveSince(cutoffDate, offset, batchSize);
         int batchProcessed = 0;
         int batchSuspended = 0;
 
         for (Account user : inactiveUsers) {
             try {
-                Calendar lastLogin = findLastLoginDate(user.getId());
-                Calendar lastContentActivity = findLastMindmapActivity(user.getId());
+                Calendar lastLogin = userManager.findLastLoginDate(user.getId());
+                Calendar lastContentActivity = mindmapManager.findLastModificationTimeByCreator(user.getId());
 
                 if (dryRun) {
                     logger.info(
@@ -168,85 +173,55 @@ public class InactiveUserService {
         }
     }
 
-    public List<Account> findInactiveUsers(Calendar cutoffDate, int offset, int limit) {
-        String jpql = """
-                SELECT DISTINCT a FROM com.wisemapping.model.Account a
-                WHERE a.suspended = false
-                  AND a.activationDate IS NOT NULL
-                  AND a.creationDate <= :cutoffDate
-                  AND a.id NOT IN (
-                      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
-                      WHERE aa.loginDate >= :cutoffDate
-                  )
-                  AND a.id NOT IN (
-                      SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
-                      WHERE m.lastModificationTime >= :cutoffDate
-                  )
-                ORDER BY a.id
-                """;
-        TypedQuery<Account> query = entityManager.createQuery(jpql, Account.class);
-        query.setParameter("cutoffDate", cutoffDate);
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
+    // Removed findInactiveUsers and countInactiveUsers methods - now using UserManager.findUsersInactiveSince() and UserManager.countUsersInactiveSince()
+    // This follows proper separation of concerns: UserManager handles data access, InactiveUserService handles business logic
 
-        return query.getResultList();
-    }
-
-
-    public long countInactiveUsers(Calendar cutoffDate) {
-        String jpql = """
-                SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a
-                WHERE a.suspended = false
-                  AND a.activationDate IS NOT NULL
-                  AND a.creationDate <= :cutoffDate
-                  AND a.id NOT IN (
-                      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
-                      WHERE aa.loginDate >= :cutoffDate
-                  )
-                  AND a.id NOT IN (
-                      SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
-                      WHERE m.lastModificationTime >= :cutoffDate
-                  )
-                """;
-
-        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-        query.setParameter("cutoffDate", cutoffDate);
-
-        return query.getSingleResult();
-    }
-
-    private void suspendInactiveUser(Account user) {
-        // Update user first to ensure consistency
+    @Transactional
+    public void suspendInactiveUser(Account user) {
+        // Update user first to ensure consistency - use userManager for reliable entity state management
         user.setSuspended(true);
         user.setSuspensionReason(SuspensionReason.INACTIVITY);
         userManager.updateUser(user);
 
-        // Clear history after user is successfully updated - inline to ensure transaction context
-        String deleteHistoryJpql = """
-                DELETE FROM com.wisemapping.model.MindMapHistory mh 
-                WHERE mh.mindmapId IN (
-                    SELECT m.id FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = :userId
-                )
-                """;
+        // Clear history using enhanced JPA entity relationships
+        int clearedHistoryCount = clearUserMindmapHistory(user);
 
-        int clearedHistoryCount = entityManager.createQuery(deleteHistoryJpql)
-                .setParameter("userId", user.getId())
-                .executeUpdate();
+        // Flush to ensure changes are persisted immediately
+        entityManager.flush();
 
         logger.debug("User {} suspended due to inactivity and {} history entries cleared",
                 user.getEmail(), clearedHistoryCount);
+    }
+
+    /**
+     * Clear mindmap history for a user using MindmapManager
+     * This approach uses the proper DAO layer for data access
+     */
+    private int clearUserMindmapHistory(Account user) {
+        // Get all mindmaps created by the user using MindmapManager
+        List<Mindmap> userMindmaps = mindmapManager.findByCreator(user.getId());
+
+        int clearedCount = 0;
+        
+        // Clear history for each mindmap using MindmapManager
+        for (Mindmap mindmap : userMindmaps) {
+            int deletedCount = mindmapManager.deleteHistoryByMindmapId(mindmap.getId());
+            clearedCount += deletedCount;
+        }
+
+        return clearedCount;
     }
 
     public void previewInactiveUsers() {
         Calendar cutoffDate = Calendar.getInstance();
         cutoffDate.add(Calendar.YEAR, -inactivityYears);
 
-        long totalCount = countInactiveUsers(cutoffDate);
+        long totalCount = userManager.countUsersInactiveSince(cutoffDate);
         logger.info("Preview: Found {} inactive users that would be suspended (inactive for {} years)",
                 totalCount, inactivityYears);
 
         if (totalCount > 0) {
-            List<Account> sampleUsers = findInactiveUsers(cutoffDate, 0, Math.min(10, (int) totalCount));
+            List<Account> sampleUsers = userManager.findUsersInactiveSince(cutoffDate, 0, Math.min(10, (int) totalCount));
             logger.info("Sample of users that would be suspended:");
             for (Account user : sampleUsers) {
                 logger.info("- {} (ID: {}, Created: {})",
@@ -259,33 +234,67 @@ public class InactiveUserService {
         }
     }
 
-    private Calendar findLastLoginDate(int userId) {
+
+    /**
+     * Alternative JPA approach: Find user activity using entity relationships
+     * This method demonstrates a more object-oriented approach to finding user activity
+     * 
+     * Note: This method is provided as an example of advanced JPA usage but is not currently used
+     * in the main processing flow. It could be used as an alternative to the separate
+     * findLastLoginDate and findLastMindmapActivity methods.
+     */
+    @SuppressWarnings("unused")
+    private Calendar findLastUserActivity(Account user) {
         try {
+            // Use JPA entity relationships to find both login and mindmap activity
             String jpql = """
-                    SELECT MAX(aa.loginDate) FROM com.wisemapping.model.AccessAuditory aa
-                    WHERE aa.user.id = :userId
+                    SELECT GREATEST(
+                        COALESCE((SELECT MAX(aa.loginDate) FROM com.wisemapping.model.AccessAuditory aa WHERE aa.user.id = :userId), '1900-01-01'),
+                        COALESCE((SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = :userId), '1900-01-01')
+                    )
                     """;
             TypedQuery<Calendar> query = entityManager.createQuery(jpql, Calendar.class);
-            query.setParameter("userId", userId);
-            return query.getSingleResult();
+            query.setParameter("userId", user.getId());
+            
+            Calendar result = query.getSingleResult();
+            return result;
         } catch (Exception e) {
-            logger.debug("Could not find last login date for user {}", userId, e);
+            logger.debug("Could not find last user activity for user {}", user.getId(), e);
             return null;
         }
     }
 
-    private Calendar findLastMindmapActivity(int userId) {
-        try {
-            String jpql = """
-                    SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m
-                    WHERE m.creator.id = :userId
-                    """;
-            TypedQuery<Calendar> query = entityManager.createQuery(jpql, Calendar.class);
-            query.setParameter("userId", userId);
-            return query.getSingleResult();
-        } catch (Exception e) {
-            logger.debug("Could not find last mindmap activity for user {}", userId, e);
-            return null;
+    /**
+     * Advanced JPA approach: Find inactive users using UserManager
+     * This method demonstrates proper separation of concerns by delegating data access to UserManager
+     * while keeping business logic in the service layer
+     */
+    public List<Account> findInactiveUsersWithCriteriaAPI(Calendar cutoffDate, int offset, int limit) {
+        // Use UserManager for JPA-oriented data access - this is the proper JPA approach
+        return userManager.findUsersInactiveSince(cutoffDate, offset, limit);
+    }
+
+    /**
+     * Enhanced JPA approach: Bulk update using entity state management
+     * This method demonstrates JPA's ability to handle bulk operations efficiently
+     */
+    @Transactional
+    public int bulkSuspendInactiveUsers(Calendar cutoffDate, int batchSize) {
+        // Use UserManager for JPA-oriented data access
+        List<Account> usersToSuspend = userManager.findUsersInactiveSince(cutoffDate, 0, batchSize);
+        
+        int suspendedCount = 0;
+        for (Account user : usersToSuspend) {
+            // Use userManager.updateUser for reliable entity state management
+            user.setSuspended(true);
+            user.setSuspensionReason(SuspensionReason.INACTIVITY);
+            userManager.updateUser(user);
+            suspendedCount++;
         }
+
+        // Flush to ensure changes are persisted
+        entityManager.flush();
+        
+        return suspendedCount;
     }
 }

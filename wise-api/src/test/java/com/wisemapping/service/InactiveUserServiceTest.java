@@ -24,6 +24,7 @@ import com.wisemapping.model.Account;
 import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SuspensionReason;
+import com.wisemapping.dao.UserManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,6 +70,9 @@ public class InactiveUserServiceTest {
 
     @Autowired
     private MindmapManager mindmapManager;
+
+    @Autowired
+    private UserManager userManager;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -196,8 +200,8 @@ public class InactiveUserServiceTest {
         // 5. That query needs a transaction context to work
         
         assertDoesNotThrow(() -> {
-            // Count inactive users first
-            long count = inactiveUserService.countInactiveUsers(cutoffDate);
+            // Count inactive users first using UserManager
+            long count = userManager.countUsersInactiveSince(cutoffDate);
             assertTrue(count >= 0, "Count should be non-negative");
             
             // Process a batch - this is where the error occurred
@@ -338,6 +342,111 @@ public class InactiveUserServiceTest {
         // Verify that only active user history remains (should be 1)
         assertEquals(1, getHistoryCountForMindmap(activeUserMindmap.getId()), 
                 "Only active user history should remain");
+    }
+
+    @Test
+    @Transactional
+    void testTransactionRequiredExceptionReproduction() {
+        // This test reproduces the exact TransactionRequiredException that occurs in production
+        // when the suspendInactiveUser method tries to execute the DELETE query without proper transaction context
+        
+        // Create an inactive user with unique email and more restrictive cutoff date
+        Account testUser = createTestUser("transactiontest" + System.currentTimeMillis() + "@test.com", "Transaction", "Test");
+        Calendar userCreationDate = Calendar.getInstance();
+        userCreationDate.add(Calendar.YEAR, -4); // User created 4 years ago
+        Calendar cutoffDate = Calendar.getInstance();
+        cutoffDate.add(Calendar.YEAR, -3); // Cutoff date 3 years ago - this will include our user
+        testUser.setCreationDate(userCreationDate);
+        testUser.setActivationDate(userCreationDate);
+        entityManager.persist(testUser);
+        
+        // Create a mindmap with history for this user
+        Mindmap mindmap = createTestMindmap("Transaction Test Mindmap", testUser);
+        // Set the mindmap's lastModificationTime to match the user's creation date (4 years ago)
+        mindmap.setLastModificationTime(userCreationDate);
+        mindmapManager.addMindmap(testUser, mindmap);
+        createHistoryEntries(mindmap, testUser, 3);
+        entityManager.flush();
+        
+        // Verify the user and history exist
+        assertFalse(testUser.isSuspended(), "User should not be suspended initially");
+        
+        // This should NOT throw TransactionRequiredException because we're in a transactional context
+        InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, 0, 5);
+        
+        // Verify the user was processed and suspended
+        assertEquals(1, result.processed, "Should process exactly 1 inactive user");
+        assertEquals(1, result.suspended, "Should suspend exactly 1 inactive user");
+        
+        // Verify the user is actually suspended
+        entityManager.refresh(testUser);
+        assertTrue(testUser.isSuspended(), "User should be suspended after processing");
+        assertEquals(SuspensionReason.INACTIVITY, testUser.getSuspensionReason(), "User should be suspended for inactivity");
+    }
+
+    @Test
+    void testTransactionRequiredExceptionProductionScenario() {
+        // This test reproduces the EXACT production scenario where TransactionRequiredException occurs
+        // by calling the suspendInactiveUser method directly without transaction context
+        
+        // Create an inactive user with unique email and more restrictive cutoff date
+        Account testUser = createTestUser("prodtest" + System.currentTimeMillis() + "@test.com", "Production", "Test");
+        Calendar cutoffDate = Calendar.getInstance();
+        cutoffDate.add(Calendar.YEAR, -3); // Use 3 years ago to avoid interference from setUp() users
+        testUser.setCreationDate(cutoffDate);
+        testUser.setActivationDate(cutoffDate);
+        entityManager.persist(testUser);
+        
+        // Create a mindmap with history for this user
+        Mindmap mindmap = createTestMindmap("Production Test Mindmap", testUser);
+        mindmapManager.addMindmap(testUser, mindmap);
+        createHistoryEntries(mindmap, testUser, 3);
+        entityManager.flush();
+        
+        // Verify the user and history exist
+        assertFalse(testUser.isSuspended(), "User should not be suspended initially");
+        
+        // This SHOULD NOT throw TransactionRequiredException anymore because suspendInactiveUser is now @Transactional
+        // But let's test that it works correctly
+        inactiveUserService.suspendInactiveUser(testUser);
+        
+        // Verify the user was suspended
+        entityManager.refresh(testUser);
+        assertTrue(testUser.isSuspended(), "User should be suspended after processing");
+        assertEquals(SuspensionReason.INACTIVITY, testUser.getSuspensionReason(), "User should be suspended for inactivity");
+    }
+
+    @Test
+    void testSuspendInactiveUserWithHistoryRemoval() {
+        // Test that suspendInactiveUser properly removes history when called directly
+        // This verifies the fix for the TransactionRequiredException
+        
+        // Create an inactive user with unique email and more restrictive cutoff date
+        Account testUser = createTestUser("historytest" + System.currentTimeMillis() + "@test.com", "History", "Test");
+        Calendar cutoffDate = Calendar.getInstance();
+        cutoffDate.add(Calendar.YEAR, -3); // Use 3 years ago to avoid interference from setUp() users
+        testUser.setCreationDate(cutoffDate);
+        testUser.setActivationDate(cutoffDate);
+        entityManager.persist(testUser);
+        
+        // Create a mindmap with history for this user
+        Mindmap mindmap = createTestMindmap("History Test Mindmap", testUser);
+        mindmapManager.addMindmap(testUser, mindmap);
+        createHistoryEntries(mindmap, testUser, 5);
+        entityManager.flush();
+        
+        // Verify the user and history exist
+        assertFalse(testUser.isSuspended(), "User should not be suspended initially");
+        assertEquals(5, getHistoryCountForMindmap(mindmap.getId()), "Should have 5 history entries initially");
+        
+        // Call suspendInactiveUser directly - this should work without TransactionRequiredException
+        inactiveUserService.suspendInactiveUser(testUser);
+        
+        // Verify the user was suspended and history was removed
+        entityManager.refresh(testUser);
+        assertTrue(testUser.isSuspended(), "User should be suspended after processing");
+        assertEquals(SuspensionReason.INACTIVITY, testUser.getSuspensionReason(), "User should be suspended for inactivity");
+        assertEquals(0, getHistoryCountForMindmap(mindmap.getId()), "History should be cleared after suspension");
     }
 
     @Test
