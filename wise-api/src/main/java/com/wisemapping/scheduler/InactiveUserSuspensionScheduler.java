@@ -43,8 +43,8 @@ public class InactiveUserSuspensionScheduler {
     @Value("${app.batch.inactive-user-suspension.preview-enabled:false}")
     private boolean previewEnabled;
 
-    @Value("${app.batch.inactive-user-suspension.run-on-startup:true}")
-    private boolean runOnStartup;
+    @Value("${app.batch.inactive-user-suspension.startup-enabled:true}")
+    private boolean startupEnabled;
 
     /**
      * Kick off the inactive user suspension process once the application is ready.
