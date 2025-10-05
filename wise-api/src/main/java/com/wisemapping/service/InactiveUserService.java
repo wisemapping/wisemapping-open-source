@@ -56,7 +56,6 @@ public class InactiveUserService {
     @Value("${app.batch.inactive-user-suspension.dry-run:false}")
     private boolean dryRun;
 
-    @Transactional
     public void processInactiveUsers() {
         logger.info("Starting inactive user suspension process - inactivity threshold: {} years, batch size: {}, dry run: {}",
                 inactivityYears, batchSize, dryRun);
@@ -84,45 +83,73 @@ public class InactiveUserService {
 
         List<Account> inactiveUsers;
         do {
-            inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
+            BatchResult result = processBatch(cutoffDate, offset, batchSize);
+            totalProcessed += result.processed;
+            totalSuspended += result.suspended;
             
-            for (Account user : inactiveUsers) {
-                try {
-                    Calendar lastLogin = findLastLoginDate(user.getId());
-                    Calendar lastContentActivity = findLastMindmapActivity(user.getId());
-
-                    if (dryRun) {
-                        logger.info(
-                                "DRY RUN - Would suspend user due to inactivity: email={}, id={}, creationDate={}, lastLogin={}, lastContentActivity={}",
-                                user.getEmail(), user.getId(),
-                                user.getCreationDate() != null ? user.getCreationDate().getTime() : null,
-                                lastLogin != null ? lastLogin.getTime() : null,
-                                lastContentActivity != null ? lastContentActivity.getTime() : null);
-                    } else {
-                        suspendInactiveUser(user);
-                        
-                        metricsService.trackUserSuspension(user, "inactivity");
-                        logger.info(
-                                "Suspended user due to inactivity: email={}, id={}, creationDate={}, lastLogin={}, lastContentActivity={}",
-                                user.getEmail(), user.getId(),
-                                user.getCreationDate() != null ? user.getCreationDate().getTime() : null,
-                                lastLogin != null ? lastLogin.getTime() : null,
-                                lastContentActivity != null ? lastContentActivity.getTime() : null);
-                        totalSuspended++;
-                    }
-                    totalProcessed++;
-                } catch (Exception e) {
-                    logger.error("Failed to process inactive user: {} (ID: {})", 
-                            user.getEmail(), user.getId(), e);
-                }
+            // Only increment offset if in dry run mode, otherwise suspended users are filtered out
+            if (dryRun) {
+                offset += batchSize;
             }
             
-            offset += batchSize;
+            // Check if there are more users to process
+            inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
             
         } while (inactiveUsers.size() == batchSize);
 
         logger.info("Inactive user suspension process completed - Total processed: {}, Total suspended: {}", 
                 totalProcessed, totalSuspended);
+    }
+
+    @Transactional
+    public BatchResult processBatch(Calendar cutoffDate, int offset, int batchSize) {
+        List<Account> inactiveUsers = findInactiveUsers(cutoffDate, offset, batchSize);
+        int batchProcessed = 0;
+        int batchSuspended = 0;
+        
+        for (Account user : inactiveUsers) {
+            try {
+                Calendar lastLogin = findLastLoginDate(user.getId());
+                Calendar lastContentActivity = findLastMindmapActivity(user.getId());
+
+                if (dryRun) {
+                    logger.info(
+                            "DRY RUN - Would suspend user due to inactivity: email={}, id={}, creationDate={}, lastLogin={}, lastContentActivity={}",
+                            user.getEmail(), user.getId(),
+                            user.getCreationDate() != null ? user.getCreationDate().getTime() : null,
+                            lastLogin != null ? lastLogin.getTime() : null,
+                            lastContentActivity != null ? lastContentActivity.getTime() : null);
+                } else {
+                    suspendInactiveUser(user);
+                    
+                    metricsService.trackUserSuspension(user, "inactivity");
+                    logger.info(
+                            "Suspended user due to inactivity: email={}, id={}, creationDate={}, lastLogin={}, lastContentActivity={}",
+                            user.getEmail(), user.getId(),
+                            user.getCreationDate() != null ? user.getCreationDate().getTime() : null,
+                            lastLogin != null ? lastLogin.getTime() : null,
+                            lastContentActivity != null ? lastContentActivity.getTime() : null);
+                    batchSuspended++;
+                }
+                batchProcessed++;
+            } catch (Exception e) {
+                logger.error("Failed to process inactive user: {} (ID: {})", 
+                        user.getEmail(), user.getId(), e);
+            }
+        }
+        
+        logger.debug("Batch completed - Processed: {}, Suspended: {}", batchProcessed, batchSuspended);
+        return new BatchResult(batchProcessed, batchSuspended);
+    }
+
+    private static class BatchResult {
+        final int processed;
+        final int suspended;
+        
+        BatchResult(int processed, int suspended) {
+            this.processed = processed;
+            this.suspended = suspended;
+        }
     }
 
     public List<Account> findInactiveUsers(Calendar cutoffDate, int offset, int limit) {
@@ -148,6 +175,7 @@ public class InactiveUserService {
 
         return query.getResultList();
     }
+
 
     public long countInactiveUsers(Calendar cutoffDate) {
         String jpql = """
