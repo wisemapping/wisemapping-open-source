@@ -23,8 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -40,6 +42,30 @@ public class InactiveUserSuspensionScheduler {
 
     @Value("${app.batch.inactive-user-suspension.preview-enabled:false}")
     private boolean previewEnabled;
+
+    @Value("${app.batch.inactive-user-suspension.run-on-startup:true}")
+    private boolean runOnStartup;
+
+    /**
+     * Kick off the inactive user suspension process once the application is ready.
+     * Runs asynchronously so it will not block application startup.
+     */
+    @EventListener(ApplicationReadyEvent.class)
+    @Async
+    public void processInactiveUserSuspensionOnStartup() {
+        if (!enabled || !runOnStartup) {
+            logger.debug("Inactive user suspension on startup is disabled");
+            return;
+        }
+
+        logger.info("Starting startup inactive user suspension task (async)");
+        try {
+            inactiveUserService.processInactiveUsers();
+            logger.info("Startup inactive user suspension task completed successfully");
+        } catch (Exception e) {
+            logger.error("Startup inactive user suspension task failed", e);
+        }
+    }
 
     /**
      * Scheduled task that runs every Saturday at 02:00 AM to suspend inactive users.
