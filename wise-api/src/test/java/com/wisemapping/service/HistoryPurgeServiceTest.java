@@ -163,7 +163,7 @@ public class HistoryPurgeServiceTest {
         mindmap.setLastModificationTime(creationDate);
         
         try {
-            mindmap.setXmlStr("<?xml version=\"1.0\" encoding=\"UTF-8\"?><map name=\"test\" version=\"tango\"><topic central=\"true\" text=\"Root Topic\" id=\"1\"/></map>");
+            mindmap.setXmlStr("<map name=\"test\" version=\"tango\"><topic central=\"true\" text=\"Root Topic\" id=\"1\"></topic></map>");
         } catch (InvalidMindmapException e) {
             throw new RuntimeException("Failed to set XML for test mindmap", e);
         }
