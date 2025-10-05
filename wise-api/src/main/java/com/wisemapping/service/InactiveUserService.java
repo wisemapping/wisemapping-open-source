@@ -212,14 +212,17 @@ public class InactiveUserService {
     }
 
     private int clearUserMindmapHistory(Account user) {
-        String deleteHistorySql = """
-            DELETE FROM MINDMAP_HISTORY 
-            WHERE mindmap_id IN (
-                SELECT id FROM MINDMAP WHERE creator_id = :userId
+        // Flush any pending changes first
+        entityManager.flush();
+        
+        String deleteHistoryJpql = """
+            DELETE FROM com.wisemapping.model.MindMapHistory mh 
+            WHERE mh.mindmapId IN (
+                SELECT m.id FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = :userId
             )
             """;
 
-        int deletedCount = entityManager.createNativeQuery(deleteHistorySql)
+        int deletedCount = entityManager.createQuery(deleteHistoryJpql)
                 .setParameter("userId", user.getId())
                 .executeUpdate();
 
