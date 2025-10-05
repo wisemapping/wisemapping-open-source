@@ -20,7 +20,6 @@ package com.wisemapping.service;
 
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.dao.MindmapManager;
-import com.wisemapping.dao.UserManager;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.model.Mindmap;
@@ -58,15 +57,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = {AppConfig.class})
 @TestPropertySource(properties = {
     "app.batch.inactive-user-suspension.inactivity-years=1",
-    "app.batch.inactive-user-suspension.batch-size=5", 
+    "app.batch.inactive-user-suspension.batch-size=5",
     "app.batch.inactive-user-suspension.dry-run=false"
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@Transactional
 public class InactiveUserServiceTest {
 
     @Autowired
     private InactiveUserService inactiveUserService;
-    
+
     @Autowired
     private MindmapManager mindmapManager;
 
@@ -310,12 +310,12 @@ public class InactiveUserServiceTest {
 
         // Create additional inactive users to test batch processing
         for (int i = 1; i <= 10; i++) {
-            Account user = createTestUser("inactive" + i + "@test.com", "Inactive", "User" + i);
+            Account user = createTestUser("batchinactive" + i + "@test.com", "BatchInactive", "User" + i);
             user.setCreationDate(cutoffDate);
             user.setActivationDate(cutoffDate);
             entityManager.persist(user);
 
-            Mindmap mindmap = createTestMindmap("Test Mindmap " + i, user);
+            Mindmap mindmap = createTestMindmap("Batch Test Mindmap " + i, user);
             mindmapManager.addMindmap(user, mindmap);
             createHistoryEntries(mindmap, user, 2);
         }
@@ -347,21 +347,29 @@ public class InactiveUserServiceTest {
         // Note: dryRun is set to false in test properties, so this tests the actual suspension behavior
         
         Calendar cutoffDate = Calendar.getInstance();
-        cutoffDate.add(Calendar.YEAR, -1);
+        cutoffDate.add(Calendar.YEAR, -1); // 1 year ago, same as the service configuration
 
         // Process inactive users (should actually suspend since dryRun=false)
         InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, 0, 5);
 
-        // Verify result
-        assertTrue(result.processed >= 2, "Should process at least 2 users");
-        assertTrue(result.suspended >= 2, "Should suspend at least 2 users");
+        // Verify result - should process the 2 inactive users we created
+        assertEquals(2, result.processed, "Should process exactly 2 inactive users");
+        assertEquals(2, result.suspended, "Should suspend exactly 2 inactive users");
 
-        // Refresh entities and verify suspension
-        entityManager.refresh(inactiveUser1);
-        entityManager.refresh(inactiveUser2);
-
-        assertTrue(inactiveUser1.isSuspended() || inactiveUser2.isSuspended(), 
-                "At least one user should be suspended since we processed inactive users");
+        // Verify that users were actually suspended by querying the database
+        List<Account> suspendedUsers = entityManager.createQuery(
+                "SELECT a FROM Account a WHERE a.suspended = true AND a.suspensionReasonCode = 'I'", Account.class)
+                .getResultList();
+        
+        assertEquals(2, suspendedUsers.size(), "Should have exactly 2 users suspended for inactivity");
+        
+        // Verify the suspended users are our test users
+        List<String> suspendedEmails = suspendedUsers.stream()
+                .map(Account::getEmail)
+                .toList();
+        
+        assertTrue(suspendedEmails.contains("inactive1@test.com"), "inactive1@test.com should be suspended");
+        assertTrue(suspendedEmails.contains("inactive2@test.com"), "inactive2@test.com should be suspended");
     }
 
     // ===== HELPER METHODS =====
