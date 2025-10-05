@@ -174,7 +174,7 @@ app:
       cron-expression: "0 0 2 * * SAT"  # Every Saturday at 2:00 AM
       preview-enabled: false  # Enable preview task on Fridays
       preview-cron-expression: "0 0 10 * * FRI"  # Every Friday at 10:00 AM
-      inactivity-years: 3  # Number of years of inactivity before suspension
+      inactivity-years: 7  # Number of years of inactivity before suspension
       batch-size: 100  # Number of users to process in each batch
       dry-run: false  # Set to true to preview changes without actually suspending users
     oauth2:

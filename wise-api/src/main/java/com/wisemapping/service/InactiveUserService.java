@@ -47,7 +47,7 @@ public class InactiveUserService {
     @Autowired
     private MetricsService metricsService;
 
-    @Value("${app.batch.inactive-user-suspension.inactivity-years:3}")
+    @Value("${app.batch.inactive-user-suspension.inactivity-years:7}")
     private int inactivityYears;
 
     @Value("${app.batch.inactive-user-suspension.batch-size:100}")
