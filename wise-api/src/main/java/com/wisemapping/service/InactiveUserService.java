@@ -176,7 +176,6 @@ public class InactiveUserService {
     // Removed findInactiveUsers and countInactiveUsers methods - now using UserManager.findUsersInactiveSince() and UserManager.countUsersInactiveSince()
     // This follows proper separation of concerns: UserManager handles data access, InactiveUserService handles business logic
 
-    @Transactional
     public void suspendInactiveUser(Account user) {
         // Update user first to ensure consistency - use userManager for reliable entity state management
         user.setSuspended(true);
@@ -185,9 +184,6 @@ public class InactiveUserService {
 
         // Clear history using enhanced JPA entity relationships
         int clearedHistoryCount = clearUserMindmapHistory(user);
-
-        // Flush to ensure changes are persisted immediately
-        entityManager.flush();
 
         logger.debug("User {} suspended due to inactivity and {} history entries cleared",
                 user.getEmail(), clearedHistoryCount);
@@ -291,9 +287,6 @@ public class InactiveUserService {
             userManager.updateUser(user);
             suspendedCount++;
         }
-
-        // Flush to ensure changes are persisted
-        entityManager.flush();
         
         return suspendedCount;
     }
