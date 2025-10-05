@@ -47,7 +47,7 @@ public class InactiveUserService {
     @Autowired
     private MetricsService metricsService;
 
-    @Value("${app.batch.inactive-user-suspension.inactivity-years:3}")
+    @Value("${app.batch.inactive-user-suspension.inactivity-years:7}")
     private int inactivityYears;
 
     @Value("${app.batch.inactive-user-suspension.batch-size:100}")
@@ -215,6 +215,36 @@ public class InactiveUserService {
             if (totalCount > 10) {
                 logger.info("... and {} more users", totalCount - 10);
             }
+        }
+    }
+
+    private Calendar findLastLoginDate(int userId) {
+        try {
+            String jpql = """
+                SELECT MAX(aa.loginDate) FROM com.wisemapping.model.AccessAuditory aa
+                WHERE aa.user.id = :userId
+                """;
+            TypedQuery<Calendar> query = entityManager.createQuery(jpql, Calendar.class);
+            query.setParameter("userId", userId);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            logger.debug("Could not find last login date for user {}", userId, e);
+            return null;
+        }
+    }
+
+    private Calendar findLastMindmapActivity(int userId) {
+        try {
+            String jpql = """
+                SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m
+                WHERE m.creator.id = :userId
+                """;
+            TypedQuery<Calendar> query = entityManager.createQuery(jpql, Calendar.class);
+            query.setParameter("userId", userId);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            logger.debug("Could not find last mindmap activity for user {}", userId, e);
+            return null;
         }
     }
 }
