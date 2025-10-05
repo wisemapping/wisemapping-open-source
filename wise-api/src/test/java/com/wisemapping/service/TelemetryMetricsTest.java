@@ -187,11 +187,11 @@ class TelemetryMetricsTest {
         metricsService.trackUserLogin(user, "google_oauth");
         
         // Verify metrics
-        Double databaseLogins = meterRegistry.find("wisemapping.api.user.logins")
+        Double databaseLogins = meterRegistry.find("wisemapping.auth.session.created")
                 .tag("auth_type", "database")
                 .counter().count();
         
-        Double googleLogins = meterRegistry.find("wisemapping.api.user.logins")
+        Double googleLogins = meterRegistry.find("wisemapping.auth.session.created")
                 .tag("auth_type", "google_oauth")
                 .counter().count();
         
@@ -211,11 +211,11 @@ class TelemetryMetricsTest {
         metricsService.trackUserLogout(user, "session_expired");
         
         // Verify metrics
-        Double manualLogouts = meterRegistry.find("wisemapping.api.user.logouts")
+        Double manualLogouts = meterRegistry.find("wisemapping.auth.session.terminated")
                 .tag("logout_type", "manual")
                 .counter().count();
         
-        Double expiredLogouts = meterRegistry.find("wisemapping.api.user.logouts")
+        Double expiredLogouts = meterRegistry.find("wisemapping.auth.session.terminated")
                 .tag("logout_type", "session_expired")
                 .counter().count();
         
