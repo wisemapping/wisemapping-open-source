@@ -21,8 +21,11 @@ package com.wisemapping.dao;
 import com.wisemapping.model.AccessAuditory;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Account;
+import com.wisemapping.model.SuspensionReason;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Calendar;
 import java.util.List;
 
 public interface UserManager {
@@ -76,5 +79,36 @@ public interface UserManager {
      * @return total count of matching users
      */
     long countUsersBySearch(String search);
+
+    /**
+     * Find users who are inactive since a specific date
+     * @param cutoffDate users created before this date and with no activity since
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of inactive users
+     */
+    List<Account> findUsersInactiveSince(Calendar cutoffDate, int offset, int limit);
+
+    /**
+     * Count users who are inactive since a specific date
+     * @param cutoffDate users created before this date and with no activity since
+     * @return total count of inactive users
+     */
+    long countUsersInactiveSince(Calendar cutoffDate);
+
+    /**
+     * Find the last login date for a user
+     * @param userId the user ID
+     * @return the last login date, or null if no login found
+     */
+    @Nullable
+    Calendar findLastLoginDate(int userId);
+
+    /**
+     * Suspend a user with a specific reason
+     * @param user the user to suspend
+     * @param reason the suspension reason
+     */
+    void suspendUser(@NotNull Account user, @NotNull SuspensionReason reason);
 
 }

@@ -319,4 +319,26 @@ public interface MindmapManager {
      * @return total count of matching mindmaps
      */
     long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam);
+
+    /**
+     * Find mindmaps created by a specific user
+     * @param userId the user ID
+     * @return list of mindmaps created by the user
+     */
+    List<Mindmap> findByCreator(int userId);
+
+    /**
+     * Find the last modification time for mindmaps created by a specific user
+     * @param userId the user ID
+     * @return the last modification time, or null if no mindmaps found
+     */
+    @Nullable
+    Calendar findLastModificationTimeByCreator(int userId);
+
+    /**
+     * Delete history entries for a specific mindmap
+     * @param mindmapId the mindmap ID
+     * @return number of history entries deleted
+     */
+    int deleteHistoryByMindmapId(int mindmapId);
 }

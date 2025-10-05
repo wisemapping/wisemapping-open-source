@@ -20,6 +20,7 @@ package com.wisemapping.dao;
 
 import com.wisemapping.model.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaDelete;
@@ -1090,5 +1091,36 @@ public class MindmapManagerImpl
         }
         
         return query.getSingleResult();
+    }
+
+    @Override
+    public List<Mindmap> findByCreator(int userId) {
+        final TypedQuery<Mindmap> query = entityManager.createQuery(
+            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = :userId", 
+            Mindmap.class);
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+
+    @Override
+    @Nullable
+    public Calendar findLastModificationTimeByCreator(int userId) {
+        try {
+            final TypedQuery<Calendar> query = entityManager.createQuery(
+                "SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = :userId", 
+                Calendar.class);
+            query.setParameter("userId", userId);
+            return query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public int deleteHistoryByMindmapId(int mindmapId) {
+        final Query query = entityManager.createQuery(
+            "DELETE FROM com.wisemapping.model.MindMapHistory mh WHERE mh.mindmapId = :mindmapId");
+        query.setParameter("mindmapId", mindmapId);
+        return query.executeUpdate();
     }
 }
