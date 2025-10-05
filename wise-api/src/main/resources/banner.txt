@@ -1,8 +1,8 @@
 |  |  |'     |\  /|            '             /\  |~~\~|~
-|  |  ||(~/~/| \/ |/~~||~~\|~~\||/~\ /~~|   /__\ |__/ | 
+|  |  ||(~/~/| \/ |/~~\|~~\|~~\||/~\ /~~|   /__\ |__/ | 
  \/ \/ |_)\/_|    |\__||__/|__/||   |\__|  /    \|   _|_
                        |   |         \__|               
-${application.title} ${application.version}
-Build: ${build.number} | Date: ${build.time}
-Git: ${git.commit.id.abbrev} (${git.branch})
-Powered by Spring Boot ${spring-boot.version}
+WiseMapping API 6.0.0-SNAPSHOT
+Build: dev | Date: 2025-10-05
+Git: dev (main)
+Powered by Spring Boot 3.5.5

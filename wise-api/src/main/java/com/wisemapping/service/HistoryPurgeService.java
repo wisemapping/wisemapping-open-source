@@ -82,16 +82,31 @@ public class HistoryPurgeService {
             // Chain the handlers: Phase1 -> Phase2
             phase1Handler.setNext(phase2Handler);
 
-            // Process mindmaps in batches using the composed strategies
-            int totalDeleted = processMindmapsWithStrategies(context, phase1Handler);
-
-            logger.info("Two-phase history cleanup completed successfully. Deleted {} history entries", totalDeleted);
-            return totalDeleted;
-
+        // First, let's check if there are any mindmaps with history at all
+        try {
+            List<Integer> sampleMindmapIds = mindmapManager.getMindmapIdsWithHistory(0, 5);
+            logger.info("Found {} mindmaps with history entries (sample of first 5: {})", 
+                       sampleMindmapIds.size(), sampleMindmapIds);
+            
+            // Also check total mindmaps for debugging
+            long totalMindmaps = mindmapManager.countAllMindmaps();
+            logger.info("Database stats: {} total mindmaps", totalMindmaps);
+            
+            if (sampleMindmapIds.isEmpty()) {
+                logger.warn("No mindmaps with history found - this is unexpected if history tracking is enabled!");
+                logger.info("Phase 1 would normally process old mindmaps (3-17 years old), but they need history entries to exist first");
+                logger.info("Phase 2 would normally process recent mindmaps (newer than 1 year) to limit history entries");
+                return 0;
+            }
         } catch (Exception e) {
-            logger.error("History cleanup failed", e);
-            throw new RuntimeException("History cleanup failed", e);
+            logger.error("Error querying mindmaps with history", e);
+            return 0;
         }
+
+        // Process mindmaps in batches using the composed strategies
+        int totalDeleted = processMindmapsWithStrategies(context, phase1Handler);
+        logger.info("Two-phase history cleanup completed successfully. Deleted {} history entries", totalDeleted);
+        return totalDeleted;
     }
 
     /**
@@ -161,7 +176,9 @@ public class HistoryPurgeService {
 
         do {
             // Get a batch of unique mindmap IDs that have history
+            logger.info("Fetching batch of mindmaps with history - offset: {}, batchSize: {}", offset, context.getBatchSize());
             mindmapIds = mindmapManager.getMindmapIdsWithHistory(offset, context.getBatchSize());
+            logger.info("Retrieved {} mindmap IDs in this batch", mindmapIds.size());
 
             for (Integer mindmapId : mindmapIds) {
                 context.incrementProcessed();
@@ -169,10 +186,17 @@ public class HistoryPurgeService {
                 Calendar lastModificationTime = mindmapManager.getMindmapLastModificationTime(mindmapId);
 
                 if (lastModificationTime != null) {
+                    logger.info("Processing mindmap {} with lastModificationTime: {}", mindmapId, lastModificationTime.getTime());
                     // Process through the chain of responsibility
                     int deleted = processMindmapThroughChain(firstHandler, mindmapId, lastModificationTime);
                     context.addDeleted(deleted);
+                    if (deleted > 0) {
+                        logger.info("Deleted {} history entries for mindmap {}", deleted, mindmapId);
+                    } else {
+                        logger.info("No history entries deleted for mindmap {} - no phase could handle it", mindmapId);
+                    }
                 } else {
+                    logger.info("Skipping mindmap {} - no lastModificationTime", mindmapId);
                     context.incrementSkipped();
                 }
             }

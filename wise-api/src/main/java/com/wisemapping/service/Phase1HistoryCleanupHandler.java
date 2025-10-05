@@ -26,6 +26,7 @@ public class Phase1HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
     @Override
     public boolean canHandle(int mindmapId, Calendar lastModificationTime) {
         if (lastModificationTime == null) {
+            logger.debug("Phase 1 - Mindmap {} has null lastModificationTime, skipping", mindmapId);
             return false;
         }
         
@@ -35,8 +36,21 @@ public class Phase1HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
         Calendar upperBoundaryDate = Calendar.getInstance();
         upperBoundaryDate.add(Calendar.YEAR, -upperBoundaryYears);
         
+        // Log the date ranges for debugging
+        logger.info("Phase 1 - Mindmap {} check: lastMod={}, lowerBoundary={}, upperBoundary={}", 
+                    mindmapId, 
+                    lastModificationTime.getTime(), 
+                    lowerBoundaryDate.getTime(), 
+                    upperBoundaryDate.getTime());
+        
+        boolean canHandle = lastModificationTime.before(lowerBoundaryDate) && lastModificationTime.after(upperBoundaryDate);
+        logger.info("Phase 1 - Mindmap {} canHandle result: {} (before lowerBoundary: {}, after upperBoundary: {})", 
+                    mindmapId, canHandle, 
+                    lastModificationTime.before(lowerBoundaryDate),
+                    lastModificationTime.after(upperBoundaryDate));
+        
         // Phase 1: Maps between lower and upper boundary
-        return lastModificationTime.before(lowerBoundaryDate) && lastModificationTime.after(upperBoundaryDate);
+        return canHandle;
     }
     
     @Override
