@@ -31,15 +31,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
         classes = {AppConfig.class, AdminController.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"app.api.http-basic-enabled=true"}
+        properties = {
+            "app.api.http-basic-enabled=true",
+            "spring.datasource.url=jdbc:hsqldb:mem:wisemapping-admin-test;sql.names=false;sql.regular_names=false"
+        }
 )
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AdminControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "test";
