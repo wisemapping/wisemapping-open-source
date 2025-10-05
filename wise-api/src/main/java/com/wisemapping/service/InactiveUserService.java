@@ -199,6 +199,7 @@ public class InactiveUserService {
         return query.getSingleResult();
     }
 
+    @Transactional
     private void suspendInactiveUser(Account user) {
         user.setSuspended(true);
         user.setSuspensionReason(SuspensionReason.INACTIVITY);
