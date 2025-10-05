@@ -107,6 +107,11 @@ public class HistoryPurgeService {
         int totalDeleted = processMindmapsWithStrategies(context, phase1Handler);
         logger.info("Two-phase history cleanup completed successfully. Deleted {} history entries", totalDeleted);
         return totalDeleted;
+
+    } catch (Exception e) {
+        logger.error("History cleanup failed", e);
+        throw new RuntimeException("History cleanup failed", e);
+    }
     }
 
     /**

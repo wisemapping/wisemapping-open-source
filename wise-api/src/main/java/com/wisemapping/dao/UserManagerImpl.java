@@ -50,6 +50,8 @@ public class UserManagerImpl
     private InactiveMindmapMigrationService inactiveMindmapMigrationService;
     @Autowired
     private MetricsService metricsService;
+    @Autowired
+    private MindmapManager mindmapManager;
 
     public UserManagerImpl() {
     }
@@ -321,6 +323,42 @@ public class UserManagerImpl
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public List<InactiveUserResult> findInactiveUsersWithActivity(Calendar cutoffDate, int offset, int limit) {
+        // Use a simpler approach that doesn't require complex GROUP BY
+        // First get inactive users, then get their activity in separate queries
+        final TypedQuery<Account> userQuery = entityManager.createQuery(
+            "SELECT a FROM com.wisemapping.model.Account a " +
+            "WHERE a.suspended = false " +
+            "  AND a.activationDate IS NOT NULL " +
+            "  AND a.creationDate <= :cutoffDate " +
+            "  AND a.id NOT IN (" +
+            "      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa " +
+            "      WHERE aa.loginDate >= :cutoffDate" +
+            "  ) " +
+            "  AND a.id NOT IN (" +
+            "      SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m " +
+            "      WHERE m.lastModificationTime >= :cutoffDate" +
+            "  ) " +
+            "ORDER BY a.id", 
+            Account.class);
+        
+        userQuery.setParameter("cutoffDate", cutoffDate);
+        userQuery.setFirstResult(offset);
+        userQuery.setMaxResults(limit);
+        
+        List<Account> inactiveUsers = userQuery.getResultList();
+        
+        // Get activity data for each user
+        return inactiveUsers.stream()
+                .map(user -> {
+                    Calendar lastLogin = findLastLoginDate(user.getId());
+                    Calendar lastActivity = mindmapManager.findLastModificationTimeByCreator(user.getId());
+                    return new InactiveUserResult(user, lastLogin, lastActivity);
+                })
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @Override

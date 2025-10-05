@@ -21,6 +21,7 @@ package com.wisemapping.service;
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.dao.UserManager;
 import com.wisemapping.model.Account;
+import com.wisemapping.model.InactiveUserResult;
 import com.wisemapping.model.SuspensionReason;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,7 +89,7 @@ public class InactiveUserService {
         int totalSuspended = 0;
         int offset = 0;
 
-        List<Account> inactiveUsers;
+        List<InactiveUserResult> inactiveUsers;
         do {
             BatchResult result = processBatch(cutoffDate, offset, batchSize);
             totalProcessed += result.processed;
@@ -99,8 +100,8 @@ public class InactiveUserService {
                 offset += batchSize;
             }
 
-            // Check if there are more users to process using UserManager
-            inactiveUsers = userManager.findUsersInactiveSince(cutoffDate, offset, batchSize);
+            // Check if there are more users to process using optimized query
+            inactiveUsers = userManager.findInactiveUsersWithActivity(cutoffDate, offset, batchSize);
 
         } while (inactiveUsers.size() == batchSize);
 
@@ -114,14 +115,16 @@ public class InactiveUserService {
 
     @Transactional
     public BatchResult processBatch(Calendar cutoffDate, int offset, int batchSize) {
-        List<Account> inactiveUsers = userManager.findUsersInactiveSince(cutoffDate, offset, batchSize);
+        // Use optimized query that gets all data in one go
+        List<InactiveUserResult> inactiveUsers = userManager.findInactiveUsersWithActivity(cutoffDate, offset, batchSize);
         int batchProcessed = 0;
         int batchSuspended = 0;
 
-        for (Account user : inactiveUsers) {
+        for (InactiveUserResult result : inactiveUsers) {
             try {
-                Calendar lastLogin = userManager.findLastLoginDate(user.getId());
-                Calendar lastContentActivity = mindmapManager.findLastModificationTimeByCreator(user.getId());
+                Account user = result.getUser();
+                Calendar lastLogin = result.getLastLogin();
+                Calendar lastContentActivity = result.getLastActivity();
 
                 if (dryRun) {
                     logger.info(
@@ -149,7 +152,7 @@ public class InactiveUserService {
                 batchProcessed++;
             } catch (Exception e) {
                 logger.error("Failed to process inactive user: {} (ID: {}) - continuing with batch",
-                        user.getEmail(), user.getId(), e);
+                        result.getUser().getEmail(), result.getUser().getId(), e);
                 // Continue processing other users in the batch rather than failing the entire batch
             }
         }

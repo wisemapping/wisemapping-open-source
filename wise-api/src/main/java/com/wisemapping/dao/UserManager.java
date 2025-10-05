@@ -21,6 +21,7 @@ package com.wisemapping.dao;
 import com.wisemapping.model.AccessAuditory;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Account;
+import com.wisemapping.model.InactiveUserResult;
 import com.wisemapping.model.SuspensionReason;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -88,6 +89,8 @@ public interface UserManager {
      * @return list of inactive users
      */
     List<Account> findUsersInactiveSince(Calendar cutoffDate, int offset, int limit);
+    
+    List<InactiveUserResult> findInactiveUsersWithActivity(Calendar cutoffDate, int offset, int limit);
 
     /**
      * Find suspended users for mindmap migration
