@@ -64,6 +64,20 @@ public class InactiveUserService {
         Calendar cutoffDate = Calendar.getInstance();
         cutoffDate.add(Calendar.YEAR, -inactivityYears);
 
+        // Log upfront how many users qualify
+        try {
+            long totalCandidates = countInactiveUsers(cutoffDate);
+            logger.info("Inactive user suspension: found {} candidate users inactive since {}",
+                    totalCandidates, cutoffDate.getTime());
+
+            // One-line startup summary
+            logger.info(
+                    "Inactive user suspension summary: cutoffDate={}, dryRun={}, batchSize={}, inactivityYears={}, totalCandidates={}",
+                    cutoffDate.getTime(), dryRun, batchSize, inactivityYears, totalCandidates);
+        } catch (Exception e) {
+            logger.warn("Could not compute count of inactive users prior to processing", e);
+        }
+
         int totalProcessed = 0;
         int totalSuspended = 0;
         int offset = 0;
@@ -74,14 +88,24 @@ public class InactiveUserService {
             
             for (Account user : inactiveUsers) {
                 try {
+                    Calendar lastLogin = findLastLoginDate(user.getId());
+                    Calendar lastContentActivity = findLastMindmapActivity(user.getId());
+
                     if (dryRun) {
-                        logger.info("DRY RUN - Would suspend inactive user: {} (ID: {})", 
-                                user.getEmail(), user.getId());
+                        logger.info(
+                                "DRY RUN - Would suspend user due to inactivity: email={}, id={}, lastLogin={}, lastContentActivity={}",
+                                user.getEmail(), user.getId(),
+                                lastLogin != null ? lastLogin.getTime() : null,
+                                lastContentActivity != null ? lastContentActivity.getTime() : null);
                     } else {
                         suspendInactiveUser(user);
                         
                         metricsService.trackUserSuspension(user, "inactivity");
-                        logger.info("Suspended inactive user: {} (ID: {})", user.getEmail(), user.getId());
+                        logger.info(
+                                "Suspended user due to inactivity: email={}, id={}, lastLogin={}, lastContentActivity={}",
+                                user.getEmail(), user.getId(),
+                                lastLogin != null ? lastLogin.getTime() : null,
+                                lastContentActivity != null ? lastContentActivity.getTime() : null);
                         totalSuspended++;
                     }
                     totalProcessed++;
@@ -105,8 +129,8 @@ public class InactiveUserService {
             WHERE a.suspended = false
               AND a.activationDate IS NOT NULL
               AND a.id NOT IN (
-                  SELECT DISTINCT aa.user_id FROM ACCESS_AUDITORY aa 
-                  WHERE aa.login_date >= :cutoffDate
+                  SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
+                  WHERE aa.loginDate >= :cutoffDate
               )
               AND a.id NOT IN (
                   SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
@@ -129,8 +153,8 @@ public class InactiveUserService {
             WHERE a.suspended = false
               AND a.activationDate IS NOT NULL
               AND a.id NOT IN (
-                  SELECT DISTINCT aa.user_id FROM ACCESS_AUDITORY aa 
-                  WHERE aa.login_date >= :cutoffDate
+                  SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa 
+                  WHERE aa.loginDate >= :cutoffDate
               )
               AND a.id NOT IN (
                   SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m 
