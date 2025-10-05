@@ -1,8 +1,8 @@
 package com.wisemapping.service;
 
+import com.wisemapping.dao.MindmapManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 
@@ -10,7 +10,6 @@ import java.util.Calendar;
  * Phase 1 history cleanup handler: removes ALL history for mindmaps between 
  * lower and upper boundary years (e.g., 3-17 years old).
  */
-@Component
 public class Phase1HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
     
     private static final Logger logger = LoggerFactory.getLogger(Phase1HistoryCleanupHandler.class);
@@ -18,13 +17,8 @@ public class Phase1HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
     private final int lowerBoundaryYears;
     private final int upperBoundaryYears;
     
-    public Phase1HistoryCleanupHandler() {
-        // Default values - should be injected via configuration
-        this.lowerBoundaryYears = 3;
-        this.upperBoundaryYears = 17;
-    }
-    
-    public Phase1HistoryCleanupHandler(int lowerBoundaryYears, int upperBoundaryYears) {
+    public Phase1HistoryCleanupHandler(MindmapManager mindmapManager, int lowerBoundaryYears, int upperBoundaryYears) {
+        this.mindmapManager = mindmapManager;
         this.lowerBoundaryYears = lowerBoundaryYears;
         this.upperBoundaryYears = upperBoundaryYears;
     }

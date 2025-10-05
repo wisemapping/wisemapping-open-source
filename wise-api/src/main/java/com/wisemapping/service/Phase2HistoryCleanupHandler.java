@@ -1,8 +1,8 @@
 package com.wisemapping.service;
 
+import com.wisemapping.dao.MindmapManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 
@@ -10,7 +10,6 @@ import java.util.Calendar;
  * Phase 2 history cleanup handler: keeps only a limited number of recent entries
  * for mindmaps newer than the phase 2 starting point (e.g., newer than 1 year).
  */
-@Component
 public class Phase2HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
     
     private static final Logger logger = LoggerFactory.getLogger(Phase2HistoryCleanupHandler.class);
@@ -18,13 +17,8 @@ public class Phase2HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
     private final int phase2StartingPointYears;
     private final int maxEntries;
     
-    public Phase2HistoryCleanupHandler() {
-        // Default values - should be injected via configuration
-        this.phase2StartingPointYears = 1;
-        this.maxEntries = 4;
-    }
-    
-    public Phase2HistoryCleanupHandler(int phase2StartingPointYears, int maxEntries) {
+    public Phase2HistoryCleanupHandler(MindmapManager mindmapManager, int phase2StartingPointYears, int maxEntries) {
+        this.mindmapManager = mindmapManager;
         this.phase2StartingPointYears = phase2StartingPointYears;
         this.maxEntries = maxEntries;
     }

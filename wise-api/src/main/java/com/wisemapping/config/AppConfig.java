@@ -3,10 +3,12 @@ package com.wisemapping.config;
 import com.wisemapping.dao.LabelManagerImpl;
 import com.wisemapping.filter.JwtAuthenticationFilter;
 import com.wisemapping.rest.MindmapController;
+import com.wisemapping.scheduler.HistoryCleanupScheduler;
 import com.wisemapping.scheduler.InactiveUserSuspensionScheduler;
 import com.wisemapping.scheduler.SpamDetectionScheduler;
 import com.wisemapping.scheduler.SpamUserSuspensionScheduler;
 import com.wisemapping.security.AuthenticationProvider;
+import com.wisemapping.service.HistoryPurgeService;
 import com.wisemapping.service.InactiveUserService;
 import com.wisemapping.service.MindmapServiceImpl;
 import com.wisemapping.service.SpamDetectionService;
@@ -50,7 +52,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
         com.wisemapping.service.SpamDetectionBatchService.class, SpamDetectionScheduler.class,
         ContactInfoSpamStrategy.class, GlobalExceptionHandler.class,
         com.wisemapping.validator.HtmlContentValidator.class, InactiveUserService.class,
-        InactiveUserSuspensionScheduler.class })
+        InactiveUserSuspensionScheduler.class, HistoryCleanupScheduler.class, HistoryPurgeService.class })
 @Import({ com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class })
 @EnableScheduling
 @EnableAsync

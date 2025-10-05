@@ -65,6 +65,9 @@ public class AdminController {
     @Autowired
     private MetricsService metricsService;
 
+    @Autowired
+    private com.wisemapping.service.BuildInfoService buildInfoService;
+
     @Value("${app.admin.user:}")
     private String adminUser;
 
@@ -452,6 +455,28 @@ public class AdminController {
         appInfo.put("port", serverPort);
         systemInfo.put("application", appInfo);
         
+        // Build Info
+        Map<String, Object> buildInfo = new HashMap<>();
+        buildInfo.put("version", buildInfoService.getVersion());
+        buildInfo.put("buildTime", buildInfoService.getBuildTime());
+        buildInfo.put("buildNumber", buildInfoService.getBuildNumber());
+        buildInfo.put("gitCommitId", buildInfoService.getGitCommitId());
+        buildInfo.put("gitBranch", buildInfoService.getGitBranch());
+        buildInfo.put("gitCommitTime", buildInfoService.getGitCommitTime());
+        buildInfo.put("mavenVersion", buildInfoService.getMavenVersion());
+        buildInfo.put("javaVersion", buildInfoService.getJavaVersion());
+        buildInfo.put("javaVendor", buildInfoService.getJavaVendor());
+        buildInfo.put("osName", buildInfoService.getOsName());
+        buildInfo.put("osVersion", buildInfoService.getOsVersion());
+        buildInfo.put("osArch", buildInfoService.getOsArch());
+        buildInfo.put("buildUser", buildInfoService.getBuildUser());
+        buildInfo.put("groupId", buildInfoService.getGroupId());
+        buildInfo.put("artifactId", buildInfoService.getArtifactId());
+        buildInfo.put("projectName", buildInfoService.getProjectName());
+        buildInfo.put("projectDescription", buildInfoService.getProjectDescription());
+        buildInfo.put("available", buildInfoService.isBuildInfoAvailable());
+        systemInfo.put("build", buildInfo);
+        
         // Database Info
         Map<String, Object> dbInfo = new HashMap<>();
         dbInfo.put("driver", datasourceDriver);
@@ -492,6 +517,53 @@ public class AdminController {
         systemInfo.put("statistics", stats);
         
         return systemInfo;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/system/build-info", produces = {"application/json"})
+    @ResponseBody
+    public Map<String, Object> getBuildInfo() {
+        Map<String, Object> buildInfo = new HashMap<>();
+        
+        // Basic build info
+        buildInfo.put("version", buildInfoService.getVersion());
+        buildInfo.put("buildTime", buildInfoService.getBuildTime());
+        buildInfo.put("buildNumber", buildInfoService.getBuildNumber());
+        buildInfo.put("available", buildInfoService.isBuildInfoAvailable());
+        
+        // Git info
+        Map<String, Object> gitInfo = new HashMap<>();
+        gitInfo.put("commitId", buildInfoService.getGitCommitId());
+        gitInfo.put("branch", buildInfoService.getGitBranch());
+        gitInfo.put("commitTime", buildInfoService.getGitCommitTime());
+        buildInfo.put("git", gitInfo);
+        
+        // Build environment info
+        Map<String, Object> buildEnv = new HashMap<>();
+        buildEnv.put("mavenVersion", buildInfoService.getMavenVersion());
+        buildEnv.put("javaVersion", buildInfoService.getJavaVersion());
+        buildEnv.put("javaVendor", buildInfoService.getJavaVendor());
+        buildEnv.put("buildUser", buildInfoService.getBuildUser());
+        buildInfo.put("buildEnvironment", buildEnv);
+        
+        // OS info
+        Map<String, Object> osInfo = new HashMap<>();
+        osInfo.put("name", buildInfoService.getOsName());
+        osInfo.put("version", buildInfoService.getOsVersion());
+        osInfo.put("architecture", buildInfoService.getOsArch());
+        buildInfo.put("operatingSystem", osInfo);
+        
+        // Project info
+        Map<String, Object> projectInfo = new HashMap<>();
+        projectInfo.put("groupId", buildInfoService.getGroupId());
+        projectInfo.put("artifactId", buildInfoService.getArtifactId());
+        projectInfo.put("name", buildInfoService.getProjectName());
+        projectInfo.put("description", buildInfoService.getProjectDescription());
+        buildInfo.put("project", projectInfo);
+        
+        // Summary
+        buildInfo.put("summary", buildInfoService.getBuildInfoSummary());
+        
+        return buildInfo;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/system/health", produces = {"application/json"})

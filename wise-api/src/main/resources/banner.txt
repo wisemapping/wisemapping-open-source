@@ -3,4 +3,6 @@
  \/ \/ |_)\/_|    |\__||__/|__/||   |\__|  /    \|   _|_
                        |   |         \__|               
 ${application.title} ${application.version}
+Build: ${build.number} | Date: ${build.time}
+Git: ${git.commit.id.abbrev} (${git.branch})
 Powered by Spring Boot ${spring-boot.version}

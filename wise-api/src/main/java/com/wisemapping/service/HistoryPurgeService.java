@@ -75,9 +75,9 @@ public class HistoryPurgeService {
 
             // Set up the chain of responsibility
             final AbstractHistoryCleanupHandler phase1Handler = new Phase1HistoryCleanupHandler(
-                    phase1LowerBoundaryYears, phase1UpperBoundaryYears);
+                    mindmapManager, phase1LowerBoundaryYears, phase1UpperBoundaryYears);
             final AbstractHistoryCleanupHandler phase2Handler = new Phase2HistoryCleanupHandler(
-                    phase2StartingPointYears, phase2MaxEntries);
+                    mindmapManager, phase2StartingPointYears, phase2MaxEntries);
 
             // Chain the handlers: Phase1 -> Phase2
             phase1Handler.setNext(phase2Handler);
