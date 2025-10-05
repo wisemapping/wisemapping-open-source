@@ -147,6 +147,7 @@ app:
   batch:
     spam-user-suspension:
       enabled: true
+      startup-enabled: true  # Enable spam user suspension on application startup (async)
       cron-expression: "0 0 */6 * * *"  # Every 6 hours
       spam-threshold: 2  # Number of spam mindmaps before suspension
       months-back: 45  # Only process accounts created since 2022 (approximately 45 months)
