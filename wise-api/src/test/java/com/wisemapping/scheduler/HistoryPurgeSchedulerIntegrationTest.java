@@ -6,7 +6,6 @@ import com.wisemapping.model.Account;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.service.HistoryPurgeService;
-import com.wisemapping.scheduler.HistoryCleanupScheduler;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +16,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -28,9 +25,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = {AppConfig.class})
 @TestPropertySource(properties = {
         "app.batch.history-cleanup.enabled=true",
-        "app.batch.history-cleanup.phase1-lower-boundary-years=3",
-        "app.batch.history-cleanup.phase1-upper-boundary-years=17",
-        "app.batch.history-cleanup.phase2-starting-point-years=1",
+        "app.batch.history-cleanup.phase1-lower-boundary-years=2",
+        "app.batch.history-cleanup.phase1-upper-boundary-years=1",
+        "app.batch.history-cleanup.phase2-lower-boundary-years=1",
+        "app.batch.history-cleanup.phase2-upper-boundary-years=0.5",
         "app.batch.history-cleanup.phase2-max-entries=4",
         "app.batch.history-cleanup.batch-size=100",
         "app.batch.history-cleanup.cron-expression=0 0 2 * * *",
@@ -79,9 +77,8 @@ public class HistoryPurgeSchedulerIntegrationTest {
         
         // Verify the service configuration is correct
         assertTrue(historyPurgeService.isEnabled());
-        assertEquals(3, historyPurgeService.getPhase1LowerBoundaryYears());
-        assertEquals(17, historyPurgeService.getPhase1UpperBoundaryYears());
-        assertEquals(1, historyPurgeService.getPhase2StartingPointYears());
+        assertEquals(2, historyPurgeService.getPhase1LowerBoundaryYears());
+        assertEquals(1, historyPurgeService.getPhase1UpperBoundaryYears());
         assertEquals(4, historyPurgeService.getPhase2MaxEntries());
         assertEquals(100, historyPurgeService.getBatchSize());
     }
