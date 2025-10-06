@@ -144,14 +144,6 @@ public class HistoryPurgeService {
         return phase1UpperBoundaryYears;
     }
 
-    /**
-     * Get the configured phase 2 starting point in years
-     * 
-     * @return phase 2 starting point years
-     */
-    public int getPhase2StartingPointYears() {
-        return phase2StartingPointYears;
-    }
 
     /**
      * Get the maximum number of entries to keep for phase 2 (recent maps)
