@@ -84,13 +84,14 @@ public interface UserManager {
     /**
      * Find users who are inactive since a specific date
      * @param cutoffDate users created before this date and with no activity since
+     * @param creationCutoffDate only check users created before this date
      * @param offset starting position for pagination
      * @param limit maximum number of results to return
      * @return list of inactive users
      */
-    List<Account> findUsersInactiveSince(Calendar cutoffDate, int offset, int limit);
+    List<Account> findUsersInactiveSince(Calendar cutoffDate, Calendar creationCutoffDate, int offset, int limit);
     
-    List<InactiveUserResult> findInactiveUsersWithActivity(Calendar cutoffDate, int offset, int limit);
+    List<InactiveUserResult> findInactiveUsersWithActivity(Calendar cutoffDate, Calendar creationCutoffDate, int offset, int limit);
 
     /**
      * Find suspended users for mindmap migration
@@ -111,9 +112,10 @@ public interface UserManager {
     /**
      * Count users who are inactive since a specific date
      * @param cutoffDate users created before this date and with no activity since
+     * @param creationCutoffDate only check users created before this date
      * @return total count of inactive users
      */
-    long countUsersInactiveSince(Calendar cutoffDate);
+    long countUsersInactiveSince(Calendar cutoffDate, Calendar creationCutoffDate);
 
     /**
      * Find the last login date for a user

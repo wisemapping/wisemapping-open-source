@@ -206,6 +206,7 @@ app:
       cron-expression: "0 0 2 * * SAT"  # Every Saturday at 2:00 AM
       preview-enabled: false  # Enable preview task on Fridays
       inactivity-years: 7  # Users inactive for this many years will be suspended
+      grace-period-years: 1  # Additional grace period beyond inactivity threshold (inactivity-years + grace-period-years = minimum account age)
       batch-size: 100  # Number of users to process in each batch
       dry-run: false  # Set to true for testing without actual suspension
     inactive-mindmap-migration:

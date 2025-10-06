@@ -243,12 +243,13 @@ public class UserManagerImpl
     }
 
     @Override
-    public List<Account> findUsersInactiveSince(Calendar cutoffDate, int offset, int limit) {
+    public List<Account> findUsersInactiveSince(Calendar cutoffDate, Calendar creationCutoffDate, int offset, int limit) {
         final TypedQuery<Account> query = entityManager.createQuery(
             "SELECT DISTINCT a FROM com.wisemapping.model.Account a " +
             "WHERE a.suspended = false " +
             "  AND a.activationDate IS NOT NULL " +
             "  AND a.creationDate <= :cutoffDate " +
+            "  AND a.creationDate >= :creationCutoffDate " +
             "  AND a.id NOT IN (" +
             "      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa " +
             "      WHERE aa.loginDate >= :cutoffDate" +
@@ -260,6 +261,7 @@ public class UserManagerImpl
             "ORDER BY a.id", 
             Account.class);
         query.setParameter("cutoffDate", cutoffDate);
+        query.setParameter("creationCutoffDate", creationCutoffDate);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
         return query.getResultList();
@@ -292,12 +294,13 @@ public class UserManagerImpl
     }
 
     @Override
-    public long countUsersInactiveSince(Calendar cutoffDate) {
+    public long countUsersInactiveSince(Calendar cutoffDate, Calendar creationCutoffDate) {
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a " +
             "WHERE a.suspended = false " +
             "  AND a.activationDate IS NOT NULL " +
             "  AND a.creationDate <= :cutoffDate " +
+            "  AND a.creationDate >= :creationCutoffDate " +
             "  AND a.id NOT IN (" +
             "      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa " +
             "      WHERE aa.loginDate >= :cutoffDate" +
@@ -305,9 +308,10 @@ public class UserManagerImpl
             "  AND a.id NOT IN (" +
             "      SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m " +
             "      WHERE m.lastModificationTime >= :cutoffDate" +
-            "  )", 
+            "  )",
             Long.class);
         query.setParameter("cutoffDate", cutoffDate);
+        query.setParameter("creationCutoffDate", creationCutoffDate);
         return query.getSingleResult();
     }
 
@@ -326,7 +330,7 @@ public class UserManagerImpl
     }
 
     @Override
-    public List<InactiveUserResult> findInactiveUsersWithActivity(Calendar cutoffDate, int offset, int limit) {
+    public List<InactiveUserResult> findInactiveUsersWithActivity(Calendar cutoffDate, Calendar creationCutoffDate, int offset, int limit) {
         // Use a simpler approach that doesn't require complex GROUP BY
         // First get inactive users, then get their activity in separate queries
         final TypedQuery<Account> userQuery = entityManager.createQuery(
@@ -334,6 +338,7 @@ public class UserManagerImpl
             "WHERE a.suspended = false " +
             "  AND a.activationDate IS NOT NULL " +
             "  AND a.creationDate <= :cutoffDate " +
+            "  AND a.creationDate >= :creationCutoffDate " +
             "  AND a.id NOT IN (" +
             "      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa " +
             "      WHERE aa.loginDate >= :cutoffDate" +
@@ -346,6 +351,7 @@ public class UserManagerImpl
             Account.class);
         
         userQuery.setParameter("cutoffDate", cutoffDate);
+        userQuery.setParameter("creationCutoffDate", creationCutoffDate);
         userQuery.setFirstResult(offset);
         userQuery.setMaxResults(limit);
         

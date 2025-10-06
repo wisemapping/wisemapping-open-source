@@ -59,7 +59,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(properties = {
     "app.batch.inactive-user-suspension.inactivity-years=1",
     "app.batch.inactive-user-suspension.batch-size=5",
-    "app.batch.inactive-user-suspension.dry-run=false"
+    "app.batch.inactive-user-suspension.dry-run=false",
+    "app.batch.inactive-user-suspension.grace-period-years=1"
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
@@ -96,12 +97,14 @@ public class InactiveUserServiceTest {
         activeUser = createTestUser("active@test.com", "Active", "User");
         alreadySuspendedUser = createTestUser("suspended@test.com", "Suspended", "User");
 
-        // Set creation and activation dates (2 years ago for inactive users)
+        // Set creation and activation dates (1.5 years ago for inactive users to be within the 1-2 year range: 1 year inactivity + 1 year grace period)
         Calendar creationDate = Calendar.getInstance();
-        creationDate.add(Calendar.YEAR, -2);
+        creationDate.add(Calendar.YEAR, -1);
+        creationDate.add(Calendar.MONTH, -6); // 1.5 years ago
         
         Calendar activationDate = Calendar.getInstance();
-        activationDate.add(Calendar.YEAR, -2);
+        activationDate.add(Calendar.YEAR, -1);
+        activationDate.add(Calendar.MONTH, -6); // 1.5 years ago
         activationDate.add(Calendar.HOUR, 1);
 
         inactiveUser1.setCreationDate(creationDate);
@@ -130,12 +133,35 @@ public class InactiveUserServiceTest {
         mindmap2 = createTestMindmap("Test Mindmap 2", inactiveUser2);
         activeUserMindmap = createTestMindmap("Active User Mindmap", activeUser);
         suspendedUserMindmap = createTestMindmap("Suspended User Mindmap", alreadySuspendedUser);
+        
+        // Fix activeUser mindmap to have recent creation time (since activeUser is recent)
+        Calendar recentTime1 = Calendar.getInstance();
+        activeUserMindmap.setCreationTime(recentTime1);
+        activeUserMindmap.setLastModificationTime(recentTime1);
 
         // Add mindmaps
         mindmapManager.addMindmap(inactiveUser1, mindmap1);
         mindmapManager.addMindmap(inactiveUser2, mindmap2);
         mindmapManager.addMindmap(activeUser, activeUserMindmap);
         mindmapManager.addMindmap(alreadySuspendedUser, suspendedUserMindmap);
+        
+        // Re-set the dates after addMindmap (in case it overrides them)
+        Calendar oldTime = Calendar.getInstance();
+        oldTime.add(Calendar.YEAR, -1);
+        oldTime.add(Calendar.MONTH, -6); // 1.5 years ago
+        
+        mindmap1.setCreationTime(oldTime);
+        mindmap1.setLastModificationTime(oldTime);
+        mindmap2.setCreationTime(oldTime);
+        mindmap2.setLastModificationTime(oldTime);
+        suspendedUserMindmap.setCreationTime(oldTime);
+        suspendedUserMindmap.setLastModificationTime(oldTime);
+        
+        // activeUserMindmap should keep recent time
+        Calendar recentTime = Calendar.getInstance();
+        activeUserMindmap.setCreationTime(recentTime);
+        activeUserMindmap.setLastModificationTime(recentTime);
+        
         entityManager.flush();
 
         // Create history entries for each mindmap
@@ -165,7 +191,11 @@ public class InactiveUserServiceTest {
         // Before our fix: This would throw TransactionRequiredException when there were inactive users
         // After our fix: This should complete successfully regardless of whether users exist
         assertDoesNotThrow(() -> {
-            InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, 0, 5);
+            // Create creation cutoff date (1 year ago for test)
+            Calendar creationCutoffDate = Calendar.getInstance();
+            creationCutoffDate.add(Calendar.YEAR, -1);
+            
+            InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, creationCutoffDate, 0, 5);
             assertNotNull(result, "Should return a valid result");
             assertTrue(result.processed >= 0, "Processed count should be non-negative");
             assertTrue(result.suspended >= 0, "Suspended count should be non-negative");
@@ -200,12 +230,16 @@ public class InactiveUserServiceTest {
         // 5. That query needs a transaction context to work
         
         assertDoesNotThrow(() -> {
+            // Create creation cutoff date (1 year ago for test)
+            Calendar creationCutoffDate = Calendar.getInstance();
+            creationCutoffDate.add(Calendar.YEAR, -1);
+            
             // Count inactive users first using UserManager
-            long count = userManager.countUsersInactiveSince(cutoffDate);
+            long count = userManager.countUsersInactiveSince(cutoffDate, creationCutoffDate);
             assertTrue(count >= 0, "Count should be non-negative");
             
             // Process a batch - this is where the error occurred
-            InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, 0, 10);
+            InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, creationCutoffDate, 0, 10);
             
             // If we get here, the transaction fix worked!
             assertNotNull(result, "Should return a result");
@@ -349,19 +383,20 @@ public class InactiveUserServiceTest {
         // This test reproduces the exact TransactionRequiredException that occurs in production
         // when the suspendInactiveUser method tries to execute the DELETE query without proper transaction context
         
-        // Create an inactive user with unique email and more restrictive cutoff date
+        // Create an inactive user with unique email and date within the 1-2 year range
         Account testUser = createTestUser("transactiontest" + System.currentTimeMillis() + "@test.com", "Transaction", "Test");
         Calendar userCreationDate = Calendar.getInstance();
-        userCreationDate.add(Calendar.YEAR, -4); // User created 4 years ago
+        userCreationDate.add(Calendar.YEAR, -1);
+        userCreationDate.add(Calendar.MONTH, -6); // User created 1.5 years ago
         Calendar cutoffDate = Calendar.getInstance();
-        cutoffDate.add(Calendar.YEAR, -3); // Cutoff date 3 years ago - this will include our user
+        cutoffDate.add(Calendar.YEAR, -1); // Cutoff date 1 year ago - this will include our user
         testUser.setCreationDate(userCreationDate);
         testUser.setActivationDate(userCreationDate);
         entityManager.persist(testUser);
         
         // Create a mindmap with history for this user
         Mindmap mindmap = createTestMindmap("Transaction Test Mindmap", testUser);
-        // Set the mindmap's lastModificationTime to match the user's creation date (4 years ago)
+        // Set the mindmap's lastModificationTime to match the user's creation date (1.5 years ago)
         mindmap.setLastModificationTime(userCreationDate);
         mindmapManager.addMindmap(testUser, mindmap);
         createHistoryEntries(mindmap, testUser, 3);
@@ -370,8 +405,12 @@ public class InactiveUserServiceTest {
         // Verify the user and history exist
         assertFalse(testUser.isSuspended(), "User should not be suspended initially");
         
+        // Create creation cutoff date (1 year ago for test)
+        Calendar creationCutoffDate = Calendar.getInstance();
+        creationCutoffDate.add(Calendar.YEAR, -1);
+        
         // This should NOT throw TransactionRequiredException because we're in a transactional context
-        InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, 0, 5);
+        InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, creationCutoffDate, 0, 5);
         
         // Verify the user was processed and suspended
         assertEquals(1, result.processed, "Should process exactly 1 inactive user");
@@ -388,10 +427,11 @@ public class InactiveUserServiceTest {
         // This test reproduces the EXACT production scenario where TransactionRequiredException occurs
         // by calling the suspendInactiveUser method directly without transaction context
         
-        // Create an inactive user with unique email and more restrictive cutoff date
+        // Create an inactive user with unique email and date within the 1-2 year range
         Account testUser = createTestUser("prodtest" + System.currentTimeMillis() + "@test.com", "Production", "Test");
         Calendar cutoffDate = Calendar.getInstance();
-        cutoffDate.add(Calendar.YEAR, -3); // Use 3 years ago to avoid interference from setUp() users
+        cutoffDate.add(Calendar.YEAR, -1);
+        cutoffDate.add(Calendar.MONTH, -6); // Use 1.5 years ago to be within the 1-2 year range
         testUser.setCreationDate(cutoffDate);
         testUser.setActivationDate(cutoffDate);
         entityManager.persist(testUser);
@@ -420,10 +460,11 @@ public class InactiveUserServiceTest {
         // Test that suspendInactiveUser properly removes history when called directly
         // This verifies the fix for the TransactionRequiredException
         
-        // Create an inactive user with unique email and more restrictive cutoff date
+        // Create an inactive user with unique email and date within the 1-2 year range
         Account testUser = createTestUser("historytest" + System.currentTimeMillis() + "@test.com", "History", "Test");
         Calendar cutoffDate = Calendar.getInstance();
-        cutoffDate.add(Calendar.YEAR, -3); // Use 3 years ago to avoid interference from setUp() users
+        cutoffDate.add(Calendar.YEAR, -1);
+        cutoffDate.add(Calendar.MONTH, -6); // Use 1.5 years ago to be within the 1-2 year range
         testUser.setCreationDate(cutoffDate);
         testUser.setActivationDate(cutoffDate);
         entityManager.persist(testUser);
@@ -459,8 +500,12 @@ public class InactiveUserServiceTest {
         Calendar cutoffDate = Calendar.getInstance();
         cutoffDate.add(Calendar.YEAR, -1); // 1 year ago, same as the service configuration
 
+        // Create creation cutoff date (1 year ago for test)
+        Calendar creationCutoffDate = Calendar.getInstance();
+        creationCutoffDate.add(Calendar.YEAR, -1);
+        
         // Process inactive users (should actually suspend since dryRun=false)
-        InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, 0, 5);
+        InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, creationCutoffDate, 0, 5);
 
         // Verify result - should process the 2 inactive users we created
         assertEquals(2, result.processed, "Should process exactly 2 inactive users");
@@ -507,7 +552,8 @@ public class InactiveUserServiceTest {
         }
         
         Calendar creationTime = Calendar.getInstance();
-        creationTime.add(Calendar.YEAR, -2);
+        creationTime.add(Calendar.YEAR, -1);
+        creationTime.add(Calendar.MONTH, -6); // Match the user creation time (1.5 years ago)
         mindmap.setCreationTime(creationTime);
         mindmap.setLastModificationTime(creationTime);
         
@@ -516,7 +562,8 @@ public class InactiveUserServiceTest {
 
     private void createHistoryEntries(Mindmap mindmap, Account editor, int count) {
         Calendar creationTime = Calendar.getInstance();
-        creationTime.add(Calendar.YEAR, -2);
+        creationTime.add(Calendar.YEAR, -1);
+        creationTime.add(Calendar.MONTH, -6); // Match the user creation time (1.5 years ago)
         
         for (int i = 0; i < count; i++) {
             MindMapHistory history = new MindMapHistory();

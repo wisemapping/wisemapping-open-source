@@ -56,6 +56,9 @@ public class InactiveUserService {
     @Value("${app.batch.inactive-user-suspension.inactivity-years:7}")
     private int inactivityYears;
 
+    @Value("${app.batch.inactive-user-suspension.grace-period-years:1}")
+    private int gracePeriodYears;
+
     @Value("${app.batch.inactive-user-suspension.batch-size:100}")
     private int batchSize;
 
@@ -63,22 +66,27 @@ public class InactiveUserService {
     private boolean dryRun;
 
     public void processInactiveUsers() {
-        logger.info("Starting inactive user suspension process - inactivity threshold: {} years, batch size: {}, dry run: {}",
-                inactivityYears, batchSize, dryRun);
+        logger.info("Starting inactive user suspension process - inactivity threshold: {} years, grace period: {} years, batch size: {}, dry run: {}",
+                inactivityYears, gracePeriodYears, batchSize, dryRun);
 
         Calendar cutoffDate = Calendar.getInstance();
         cutoffDate.add(Calendar.YEAR, -inactivityYears);
 
+        // Calculate creation cutoff: inactivity years + grace period years
+        int totalYears = inactivityYears + gracePeriodYears;
+        Calendar creationCutoffDate = Calendar.getInstance();
+        creationCutoffDate.add(Calendar.YEAR, -totalYears);
+
         // Log upfront how many users qualify using UserManager
         try {
-            long totalCandidates = userManager.countUsersInactiveSince(cutoffDate);
-            logger.info("Inactive user suspension: found {} candidate users inactive since {}",
-                    totalCandidates, cutoffDate.getTime());
+            long totalCandidates = userManager.countUsersInactiveSince(cutoffDate, creationCutoffDate);
+            logger.info("Inactive user suspension: found {} candidate users inactive since {} (created before {})",
+                    totalCandidates, cutoffDate.getTime(), creationCutoffDate.getTime());
 
             // One-line startup summary
             logger.info(
-                    "Inactive user suspension summary: cutoffDate={}, dryRun={}, batchSize={}, inactivityYears={}, totalCandidates={}",
-                    cutoffDate.getTime(), dryRun, batchSize, inactivityYears, totalCandidates);
+                    "Inactive user suspension summary: cutoffDate={}, creationCutoffDate={}, dryRun={}, batchSize={}, inactivityYears={}, gracePeriodYears={}, totalCandidates={}",
+                    cutoffDate.getTime(), creationCutoffDate.getTime(), dryRun, batchSize, inactivityYears, gracePeriodYears, totalCandidates);
             
             logger.info("Telemetry: Found {} total inactive user candidates for suspension", totalCandidates);
         } catch (Exception e) {
@@ -91,7 +99,7 @@ public class InactiveUserService {
 
         List<InactiveUserResult> inactiveUsers;
         do {
-            BatchResult result = processBatch(cutoffDate, offset, batchSize);
+            BatchResult result = processBatch(cutoffDate, creationCutoffDate, offset, batchSize);
             totalProcessed += result.processed;
             totalSuspended += result.suspended;
 
@@ -101,7 +109,7 @@ public class InactiveUserService {
             }
 
             // Check if there are more users to process using optimized query
-            inactiveUsers = userManager.findInactiveUsersWithActivity(cutoffDate, offset, batchSize);
+            inactiveUsers = userManager.findInactiveUsersWithActivity(cutoffDate, creationCutoffDate, offset, batchSize);
 
         } while (inactiveUsers.size() == batchSize);
 
@@ -114,9 +122,9 @@ public class InactiveUserService {
     }
 
     @Transactional
-    public BatchResult processBatch(Calendar cutoffDate, int offset, int batchSize) {
+    public BatchResult processBatch(Calendar cutoffDate, Calendar creationCutoffDate, int offset, int batchSize) {
         // Use optimized query that gets all data in one go
-        List<InactiveUserResult> inactiveUsers = userManager.findInactiveUsersWithActivity(cutoffDate, offset, batchSize);
+        List<InactiveUserResult> inactiveUsers = userManager.findInactiveUsersWithActivity(cutoffDate, creationCutoffDate, offset, batchSize);
         int batchProcessed = 0;
         int batchSuspended = 0;
 
@@ -191,12 +199,17 @@ public class InactiveUserService {
         Calendar cutoffDate = Calendar.getInstance();
         cutoffDate.add(Calendar.YEAR, -inactivityYears);
 
-        long totalCount = userManager.countUsersInactiveSince(cutoffDate);
-        logger.info("Preview: Found {} inactive users that would be suspended (inactive for {} years)",
-                totalCount, inactivityYears);
+        // Calculate creation cutoff: inactivity years + grace period years
+        int totalYears = inactivityYears + gracePeriodYears;
+        Calendar creationCutoffDate = Calendar.getInstance();
+        creationCutoffDate.add(Calendar.YEAR, -totalYears);
+
+        long totalCount = userManager.countUsersInactiveSince(cutoffDate, creationCutoffDate);
+        logger.info("Preview: Found {} inactive users that would be suspended (inactive for {} years, created more than {} years ago)",
+                totalCount, inactivityYears, totalYears);
 
         if (totalCount > 0) {
-            List<Account> sampleUsers = userManager.findUsersInactiveSince(cutoffDate, 0, Math.min(10, (int) totalCount));
+            List<Account> sampleUsers = userManager.findUsersInactiveSince(cutoffDate, creationCutoffDate, 0, Math.min(10, (int) totalCount));
             logger.info("Sample of users that would be suspended:");
             for (Account user : sampleUsers) {
                 logger.info("- {} (ID: {}, Created: {})",
@@ -244,9 +257,9 @@ public class InactiveUserService {
      * This method demonstrates proper separation of concerns by delegating data access to UserManager
      * while keeping business logic in the service layer
      */
-    public List<Account> findInactiveUsersWithCriteriaAPI(Calendar cutoffDate, int offset, int limit) {
+    public List<Account> findInactiveUsersWithCriteriaAPI(Calendar cutoffDate, Calendar creationCutoffDate, int offset, int limit) {
         // Use UserManager for JPA-oriented data access - this is the proper JPA approach
-        return userManager.findUsersInactiveSince(cutoffDate, offset, limit);
+        return userManager.findUsersInactiveSince(cutoffDate, creationCutoffDate, offset, limit);
     }
 
     /**
@@ -254,9 +267,9 @@ public class InactiveUserService {
      * This method demonstrates JPA's ability to handle bulk operations efficiently
      */
     @Transactional
-    public int bulkSuspendInactiveUsers(Calendar cutoffDate, int batchSize) {
+    public int bulkSuspendInactiveUsers(Calendar cutoffDate, Calendar creationCutoffDate, int batchSize) {
         // Use UserManager for JPA-oriented data access
-        List<Account> usersToSuspend = userManager.findUsersInactiveSince(cutoffDate, 0, batchSize);
+        List<Account> usersToSuspend = userManager.findUsersInactiveSince(cutoffDate, creationCutoffDate, 0, batchSize);
         
         int suspendedCount = 0;
         for (Account user : usersToSuspend) {
