@@ -42,8 +42,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = {AppConfig.class})
 @TestPropertySource(properties = {
         "app.batch.history-cleanup.enabled=true",
-        "app.batch.history-cleanup.phase1-lower-boundary-years=3",
-        "app.batch.history-cleanup.phase1-upper-boundary-years=17",
+        "app.batch.history-cleanup.phase1-lower-boundary-years=2",
+        "app.batch.history-cleanup.phase1-upper-boundary-years=1",
+        "app.batch.history-cleanup.phase2-lower-boundary-years=1",
+        "app.batch.history-cleanup.phase2-upper-boundary-years=0.5",
         "app.batch.history-cleanup.phase2-max-entries=4",
         "app.batch.history-cleanup.batch-size=100",
         "spring.jpa.hibernate.ddl-auto=create-drop"
@@ -91,8 +93,8 @@ public class HistoryPurgeServiceTest {
         
         // Verify service configuration
         assertTrue(historyPurgeService.isEnabled());
-        assertEquals(3, historyPurgeService.getPhase1LowerBoundaryYears());
-        assertEquals(17, historyPurgeService.getPhase1UpperBoundaryYears());
+        assertEquals(2, historyPurgeService.getPhase1LowerBoundaryYears());
+        assertEquals(1, historyPurgeService.getPhase1UpperBoundaryYears());
         assertEquals(4, historyPurgeService.getPhase2MaxEntries());
         assertEquals(100, historyPurgeService.getBatchSize());
     }
@@ -113,13 +115,13 @@ public class HistoryPurgeServiceTest {
     @Test
     void testGetPhase1LowerBoundaryYears_ShouldReturnCorrectValue() {
         // Act & Assert
-        assertEquals(3, historyPurgeService.getPhase1LowerBoundaryYears());
+        assertEquals(2, historyPurgeService.getPhase1LowerBoundaryYears());
     }
 
     @Test
     void testGetPhase1UpperBoundaryYears_ShouldReturnCorrectValue() {
         // Act & Assert
-        assertEquals(17, historyPurgeService.getPhase1UpperBoundaryYears());
+        assertEquals(1, historyPurgeService.getPhase1UpperBoundaryYears());
     }
 
     @Test

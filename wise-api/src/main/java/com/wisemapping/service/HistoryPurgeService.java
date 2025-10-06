@@ -37,8 +37,11 @@ public class HistoryPurgeService {
     @Value("${app.batch.history-cleanup.phase1-upper-boundary-years:17}")
     private int phase1UpperBoundaryYears;
 
-    @Value("${app.batch.history-cleanup.phase2-starting-point-years:1}")
-    private int phase2StartingPointYears;
+    @Value("${app.batch.history-cleanup.phase2-lower-boundary-years:1}")
+    private int phase2LowerBoundaryYears;
+
+    @Value("${app.batch.history-cleanup.phase2-upper-boundary-years:0.5}")
+    private double phase2UpperBoundaryYears;
 
     @Value("${app.batch.history-cleanup.phase2-max-entries:4}")
     private int phase2MaxEntries;
@@ -48,10 +51,10 @@ public class HistoryPurgeService {
 
     /**
      * Purge old mindmap history entries using two-phase approach.
-     * 
-     * Phase 1: For maps between phase1LowerBoundaryYears and
-     * phase1UpperBoundaryYears, removes all history
-     * Phase 2: For maps newer than phase2StartingPointYears, keeps only
+     *
+     * Phase 1: For maps between phase1LowerBoundaryYears (2 years) and
+     * phase1UpperBoundaryYears (1 year), removes all history
+     * Phase 2: For maps between phase2LowerBoundaryYears (1 year) and phase2UpperBoundaryYears (6 months), keeps only
      * phase2MaxEntries recent entries
      *
      * @return number of history entries deleted
@@ -63,21 +66,21 @@ public class HistoryPurgeService {
         }
 
         logger.info(
-                "Starting two-phase history cleanup - phase1 lower boundary: {} years, phase1 upper boundary: {} years, phase2 starting point: {} years, phase2 max entries: {}, batch size: {}",
-                phase1LowerBoundaryYears, phase1UpperBoundaryYears, phase2StartingPointYears, phase2MaxEntries,
+                "Starting two-phase history cleanup - phase1 lower boundary: {} years, phase1 upper boundary: {} years, phase2 lower boundary: {} years, phase2 upper boundary: {} years, phase2 max entries: {}, batch size: {}",
+                phase1LowerBoundaryYears, phase1UpperBoundaryYears, phase2LowerBoundaryYears, phase2UpperBoundaryYears, phase2MaxEntries,
                 batchSize);
 
         try {
             // Create context for the cleanup operation
             HistoryCleanupContext context = new HistoryCleanupContext(phase1LowerBoundaryYears,
                     phase1UpperBoundaryYears,
-                    phase2StartingPointYears, phase2MaxEntries, batchSize);
+                    phase2LowerBoundaryYears, phase2MaxEntries, batchSize);
 
             // Set up the chain of responsibility
             final AbstractHistoryCleanupHandler phase1Handler = new Phase1HistoryCleanupHandler(
                     mindmapManager, phase1LowerBoundaryYears, phase1UpperBoundaryYears);
             final AbstractHistoryCleanupHandler phase2Handler = new Phase2HistoryCleanupHandler(
-                    mindmapManager, phase2StartingPointYears, phase2MaxEntries);
+                    mindmapManager, phase2LowerBoundaryYears, phase2UpperBoundaryYears, phase2MaxEntries);
 
             // Chain the handlers: Phase1 -> Phase2
             phase1Handler.setNext(phase2Handler);

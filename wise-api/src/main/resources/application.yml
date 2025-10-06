@@ -186,22 +186,23 @@ app:
       startup-enabled: false  # Disable startup execution by default (can be heavy)
       cron-expression: "0 0 2 * * SAT,SUN"  # Every Saturday and Sunday at 2:00 AM
       # Two-phase history cleanup approach:
-      # Phase 1: Complete history removal for old mindmaps
+      # Phase 1: Complete history removal for moderately old mindmaps
       #   - Maps between phase1-lower-boundary-years and phase1-upper-boundary-years have ALL history removed
       #   - This targets mindmaps that are old enough that detailed history is no longer valuable
-      #   - Example: Maps between 3-17 years old get all history deleted
-      phase1-lower-boundary-years: 3  # Lower boundary for Phase 1 (maps older than this)
-      phase1-upper-boundary-years: 17  # Upper boundary for Phase 1 (maps older than this are excluded)
-      # Phase 2: Selective history retention for recent mindmaps  
-      #   - Maps newer than phase2-starting-point-years keep only the most recent entries
+      #   - Example: Maps between 1-2 years old get all history deleted
+      phase1-lower-boundary-years: 2  # Lower boundary for Phase 1 (maps older than this)
+      phase1-upper-boundary-years: 1  # Upper boundary for Phase 1 (maps newer than this)
+      # Phase 2: Selective history retention for recent mindmaps
+      #   - Maps between phase2-lower-boundary-years and phase2-upper-boundary-years keep only the most recent entries
       #   - This preserves recent activity while removing older history to save space
-      #   - Example: Maps newer than 1 year keep only the 4 most recent history entries
-      phase2-starting-point-years: 1  # Starting point for Phase 2 (maps newer than this)
+      #   - Example: Maps between 6 months and 1 year old keep only the 4 most recent history entries
+      phase2-lower-boundary-years: 1  # Lower boundary for Phase 2 (maps older than this)
+      phase2-upper-boundary-years: 0.5  # Upper boundary for Phase 2 (maps newer than this)
       phase2-max-entries: 4  # Maximum number of recent entries to keep per mindmap
       batch-size: 100  # Number of mindmaps to process in each batch to prevent memory issues
     inactive-user-suspension:
       enabled: true
-      startup-enabled: true  # Enable inactive user suspension on application startup (async)
+      startup-enabled: false  # Enable inactive user suspension on application startup (async)
       cron-expression: "0 0 2 * * SAT"  # Every Saturday at 2:00 AM
       preview-enabled: false  # Enable preview task on Fridays
       inactivity-years: 7  # Users inactive for this many years will be suspended
