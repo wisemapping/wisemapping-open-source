@@ -226,11 +226,15 @@ public class MindmapServiceImpl
         // Get or create collaborator
         final Collaborator collaborator = addCollaborator(email);
         
+        // Check if collaboration already exists BEFORE creating it
+        final Collaboration existingCollaboration = mindmapManager.findCollaboration(mindmap.getId(), collaborator.getId());
+        final boolean isNewCollaboration = (existingCollaboration == null);
+        
         // Use DAO's find-or-create pattern to prevent constraint violations
         Collaboration collaboration = mindmapManager.findOrCreateCollaboration(mindmap, collaborator, role);
         
         // Send notification only for new collaborations
-        if (collaboration.getId() == 0) { // New collaboration (not yet persisted)
+        if (isNewCollaboration) {
             final Account user = Utils.getUser();
             notificationService.newCollaboration(collaboration, mindmap, user, message);
         }
