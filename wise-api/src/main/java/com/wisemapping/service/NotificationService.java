@@ -108,7 +108,7 @@ final public class NotificationService {
 
         final String mailSubject = messageSource.getMessage("REGISTRATION.EMAIL_SUBJECT", null, locale);
         final String messageTitle = messageSource.getMessage("REGISTRATION.EMAIL_TITLE", null, locale);
-        final String messageBody = messageSource.getMessage("REGISTRATION.EMAIL_BODY", null, locale);
+        final String messageBody = messageSource.getMessage("REGISTRATION.EMAIL_BODY", new Object[]{getBaseUrl()}, locale);
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }
 
