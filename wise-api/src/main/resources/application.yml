@@ -183,7 +183,7 @@ app:
       version: 4  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
     history-cleanup:
       enabled: true
-      startup-enabled: false  # Disable startup execution by default (can be heavy)
+      startup-enabled: true  # Disable startup execution by default (can be heavy)
       cron-expression: "0 0 2 * * SAT,SUN"  # Every Saturday and Sunday at 2:00 AM
       # Two-phase history cleanup approach:
       # Phase 1: Complete history removal for moderately old mindmaps
