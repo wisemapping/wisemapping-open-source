@@ -9,13 +9,13 @@
                     style="padding: 0; padding-right: 5px; text-align:center;font-weight: normal;font-family: Arial, sans-serif">
                     <a href="${baseUrl}">
                         <img style="border: 0;margin-top: 10px;"
-                             src="https://app.wisemapping.com/logo.svg"
-                             alt="WiseMapping Logo"/>
+                             src="https://app.wisemapping.com/logo.png"
+                             alt="Logo"/>
 
                     </a>
                 </td>
                 <td valign="bottom" height="32px" style="padding: 0;font-size: 16px;">
-                    ${messages.getMessage("SHARE_MAP.EMAIL_TITLE", [$mapEditUrl, $mindmap.title], $locale)}
+                    ${emailTitle}
                 </td>
             </tr>
             </tbody>
@@ -23,17 +23,17 @@
     </div>
     <div style="font-size: 13px; background-color: #FFF; padding: 10px 7px 7px 7px; min-height: 100px">
         #if($message )
-            <p><strong>${messages.getMessage("SHARE_MAP.EMAIL_MESSAGE_FROM", [$senderMail], $locale)}</strong></p>
+            <p><strong>${emailMessageFrom}</strong></p>
             <pre style="font-family: Arial, sans-serif; color: #000; ">${message}</pre>
         #end
-        <p>${messages.getMessage("SHARE_MAP.EMAIL_CLICK_TO_OPEN", [$mapEditUrl, $mindmap.title], $locale)}</p>
+        <p>${emailClickToOpen}</p>
 
-        <p style="color: #898989;">${messages.getMessage("SHARE_MAP.EMAIL_ACCOUNT_INFO", $noArg, $locale)}</p>
+        <p style="color: #898989;">${emailAccountInfo}</p>
     </div>
 </div>
 
 <p style="color: #898989;">
-    <a href="https://www.wisemapping.com/">${messages.getMessage("SHARE_MAP.EMAIL_TEAM", $noArg, $locale)}</a><br/>
+    <a href="https://www.wisemapping.com/">${emailTeam}</a><br/>
 </p>
 <p style="font-size: 13px;font-family: Arial, sans-serif">${doNotReplay}</p>
 </body>

@@ -57,23 +57,35 @@ final public class NotificationService {
             // Is the user already registered user ?.
             final String collabEmail = collaboration.getCollaborator().getEmail();
 
+            // Build the URL
+            final String mapEditUrl = getBaseUrl() + "/c/maps/" + mindmap.getId() + "/edit";
+
             // Build the subject ...
             final String subject = messageSource.getMessage("SHARE_MAP.EMAIL_SUBJECT", new Object[]{user.getFullName()}, locale);
+
+            // Pre-render translated messages with parameters
+            final String emailTitle = messageSource.getMessage("SHARE_MAP.EMAIL_TITLE", new Object[]{mapEditUrl, mindmap.getTitle()}, locale);
+            final String emailClickToOpen = messageSource.getMessage("SHARE_MAP.EMAIL_CLICK_TO_OPEN", new Object[]{mapEditUrl, mindmap.getTitle()}, locale);
+            final String emailMessageFrom = messageSource.getMessage("SHARE_MAP.EMAIL_MESSAGE_FROM", new Object[]{user.getEmail()}, locale);
+            final String emailAccountInfo = messageSource.getMessage("SHARE_MAP.EMAIL_ACCOUNT_INFO", null, locale);
+            final String emailTeam = messageSource.getMessage("SHARE_MAP.EMAIL_TEAM", null, locale);
 
             // Fill template properties ...
             final Map<String, Object> model = new HashMap<>();
             model.put("mindmap", mindmap);
             model.put("ownerName", user.getFirstname());
-            model.put("mapEditUrl", getBaseUrl() + "/c/maps/" + mindmap.getId() + "/edit");
+            model.put("mapEditUrl", mapEditUrl);
             model.put("baseUrl", getBaseUrl());
             model.put("senderMail", user.getEmail());
             model.put("message", message);
             model.put("doNotReplay", messageSource.getMessage("EMAIL.DO_NOT_REPLAY", new Object[]{mailerService.getSupportEmail()}, locale));
-
-            // To resolve resources on templates ...
-            model.put("noArg", new Object[]{});
-            model.put("messages", messageSource);
-            model.put("locale", locale);
+            
+            // Add pre-rendered messages
+            model.put("emailTitle", emailTitle);
+            model.put("emailClickToOpen", emailClickToOpen);
+            model.put("emailMessageFrom", emailMessageFrom);
+            model.put("emailAccountInfo", emailAccountInfo);
+            model.put("emailTeam", emailTeam);
 
             mailerService.sendEmail(formMail, collabEmail, subject, model, "newCollaboration.vm");
         } catch (Exception e) {

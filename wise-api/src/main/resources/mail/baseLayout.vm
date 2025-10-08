@@ -9,7 +9,7 @@
                     style="padding: 0; padding-right: 5px; text-align:center;font-weight: normal;font-family: Arial, sans-serif">
                     <a href="${baseUrl}">
                         <img style="border: 0;margin-top: 10px;"
-                             src="https://app.wisemapping.com/logo.svg"
+                             src="https://app.wisemapping.com/logo.png"
                              alt="WiseMapping"/>
 
                     </a>
