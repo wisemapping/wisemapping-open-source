@@ -15,7 +15,7 @@
                     </a>
                 </td>
                 <td valign="bottom" height="32px" style="padding: 0;font-size: 16px;">
-                    I've shared <a href='${mapEditUrl}'>${mindmap.title}</a> mindmap with you.
+                    ${messages.getMessage("SHARE_MAP.EMAIL_TITLE", [$mapEditUrl, $mindmap.title], $locale)}
                 </td>
             </tr>
             </tbody>
@@ -23,18 +23,18 @@
     </div>
     <div style="font-size: 13px; background-color: #FFF; padding: 10px 7px 7px 7px; min-height: 100px">
         #if($message )
-            <p><strong>Message from ${senderMail}: </strong></p>
+            <p><strong>${messages.getMessage("SHARE_MAP.EMAIL_MESSAGE_FROM", [$senderMail], $locale)}</strong></p>
             <pre style="font-family: Arial, sans-serif; color: #000; ">${message}</pre>
         #end
-        <p>Click to open: <a href="${mapEditUrl}">${mindmap.title}</a></p>
+        <p>${messages.getMessage("SHARE_MAP.EMAIL_CLICK_TO_OPEN", $noArg, $locale)} <a href="${mapEditUrl}">${mindmap.title}</a></p>
 
-        <p style="color: #898989;">Do you have a WiseMapping account ?. Don't worry, you can create an account for
-            free. </p>
+        <p style="color: #898989;">${messages.getMessage("SHARE_MAP.EMAIL_ACCOUNT_INFO", $noArg, $locale)}</p>
     </div>
 </div>
 
 <p style="color: #898989;">
-    <a href="https://www.wisemapping.com/">The WiseMapping Team</a><br/>
+    <a href="https://www.wisemapping.com/">${messages.getMessage("SHARE_MAP.EMAIL_TEAM", $noArg, $locale)}</a><br/>
 </p>
+<p style="font-size: 13px;font-family: Arial, sans-serif">${doNotReplay}</p>
 </body>
 </html>

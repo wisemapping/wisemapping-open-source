@@ -1,28 +1,27 @@
 <html>
 <body>
 <div>
-    <h3>Welcome to WiseMapping!</h3>
+    <h3>${messages.getMessage("CONFIRMATION.EMAIL_TITLE", $noArg, $locale)}</h3>
 
     <p>
-        To active your account and verify your e-mail address, please click on the following link.
+        ${messages.getMessage("CONFIRMATION.EMAIL_INTRO", $noArg, $locale)}
     </p>
     <a href="${emailcheck}">${emailcheck}</a>
     </p>
     <p>
-        If you have received this mail by error, you do not need to take any action to cancel the account. The account will
-        not be activated, and you will not receive any further emails.
+        ${messages.getMessage("CONFIRMATION.EMAIL_ERROR", $noArg, $locale)}
     </p>
 
     <p>
-        If clicking the link above does not work, copy and paste the URL in a new browser window instead.
+        ${messages.getMessage("CONFIRMATION.EMAIL_LINK_HELP", $noArg, $locale)}
     </p>
 
     <p>
-        For questions or concerns regarding your account, send us an email to support@wisemapping.com.
+        ${messages.getMessage("CONFIRMATION.EMAIL_SUPPORT", ["support@wisemapping.com"], $locale)}
     </p>
 
     <p style="color: #898989;">
-        <a href="https://www.wisemapping.com/">The WiseMapping Team</a><br/>
+        <a href="https://www.wisemapping.com/">${messages.getMessage("SHARE_MAP.EMAIL_TEAM", $noArg, $locale)}</a><br/>
     </p>
 <div>
 </body>
