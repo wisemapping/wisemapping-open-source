@@ -39,14 +39,14 @@ public class Phase2HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
         upperBoundaryDate.add(Calendar.MONTH, -(int)(phase2UpperBoundaryYears * 12)); // Convert years to months
         
         // Log the date ranges for debugging
-        logger.info("Phase 2 - Mindmap {} check: lastMod={}, lowerBoundary={}, upperBoundary={}", 
+        logger.debug("Phase 2 - Mindmap {} check: lastMod={}, lowerBoundary={}, upperBoundary={}", 
                     mindmapId, 
                     lastModificationTime.getTime(), 
                     lowerBoundaryDate.getTime(), 
                     upperBoundaryDate.getTime());
         
         boolean canHandle = lastModificationTime.before(lowerBoundaryDate) && lastModificationTime.after(upperBoundaryDate);
-        logger.info("Phase 2 - Mindmap {} canHandle result: {} (before lowerBoundary: {}, after upperBoundary: {})", 
+        logger.debug("Phase 2 - Mindmap {} canHandle result: {} (before lowerBoundary: {}, after upperBoundary: {})", 
                     mindmapId, canHandle, 
                     lastModificationTime.before(lowerBoundaryDate),
                     lastModificationTime.after(upperBoundaryDate));
@@ -59,7 +59,7 @@ public class Phase2HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
     public int processCleanup(int mindmapId, Calendar lastModificationTime) {
         Integer creatorId = getMindmapCreatorId(mindmapId);
         
-        logger.info("Phase 2 - Cleaning excess history for mindmap ID {} (creator ID: {}) - between {} and {} years old, keeping max {} entries", 
+        logger.debug("Phase 2 - Cleaning excess history for mindmap ID {} (creator ID: {}) - between {} and {} years old, keeping max {} entries", 
                   mindmapId, creatorId, phase2UpperBoundaryYears, phase2LowerBoundaryYears, maxEntries);
         
         return mindmapManager.removeExcessHistoryByMindmapId(mindmapId, maxEntries);

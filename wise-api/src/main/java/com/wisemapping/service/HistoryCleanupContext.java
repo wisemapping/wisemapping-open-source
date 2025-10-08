@@ -16,6 +16,8 @@ public class HistoryCleanupContext {
     private int totalDeleted = 0;
     private int totalProcessed = 0;
     private int totalSkipped = 0;
+    private int phase1Processed = 0;
+    private int phase2Processed = 0;
     
     public HistoryCleanupContext(int lowerBoundaryYears, int upperBoundaryYears, 
                                int phase2StartingPointYears, int phase2MaxEntries, int batchSize) {
@@ -42,4 +44,10 @@ public class HistoryCleanupContext {
     
     public int getTotalSkipped() { return totalSkipped; }
     public void incrementSkipped() { this.totalSkipped++; }
+    
+    public int getPhase1Processed() { return phase1Processed; }
+    public void incrementPhase1Processed() { this.phase1Processed++; }
+    
+    public int getPhase2Processed() { return phase2Processed; }
+    public void incrementPhase2Processed() { this.phase2Processed++; }
 }

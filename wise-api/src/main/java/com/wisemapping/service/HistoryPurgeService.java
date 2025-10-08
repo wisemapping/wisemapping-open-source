@@ -61,14 +61,13 @@ public class HistoryPurgeService {
      */
     public int purgeHistory() {
         if (!enabled) {
-            logger.debug("History cleanup is disabled");
+            logger.info("History cleanup is disabled");
             return 0;
         }
 
-        logger.info(
-                "Starting two-phase history cleanup - phase1 lower boundary: {} years, phase1 upper boundary: {} years, phase2 lower boundary: {} years, phase2 upper boundary: {} years, phase2 max entries: {}, batch size: {}",
-                phase1LowerBoundaryYears, phase1UpperBoundaryYears, phase2LowerBoundaryYears, phase2UpperBoundaryYears, phase2MaxEntries,
-                batchSize);
+        // Log summary information at the beginning
+        logger.info("Starting two-phase history cleanup - Phase 1: remove all history for maps {} to {} years old, Phase 2: limit history to {} entries for maps {} to {} years old, batch size: {}",
+                phase1UpperBoundaryYears, phase1LowerBoundaryYears, phase2MaxEntries, phase2UpperBoundaryYears, phase2LowerBoundaryYears, batchSize);
 
         try {
             // Create context for the cleanup operation
@@ -88,17 +87,17 @@ public class HistoryPurgeService {
         // First, let's check if there are any mindmaps with history at all
         try {
             List<Integer> sampleMindmapIds = mindmapManager.getMindmapIdsWithHistory(0, 5);
-            logger.info("Found {} mindmaps with history entries (sample of first 5: {})", 
+            logger.debug("Found {} mindmaps with history entries (sample of first 5: {})", 
                        sampleMindmapIds.size(), sampleMindmapIds);
             
             // Also check total mindmaps for debugging
             long totalMindmaps = mindmapManager.countAllMindmaps();
-            logger.info("Database stats: {} total mindmaps", totalMindmaps);
+            logger.debug("Database stats: {} total mindmaps", totalMindmaps);
             
             if (sampleMindmapIds.isEmpty()) {
                 logger.warn("No mindmaps with history found - this is unexpected if history tracking is enabled!");
-                logger.info("Phase 1 would normally process old mindmaps (3-17 years old), but they need history entries to exist first");
-                logger.info("Phase 2 would normally process recent mindmaps (newer than 1 year) to limit history entries");
+                logger.debug("Phase 1 would normally process old mindmaps (3-17 years old), but they need history entries to exist first");
+                logger.debug("Phase 2 would normally process recent mindmaps (newer than 1 year) to limit history entries");
                 return 0;
             }
         } catch (Exception e) {
@@ -108,7 +107,8 @@ public class HistoryPurgeService {
 
         // Process mindmaps in batches using the composed strategies
         int totalDeleted = processMindmapsWithStrategies(context, phase1Handler);
-        logger.info("Two-phase history cleanup completed successfully. Deleted {} history entries", totalDeleted);
+        logger.info("History cleanup completed: {} total maps processed, {} Phase 1 maps (history removed), {} Phase 2 maps (history limited), {} maps skipped, {} history entries deleted total", 
+                context.getTotalProcessed(), context.getPhase1Processed(), context.getPhase2Processed(), context.getTotalSkipped(), totalDeleted);
         return totalDeleted;
 
     } catch (Exception e) {
@@ -176,9 +176,9 @@ public class HistoryPurgeService {
 
         do {
             // Get a batch of unique mindmap IDs that have history
-            logger.info("Fetching batch of mindmaps with history - offset: {}, batchSize: {}", offset, context.getBatchSize());
+            logger.debug("Fetching batch of mindmaps with history - offset: {}, batchSize: {}", offset, context.getBatchSize());
             mindmapIds = mindmapManager.getMindmapIdsWithHistory(offset, context.getBatchSize());
-            logger.info("Retrieved {} mindmap IDs in this batch", mindmapIds.size());
+            logger.debug("Retrieved {} mindmap IDs in this batch", mindmapIds.size());
 
             for (Integer mindmapId : mindmapIds) {
                 context.incrementProcessed();
@@ -186,25 +186,30 @@ public class HistoryPurgeService {
                 Calendar lastModificationTime = mindmapManager.getMindmapLastModificationTime(mindmapId);
 
                 if (lastModificationTime != null) {
-                    logger.info("Processing mindmap {} with lastModificationTime: {}", mindmapId, lastModificationTime.getTime());
+                    logger.debug("Processing mindmap {} with lastModificationTime: {}", mindmapId, lastModificationTime.getTime());
                     // Process through the chain of responsibility
-                    int deleted = processMindmapThroughChain(firstHandler, mindmapId, lastModificationTime);
+                    int deleted = processMindmapThroughChain(context, firstHandler, mindmapId, lastModificationTime);
                     context.addDeleted(deleted);
                     if (deleted > 0) {
-                        logger.info("Deleted {} history entries for mindmap {}", deleted, mindmapId);
+                        logger.debug("Deleted {} history entries for mindmap {}", deleted, mindmapId);
                     } else {
-                        logger.info("No history entries deleted for mindmap {} - no phase could handle it", mindmapId);
+                        logger.debug("No history entries deleted for mindmap {} - no phase could handle it", mindmapId);
                     }
                 } else {
-                    logger.info("Skipping mindmap {} - no lastModificationTime", mindmapId);
+                    logger.debug("Skipping mindmap {} - no lastModificationTime", mindmapId);
                     context.incrementSkipped();
                 }
             }
 
+            // Log progress after each batch
+            logger.info("Batch completed: {} total maps processed so far, {} Phase 1, {} Phase 2, {} skipped, {} history entries deleted", 
+                    context.getTotalProcessed(), context.getPhase1Processed(), context.getPhase2Processed(), 
+                    context.getTotalSkipped(), context.getTotalDeleted());
+
             offset += context.getBatchSize();
         } while (mindmapIds.size() == context.getBatchSize()); // Continue while we get a full batch
 
-        logger.info("Two-phase history cleanup completed: processed={}, skipped={}, deleted={}",
+        logger.debug("Two-phase history cleanup batch processing completed: processed={}, skipped={}, deleted={}",
                 context.getTotalProcessed(), context.getTotalSkipped(), context.getTotalDeleted());
 
         return context.getTotalDeleted();
@@ -213,22 +218,32 @@ public class HistoryPurgeService {
     /**
      * Process a mindmap through the chain of responsibility handlers.
      * 
+     * @param context              the cleanup context
      * @param firstHandler         the first handler in the chain
      * @param mindmapId            the mindmap ID
      * @param lastModificationTime the last modification time
      * @return number of history entries deleted
      */
-    private int processMindmapThroughChain(HistoryCleanupHandler firstHandler, int mindmapId,
+    private int processMindmapThroughChain(HistoryCleanupContext context, HistoryCleanupHandler firstHandler, int mindmapId,
             Calendar lastModificationTime) {
         HistoryCleanupHandler currentHandler = firstHandler;
+        int handlerIndex = 1; // 1 for Phase1, 2 for Phase2
 
         while (currentHandler != null) {
             if (currentHandler.canHandle(mindmapId, lastModificationTime)) {
-                return currentHandler.processCleanup(mindmapId, lastModificationTime);
+                int deleted = currentHandler.processCleanup(mindmapId, lastModificationTime);
+                // Track which phase processed this map
+                if (handlerIndex == 1) {
+                    context.incrementPhase1Processed();
+                } else if (handlerIndex == 2) {
+                    context.incrementPhase2Processed();
+                }
+                return deleted;
             }
             // Move to next handler in the chain
             if (currentHandler instanceof AbstractHistoryCleanupHandler) {
                 currentHandler = ((AbstractHistoryCleanupHandler) currentHandler).getNext();
+                handlerIndex++;
             } else {
                 break; // No more handlers in the chain
             }

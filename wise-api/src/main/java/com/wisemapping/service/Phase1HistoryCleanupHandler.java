@@ -37,14 +37,14 @@ public class Phase1HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
         upperBoundaryDate.add(Calendar.YEAR, -upperBoundaryYears);
         
         // Log the date ranges for debugging
-        logger.info("Phase 1 - Mindmap {} check: lastMod={}, lowerBoundary={}, upperBoundary={}", 
+        logger.debug("Phase 1 - Mindmap {} check: lastMod={}, lowerBoundary={}, upperBoundary={}", 
                     mindmapId, 
                     lastModificationTime.getTime(), 
                     lowerBoundaryDate.getTime(), 
                     upperBoundaryDate.getTime());
         
         boolean canHandle = lastModificationTime.before(lowerBoundaryDate) && lastModificationTime.after(upperBoundaryDate);
-        logger.info("Phase 1 - Mindmap {} canHandle result: {} (before lowerBoundary: {}, after upperBoundary: {})", 
+        logger.debug("Phase 1 - Mindmap {} canHandle result: {} (before lowerBoundary: {}, after upperBoundary: {})", 
                     mindmapId, canHandle, 
                     lastModificationTime.before(lowerBoundaryDate),
                     lastModificationTime.after(upperBoundaryDate));
@@ -57,7 +57,7 @@ public class Phase1HistoryCleanupHandler extends AbstractHistoryCleanupHandler {
     public int processCleanup(int mindmapId, Calendar lastModificationTime) {
         Integer creatorId = getMindmapCreatorId(mindmapId);
         
-        logger.info("Phase 1 - Cleaning ALL history for mindmap ID {} (creator ID: {}) - between {} and {} years old", 
+        logger.debug("Phase 1 - Cleaning ALL history for mindmap ID {} (creator ID: {}) - between {} and {} years old", 
                   mindmapId, creatorId, lowerBoundaryYears, upperBoundaryYears);
         
         return mindmapManager.removeHistoryByMindmapId(mindmapId);
