@@ -97,14 +97,14 @@ public class InactiveUserServiceTest {
         activeUser = createTestUser("active@test.com", "Active", "User");
         alreadySuspendedUser = createTestUser("suspended@test.com", "Suspended", "User");
 
-        // Set creation and activation dates (1.5 years ago for inactive users to be within the 1-2 year range: 1 year inactivity + 1 year grace period)
+        // Set creation and activation dates (2.5 years ago for inactive users to be older than grace period: 1 year inactivity + 1 year grace period = 2 years)
         Calendar creationDate = Calendar.getInstance();
-        creationDate.add(Calendar.YEAR, -1);
-        creationDate.add(Calendar.MONTH, -6); // 1.5 years ago
+        creationDate.add(Calendar.YEAR, -2);
+        creationDate.add(Calendar.MONTH, -6); // 2.5 years ago
         
         Calendar activationDate = Calendar.getInstance();
-        activationDate.add(Calendar.YEAR, -1);
-        activationDate.add(Calendar.MONTH, -6); // 1.5 years ago
+        activationDate.add(Calendar.YEAR, -2);
+        activationDate.add(Calendar.MONTH, -6); // 2.5 years ago
         activationDate.add(Calendar.HOUR, 1);
 
         inactiveUser1.setCreationDate(creationDate);
@@ -147,8 +147,8 @@ public class InactiveUserServiceTest {
         
         // Re-set the dates after addMindmap (in case it overrides them)
         Calendar oldTime = Calendar.getInstance();
-        oldTime.add(Calendar.YEAR, -1);
-        oldTime.add(Calendar.MONTH, -6); // 1.5 years ago
+        oldTime.add(Calendar.YEAR, -2);
+        oldTime.add(Calendar.MONTH, -6); // 2.5 years ago
         
         mindmap1.setCreationTime(oldTime);
         mindmap1.setLastModificationTime(oldTime);
@@ -386,8 +386,7 @@ public class InactiveUserServiceTest {
         // Create an inactive user with unique email and date within the 1-2 year range
         Account testUser = createTestUser("transactiontest" + System.currentTimeMillis() + "@test.com", "Transaction", "Test");
         Calendar userCreationDate = Calendar.getInstance();
-        userCreationDate.add(Calendar.YEAR, -1);
-        userCreationDate.add(Calendar.MONTH, -6); // User created 1.5 years ago
+        userCreationDate.add(Calendar.YEAR, -3); // User created 3 years ago (much older than setup users)
         Calendar cutoffDate = Calendar.getInstance();
         cutoffDate.add(Calendar.YEAR, -1); // Cutoff date 1 year ago - this will include our user
         testUser.setCreationDate(userCreationDate);
@@ -405,9 +404,10 @@ public class InactiveUserServiceTest {
         // Verify the user and history exist
         assertFalse(testUser.isSuspended(), "User should not be suspended initially");
         
-        // Create creation cutoff date (1 year ago for test)
+        // Create creation cutoff date (2.8 years ago to exclude setup users at 2.5 years but include this user at 3 years)
         Calendar creationCutoffDate = Calendar.getInstance();
-        creationCutoffDate.add(Calendar.YEAR, -1);
+        creationCutoffDate.add(Calendar.YEAR, -2);
+        creationCutoffDate.add(Calendar.MONTH, -10); // 2.8 years ago
         
         // This should NOT throw TransactionRequiredException because we're in a transactional context
         InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, creationCutoffDate, 0, 5);
@@ -552,8 +552,8 @@ public class InactiveUserServiceTest {
         }
         
         Calendar creationTime = Calendar.getInstance();
-        creationTime.add(Calendar.YEAR, -1);
-        creationTime.add(Calendar.MONTH, -6); // Match the user creation time (1.5 years ago)
+        creationTime.add(Calendar.YEAR, -2);
+        creationTime.add(Calendar.MONTH, -6); // Match the user creation time (2.5 years ago)
         mindmap.setCreationTime(creationTime);
         mindmap.setLastModificationTime(creationTime);
         
@@ -562,8 +562,8 @@ public class InactiveUserServiceTest {
 
     private void createHistoryEntries(Mindmap mindmap, Account editor, int count) {
         Calendar creationTime = Calendar.getInstance();
-        creationTime.add(Calendar.YEAR, -1);
-        creationTime.add(Calendar.MONTH, -6); // Match the user creation time (1.5 years ago)
+        creationTime.add(Calendar.YEAR, -2);
+        creationTime.add(Calendar.MONTH, -6); // Match the user creation time (2.5 years ago)
         
         for (int i = 0; i < count; i++) {
             MindMapHistory history = new MindMapHistory();

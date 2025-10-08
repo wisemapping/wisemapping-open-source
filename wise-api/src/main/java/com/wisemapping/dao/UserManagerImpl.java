@@ -248,8 +248,7 @@ public class UserManagerImpl
             "SELECT DISTINCT a FROM com.wisemapping.model.Account a " +
             "WHERE a.suspended = false " +
             "  AND a.activationDate IS NOT NULL " +
-            "  AND a.creationDate <= :cutoffDate " +
-            "  AND a.creationDate >= :creationCutoffDate " +
+            "  AND a.creationDate <= :creationCutoffDate " +
             "  AND a.id NOT IN (" +
             "      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa " +
             "      WHERE aa.loginDate >= :cutoffDate" +
@@ -299,8 +298,7 @@ public class UserManagerImpl
             "SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a " +
             "WHERE a.suspended = false " +
             "  AND a.activationDate IS NOT NULL " +
-            "  AND a.creationDate <= :cutoffDate " +
-            "  AND a.creationDate >= :creationCutoffDate " +
+            "  AND a.creationDate <= :creationCutoffDate " +
             "  AND a.id NOT IN (" +
             "      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa " +
             "      WHERE aa.loginDate >= :cutoffDate" +
@@ -337,8 +335,7 @@ public class UserManagerImpl
             "SELECT a FROM com.wisemapping.model.Account a " +
             "WHERE a.suspended = false " +
             "  AND a.activationDate IS NOT NULL " +
-            "  AND a.creationDate <= :cutoffDate " +
-            "  AND a.creationDate >= :creationCutoffDate " +
+            "  AND a.creationDate <= :creationCutoffDate " +
             "  AND a.id NOT IN (" +
             "      SELECT DISTINCT aa.user.id FROM com.wisemapping.model.AccessAuditory aa " +
             "      WHERE aa.loginDate >= :cutoffDate" +
