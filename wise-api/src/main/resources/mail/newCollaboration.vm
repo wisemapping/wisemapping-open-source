@@ -26,7 +26,7 @@
             <p><strong>${messages.getMessage("SHARE_MAP.EMAIL_MESSAGE_FROM", [$senderMail], $locale)}</strong></p>
             <pre style="font-family: Arial, sans-serif; color: #000; ">${message}</pre>
         #end
-        <p>${messages.getMessage("SHARE_MAP.EMAIL_CLICK_TO_OPEN", $noArg, $locale)} <a href="${mapEditUrl}">${mindmap.title}</a></p>
+        <p>${messages.getMessage("SHARE_MAP.EMAIL_CLICK_TO_OPEN", [$mapEditUrl, $mindmap.title], $locale)}</p>
 
         <p style="color: #898989;">${messages.getMessage("SHARE_MAP.EMAIL_ACCOUNT_INFO", $noArg, $locale)}</p>
     </div>
