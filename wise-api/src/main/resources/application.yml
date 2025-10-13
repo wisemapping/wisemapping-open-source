@@ -134,10 +134,6 @@ app:
     sender-email: root@localhost
     support-email: root@localhost
     enabled: true
-    # Fallback configuration for connection issues
-    fallback:
-      enabled: true
-      log-only: true
   accounts:
     max-inactive: 20
   # Google OAuth Authentication
