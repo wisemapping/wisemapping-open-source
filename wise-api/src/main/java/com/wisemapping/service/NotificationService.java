@@ -18,6 +18,7 @@
 
 package com.wisemapping.service;
 
+import com.wisemapping.exceptions.UserRegistrationException;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
@@ -159,7 +160,7 @@ final public class NotificationService {
         }
     }
 
-    public void sendRegistrationEmail(@NotNull Account user) {
+    public void sendRegistrationEmail(@NotNull Account user) throws UserRegistrationException {
         final Locale locale = LocaleContextHolder.getLocale();
         
         try {
@@ -182,6 +183,10 @@ final public class NotificationService {
             mailerService.sendEmail(mailerService.getServerSenderEmail(), user.getEmail(), subject, model, "confirmationMail.vm");
         } catch (Exception e) {
             logger.error("Error sending registration email to: " + user.getEmail(), e);
+            throw new UserRegistrationException(
+                "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.",
+                e
+            );
         }
     }
 

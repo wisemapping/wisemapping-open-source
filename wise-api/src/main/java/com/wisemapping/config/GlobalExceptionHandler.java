@@ -183,6 +183,18 @@ public class GlobalExceptionHandler {
         return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
     }
 
+    @ExceptionHandler(UserRegistrationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public RestErrors handleUserRegistrationException(@NotNull UserRegistrationException ex) {
+        logger.error("User registration failed: {}", ex.getMessage(), ex);
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("USER_REGISTRATION_ERROR", null, "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.", locale) :
+            "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.";
+        return new RestErrors(message, Severity.SEVERE, ex.getCause() != null ? ex.getCause().getMessage() : null);
+    }
+
     @ExceptionHandler(WiseMappingException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
