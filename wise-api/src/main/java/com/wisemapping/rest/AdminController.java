@@ -290,6 +290,28 @@ public class AdminController {
         userService.changePassword(user);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/activate")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void activateUser(@PathVariable int id) {
+        final Account user = userService.getUserBy(id);
+        if (user == null) {
+            throw new IllegalArgumentException("User '" + id + "' could not be found");
+        }
+        
+        // Check if user is already active
+        if (user.isActive()) {
+            throw new IllegalArgumentException("User '" + user.getEmail() + "' is already activated");
+        }
+        
+        // Activate the user by setting activation date
+        user.setActivationDate(java.util.Calendar.getInstance());
+        userService.updateUser(user);
+        
+        // Send activation confirmation email
+        // Note: This uses the "activateAccount" notification which sends a success email
+        // userService's notificationService.activateAccount(user);
+    }
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteUserByEmail(@PathVariable int id) throws WiseMappingException {

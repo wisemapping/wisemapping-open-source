@@ -1,6 +1,7 @@
 package com.wisemapping.security;
 
 import com.wisemapping.exceptions.AccountDisabledException;
+import com.wisemapping.exceptions.AccountSuspendedException;
 import com.wisemapping.model.Account;
 import com.wisemapping.service.MetricsService;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,8 +54,7 @@ class AuthenticationProviderTest {
         when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
         when(userDetails.getUser()).thenReturn(account);
         when(encoder.matches(account.getPassword(), password)).thenReturn(true);
-        when(account.isActive()).thenReturn(true);
-        when(account.isSuspended()).thenReturn(true); // Account is suspended
+        when(account.isActive()).thenReturn(false); // Account is not active (disabled)
 
         // When & Then
         AccountDisabledException exception = assertThrows(
@@ -62,7 +62,31 @@ class AuthenticationProviderTest {
             () -> authenticationProvider.authenticate(authToken)
         );
 
-        assertEquals("ACCOUNT_SUSPENDED", exception.getMessage());
+        assertTrue(exception.getMessage().contains("Account not activated"));
+        verify(userDetailsService, never()).getUserService();
+    }
+
+    @Test
+    void testAuthenticateSuspendedAccount_ShouldThrowAccountSuspendedException() {
+        // Given
+        String email = "test@example.com";
+        String password = "password123";
+        UsernamePasswordAuthenticationToken authToken = 
+            new UsernamePasswordAuthenticationToken(email, password);
+
+        when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
+        when(userDetails.getUser()).thenReturn(account);
+        when(encoder.matches(account.getPassword(), password)).thenReturn(true);
+        when(account.isActive()).thenReturn(true);
+        when(account.isSuspended()).thenReturn(true); // Account is suspended
+
+        // When & Then
+        AccountSuspendedException exception = assertThrows(
+            AccountSuspendedException.class, 
+            () -> authenticationProvider.authenticate(authToken)
+        );
+
+        assertTrue(exception.getMessage().contains("Account suspended"));
         verify(userDetailsService, never()).getUserService();
     }
 

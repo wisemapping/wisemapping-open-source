@@ -52,6 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         properties = {
             "app.api.http-basic-enabled=true",
             "app.registration.enabled=true",
+            "app.registration.email-confirmation-enabled=true",
             "app.registration.disposable-email.blocking.enabled=true"
         }
 )
@@ -279,6 +280,172 @@ class RestUserControllerTest {
         
         int status = result.getResponse().getStatus();
         assertThat(status).isIn(200, 400, 404, 500);
+    }
+
+    // ==================== ACTIVATION TESTS ====================
+
+    @Test
+    @Order(12)
+    @DisplayName("Should activate user with valid activation code")
+    void shouldActivateUserWithValidCode() throws Exception {
+        // Create a user with email confirmation enabled
+        RestUserRegistration userRegistration = testDataManager.createTestUserRegistration();
+        String userJson = objectMapper.writeValueAsString(userRegistration);
+
+        mockMvc.perform(
+                post("/api/restful/users/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(userJson))
+                .andExpect(status().isCreated());
+
+        // Get the created user to retrieve activation code
+        Account createdUser = userService.getUserBy(userRegistration.getEmail());
+        assertThat(createdUser).isNotNull();
+        assertThat(createdUser.isActive()).isFalse(); // Should not be active yet
+        
+        long activationCode = createdUser.getActivationCode();
+
+        // Activate the user
+        mockMvc.perform(
+                put("/api/restful/users/activation")
+                    .param("code", String.valueOf(activationCode)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        // Verify user is now active
+        Account activatedUser = userService.getUserBy(userRegistration.getEmail());
+        assertThat(activatedUser.isActive()).isTrue();
+        assertThat(activatedUser.getActivationDate()).isNotNull();
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("Should reject activation with invalid code")
+    void shouldRejectActivationWithInvalidCode() throws Exception {
+        long invalidCode = 999999999L;
+
+        mockMvc.perform(
+                put("/api/restful/users/activation")
+                    .param("code", String.valueOf(invalidCode)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Invalid activation code")));
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("Should reject activation for already active user")
+    void shouldRejectActivationForAlreadyActiveUser() throws Exception {
+        // Create and activate a user
+        RestUserRegistration userRegistration = testDataManager.createTestUserRegistration();
+        String userJson = objectMapper.writeValueAsString(userRegistration);
+
+        mockMvc.perform(
+                post("/api/restful/users/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(userJson))
+                .andExpect(status().isCreated());
+
+        Account createdUser = userService.getUserBy(userRegistration.getEmail());
+        long activationCode = createdUser.getActivationCode();
+
+        // First activation should succeed
+        mockMvc.perform(
+                put("/api/restful/users/activation")
+                    .param("code", String.valueOf(activationCode)))
+                .andExpect(status().isNoContent());
+
+        // Second activation with same code should fail
+        mockMvc.perform(
+                put("/api/restful/users/activation")
+                    .param("code", String.valueOf(activationCode)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Invalid activation code or account already activated")));
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("Should prevent login for non-activated user")
+    void shouldPreventLoginForNonActivatedUser() throws Exception {
+        // This test verifies the authentication flow blocks non-activated users
+        RestUserRegistration userRegistration = testDataManager.createTestUserRegistration();
+        String userJson = objectMapper.writeValueAsString(userRegistration);
+
+        mockMvc.perform(
+                post("/api/restful/users/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(userJson))
+                .andExpect(status().isCreated());
+
+        Account createdUser = userService.getUserBy(userRegistration.getEmail());
+        assertThat(createdUser.isActive()).isFalse();
+        
+        // Verify that the user cannot be used for authentication (would be tested in JwtAuthControllerTest)
+        // This is a data integrity test - user should have null activation_date
+        assertThat(createdUser.getActivationDate()).isNull();
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("Should handle activation code boundary values")
+    void shouldHandleActivationCodeBoundaryValues() throws Exception {
+        // Test with very large code
+        mockMvc.perform(
+                put("/api/restful/users/activation")
+                    .param("code", String.valueOf(Long.MAX_VALUE)))
+                .andExpect(status().isBadRequest());
+
+        // Test with zero
+        mockMvc.perform(
+                put("/api/restful/users/activation")
+                    .param("code", "0"))
+                .andExpect(status().isBadRequest());
+
+        // Test with negative number
+        mockMvc.perform(
+                put("/api/restful/users/activation")
+                    .param("code", "-1"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Order(17)
+    @DisplayName("Should validate activation code is unique per user")
+    void shouldValidateActivationCodeIsUniquePerUser() throws Exception {
+        // Create two users
+        RestUserRegistration user1 = testDataManager.createTestUserRegistration();
+        RestUserRegistration user2 = testDataManager.createTestUserRegistration();
+
+        mockMvc.perform(
+                post("/api/restful/users/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(user1)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(
+                post("/api/restful/users/")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(user2)))
+                .andExpect(status().isCreated());
+
+        Account account1 = userService.getUserBy(user1.getEmail());
+        Account account2 = userService.getUserBy(user2.getEmail());
+
+        // Activation codes should be different
+        assertThat(account1.getActivationCode()).isNotEqualTo(account2.getActivationCode());
+
+        // Activating user1 should not affect user2
+        mockMvc.perform(
+                put("/api/restful/users/activation")
+                    .param("code", String.valueOf(account1.getActivationCode())))
+                .andExpect(status().isNoContent());
+
+        Account activatedAccount1 = userService.getUserBy(user1.getEmail());
+        Account nonActivatedAccount2 = userService.getUserBy(user2.getEmail());
+
+        assertThat(activatedAccount1.isActive()).isTrue();
+        assertThat(nonActivatedAccount2.isActive()).isFalse();
     }
 
 

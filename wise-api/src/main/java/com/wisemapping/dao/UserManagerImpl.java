@@ -181,14 +181,14 @@ public class UserManagerImpl
     public Account getUserByActivationCode(long code) {
         final Account user;
 
-        final TypedQuery<Account> query = entityManager.createQuery("from com.wisemapping.model.User user where " +
+        final TypedQuery<Account> query = entityManager.createQuery("from com.wisemapping.model.Account user where " +
                 "activationCode=:activationCode", Account.class);
         query.setParameter("activationCode", code);
 
         final List<Account> users = query.getResultList();
         if (users != null && !users.isEmpty()) {
 
-            assert users.size() == 1 : "More than one user with the same username!";
+            assert users.size() == 1 : "More than one user with the same activation code!";
             user = users.get(0);
         } else {
             user = null;

@@ -20,6 +20,7 @@ package com.wisemapping.security;
 
 
 import com.wisemapping.exceptions.AccountDisabledException;
+import com.wisemapping.exceptions.AccountSuspendedException;
 import com.wisemapping.model.Account;
 import com.wisemapping.service.MetricsService;
 import org.jetbrains.annotations.NotNull;
@@ -49,14 +50,15 @@ public class AuthenticationProvider implements org.springframework.security.auth
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
         }
 
-        // User has been disabled ...
+        // For DATABASE users, check if account is activated (email confirmed)
+        // OAuth users are activated automatically during registration
         if (!user.isActive()) {
-            throw new BadCredentialsException("User has been disabled for login " + auth.getPrincipal());
+            throw new AccountDisabledException("Account not activated for " + auth.getPrincipal());
         }
 
         // Check if account is suspended
         if (user.isSuspended()) {
-            throw new AccountDisabledException("ACCOUNT_SUSPENDED");
+            throw new AccountSuspendedException("Account suspended for " + auth.getPrincipal());
         }
 
         userDetailsService.getUserService().auditLogin(user);

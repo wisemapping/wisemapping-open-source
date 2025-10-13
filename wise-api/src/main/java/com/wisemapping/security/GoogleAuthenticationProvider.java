@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
+import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.model.Account;
 import com.wisemapping.service.MetricsService;
 
@@ -36,8 +37,9 @@ public class GoogleAuthenticationProvider implements org.springframework.securit
         UserDetails userDetails = userDetailsService.loadUserByUsername(inputToken.getName());
         final Account user = userDetails.getUser();
 
+        // OAuth users should always be active (they don't need email confirmation)
         if (!user.isActive()) {
-            throw new BadCredentialsException("User has been disabled for login " + inputToken.getName());
+            throw new AccountDisabledException("Google OAuth account not active for " + inputToken.getName());
         }
 
         // Allow OAuth login for suspended users and remove suspension

@@ -156,17 +156,29 @@ final public class NotificationService {
     }
 
     public void sendRegistrationEmail(@NotNull Account user) {
-//        throw new UnsupportedOperationException("Not implemented yet");
-//        try {
-//            final Map<String, String> model = new HashMap<String, String>();
-//            model.put("email", user.getEmail());
-////            final String activationUrl = "http://wisemapping.com/c/activation?code=" + user.getActivationCode();
-////            model.put("emailcheck", activationUrl);
-////            mailer.sendEmail(mailer.getServerSenderEmail(), user.getEmail(), "Welcome to Wisemapping!", model,
-////                    "confirmationMail.vm");
-//        } catch (Exception e) {
-//            handleException(e);
-//        }
+        final Locale locale = LocaleContextHolder.getLocale();
+        
+        try {
+            final Map<String, Object> model = new HashMap<>();
+            
+            // Build the activation URL
+            final String activationUrl = getBaseUrl() + "/c/activation?code=" + user.getActivationCode();
+            model.put("emailcheck", activationUrl);
+            model.put("email", user.getEmail());
+            
+            // To resolve resources on templates ...
+            model.put("noArg", new Object[]{});
+            model.put("messages", messageSource);
+            model.put("locale", locale);
+            
+            // Get the subject from messages
+            final String subject = messageSource.getMessage("CONFIRMATION.EMAIL_SUBJECT", null, locale);
+            
+            logger.debug("Sending activation email to: " + user.getEmail() + " with URL: " + activationUrl);
+            mailerService.sendEmail(mailerService.getServerSenderEmail(), user.getEmail(), subject, model, "confirmationMail.vm");
+        } catch (Exception e) {
+            logger.error("Error sending registration email to: " + user.getEmail(), e);
+        }
     }
 
     public String getBaseUrl() {

@@ -19,6 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.AccountDisabledException;
+import com.wisemapping.exceptions.AccountSuspendedException;
 import com.wisemapping.exceptions.UserCouldNotBeAuthException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Account;
@@ -89,11 +90,14 @@ public class JwtAuthController {
     private void authenticate(@NotNull String username, @NotNull String password) throws WiseMappingException {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (AccountDisabledException e) {
+        } catch (AccountSuspendedException e) {
             // Account is suspended
             throw UserCouldNotBeAuthException.accountSuspended(e);
+        } catch (AccountDisabledException e) {
+            // Account is disabled/not activated (email not confirmed for DATABASE users)
+            throw UserCouldNotBeAuthException.accountDisabled(e);
         } catch (DisabledException e) {
-            // Account is disabled/not activated
+            // Spring Security's generic disabled exception
             throw UserCouldNotBeAuthException.accountDisabled(e);
         } catch (BadCredentialsException e) {
             // Wrong username or password

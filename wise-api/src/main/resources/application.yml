@@ -226,6 +226,8 @@ app:
   # Account registration options dialog
   registration:
     enabled: true
+    # Require email confirmation for DATABASE users (OAuth users are auto-activated)
+    email-confirmation-enabled: true
     captcha:
       enabled: false
       siteKey: some-key

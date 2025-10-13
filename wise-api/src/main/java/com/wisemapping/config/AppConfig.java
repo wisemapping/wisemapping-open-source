@@ -85,6 +85,7 @@ public class AppConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/restful/maps/*/metadata").permitAll()
                         .requestMatchers("/api/restful/maps/*/document/xml-pub").permitAll()
                         .requestMatchers("/api/restful/users/resetPassword").permitAll()
+                        .requestMatchers("/api/restful/users/activation").permitAll()
                         .requestMatchers("/api/restful/oauth2/googlecallback").permitAll()
                         .requestMatchers("/api/restful/oauth2/confirmaccountsync").permitAll()
                         .requestMatchers("/api/restful/admin/**").hasAnyRole("ADMIN")

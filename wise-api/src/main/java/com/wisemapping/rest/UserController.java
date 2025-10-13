@@ -69,6 +69,9 @@ public class UserController {
     @Value("${app.registration.enabled:true}")
     private Boolean registrationEnabled;
 
+    @Value("${app.registration.email-confirmation-enabled:true}")
+    private Boolean emailConfirmationEnabled;
+
     @Value("${app.registration.captcha.enabled:true}")
     private Boolean registrationCaptchaEnabled;
 
@@ -106,7 +109,9 @@ public class UserController {
         user.setPassword(registration.getPassword());
 
         user.setAuthenticationType(AuthenticationType.DATABASE);
-        userService.createUser(user, false, true);
+        // For DATABASE users, email confirmation can be configured via app.registration.email-confirmation-enabled
+        // For OAuth users, this is handled separately and they don't need email confirmation
+        userService.createUser(user, emailConfirmationEnabled, !emailConfirmationEnabled);
         
         // Track user registration
         String emailProvider = metricsService.extractEmailProvider(user.getEmail());
@@ -124,6 +129,17 @@ public class UserController {
             return userService.resetPassword(email);
         } catch (InvalidUserEmailException e) {
             throw new EmailNotExistsException(e);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/activation", produces = {"application/json"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void activateAccount(@RequestParam long code) throws WiseMappingException {
+        logger.debug("Activating account with code: " + code);
+        try {
+            userService.activateAccount(code);
+        } catch (InvalidActivationCodeException e) {
+            throw new WiseMappingException("Invalid activation code or account already activated", e);
         }
     }
 
