@@ -1,7 +1,8 @@
--- Migration script to change spam_type_code from VARCHAR(50) to CHAR(1)
--- This script converts existing string codes to single character codes
+-- Migration script for 6.5->6.6
+-- 1. Change spam_type_code from VARCHAR(50) to CHAR(1)
+-- 2. Fix allow_send_email column type from CHAR(1) to BOOLEAN
 
--- First, update existing data to use single character codes
+-- First, update existing spam data to use single character codes
 UPDATE MINDMAP_SPAM_INFO 
 SET spam_type_code = CASE 
     WHEN spam_type_code = 'CI' THEN 'C'
@@ -13,6 +14,11 @@ SET spam_type_code = CASE
 END
 WHERE spam_type_code IS NOT NULL;
 
--- Alter the column to CHAR(1)
+-- Alter the spam_type_code column to CHAR(1)
 ALTER TABLE MINDMAP_SPAM_INFO 
 ALTER COLUMN spam_type_code CHAR(1);
+
+-- Fix allow_send_email column type from CHAR(1) to BOOLEAN
+-- HSQLDB will automatically convert '1' to TRUE and '0' to FALSE
+ALTER TABLE ACCOUNT 
+ALTER COLUMN allow_send_email BOOLEAN NOT NULL;

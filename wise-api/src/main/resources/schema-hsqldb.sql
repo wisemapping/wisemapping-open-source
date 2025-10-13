@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS ACCOUNT (
   password            VARCHAR(255) NOT NULL,
   activation_code     BIGINT       NOT NULL,
   activation_date     DATE,
-  allow_send_email    CHAR(1)      NOT NULL,
+  allow_send_email    BOOLEAN      NOT NULL,
   locale              VARCHAR(5),
   google_sync		  BOOLEAN,
   sync_code           VARCHAR(255),

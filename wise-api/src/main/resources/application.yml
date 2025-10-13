@@ -164,7 +164,7 @@ app:
   batch:
     spam-user-suspension:
       enabled: true
-      startup-enabled: true  # Enable spam user suspension on application startup (async)
+      startup-enabled: false  # Enable spam user suspension on application startup (async)
       cron-expression: "0 0 */6 * * *"  # Every 6 hours
       spam-threshold: 2  # Number of spam mindmaps before suspension
       months-back: 45  # Only process accounts created since 2022 (approximately 45 months)
@@ -178,12 +178,12 @@ app:
       cron-expression: "0 0 0 * * *"  # Every 24 hours at midnight
       batch-size: 100  # Number of mindmaps to process in each batch
       min-nodes-exemption: 15  # Mindmaps with more than this many nodes are automatically considered not spam
-      startup-enabled: true  # Enable spam detection on application startup (async)
+      startup-enabled: false  # Enable spam detection on application startup (async)
       months-back: 45  # Only process mindmaps created since 2022 (approximately 45 months)
       version: 4  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
     history-cleanup:
       enabled: true
-      startup-enabled: true  # Disable startup execution by default (can be heavy)
+      startup-enabled: false  # Disable startup execution by default (can be heavy)
       cron-expression: "0 0 2 * * SAT,SUN"  # Every Saturday and Sunday at 2:00 AM
       # Two-phase history cleanup approach:
       # Phase 1: Complete history removal for moderately old mindmaps

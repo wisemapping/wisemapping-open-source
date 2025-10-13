@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS ACCOUNT (
   password         VARCHAR(255) CHARACTER SET UTF8MB4 NOT NULL,
   activation_code  BIGINT(20)         NOT NULL,
   activation_date  DATE,
-  allow_send_email CHAR(1) CHARACTER SET UTF8MB4 NOT NULL DEFAULT 0,
+  allow_send_email BOOL NOT NULL DEFAULT 0,
   locale           VARCHAR(5),
   google_sync	   BOOL,
   sync_code        VARCHAR(255),
