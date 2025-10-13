@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -160,6 +161,18 @@ public class GlobalExceptionHandler {
         String message = messageSource != null ? 
             messageSource.getMessage("ACCOUNT_SUSPENDED", null, "Your account has been suspended. Please contact support for assistance.", locale) :
             "Your account has been suspended. Please contact support for assistance.";
+        return new RestErrors(message, Severity.WARNING);
+    }
+
+    @ExceptionHandler(LockedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestErrors handleLockedException(@NotNull LockedException ex) {
+        logger.debug("Account locked/not activated: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("ACCOUNT_NOT_ACTIVATED_YET", null, "Your account has not been activated yet. Please check your email for the activation link.", locale) :
+            "Your account has not been activated yet. Please check your email for the activation link.";
         return new RestErrors(message, Severity.WARNING);
     }
 
