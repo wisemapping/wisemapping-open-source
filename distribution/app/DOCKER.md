@@ -83,6 +83,8 @@ docker run -d --name wisemapping -p 80:80 \
 
 ## Database Configuration
 
+> **⚠️ PRODUCTION WARNING**: HSQLDB is **NOT recommended for production environments**. It's designed for testing, development, and small-scale deployments only. For production use, please configure an external database like **PostgreSQL** (recommended) or **MySQL/MariaDB**.
+
 ### HSQLDB (Default - In-Memory)
 ```bash
 # Quick test (data will be lost when container stops)
@@ -90,6 +92,9 @@ docker run -d --name wisemapping -p 80:80 wisemapping/wisemapping:latest
 ```
 
 ### HSQLDB (Persistent File-Based)
+
+> **⚠️ WARNING**: Only use this configuration for **testing** or **small personal deployments**. Not suitable for production.
+
 ```yaml
 # app.yml
 spring:
@@ -343,7 +348,9 @@ sudo chown -R 1001:1001 /path/to/wisemapping-data
 
 ## Production Recommendations
 
-1. **Use an external database** (PostgreSQL recommended)
+> **⚠️ CRITICAL**: Do **NOT** use HSQLDB for production deployments. HSQLDB is suitable only for development, testing, and small-scale personal use.
+
+1. **Use an external database** (PostgreSQL recommended, MySQL/MariaDB also supported)
 2. **Set up regular backups**
 3. **Configure resource limits**
 4. **Use HTTPS** with reverse proxy

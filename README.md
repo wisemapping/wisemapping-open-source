@@ -25,6 +25,8 @@ The following section describes the steps to check out, compile, and start WiseM
 
 The following command line will start WiseMapping locally using HSQLDB in memory for development purposes:
 
+> **⚠️ Note**: This uses HSQLDB which is suitable for **development and testing only**. For production deployments, configure PostgreSQL or MySQL. See [Database Configuration](config/database/).
+
 ```
 $ mvn -f wise-api/pom.xml package
 $ docker compose up --build
@@ -62,9 +64,9 @@ Application will start at http://localhost:3000/c/login. You can login using *te
 
 ## Databases
 
-* MySQL v8 or higher
-* PostgreSQL v15 or higher
-* Hsqldb v2.7 or higher
+* **PostgreSQL v15 or higher** (Recommended for production)
+* **MySQL v8 or higher** (Supported for production)
+* **Hsqldb v2.7 or higher** (Development and testing only - NOT for production)
 
 # Configuration
 

@@ -111,6 +111,8 @@ docker build --no-cache -f distribution/app/Dockerfile -t wisemapping:latest .
 
 #### Basic run with in-memory HSQLDB (NOT recommended for production):
 
+> **⚠️ PRODUCTION WARNING**: HSQLDB is **NOT recommended for production environments**. Use PostgreSQL or MySQL for production deployments.
+
 ```bash
 docker run -d \
   --name wisemapping \
@@ -124,7 +126,7 @@ Access the application at:
 
 **⚠️ Warning**: Data will be lost when the container is stopped/removed.
 
-#### Run with persistent HSQLDB (Recommended for testing/small deployments):
+#### Run with persistent HSQLDB (Only for testing/small personal deployments):
 
 First, create an `app.yml` configuration file:
 
@@ -509,12 +511,14 @@ docker build -f distribution/app/Dockerfile \
 
 ## Production Recommendations
 
-1. Use persistent volumes for data
-2. Configure external database (PostgreSQL recommended)
-3. Set up regular backups
-4. Configure appropriate resource limits
-5. Use HTTPS with proper SSL certificates
-6. Set up monitoring and log aggregation
+> **⚠️ CRITICAL**: Do **NOT** use HSQLDB for production. It is only suitable for development and testing.
+
+1. **Use persistent volumes for data**
+2. **Configure external database (PostgreSQL recommended, MySQL/MariaDB also supported)**
+3. **Set up regular backups**
+4. **Configure appropriate resource limits**
+5. **Use HTTPS with proper SSL certificates**
+6. **Set up monitoring and log aggregation**
 
 ## License
 
