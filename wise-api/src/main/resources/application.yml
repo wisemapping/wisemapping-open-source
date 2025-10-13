@@ -133,7 +133,7 @@ app:
   mail:
     sender-email: root@localhost
     support-email: root@localhost
-    enabled: true
+    enabled: false
   accounts:
     max-inactive: 20
   # Google OAuth Authentication
