@@ -45,15 +45,11 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.OperatingSystemMXBean;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("/api/restful/admin")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
 public class AdminController {
-    private static final Logger logger = LogManager.getLogger(AdminController.class);
-    
     @Qualifier("userService")
     @Autowired
     private UserService userService;
@@ -178,7 +174,7 @@ public class AdminController {
         String emailProvider = metricsService.extractEmailProvider(delegated.getEmail());
         metricsService.trackUserRegistration(delegated, emailProvider);
         
-        response.setHeader("Location", "/api/restful/admin/users/" + user.getId());
+        response.setHeader("Location", "/api/restful/admin/users/" + delegated.getId());
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}", consumes = {"application/json"}, produces = {"application/json"})

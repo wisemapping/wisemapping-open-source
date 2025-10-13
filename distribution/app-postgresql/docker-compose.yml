@@ -46,7 +46,7 @@ services:
     image: wisemapping/wisemapping:latest
     container_name: wisemapping-app
     ports:
-      - "${WISEMAPPING_PORT:-80}:80"  # Access at http://localhost:80 (or custom port)
+      - "${WISEMAPPING_PORT:-80}:80"
     volumes:
       - ./app.yml:/app/config/app.yml:ro
       - ${WISEMAPPING_DATA_DIR:?WISEMAPPING_DATA_DIR is required - please set the storage path}/logs:/var/log/supervisor:rw

@@ -124,6 +124,7 @@ public class RestErrors {
     }
 
     @Nullable
+    @JsonIgnore
     public String getDebugInfo() {
         return _debugInfo;
     }

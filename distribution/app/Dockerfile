@@ -29,7 +29,7 @@ FROM node:18.12.1-alpine AS frontend-builder
 
 WORKDIR /build
 
-ARG FRONTEND_BRANCH="main"
+ARG FRONTEND_BRANCH="develop"
 
 # Install git
 RUN apk add --no-cache git
@@ -47,7 +47,13 @@ RUN sed -i 's|"url": "http://localhost:3000/api/restful/app/config"|"url": "/api
 # Build the frontend (will use patched config.prod.json)
 WORKDIR /build/wisemapping-frontend
 RUN yarn install --network-timeout 100000
-RUN yarn build  
+RUN yarn build
+
+# Ensure proper base tag for nginx sub_filter replacement:
+# 1. Remove any base tag webpack created (with empty, relative, or absolute href)
+# 2. Add our placeholder <base> tag for nginx to replace with absolute URL at runtime
+RUN sed -i 's|<base[^>]*>||g' /build/wisemapping-frontend/packages/webapp/dist/index.html && \
+    sed -i 's|<head>|<head>\n  <base>|' /build/wisemapping-frontend/packages/webapp/dist/index.html  
 
 ################################################################################
 # Stage 3: Final Runtime Image (Backend + Frontend + Nginx)
