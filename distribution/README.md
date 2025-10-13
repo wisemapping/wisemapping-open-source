@@ -72,16 +72,49 @@ docker run -d \
 
 **Documentation**: See [README.md](app/README.md) for detailed instructions.
 
+### 3. Full Stack with PostgreSQL (`distribution/app-postgresql/`)
+
+**Use case**: Production-ready deployment with PostgreSQL database using Docker Compose.
+
+**How it works**:
+- Uses Docker Compose to orchestrate WiseMapping + PostgreSQL
+- PostgreSQL database with persistent storage
+- Automatic schema initialization
+- Health checks and proper service dependencies
+
+**Run**:
+```bash
+# From repository root
+cd distribution/app-postgresql
+docker-compose up -d
+```
+
+**Features**:
+- ✅ Production-grade PostgreSQL database
+- ✅ Persistent data storage
+- ✅ Automatic database initialization
+- ✅ Health checks and dependency management
+- ✅ Easy backup and restore
+- ✅ Configurable via YAML files
+
+**Access**:
+- Application: http://localhost
+- Default credentials: test@wisemapping.org / test
+
+**Documentation**: See [app-postgresql/README.md](app-postgresql/README.md) for detailed instructions.
+
 ## Quick Comparison
 
-| Feature | API Only | Full Stack |
-|---------|----------|------------|
-| Backend API | ✅ | ✅ |
-| Frontend UI | ❌ | ✅ |
-| Container Count | 1 | 1 |
-| Ports | 8080 | 80 (8080 internal) |
-| Best For | Microservices, separate frontend | All-in-one setup |
-| Production Ready | ✅ | ✅ |
+| Feature | API Only | Full Stack | Full Stack + PostgreSQL |
+|---------|----------|------------|------------------------|
+| Backend API | ✅ | ✅ | ✅ |
+| Frontend UI | ❌ | ✅ | ✅ |
+| Database | External | HSQLDB (in-memory) | PostgreSQL (persistent) |
+| Container Count | 1 | 1 | 2 |
+| Ports | 8080 | 80 (8080 internal) | 80 + 5432 |
+| Data Persistence | N/A | ⚠️ Not recommended | ✅ Production ready |
+| Best For | Microservices | Quick testing | Production deployment |
+| Production Ready | ✅ | ⚠️ Not for data | ✅ Recommended |
 
 **Note**: For frontend-only deployments, use the `@wisemapping/webapp` npm package with any static hosting service.
 
@@ -94,6 +127,20 @@ docker build -f distribution/app/Dockerfile -t wisemapping:latest .
 docker run -d -p 80:80 wisemapping:latest
 ```
 
+### Production (Recommended - PostgreSQL)
+Use **Full Stack with PostgreSQL** for production deployment:
+```bash
+cd distribution/app-postgresql
+docker-compose up -d
+```
+
+**Why this is recommended:**
+- ✅ Production-grade PostgreSQL database
+- ✅ Persistent data storage with Docker volumes
+- ✅ Easy backup and restore capabilities
+- ✅ Health checks and dependency management
+- ✅ Scalable and maintainable
+
 ### Production (Microservices)
 Deploy **API** separately and use frontend from npm package:
 ```bash
@@ -104,12 +151,12 @@ docker run -d -p 8080:8080 wisemapping-api:latest
 # Frontend - deploy @wisemapping/webapp to CDN, Vercel, Netlify, S3, etc.
 ```
 
-### Production (Single Container)
-Use **Full Stack** for simplified deployment:
+### Production (Single Container with External Database)
+Use **Full Stack** with external PostgreSQL/MySQL:
 ```bash
 docker build -f distribution/app/Dockerfile -t wisemapping:latest .
 docker run -d -p 80:80 \
-  -e SPRING_CONFIG_ADDITIONAL_FILE_CONTENT="..." \
+  -v $(pwd)/app.yml:/app/config/app.yml:ro \
   wisemapping:latest
 ```
 

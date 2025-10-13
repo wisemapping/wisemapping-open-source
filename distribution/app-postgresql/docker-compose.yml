@@ -1,0 +1,65 @@
+# =============================================================================
+# WiseMapping with PostgreSQL - Docker Compose Configuration
+# =============================================================================
+#
+# BEFORE STARTING:
+# 1. Set WISEMAPPING_DATA_DIR environment variable (REQUIRED)
+# 2. Set POSTGRES_PASSWORD environment variable (REQUIRED)
+# 3. Create the data directory: mkdir -p ${WISEMAPPING_DATA_DIR}/logs
+#
+# QUICK START:
+#   docker-compose up -d
+#
+# ACCESS:
+#   Application: http://localhost (or http://localhost:${WISEMAPPING_PORT})
+#   Default login: test@wisemapping.org / test
+#   Admin login:   admin@wisemapping.org / test
+#
+# LOGS:
+#   Location: ${WISEMAPPING_DATA_DIR}/logs/
+#   View: tail -f ${WISEMAPPING_DATA_DIR}/logs/spring-boot-stdout*.log
+#
+# =============================================================================
+
+services:
+  postgresql:
+    image: postgres:15-alpine
+    container_name: wisemapping-postgresql
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-wisemapping}
+      POSTGRES_USER: ${POSTGRES_USER:-wisemapping}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    volumes:
+      - ${WISEMAPPING_DATA_DIR:?WISEMAPPING_DATA_DIR is required - please set the storage path}:/var/lib/postgresql/data
+      - ../../config/database/postgresql/create-database.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wisemapping} -d ${POSTGRES_DB:-wisemapping}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wisemapping-network
+
+  wisemapping:
+    image: wisemapping/wisemapping:latest
+    container_name: wisemapping-app
+    ports:
+      - "${WISEMAPPING_PORT:-80}:80"  # Access at http://localhost:80 (or custom port)
+    volumes:
+      - ./app.yml:/app/config/app.yml:ro
+      - ${WISEMAPPING_DATA_DIR:?WISEMAPPING_DATA_DIR is required - please set the storage path}/logs:/var/log/supervisor:rw
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS:--Xmx2048m -Xms1024m}
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    networks:
+      - wisemapping-network
+    restart: unless-stopped
+
+networks:
+  wisemapping-network:
+    driver: bridge
+

@@ -1,0 +1,11 @@
+# Data directory (if stored locally in ./data)
+data/
+
+# Backup files
+*.sql
+*.dump
+backup-*/
+
+# Logs
+*.log
+

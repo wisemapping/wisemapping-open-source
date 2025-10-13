@@ -18,6 +18,7 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.exceptions.UserCouldNotBeAuthException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Account;
@@ -88,8 +89,15 @@ public class JwtAuthController {
     private void authenticate(@NotNull String username, @NotNull String password) throws WiseMappingException {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException | BadCredentialsException e) {
-            throw new UserCouldNotBeAuthException("Authentication failed:" + e.getLocalizedMessage(), e);
+        } catch (AccountDisabledException e) {
+            // Account is suspended
+            throw UserCouldNotBeAuthException.accountSuspended(e);
+        } catch (DisabledException e) {
+            // Account is disabled/not activated
+            throw UserCouldNotBeAuthException.accountDisabled(e);
+        } catch (BadCredentialsException e) {
+            // Wrong username or password
+            throw UserCouldNotBeAuthException.invalidCredentials(e);
         }
     }
 }

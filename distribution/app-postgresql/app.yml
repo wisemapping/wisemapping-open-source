@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgresql:5432/wisemapping
+    username: wisemapping
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      platform: postgresql
+

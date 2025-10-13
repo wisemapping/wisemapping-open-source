@@ -22,20 +22,52 @@ import org.jetbrains.annotations.NotNull;
 
 public class UserCouldNotBeAuthException extends ClientException {
     
-    private static final String MSG_KEY = "USER_COULD_NOT_BE_AUTH";
+    private static final String MSG_INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
+    private static final String MSG_ACCOUNT_SUSPENDED = "ACCOUNT_SUSPENDED";
+    private static final String MSG_ACCOUNT_DISABLED = "ACCOUNT_DISABLED";
     
-    public UserCouldNotBeAuthException(String str) {
-        super(str, Severity.WARNING);
+    private final String msgKey;
+    
+    private UserCouldNotBeAuthException(@NotNull String msgKey, @NotNull String debugMessage) {
+        super(debugMessage, Severity.WARNING);
+        this.msgKey = msgKey;
     }
     
-    public UserCouldNotBeAuthException(String str, Throwable e) {
-        super(str, Severity.WARNING);
-        initCause(e);
+    private UserCouldNotBeAuthException(@NotNull String msgKey, @NotNull String debugMessage, Throwable cause) {
+        super(debugMessage, Severity.WARNING);
+        this.msgKey = msgKey;
+        initCause(cause);
+    }
+    
+    // Factory methods for specific authentication failures
+    
+    public static UserCouldNotBeAuthException invalidCredentials() {
+        return new UserCouldNotBeAuthException(MSG_INVALID_CREDENTIALS, "Invalid credentials");
+    }
+    
+    public static UserCouldNotBeAuthException invalidCredentials(Throwable cause) {
+        return new UserCouldNotBeAuthException(MSG_INVALID_CREDENTIALS, "Invalid credentials: " + cause.getMessage(), cause);
+    }
+    
+    public static UserCouldNotBeAuthException accountSuspended() {
+        return new UserCouldNotBeAuthException(MSG_ACCOUNT_SUSPENDED, "Account suspended");
+    }
+    
+    public static UserCouldNotBeAuthException accountSuspended(Throwable cause) {
+        return new UserCouldNotBeAuthException(MSG_ACCOUNT_SUSPENDED, "Account suspended: " + cause.getMessage(), cause);
+    }
+    
+    public static UserCouldNotBeAuthException accountDisabled() {
+        return new UserCouldNotBeAuthException(MSG_ACCOUNT_DISABLED, "Account disabled/not activated");
+    }
+    
+    public static UserCouldNotBeAuthException accountDisabled(Throwable cause) {
+        return new UserCouldNotBeAuthException(MSG_ACCOUNT_DISABLED, "Account disabled: " + cause.getMessage(), cause);
     }
     
     @NotNull
     @Override
     protected String getMsgBundleKey() {
-        return MSG_KEY;
+        return msgKey;
     }
 }
