@@ -133,7 +133,7 @@ app:
   mail:
     sender-email: root@localhost
     support-email: root@localhost
-    enabled: false
+    enabled: true
     # Fallback configuration for connection issues
     fallback:
       enabled: true

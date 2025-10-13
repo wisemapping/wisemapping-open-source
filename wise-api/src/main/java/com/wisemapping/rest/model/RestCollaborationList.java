@@ -21,6 +21,8 @@ package com.wisemapping.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.jetbrains.annotations.NotNull;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +65,43 @@ public class RestCollaborationList {
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        // Sanitize message to plain text only - remove all HTML tags and links completely
+        if (message != null && !message.trim().isEmpty()) {
+            this.message = sanitizeToPlainText(message);
+        } else {
+            this.message = message;
+        }
+    }
+
+    /**
+     * Sanitizes message to plain text by removing all HTML tags and links.
+     * Links (both HTML anchor tags and plain URLs) are completely removed.
+     * 
+     * @param content The content to sanitize
+     * @return Plain text with all HTML and links removed
+     */
+    private String sanitizeToPlainText(String content) {
+        if (content == null || content.trim().isEmpty()) {
+            return content;
+        }
+
+        // First, remove all <a> tags and their content completely
+        String sanitized = content.replaceAll("<a[^>]*>.*?</a>", "");
+        
+        // Remove any remaining HTML tags but keep the text
+        sanitized = Jsoup.clean(sanitized, Safelist.none());
+        
+        // Get plain text (this also decodes HTML entities)
+        sanitized = Jsoup.parse(sanitized).text();
+        
+        // Remove URLs (http://, https://, ftp://, www., etc.)
+        sanitized = sanitized.replaceAll("https?://\\S+", "");
+        sanitized = sanitized.replaceAll("ftp://\\S+", "");
+        sanitized = sanitized.replaceAll("www\\.\\S+", "");
+        
+        // Clean up multiple spaces and trim
+        sanitized = sanitized.replaceAll("\\s+", " ").trim();
+        
+        return sanitized;
     }
 }
