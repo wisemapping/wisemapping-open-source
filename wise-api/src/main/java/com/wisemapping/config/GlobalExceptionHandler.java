@@ -17,6 +17,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -136,6 +137,42 @@ public class GlobalExceptionHandler {
         logger.debug("Authentication failed: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
         return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
+    }
+
+    @ExceptionHandler(AccountDisabledException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestErrors handleAccountDisabledException(@NotNull AccountDisabledException ex) {
+        logger.debug("Account disabled/not activated: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("ACCOUNT_DISABLED", null, "Your account has not been activated yet. Please check your email for activation instructions.", locale) :
+            "Your account has not been activated yet. Please check your email for activation instructions.";
+        return new RestErrors(message, Severity.WARNING);
+    }
+
+    @ExceptionHandler(AccountSuspendedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestErrors handleAccountSuspendedException(@NotNull AccountSuspendedException ex) {
+        logger.debug("Account suspended: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("ACCOUNT_SUSPENDED", null, "Your account has been suspended. Please contact support for assistance.", locale) :
+            "Your account has been suspended. Please contact support for assistance.";
+        return new RestErrors(message, Severity.WARNING);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestErrors handleBadCredentialsException(@NotNull BadCredentialsException ex) {
+        logger.debug("Bad credentials: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("INVALID_CREDENTIALS", null, "Invalid email or password. Please try again.", locale) :
+            "Invalid email or password. Please try again.";
+        return new RestErrors(message, Severity.WARNING);
     }
 
     @ExceptionHandler(ClientException.class)
