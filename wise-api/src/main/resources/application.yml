@@ -135,7 +135,7 @@ app:
     support-email: root@localhost
     enabled: false
   accounts:
-    max-inactive: 20
+    max-inactive: 10  # Maximum total inactive collaborators across all mindmaps
   # Google OAuth Authentication
   security:
     oauth2:
