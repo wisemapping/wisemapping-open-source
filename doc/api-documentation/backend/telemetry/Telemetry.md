@@ -38,6 +38,23 @@ wisemapping.api.user.logins{auth_type="jwt", user_type="D"}     # User logins by
 wisemapping.api.user.logouts{logout_type="manual", user_type="D"} # User logouts by logout and user type
 ```
 
+### User Registration and Activation Metrics
+
+The application tracks user registration and account activation events across all authentication types:
+
+- **User Registrations**: Tracked when a new user account is created via any method:
+  - Database registration (email/password) - `auth_type="D"`
+  - Google OAuth registration - `auth_type="G"`
+  - Facebook OAuth registration - `auth_type="F"`
+- **User Activations**: Tracked when database users activate their account via email confirmation (OAuth users are auto-activated)
+
+```
+wisemapping.api.user.registrations{email_provider="gmail", auth_type="D"}  # Database user registrations by email provider
+wisemapping.api.user.registrations{email_provider="gmail", auth_type="G"}  # Google OAuth registrations by email provider
+wisemapping.api.user.registrations{email_provider="gmail", auth_type="F"}  # Facebook OAuth registrations by email provider
+wisemapping.api.user.activations{email_provider="gmail", auth_type="D"}    # Account activations (database users only)
+```
+
 ### Spam Detection Metrics
 
 The application tracks spam analysis and detection events:
@@ -166,6 +183,16 @@ curl http://localhost:8080/actuator/metrics/wisemapping.api.user.logins
 curl http://localhost:8080/actuator/metrics/wisemapping.api.user.logouts
 ```
 
+#### View User Registration Metrics
+```bash
+curl http://localhost:8080/actuator/metrics/wisemapping.api.user.registrations
+```
+
+#### View User Activation Metrics
+```bash
+curl http://localhost:8080/actuator/metrics/wisemapping.api.user.activations
+```
+
 #### View Spam Analysis Metrics
 ```bash
 curl http://localhost:8080/actuator/metrics/wisemapping.api.spam.analyzed
@@ -223,6 +250,41 @@ Get total user logouts:
 sum(wisemapping_api_user_logouts_total)
 ```
 
+Get total user registrations:
+```
+sum(wisemapping_api_user_registrations_total)
+```
+
+Get user registrations by email provider:
+```
+sum by (email_provider) (wisemapping_api_user_registrations_total)
+```
+
+Get user registrations by authentication type:
+```
+sum by (auth_type) (wisemapping_api_user_registrations_total)
+```
+
+Get Google OAuth registrations only:
+```
+sum(wisemapping_api_user_registrations_total{auth_type="G"})
+```
+
+Get database registrations only:
+```
+sum(wisemapping_api_user_registrations_total{auth_type="D"})
+```
+
+Get total user activations:
+```
+sum(wisemapping_api_user_activations_total)
+```
+
+Get activation rate (activations vs database registrations only):
+```
+sum(wisemapping_api_user_activations_total) / sum(wisemapping_api_user_registrations_total{auth_type="D"})
+```
+
 Get total spam analyses:
 ```
 sum(wisemapping_api_spam_analyzed_total)
@@ -263,9 +325,14 @@ The metrics tracking is implemented in the following locations:
 2. **MindmapController.createDuplicate()**: Tracks mindmap duplication
 3. **JwtTokenUtil.doLogin()**: Tracks user logins
 4. **JwtAuthController.logout()**: Tracks user logouts
-5. **SpamDetectionService.detectSpam()**: Tracks spam analysis for all analyzed mindmaps
-6. **MindmapController.updatePublishStateInternal()**: Tracks mindmaps made public and spam prevention
-7. **MindmapController.updatePublishStateInternal()**: Tracks publish attempts and spam detection
+5. **UserController.registerUser()**: Tracks database user registrations (auth_type="D")
+6. **AdminController.createUser()**: Tracks admin-created user registrations (auth_type="D")
+7. **UserServiceImpl.createAndAuthUserFromGoogle()**: Tracks Google OAuth registrations (auth_type="G")
+8. **UserServiceImpl.createAndAuthUserFromFacebook()**: Tracks Facebook OAuth registrations (auth_type="F")
+9. **UserServiceImpl.activateAccount()**: Tracks account activations (database users only)
+10. **SpamDetectionService.detectSpam()**: Tracks spam analysis for all analyzed mindmaps
+11. **MindmapController.updatePublishStateInternal()**: Tracks mindmaps made public and spam prevention
+12. **MindmapController.updatePublishStateInternal()**: Tracks publish attempts and spam detection
 
 Note: Tutorial mindmaps are no longer tracked in telemetry metrics as they are automatically generated system content, not user-created content.
 
@@ -305,6 +372,22 @@ Counter.builder("wisemapping.api.user.logouts")
     .register(meterRegistry)
     .increment();
 
+// User registration metrics
+Counter.builder("wisemapping.api.user.registrations")
+    .description("Total number of user registrations")
+    .tag("email_provider", "gmail")  // or "yahoo", "microsoft", "other"
+    .tag("auth_type", "D")           // "D" for database, "G" for Google OAuth, "F" for Facebook OAuth
+    .register(meterRegistry)
+    .increment();
+
+// User activation metrics (database users only)
+Counter.builder("wisemapping.api.user.activations")
+    .description("Total number of user account activations")
+    .tag("email_provider", "gmail")  // or "yahoo", "microsoft", "other"
+    .tag("auth_type", "D")           // Database user type only (OAuth users are auto-activated)
+    .register(meterRegistry)
+    .increment();
+
 // Spam analysis metrics
 Counter.builder("wisemapping.api.spam.analyzed")
     .description("Total number of spam analyses performed")
@@ -336,8 +419,12 @@ You can create Grafana dashboards to visualize application usage trends:
 
 - Daily mindmap creation counts
 - Mindmap creation by type
-- User registration trends (via tutorial mindmap creation)
+- User registration trends by authentication type (database, Google OAuth, Facebook OAuth)
+- User registration trends by email provider
+- Activation rates for database users
 - User login activity and patterns
+- User onboarding funnel (registrations → activations → logins)
+- Comparison of OAuth vs database registrations
 - Mindmap publishing activity
 - Spam detection rates during publishing
 
@@ -384,6 +471,15 @@ groups:
         annotations:
           summary: "High logout rate detected"
           description: "Logout rate is {{ $value }} per second"
+      
+      - alert: LowActivationRate
+        expr: sum(increase(wisemapping_api_user_activations_total[24h])) / sum(increase(wisemapping_api_user_registrations_total{auth_type="D"}[24h])) < 0.5
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low account activation rate detected"
+          description: "Activation rate is {{ $value | humanizePercentage }} (database registrations only)"
 ```
 
 ## Testing
