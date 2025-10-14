@@ -136,11 +136,9 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void activateAccount(@RequestParam long code) throws WiseMappingException {
         logger.debug("Activating account with code: " + code);
-        try {
-            userService.activateAccount(code);
-        } catch (InvalidActivationCodeException e) {
-            throw new WiseMappingException("Invalid activation code or account already activated", e);
-        }
+        // Both exceptions extend ClientException, which will be automatically handled
+        // by GlobalExceptionHandler with proper i18n message lookup
+        userService.activateAccount(code);
     }
 
     private void verify(@NotNull final RestUserRegistration registration, @NotNull String remoteAddress)

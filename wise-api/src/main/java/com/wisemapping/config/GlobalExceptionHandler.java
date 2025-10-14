@@ -202,9 +202,14 @@ public class GlobalExceptionHandler {
     public RestErrors handleUserRegistrationException(@NotNull UserRegistrationException ex) {
         logger.error("User registration failed: {}", ex.getMessage(), ex);
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ? 
-            messageSource.getMessage("USER_REGISTRATION_ERROR", null, "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.", locale) :
-            "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.";
+        
+        // Use a more specific error message if available, otherwise use generic one
+        String message = ex.getMessage();
+        if (message == null || message.isEmpty() || message.equals("User registration failed")) {
+            message = messageSource != null ? 
+                messageSource.getMessage("USER_REGISTRATION_ERROR", null, "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.", locale) :
+                "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.";
+        }
         return new RestErrors(message, Severity.SEVERE, ex.getCause() != null ? ex.getCause().getMessage() : null);
     }
 

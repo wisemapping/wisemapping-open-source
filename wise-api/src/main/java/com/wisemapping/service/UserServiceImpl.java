@@ -19,6 +19,8 @@
 package com.wisemapping.service;
 
 import com.wisemapping.dao.UserManager;
+import com.wisemapping.exceptions.AccountAlreadyActivatedException;
+import com.wisemapping.exceptions.InvalidActivationCodeException;
 import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.OAuthAuthenticationException;
 import com.wisemapping.exceptions.WiseMappingException;
@@ -72,10 +74,12 @@ public class UserServiceImpl
 
     @Override
     public void activateAccount(long code)
-            throws InvalidActivationCodeException {
+            throws InvalidActivationCodeException, AccountAlreadyActivatedException {
         final Account user = userManager.getUserByActivationCode(code);
-        if (user == null || user.isActive()) {
-            throw new InvalidActivationCodeException("Invalid Activation Code");
+        if (user == null) {
+            throw new InvalidActivationCodeException();
+        } else if (user.isActive()) {
+            throw new AccountAlreadyActivatedException();
         } else {
             final Calendar now = Calendar.getInstance();
             user.setActivationDate(now);

@@ -18,6 +18,8 @@
 
 package com.wisemapping.service;
 
+import com.wisemapping.exceptions.AccountAlreadyActivatedException;
+import com.wisemapping.exceptions.InvalidActivationCodeException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
@@ -26,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface UserService {
 
-    void activateAccount(long code) throws InvalidActivationCodeException;
+    void activateAccount(long code) throws InvalidActivationCodeException, AccountAlreadyActivatedException;
 
     Account createUser(@NotNull Account user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException;
 
