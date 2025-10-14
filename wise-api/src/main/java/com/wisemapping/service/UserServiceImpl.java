@@ -84,7 +84,7 @@ public class UserServiceImpl
             final Calendar now = Calendar.getInstance();
             user.setActivationDate(now);
             userManager.updateUser(user);
-            notificationService.activateAccount(user);
+            // No email sent - user already knows activation was successful from the UI
         }
     }
 
