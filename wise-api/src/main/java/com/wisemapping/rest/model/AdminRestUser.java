@@ -44,7 +44,7 @@ public class AdminRestUser {
     private String firstname;
     private String lastname;
     private String fullName;
-    private boolean active;
+    private boolean isActive;
     private boolean suspended;
     private String suspensionReason;
     private String suspendedDate;
@@ -67,7 +67,7 @@ public class AdminRestUser {
         this.firstname = account.getFirstname();
         this.lastname = account.getLastname();
         this.fullName = account.getFullName();
-        this.active = account.isActive();
+        this.isActive = account.isActive();
         this.suspended = account.isSuspended();
         this.allowSendEmail = account.isAllowSendEmail();
         this.isAdmin = isAdmin;
@@ -120,7 +120,7 @@ public class AdminRestUser {
     }
 
     public boolean isActive() {
-        return active;
+        return isActive;
     }
 
     public boolean isSuspended() {
@@ -172,8 +172,8 @@ public class AdminRestUser {
         this.fullName = fullName;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public void setSuspended(boolean suspended) {
