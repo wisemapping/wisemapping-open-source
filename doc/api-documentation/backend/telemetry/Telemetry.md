@@ -34,7 +34,7 @@ The application tracks user authentication events:
 - **User Logouts**: Tracked whenever a user explicitly logs out
 
 ```
-wisemapping.api.user.logins{auth_type="jwt", user_type="D"}     # User logins by auth and user type
+wisemapping.api.user.auth{auth_type="jwt", user_type="D"}     # User logins by auth and user type
 wisemapping.api.user.logouts{logout_type="manual", user_type="D"} # User logouts by logout and user type
 ```
 
@@ -175,7 +175,7 @@ curl http://localhost:8080/actuator/metrics/wisemapping.api.mindmaps.made_public
 
 #### View User Login Metrics
 ```bash
-curl http://localhost:8080/actuator/metrics/wisemapping.api.user.logins
+curl http://localhost:8080/actuator/metrics/wisemapping.api.user.auth
 ```
 
 #### View User Logout Metrics
@@ -242,7 +242,7 @@ sum(wisemapping_api_mindmaps_made_public_total)
 
 Get total user logins:
 ```
-sum(wisemapping_api_user_logins_total)
+sum(wisemapping_api_user_auth_total)
 ```
 
 Get total user logouts:
@@ -357,7 +357,7 @@ Counter.builder("wisemapping.api.mindmaps.made_public")
     .increment();
 
 // User login metrics
-Counter.builder("wisemapping.api.user.logins")
+Counter.builder("wisemapping.api.user.auth")
     .description("Total number of user logins")
     .tag("auth_type", "jwt")
     .tag("user_type", "D")  // Database user type
@@ -455,7 +455,7 @@ groups:
           description: "Spam detection rate is {{ $value }} per second"
       
       - alert: UnusualLoginActivity
-        expr: rate(wisemapping_api_user_logins_total[5m]) > 50
+        expr: rate(wisemapping_api_user_auth_total[5m]) > 50
         for: 5m
         labels:
           severity: warning
