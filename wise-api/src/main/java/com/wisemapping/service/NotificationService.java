@@ -150,15 +150,6 @@ final public class NotificationService {
     }
 
 
-    public void activateAccount(@NotNull Account user) {
-        try {
-            final Map<String, Object> model = new HashMap<>();
-            model.put("user", user);
-            mailerService.sendEmail(mailerService.getServerSenderEmail(), user.getEmail(), "[WiseMapping] Active account", model, "activationAccountMail.vm");
-        } catch (Exception e) {
-            logger.error("Error sending account activation confirmation email to: " + user.getEmail(), e);
-        }
-    }
 
     public void sendRegistrationEmail(@NotNull Account user) throws UserRegistrationException {
         final Locale locale = LocaleContextHolder.getLocale();
