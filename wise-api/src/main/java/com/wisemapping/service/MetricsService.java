@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
  * This service provides methods to track key business metrics including:
  * - User logins
  * - User registrations (by email provider)
+ * - User account activations
  * - Mindmap creation
  * - Spam detection
  * 
@@ -52,6 +53,7 @@ public class MetricsService {
     private static final String USER_LOGINS = "wisemapping.auth.session.created";
     private static final String USER_LOGOUTS = "wisemapping.auth.session.terminated";
     private static final String USER_REGISTRATIONS = "wisemapping.api.user.registrations";
+    private static final String USER_ACTIVATIONS = "wisemapping.api.user.activations";
     private static final String USER_SUSPENSIONS = "wisemapping.api.user.suspensions";
     private static final String MINDMAPS_CREATED = "wisemapping.api.mindmaps.created";
     private static final String MINDMAPS_MADE_PUBLIC = "wisemapping.api.mindmaps.made_public";
@@ -126,6 +128,29 @@ public class MetricsService {
             logger.debug("Tracked registration for user {} with email provider {}", user.getEmail(), emailProvider);
         } catch (Exception e) {
             logger.warn("Failed to track registration metric for user {}: {}", user.getEmail(), e.getMessage());
+        }
+    }
+
+    /**
+     * Track a user account activation event
+     * @param user The user whose account was activated
+     */
+    public void trackUserActivation(@NotNull Account user) {
+        try {
+            String authType = user.getAuthenticationType() != null ? 
+                String.valueOf(user.getAuthenticationType().getCode()) : "unknown";
+            String emailProvider = extractEmailProvider(user.getEmail());
+            
+            Counter.builder(USER_ACTIVATIONS)
+                    .description("Total number of user account activations")
+                    .tag("email_provider", emailProvider)
+                    .tag("auth_type", authType)
+                    .register(meterRegistry)
+                    .increment();
+            
+            logger.debug("Tracked activation for user {} with email provider {}", user.getEmail(), emailProvider);
+        } catch (Exception e) {
+            logger.warn("Failed to track activation metric for user {}: {}", user.getEmail(), e.getMessage());
         }
     }
 

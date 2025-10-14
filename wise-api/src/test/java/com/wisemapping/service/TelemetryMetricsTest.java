@@ -176,6 +176,35 @@ class TelemetryMetricsTest {
     }
 
     @Test
+    void testUserActivationMetrics() {
+        // Test Gmail activation
+        Account gmailUser = createTestUser("test@gmail.com", AuthenticationType.DATABASE);
+        metricsService.trackUserActivation(gmailUser);
+        
+        // Test other email activation
+        Account otherUser = createTestUser("test@company.com", AuthenticationType.DATABASE);
+        metricsService.trackUserActivation(otherUser);
+        
+        // Test multiple activations for the same email provider
+        Account anotherGmailUser = createTestUser("another@gmail.com", AuthenticationType.DATABASE);
+        metricsService.trackUserActivation(anotherGmailUser);
+        
+        // Verify metrics were recorded
+        Double gmailActivations = meterRegistry.find("wisemapping.api.user.activations")
+                .tag("email_provider", "gmail")
+                .tag("auth_type", "D")
+                .counter().count();
+        
+        Double otherActivations = meterRegistry.find("wisemapping.api.user.activations")
+                .tag("email_provider", "other")
+                .tag("auth_type", "D")
+                .counter().count();
+        
+        assertEquals(2.0, gmailActivations);
+        assertEquals(1.0, otherActivations);
+    }
+
+    @Test
     void testUserLoginMetrics() {
         Account user = createTestUser("test@example.com", AuthenticationType.DATABASE);
         

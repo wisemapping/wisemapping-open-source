@@ -83,8 +83,10 @@ public class UserServiceImpl
         } else {
             final Calendar now = Calendar.getInstance();
             user.setActivationDate(now);
-            userManager.updateUser(user);
-            // No email sent - user already knows activation was successful from the UI
+            userManager.updateUser(user);            
+            // Track account activation
+            metricsService.trackUserActivation(user);
+            
         }
     }
 
