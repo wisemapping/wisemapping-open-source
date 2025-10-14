@@ -21,6 +21,7 @@ package com.wisemapping.rest.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wisemapping.model.Account;
 
 import java.time.LocalDateTime;
@@ -119,10 +120,12 @@ public class AdminRestUser {
         return fullName;
     }
 
+    @JsonProperty("isActive")
     public boolean isActive() {
         return isActive;
     }
 
+    @JsonProperty("isSuspended")
     public boolean isSuspended() {
         return suspended;
     }
@@ -147,6 +150,7 @@ public class AdminRestUser {
         return allowSendEmail;
     }
 
+    @JsonProperty("isAdmin")
     public boolean isAdmin() {
         return isAdmin;
     }
