@@ -28,6 +28,8 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,6 +44,7 @@ import java.util.Optional;
 public class MindmapManagerImpl
         implements MindmapManager {
 
+    private static final Logger logger = LoggerFactory.getLogger(MindmapManagerImpl.class);
 
     @Autowired
     private EntityManager entityManager;
@@ -196,7 +199,14 @@ public class MindmapManagerImpl
         // The collaboration entity may have been modified in the current transaction
         Collaboration managedCollaboration = entityManager.find(Collaboration.class, collaboration.getId());
         if (managedCollaboration != null) {
-            entityManager.remove(managedCollaboration);
+            try {
+                entityManager.remove(managedCollaboration);
+                entityManager.flush(); // Force immediate deletion to catch concurrent modification
+            } catch (org.hibernate.StaleObjectStateException | jakarta.persistence.OptimisticLockException e) {
+                // The collaboration was already deleted by another transaction
+                // This is acceptable - the desired state (collaboration removed) is achieved
+                logger.warn("Collaboration {} was already deleted by another transaction", collaboration.getId());
+            }
         }
     }
 

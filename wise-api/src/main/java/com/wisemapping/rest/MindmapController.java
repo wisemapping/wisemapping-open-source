@@ -872,7 +872,7 @@ public class MindmapController {
         }).count();
 
         if (inactiveAccounts > maxAccountsInactive) {
-            throw new TooManyInactiveAccountsExceptions(inactiveAccounts);
+            throw new TooManyInactiveAccountsExceptions(inactiveAccounts, user.getId(), user.getEmail());
         }
     }
 }

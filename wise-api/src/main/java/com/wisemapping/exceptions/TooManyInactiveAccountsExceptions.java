@@ -24,9 +24,27 @@ import jakarta.validation.constraints.NotNull;
 public class TooManyInactiveAccountsExceptions
         extends ClientException {
     private static final String TOO_MANY_INACTIVE_ACCOUNTS = "TOO_MANY_INACTIVE_ACCOUNTS";
+    private final long accounts;
+    private final int userId;
+    private final String userEmail;
 
-    public TooManyInactiveAccountsExceptions(@NotNull long accounts) {
-        super("Too many inactive accounts:" + accounts, Severity.WARNING);
+    public TooManyInactiveAccountsExceptions(@NotNull long accounts, @NotNull int userId, @NotNull String userEmail) {
+        super("Too many inactive accounts:" + accounts + " for user ID:" + userId + " (" + userEmail + ")", Severity.WARNING);
+        this.accounts = accounts;
+        this.userId = userId;
+        this.userEmail = userEmail;
+    }
+
+    public long getAccounts() {
+        return accounts;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
     }
 
     @NotNull

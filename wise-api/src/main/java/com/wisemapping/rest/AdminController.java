@@ -41,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.management.MemoryMXBean;
@@ -326,6 +327,21 @@ public class AdminController {
             mindmapService.removeMindmap(mindmap, user);
         }
         userService.removeUser(user);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/users/{id}/maps", produces = {"application/json"})
+    @ResponseBody
+    public List<com.wisemapping.rest.model.AdminRestMap> getUserMaps(@PathVariable int id) {
+        final Account user = userService.getUserBy(id);
+        if (user == null) {
+            throw new IllegalArgumentException("User '" + id + "' could not be found");
+        }
+
+        final List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
+        return mindmaps.stream()
+                .filter(m -> m.getCreator().identityEquality(user))
+                .map(com.wisemapping.rest.model.AdminRestMap::new)
+                .collect(Collectors.toList());
     }
 
     // Maps management endpoints
