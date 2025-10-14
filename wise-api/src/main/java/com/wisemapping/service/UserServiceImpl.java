@@ -227,6 +227,10 @@ public class UserServiceImpl
                 result = this.createUser(newUser, false, true);
             }
             logger.debug("Google account successfully created");
+            
+            // Track Google OAuth registration
+            String emailProvider = metricsService.extractEmailProvider(result.getEmail());
+            metricsService.trackUserRegistration(result, emailProvider);
         }
 
         // Is the user a non-oauth user ?
@@ -271,6 +275,10 @@ public class UserServiceImpl
                 result = this.createUser(newUser, false, true);
             }
             logger.debug("Facebook account successfully created");
+            
+            // Track Facebook OAuth registration
+            String emailProvider = metricsService.extractEmailProvider(result.getEmail());
+            metricsService.trackUserRegistration(result, emailProvider);
         }
 
         // Is the user a non-oauth user ?
