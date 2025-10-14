@@ -170,8 +170,24 @@ final public class NotificationService {
             final String activationUrl = getBaseUrl() + "/c/activation?code=" + user.getActivationCode();
             model.put("emailcheck", activationUrl);
             model.put("email", user.getEmail());
+            model.put("baseUrl", getBaseUrl());
             
-            // To resolve resources on templates ...
+            // Pre-render translated messages with parameters
+            final String emailTitle = messageSource.getMessage("CONFIRMATION.EMAIL_TITLE", null, locale);
+            final String emailIntro = messageSource.getMessage("CONFIRMATION.EMAIL_INTRO", null, locale);
+            final String emailError = messageSource.getMessage("CONFIRMATION.EMAIL_ERROR", null, locale);
+            final String emailLinkHelp = messageSource.getMessage("CONFIRMATION.EMAIL_LINK_HELP", null, locale);
+            final String emailSupport = messageSource.getMessage("CONFIRMATION.EMAIL_SUPPORT", new Object[]{mailerService.getSupportEmail()}, locale);
+            final String emailTeam = messageSource.getMessage("SHARE_MAP.EMAIL_TEAM", null, locale);
+            
+            model.put("emailTitle", emailTitle);
+            model.put("emailIntro", emailIntro);
+            model.put("emailError", emailError);
+            model.put("emailLinkHelp", emailLinkHelp);
+            model.put("emailSupport", emailSupport);
+            model.put("emailTeam", emailTeam);
+            
+            // To resolve resources on templates (for any remaining dynamic content)
             model.put("noArg", new Object[]{});
             model.put("messages", messageSource);
             model.put("locale", locale);
