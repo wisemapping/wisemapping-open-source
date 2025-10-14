@@ -361,7 +361,7 @@ class RestUserControllerTest {
                     .param("code", String.valueOf(activationCode)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Invalid activation code or account already activated")));
+                .andExpect(content().string(containsString("This account has already been activated")));
     }
 
     @Test
