@@ -1,0 +1,242 @@
+# WiseMapping Backend - Cursor AI Rules
+
+## Mandatory Copyright Header
+
+**CRITICAL**: ALL source code files MUST include the WiseMapping copyright header.
+
+### Required Header Format for Java Files
+
+Every `.java` file MUST start with this exact copyright header (BEFORE package declaration):
+
+```java
+/*
+ *    Copyright [2007-2025] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       https://github.com/wisemapping/wisemapping-open-source/blob/main/LICENSE.md
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+```
+
+### Rules
+
+1. **Creating New Files**: ALWAYS add the copyright header as the FIRST thing when creating any new source file
+2. **Header Placement**: The header MUST come BEFORE the `package` declaration in Java files
+3. **Editing Existing Files**: If a file is missing the copyright header, add it at the top
+4. **Never Skip**: Never create a Java source file without the copyright header
+5. **Maintain Format**: Keep the exact formatting, including spacing and line breaks
+
+### File Types Requiring Copyright Header
+
+- Java source files: `.java`
+- SQL scripts: `.sql` (use SQL comment format: `--`)
+- Configuration files that contain code logic
+- Shell scripts: `.sh` (use `#` comment format)
+
+### Exceptions
+
+The following files do NOT require copyright headers:
+- `pom.xml` and other XML configuration files
+- `.properties` files
+- `.md` files (markdown documentation)
+- `.txt` files
+- Data files (`.json`, `.yaml` that are purely data)
+
+## Java Code Standards
+
+### Spring Boot Best Practices
+
+1. **Configuration**: Use standard Spring Boot configuration patterns
+   - Prefer `application.yml` over `application.properties` for complex configurations
+   - Use `@ConfigurationProperties` for type-safe configuration
+   - **Do NOT create custom configuration classes** when Spring Boot auto-configuration exists
+   - Example: For OpenTelemetry metrics, use Spring Boot's built-in configuration, not custom `@Configuration` classes
+
+2. **Dependency Injection**:
+   - Use constructor injection (preferred) over field injection
+   - Mark dependencies as `final` when using constructor injection
+   - Use `@RequiredArgsConstructor` from Lombok when appropriate
+
+3. **REST Controllers**:
+   - Use `@RestController` for REST endpoints
+   - Use proper HTTP methods: `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`
+   - Return proper HTTP status codes
+   - Use `@Valid` for request body validation
+
+4. **Service Layer**:
+   - Keep business logic in service classes
+   - Use `@Service` annotation
+   - Make services transactional when appropriate with `@Transactional`
+
+5. **Repository Layer**:
+   - Use Spring Data JPA repositories
+   - Extend `JpaRepository<Entity, ID>` for standard CRUD operations
+   - Use method name conventions for query derivation
+
+### Code Quality
+
+1. **Naming Conventions**:
+   - Classes: PascalCase (e.g., `UserService`)
+   - Methods: camelCase (e.g., `getUserById`)
+   - Constants: UPPER_SNAKE_CASE (e.g., `MAX_RETRY_COUNT`)
+   - Packages: lowercase (e.g., `com.wisemapping.service`)
+
+2. **Error Handling**:
+   - Use custom exceptions that extend appropriate base classes
+   - Provide meaningful error messages
+   - Use `@ControllerAdvice` for global exception handling
+
+3. **Logging**:
+   - Use SLF4J for logging
+   - Use appropriate log levels (ERROR, WARN, INFO, DEBUG, TRACE)
+   - Include contextual information in log messages
+
+4. **Documentation**:
+   - Use JavaDoc for public APIs
+   - Document complex business logic
+   - Keep comments up-to-date with code changes
+
+## Database
+
+1. **Migrations**:
+   - Use Flyway or Liquibase for database migrations
+   - Never modify existing migration files
+   - Test migrations on a copy of production data
+
+2. **Entities**:
+   - Use JPA annotations properly
+   - Define relationships clearly (`@OneToMany`, `@ManyToOne`, etc.)
+   - Use `@Table` to specify table names explicitly
+
+3. **Queries**:
+   - Prefer JPQL or Criteria API for complex queries
+   - Use native SQL only when necessary
+   - Optimize N+1 query problems with fetch joins
+
+## Git Workflow
+
+1. **Branch Names**: Use descriptive names (e.g., `feature/user-authentication`, `fix/login-error`)
+2. **Commit Messages**: Clear, descriptive messages explaining the "why"
+3. **Branch Strategy**: Use `main` as the primary branch (not `master`)
+4. **No Force Push**: Never force push to `main` branch
+5. **Code Review**: All changes should be reviewed before merging
+
+## Security
+
+1. **Input Validation**: Validate all user inputs
+2. **SQL Injection**: Use parameterized queries, never string concatenation
+3. **Authentication**: Use Spring Security properly
+4. **Sensitive Data**: Never log passwords or sensitive information
+5. **Dependencies**: Keep dependencies up-to-date for security patches
+
+## Testing
+
+1. **Unit Tests**:
+   - Use JUnit 5 for unit tests
+   - Test file naming: `*Test.java`
+   - Aim for good coverage on business logic
+
+2. **Integration Tests**:
+   - Use `@SpringBootTest` for integration tests
+   - Test file naming: `*IT.java` or `*IntegrationTest.java`
+   - Use test containers for database tests when possible
+
+3. **Test Organization**:
+   - Place tests in `src/test/java` matching the source package structure
+   - Use meaningful test method names: `shouldDoSomething_whenCondition()`
+
+## Performance
+
+1. **Database Access**: Use pagination for large result sets
+2. **Caching**: Use Spring Cache abstraction when appropriate
+3. **Async Processing**: Use `@Async` for long-running operations
+4. **Connection Pooling**: Configure connection pool sizes appropriately
+
+## API Design
+
+1. **RESTful Principles**: Follow REST conventions
+2. **Versioning**: Use URL versioning (`/api/v1/...`)
+3. **Response Format**: Use consistent JSON structure
+4. **Documentation**: Use OpenAPI/Swagger for API documentation
+5. **Error Responses**: Return consistent error response format
+
+## React/TypeScript Frontend Standards
+
+### Component Styling Best Practices
+
+**CRITICAL**: All component styles MUST be extracted using Material-UI's `styled()` API. Inline `sx` props are NOT allowed except for very simple, one-off overrides.
+
+1. **Styled Components File Organization**: 
+   - For components with multiple styled elements, create a separate `styled.ts` file in the same directory
+   - Import and use styled components from the `styled.ts` file
+   - Keep the main component file focused on logic and JSX structure
+   - Example structure:
+     ```
+     component-name/
+       index.tsx      (main component logic)
+       styled.ts      (all styled components)
+       index.stories.tsx (if using Storybook)
+     ```
+
+2. **Styled Components**: 
+   - Extract ALL component styles into `styled()` components
+   - Group related styled components together
+   - Use descriptive names that reflect the component's purpose
+   - For custom props (like `level`, `hasChildren`), use `shouldForwardProp` to prevent them from being passed to DOM elements
+
+3. **Example - CORRECT**:
+```typescript
+// styled.ts
+export const StyledButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  padding: theme.spacing(2),
+  '&:hover': {
+    backgroundColor: theme.palette.primary.dark,
+  },
+}));
+
+// index.tsx
+import { StyledButton } from './styled';
+
+const MyComponent = () => {
+  return <StyledButton>Click me</StyledButton>;
+};
+```
+
+4. **Example - INCORRECT**:
+```typescript
+// DON'T DO THIS
+const MyComponent = () => {
+  return (
+    <Button sx={{
+      backgroundColor: 'primary.main',
+      padding: 2,
+      '&:hover': { backgroundColor: 'primary.dark' }
+    }}>
+      Click me
+    </Button>
+  );
+};
+```
+
+5. **When to use `sx` prop** (exceptions):
+   - Simple one-property overrides (e.g., `sx={{ paddingLeft: 0 }}`)
+   - Dynamic styles that depend on props passed to the component
+   - Temporary styling during development (must be refactored before commit)
+
+6. **Benefits**:
+   - Better performance (styles are computed once, not on every render)
+   - Easier to maintain and refactor
+   - Better TypeScript support and IntelliSense
+   - Cleaner JSX code
+   - Styles can be easily reused across components
