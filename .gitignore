@@ -12,3 +12,13 @@ wisemapping.log*
 target
 .idea
 wise-webapp/src/main/webapp/react/*
+
+# IDE and AI tools
+.vscode
+.claude
+.cursor
+
+# Build and test artifacts
+coverage/
+test-output/
+*.class
