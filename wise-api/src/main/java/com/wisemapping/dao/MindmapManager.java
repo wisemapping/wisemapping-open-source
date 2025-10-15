@@ -144,6 +144,26 @@ public interface MindmapManager {
     long countUsersWithHighSpamRatio(int minSpamCount, double spamRatioThreshold, int monthsBack);
 
     /**
+     * Find users with minimum total public maps and minimum spam count
+     * @param minTotalMaps minimum number of total public maps required (e.g., >6 means at least 7)
+     * @param minSpamCount minimum number of spam public maps required
+     * @param monthsBack number of months to look back for account creation
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of users with their spam counts
+     */
+    List<SpamUserResult> findUsersWithMinimumMapsAndSpam(int minTotalMaps, int minSpamCount, int monthsBack, int offset, int limit);
+
+    /**
+     * Count users with minimum total public maps and minimum spam count
+     * @param minTotalMaps minimum number of total public maps required (e.g., >6 means at least 7)
+     * @param minSpamCount minimum number of spam public maps required
+     * @param monthsBack number of months to look back for account creation
+     * @return count of users meeting the criteria
+     */
+    long countUsersWithMinimumMapsAndSpam(int minTotalMaps, int minSpamCount, int monthsBack);
+
+    /**
      * Find all public mindmaps (excluding those from disabled accounts)
      * @return list of public mindmaps from active accounts
      */

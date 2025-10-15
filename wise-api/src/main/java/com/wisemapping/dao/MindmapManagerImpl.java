@@ -404,6 +404,7 @@ public class MindmapManagerImpl
             "FROM com.wisemapping.model.Mindmap m " +
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
+            "  AND m.isPublic = true " +
             "AND m.creator.creationDate >= :cutoffDate " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold " +
@@ -556,6 +557,71 @@ public class MindmapManagerImpl
         cutoffDate.add(Calendar.MONTH, -monthsBack);
         
         query.setParameter("spamThreshold", spamThreshold);
+        query.setParameter("cutoffDate", cutoffDate);
+        
+        return query.getSingleResult();
+    }
+
+    @Override
+    public List<SpamUserResult> findUsersWithMinimumMapsAndSpam(int minTotalMaps, int minSpamCount, int monthsBack, int offset, int limit) {
+        final TypedQuery<Object[]> query = entityManager.createQuery(
+            "SELECT m.creator, " +
+            "       COUNT(CASE WHEN s.spamDetected = true THEN 1 END) as spamCount " +
+            "FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN m.spamInfo s " +
+            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "  AND m.isPublic = true " +
+            "GROUP BY m.creator " +
+            "HAVING COUNT(m.id) > :minTotalMaps " +
+            "   AND COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
+            "ORDER BY m.creator.id", 
+            Object[].class);
+        
+        // Calculate cutoff date (monthsBack months ago)
+        Calendar cutoffDate = Calendar.getInstance();
+        cutoffDate.add(Calendar.MONTH, -monthsBack);
+        
+        query.setParameter("minTotalMaps", minTotalMaps);
+        query.setParameter("minSpamCount", minSpamCount);
+        query.setParameter("cutoffDate", cutoffDate);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        
+        // Convert Object[] results to SpamUserResult objects
+        return query.getResultList().stream()
+                .map(result -> {
+                    Account user = (Account) result[0];
+                    Long spamCount = (Long) result[1];
+                    return new SpamUserResult(user, spamCount);
+                })
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public long countUsersWithMinimumMapsAndSpam(int minTotalMaps, int minSpamCount, int monthsBack) {
+        final TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(DISTINCT m.creator) " +
+            "FROM com.wisemapping.model.Mindmap m " +
+            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "  AND m.isPublic = true " +
+            "AND m.creator IN (" +
+            "    SELECT m2.creator " +
+            "    FROM com.wisemapping.model.Mindmap m2 " +
+            "    LEFT JOIN m2.spamInfo s2 " +
+            "    WHERE m2.creator.creationDate >= :cutoffDate " +
+            "      AND m2.isPublic = true " +
+            "    GROUP BY m2.creator " +
+            "    HAVING COUNT(m2.id) > :minTotalMaps " +
+            "       AND COUNT(CASE WHEN s2.spamDetected = true THEN 1 END) >= :minSpamCount" +
+            ")",
+            Long.class);
+        
+        // Calculate cutoff date (monthsBack months ago)
+        Calendar cutoffDate = Calendar.getInstance();
+        cutoffDate.add(Calendar.MONTH, -monthsBack);
+        
+        query.setParameter("minTotalMaps", minTotalMaps);
+        query.setParameter("minSpamCount", minSpamCount);
         query.setParameter("cutoffDate", cutoffDate);
         
         return query.getSingleResult();

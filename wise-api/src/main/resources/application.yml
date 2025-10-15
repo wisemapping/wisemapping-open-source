@@ -160,15 +160,13 @@ app:
   batch:
     spam-user-suspension:
       enabled: true
-      startup-enabled: false  # Enable spam user suspension on application startup (async)
+      startup-enabled: true  # Enable spam user suspension on application startup (async)
       cron-expression: "0 0 */6 * * *"  # Every 6 hours
-      spam-threshold: 2  # Number of spam mindmaps before suspension
-      months-back: 45  # Only process accounts created since 2022 (approximately 45 months)
+      months-back: 36  # Only process accounts created in the last 3 years (36 months)
       batch-size: 50  # Number of users to process in each batch
-      # Ratio-based suspension configuration
-      min-spam-count: 2  # Minimum number of spam mindmaps required
-      spam-ratio-threshold: 0.5  # Minimum spam ratio (0.0 to 1.0) - 50% spam ratio
-      use-ratio-based: true  # Enable ratio-based suspension instead of count-based
+      # Minimum maps-based suspension configuration
+      min-total-maps: 6  # Users must have MORE than this many total public maps (>6 means at least 7)
+      min-spam-count: 3  # AND at least this many spam public maps to be suspended
     spam-detection:
       enabled: true
       cron-expression: "0 0 0 * * *"  # Every 24 hours at midnight

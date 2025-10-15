@@ -40,12 +40,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = {AppConfig.class})
 @TestPropertySource(properties = {
     "app.batch.spam-user-suspension.enabled=true",
-    "app.batch.spam-user-suspension.spam-threshold=2",
-    "app.batch.spam-user-suspension.months-back=3",
+    "app.batch.spam-user-suspension.months-back=36",
     "app.batch.spam-user-suspension.batch-size=2", 
-    "app.batch.spam-user-suspension.min-spam-count=3",
-    "app.batch.spam-user-suspension.spam-ratio-threshold=0.5",
-    "app.batch.spam-user-suspension.use-ratio-based=true"
+    "app.batch.spam-user-suspension.min-total-maps=6",
+    "app.batch.spam-user-suspension.min-spam-count=3"
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class SpamUserSuspensionSchedulerTransactionTest {
@@ -126,13 +124,12 @@ public class SpamUserSuspensionSchedulerTransactionTest {
         // annotations are working correctly when the service is called from the scheduler context
         
         assertDoesNotThrow(() -> {
-            // This was the flow that could potentially fail with transaction errors:
+            // Transaction flow:
             // 1. Scheduler triggers processSpamUserSuspension()
             // 2. That calls SpamUserSuspensionService.processSpamUserSuspension()
-            // 3. Which calls either processSpamUserSuspensionByRatio() or processSpamUserSuspensionByCount()
-            // 4. Those methods call processRatioBatch() or processCountBatch() with @Transactional(propagation = Propagation.REQUIRES_NEW)
-            // 5. The batch methods execute complex JPQL queries and updates
-            // 6. Those queries need proper transaction context to work
+            // 3. Which calls processMinimumMapsBatch() with @Transactional(propagation = Propagation.REQUIRES_NEW)
+            // 4. The batch method executes complex JPQL queries and updates
+            // 5. Those queries need proper transaction context to work
             
             scheduler.processSpamUserSuspension();
             
@@ -161,23 +158,6 @@ public class SpamUserSuspensionSchedulerTransactionTest {
         }, "SpamUserSuspensionService should execute without transaction errors");
     }
 
-    @Test
-    void testSpamUserSuspensionServiceRatioBasedMode() {
-        // Test the ratio-based suspension mode specifically
-        
-        assertDoesNotThrow(() -> {
-            spamUserSuspensionService.processSpamUserSuspensionByRatio();
-        }, "Ratio-based spam user suspension should execute without transaction errors");
-    }
-
-    @Test
-    void testSpamUserSuspensionServiceCountBasedMode() {
-        // Test the count-based suspension mode specifically
-        
-        assertDoesNotThrow(() -> {
-            spamUserSuspensionService.processSpamUserSuspensionByCount();
-        }, "Count-based spam user suspension should execute without transaction errors");
-    }
 
     @Test
     void testServiceConfigurationAccess() {
@@ -185,12 +165,10 @@ public class SpamUserSuspensionSchedulerTransactionTest {
         
         assertDoesNotThrow(() -> {
             assertTrue(spamUserSuspensionService.isEnabled(), "Service should be enabled");
-            assertTrue(spamUserSuspensionService.getSpamThreshold() >= 0, "Spam threshold should be valid");
             assertTrue(spamUserSuspensionService.getMonthsBack() >= 0, "Months back should be valid");
             assertTrue(spamUserSuspensionService.getBatchSize() > 0, "Batch size should be positive");
+            assertTrue(spamUserSuspensionService.getMinTotalMaps() >= 0, "Min total maps should be valid");
             assertTrue(spamUserSuspensionService.getMinSpamCount() >= 0, "Min spam count should be valid");
-            assertTrue(spamUserSuspensionService.getSpamRatioThreshold() >= 0.0 && 
-                      spamUserSuspensionService.getSpamRatioThreshold() <= 1.0, "Spam ratio threshold should be between 0 and 1");
         }, "Service configuration should be accessible and valid");
     }
 
@@ -199,11 +177,8 @@ public class SpamUserSuspensionSchedulerTransactionTest {
         // Test that the @Transactional(readOnly = true) methods work correctly
         
         assertDoesNotThrow(() -> {
-            long count1 = spamUserSuspensionService.getTotalUsersWithHighSpamRatio();
-            assertTrue(count1 >= 0, "Count should be non-negative");
-            
-            long count2 = spamUserSuspensionService.getTotalUsersWithSpamMindmaps();
-            assertTrue(count2 >= 0, "Count should be non-negative");
+            long count = spamUserSuspensionService.getTotalUsersWithMinimumMapsAndSpam();
+            assertTrue(count >= 0, "Count should be non-negative");
         }, "Transactional read-only methods should work without errors");
     }
 }
