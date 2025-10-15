@@ -164,6 +164,42 @@ public interface MindmapManager {
     long countUsersWithMinimumMapsAndSpam(int minTotalMaps, int minSpamCount, int monthsBack);
 
     /**
+     * Find users with high public spam ratio (spam maps / total public maps >= threshold)
+     * @param spamRatioThreshold minimum spam ratio (0.0 to 1.0) to consider for suspension
+     * @param monthsBack number of months to look back for account creation
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of users with their spam ratios for public maps
+     */
+    List<SpamRatioUserResult> findUsersWithHighPublicSpamRatio(double spamRatioThreshold, int monthsBack, int offset, int limit);
+
+    /**
+     * Count users with high public spam ratio
+     * @param spamRatioThreshold minimum spam ratio (0.0 to 1.0) to consider for suspension
+     * @param monthsBack number of months to look back for account creation
+     * @return count of users meeting the criteria
+     */
+    long countUsersWithHighPublicSpamRatio(double spamRatioThreshold, int monthsBack);
+
+    /**
+     * Find users with minimum number of spam maps (public or private)
+     * @param minSpamCount minimum number of spam maps required
+     * @param monthsBack number of months to look back for account creation
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of users with their total spam counts
+     */
+    List<SpamUserResult> findUsersWithAnySpamMaps(int minSpamCount, int monthsBack, int offset, int limit);
+
+    /**
+     * Count users with minimum number of spam maps (public or private)
+     * @param minSpamCount minimum number of spam maps required
+     * @param monthsBack number of months to look back for account creation
+     * @return count of users meeting the criteria
+     */
+    long countUsersWithAnySpamMaps(int minSpamCount, int monthsBack);
+
+    /**
      * Find all public mindmaps (excluding those from disabled accounts)
      * @return list of public mindmaps from active accounts
      */
