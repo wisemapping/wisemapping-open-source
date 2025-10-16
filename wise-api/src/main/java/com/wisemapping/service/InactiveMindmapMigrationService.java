@@ -24,8 +24,6 @@ import com.wisemapping.dao.UserManager;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.InactiveMindmap;
 import com.wisemapping.model.Mindmap;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,9 +59,6 @@ public class InactiveMindmapMigrationService {
 
     @Autowired
     private TransactionTemplate transactionTemplate;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Value("${app.batch.inactive-mindmap-migration.enabled:true}")
     private boolean enabled;
@@ -114,10 +109,6 @@ public class InactiveMindmapMigrationService {
             int batchMigrated = processBatch(batch);
             totalMigrated += batchMigrated;
             totalUsersProcessed += batch.size();
-
-            // Flush changes to database after each batch to ensure persistence and free memory
-            entityManager.flush();
-            entityManager.clear(); // Clear the persistence context to free memory
 
             logger.debug("Completed batch {}: migrated {} mindmaps from {} users", 
                         batchNumber, batchMigrated, batch.size());
@@ -241,10 +232,6 @@ public class InactiveMindmapMigrationService {
                     userMigrated++;
                 }
             }
-            
-            // Flush and clear after each mindmap batch to free memory
-            entityManager.flush();
-            entityManager.clear();
         }
         
         return userMigrated;
