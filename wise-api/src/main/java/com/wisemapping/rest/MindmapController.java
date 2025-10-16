@@ -111,6 +111,11 @@ public class MindmapController {
         if (!mindmap.isPublic() && !mindmapService.hasPermissions(user, mindmap, CollaborationRole.VIEWER)) {
             throw new AccessDeniedSecurityException("You do not have enough right access to see this map");
         }
+        
+        // For public maps, check if the creator is not suspended
+        if (mindmap.isPublic() && mindmap.getCreator().isSuspended()) {
+            throw new AccessDeniedSecurityException("This map is no longer available");
+        }
 
         final MindMapBean mindMapBean = new MindMapBean(mindmap, user);
 
@@ -221,6 +226,11 @@ public class MindmapController {
         // If it's not authenticated and map is spam-detected, block access
         if (user == null && mindmap.isSpamDetected()) {
             throw new SpamContentException();
+        }
+        
+        // For public maps, check if the creator is not suspended
+        if (mindmap.isPublic() && mindmap.getCreator().isSuspended()) {
+            throw new AccessDeniedSecurityException("This map is no longer available");
         }
 
         String xmlStr = mindmap.getXmlStr();
