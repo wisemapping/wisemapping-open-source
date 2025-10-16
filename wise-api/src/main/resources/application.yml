@@ -160,7 +160,7 @@ app:
   batch:
     spam-user-suspension:
       enabled: true
-      startup-enabled: true  # Enable spam user suspension on application startup (async)
+      startup-enabled: false  # Enable spam user suspension on application startup (async)
       cron-expression: "0 0 */6 * * *"  # Every 6 hours
       months-back: 72  # Only process accounts created in the last 6 years (72 months)
       batch-size: 50  # Number of users to process in each batch
