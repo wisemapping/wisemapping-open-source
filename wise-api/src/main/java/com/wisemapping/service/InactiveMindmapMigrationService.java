@@ -77,6 +77,9 @@ public class InactiveMindmapMigrationService {
     @Value("${app.batch.inactive-mindmap-migration.dry-run:false}")
     private boolean dryRun;
 
+    @Value("${app.batch.inactive-mindmap-migration.minimum-suspension-days:30}")
+    private int minimumSuspensionDays;
+
     /**
      * Process migration of mindmaps from inactive users.
      * Each batch is processed in its own transaction to avoid long-running transactions.
@@ -138,23 +141,23 @@ public class InactiveMindmapMigrationService {
 
     /**
      * Process a batch of suspended users and migrate their mindmaps.
-     * Only processes users who have been suspended for at least 1 month.
+     * Only processes users who have been suspended for at least the configured minimum days.
      * @param users batch of suspended users
      * @return number of mindmaps migrated in this batch
      */
     public int processBatch(List<Account> users) {
         int batchMigrated = 0;
         
-        // Calculate the minimum suspension date (1 month ago)
+        // Calculate the minimum suspension date based on configuration
         Calendar minimumSuspensionDate = Calendar.getInstance();
-        minimumSuspensionDate.add(Calendar.MONTH, -1);
+        minimumSuspensionDate.add(Calendar.DAY_OF_MONTH, -minimumSuspensionDays);
 
         for (Account user : users) {
             try {
-                // Check if user has been suspended for at least 1 month
+                // Check if user has been suspended for at least the configured minimum days
                 if (user.getSuspendedDate() == null || user.getSuspendedDate().after(minimumSuspensionDate)) {
-                    logger.debug("Skipping user {} - suspended for less than 1 month (suspended: {})", 
-                               user.getEmail(), user.getSuspendedDate());
+                    logger.debug("Skipping user {} - suspended for less than {} days (suspended: {})", 
+                               user.getEmail(), minimumSuspensionDays, user.getSuspendedDate());
                     continue;
                 }
                 
@@ -211,7 +214,7 @@ public class InactiveMindmapMigrationService {
                         // Create inactive mindmap record using InactiveMindmapManager
                         InactiveMindmap inactiveMindmap = new InactiveMindmap(
                             mindmap, 
-                            "User suspended for at least 1 month"
+                            "User suspended for at least " + minimumSuspensionDays + " days"
                         );
                         inactiveMindmapManager.addInactiveMindmap(inactiveMindmap);
 
@@ -324,11 +327,11 @@ public class InactiveMindmapMigrationService {
      * @return migration statistics
      */
     public MigrationStats getMigrationStats() {
-        // Calculate the minimum suspension date (1 month ago)
+        // Calculate the minimum suspension date based on configuration
         Calendar minimumSuspensionDate = Calendar.getInstance();
-        minimumSuspensionDate.add(Calendar.MONTH, -1);
+        minimumSuspensionDate.add(Calendar.DAY_OF_MONTH, -minimumSuspensionDays);
 
-        // Count users suspended for inactivity who have been suspended for at least 1 month
+        // Count users suspended for inactivity who have been suspended for at least the configured minimum days
         List<Account> allSuspendedUsers = userManager.findUsersSuspendedForInactivity(0, Integer.MAX_VALUE);
         long eligibleSuspendedUsersCount = allSuspendedUsers.stream()
                 .filter(user -> user.getSuspendedDate() != null && !user.getSuspendedDate().after(minimumSuspensionDate))

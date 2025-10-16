@@ -83,7 +83,7 @@ public class InactiveMindmapMigrationServiceTest {
         inactiveDate.add(Calendar.YEAR, -3);
         inactiveUser1.setCreationDate(inactiveDate);
         inactiveUser1.setActivationDate(inactiveDate);
-        // Mark as suspended for migration (suspended 2 months ago to meet 1-month requirement)
+        // Mark as suspended for migration (suspended 2 months ago to meet 30-day requirement)
         Calendar suspensionDate = Calendar.getInstance();
         suspensionDate.add(Calendar.MONTH, -2);
         inactiveUser1.setSuspended(true);
@@ -187,7 +187,7 @@ public class InactiveMindmapMigrationServiceTest {
         for (InactiveMindmap inactiveMindmap : inactiveMindmaps) {
             assertEquals(inactiveUser1.getId(), inactiveMindmap.getCreator().getId());
             assertNotNull(inactiveMindmap.getMigrationDate());
-            assertEquals("User suspended for at least 1 month", inactiveMindmap.getMigrationReason());
+            assertEquals("User suspended for at least 30 days", inactiveMindmap.getMigrationReason());
             assertTrue(inactiveMindmap.getOriginalMindmapId() > 0);
         }
     }
