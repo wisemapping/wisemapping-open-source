@@ -209,17 +209,24 @@ public class InactiveMindmapMigrationService {
             
             for (Mindmap mindmap : mindmapBatch) {
                 if (!dryRun) {
+                    // Store mindmap ID and title for logging (entity may become detached)
+                    final int mindmapId = mindmap.getId();
+                    final String mindmapTitle = mindmap.getTitle();
+                    
                     // Process migration in a separate transaction to ensure consistency
                     transactionTemplate.execute(status -> {
+                        // Reload the mindmap within the transaction to avoid detached entity issues
+                        Mindmap managedMindmap = mindmapManager.getMindmapById(mindmapId);
+                        
                         // Create inactive mindmap record using InactiveMindmapManager
                         InactiveMindmap inactiveMindmap = new InactiveMindmap(
-                            mindmap, 
+                            managedMindmap, 
                             "User suspended for at least " + minimumSuspensionDays + " days"
                         );
                         inactiveMindmapManager.addInactiveMindmap(inactiveMindmap);
 
                         // Remove the original mindmap using MindmapManager
-                        mindmapManager.removeMindmap(mindmap);
+                        mindmapManager.removeMindmap(managedMindmap);
                         
                         return null;
                     });
@@ -227,7 +234,7 @@ public class InactiveMindmapMigrationService {
                     userMigrated++;
                     
                     logger.debug("Migrated mindmap '{}' (ID: {}) for inactive user {}", 
-                               mindmap.getTitle(), mindmap.getId(), user.getEmail());
+                               mindmapTitle, mindmapId, user.getEmail());
                 } else {
                     logger.debug("DRY RUN: Would migrate mindmap '{}' (ID: {}) for inactive user {}", 
                                mindmap.getTitle(), mindmap.getId(), user.getEmail());
