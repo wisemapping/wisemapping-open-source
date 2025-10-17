@@ -21,6 +21,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.exceptions.AccountSuspendedException;
+import com.wisemapping.exceptions.WrongAuthenticationTypeException;
 import com.wisemapping.model.Account;
 import com.wisemapping.service.MetricsService;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,15 @@ public class AuthenticationProvider implements org.springframework.security.auth
         final UserDetails userDetails = getUserDetailsService().loadUserByUsername(email);
         final Account user = userDetails.getUser();
         final String credentials = (String) auth.getCredentials();
+
+        // Check if user is trying to login with wrong authentication method
+        // Users registered with OAuth (Google/Facebook) cannot login with email/password
+        if (user != null && !user.isDatabaseSchema()) {
+            throw new WrongAuthenticationTypeException(
+                user.getAuthenticationType(),
+                "Wrong authentication method for " + auth.getPrincipal() + ". User registered with " + user.getAuthenticationType()
+            );
+        }
 
         if (user == null || credentials == null || !encoder.matches(user.getPassword(), credentials)) {
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
