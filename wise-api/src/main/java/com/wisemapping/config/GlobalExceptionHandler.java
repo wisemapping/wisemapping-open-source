@@ -188,6 +188,41 @@ public class GlobalExceptionHandler {
         return new RestErrors(message, Severity.WARNING);
     }
 
+    @ExceptionHandler(WrongAuthenticationTypeException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestErrors handleWrongAuthenticationTypeException(@NotNull WrongAuthenticationTypeException ex) {
+        logger.debug("Wrong authentication type: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        
+        // Provide specific message based on the authentication type
+        String messageKey;
+        String defaultMessage;
+        switch (ex.getAuthenticationType()) {
+            case GOOGLE_OAUTH2:
+                messageKey = "ACCOUNT_USES_GOOGLE_OAUTH";
+                defaultMessage = "This account is registered with Google. Please use the 'Sign in with Google' button to login.";
+                break;
+            case FACEBOOK_OAUTH2:
+                messageKey = "ACCOUNT_USES_FACEBOOK_OAUTH";
+                defaultMessage = "This account is registered with Facebook. Please use the 'Sign in with Facebook' button to login.";
+                break;
+            case LDAP:
+                messageKey = "ACCOUNT_USES_EXTERNAL_AUTH";
+                defaultMessage = "This account uses external authentication. Please use the appropriate sign-in method.";
+                break;
+            default:
+                messageKey = "ACCOUNT_USES_EXTERNAL_AUTH";
+                defaultMessage = "This account uses external authentication. Please use the appropriate sign-in method.";
+                break;
+        }
+        
+        String message = messageSource != null ? 
+            messageSource.getMessage(messageKey, null, defaultMessage, locale) :
+            defaultMessage;
+        return new RestErrors(message, Severity.WARNING);
+    }
+
     @ExceptionHandler(ClientException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
