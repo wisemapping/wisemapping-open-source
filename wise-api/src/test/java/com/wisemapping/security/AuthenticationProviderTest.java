@@ -3,6 +3,7 @@ package com.wisemapping.security;
 import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.exceptions.AccountSuspendedException;
 import com.wisemapping.model.Account;
+import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.service.MetricsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,6 +55,7 @@ class AuthenticationProviderTest {
         when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
         when(userDetails.getUser()).thenReturn(account);
         when(encoder.matches(account.getPassword(), password)).thenReturn(true);
+        when(account.getAuthenticationType()).thenReturn(AuthenticationType.DATABASE);
         when(account.isActive()).thenReturn(false); // Account is not active (disabled)
 
         // When & Then
@@ -77,6 +79,7 @@ class AuthenticationProviderTest {
         when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
         when(userDetails.getUser()).thenReturn(account);
         when(encoder.matches(account.getPassword(), password)).thenReturn(true);
+        when(account.getAuthenticationType()).thenReturn(AuthenticationType.DATABASE);
         when(account.isActive()).thenReturn(true);
         when(account.isSuspended()).thenReturn(true); // Account is suspended
 
@@ -101,6 +104,7 @@ class AuthenticationProviderTest {
         when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
         when(userDetails.getUser()).thenReturn(account);
         when(encoder.matches(account.getPassword(), password)).thenReturn(true);
+        when(account.getAuthenticationType()).thenReturn(AuthenticationType.DATABASE);
         when(account.isActive()).thenReturn(true);
         when(account.isSuspended()).thenReturn(false); // Account is not suspended
         when(userDetailsService.getUserService()).thenReturn(mock(com.wisemapping.service.UserService.class));
