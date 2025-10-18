@@ -18,26 +18,25 @@
 
 package com.wisemapping.exceptions;
 
+import com.wisemapping.model.Account;
 import com.wisemapping.model.AuthenticationType;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.AuthenticationException;
 
-/**
- * Exception thrown when a user tries to authenticate with the wrong authentication method.
- * For example, when a user registered with Google OAuth tries to login with email/password.
- */
 public class WrongAuthenticationTypeException extends AuthenticationException {
-    
-    private final AuthenticationType authenticationType;
-    
-    public WrongAuthenticationTypeException(@NotNull AuthenticationType authenticationType, @NotNull String message) {
-        super(message);
-        this.authenticationType = authenticationType;
+    private final Account user;
+
+    public WrongAuthenticationTypeException(@NotNull Account user, @NotNull String debugMessage) {
+        super(debugMessage);
+        this.user = user;
     }
-    
-    @NotNull
+
     public AuthenticationType getAuthenticationType() {
-        return authenticationType;
+        return user.getAuthenticationType();
+    }
+
+    public Account getUser() {
+        return user;
     }
 }
 
