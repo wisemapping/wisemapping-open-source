@@ -374,7 +374,11 @@ public class Mindmap implements Serializable {
     }
 
     public static String getDefaultMindmapXml(@NotNull final String title) {
-        return "<map version=\"tango\" theme=\"prism\">" +
+        return getDefaultMindmapXml(title, "mindmap");
+    }
+
+    public static String getDefaultMindmapXml(@NotNull final String title, @NotNull final String layout) {
+        return "<map version=\"tango\" theme=\"prism\" layout=\"" + layout + "\">" +
                 "<topic central=\"true\" text=\"" +
                 escapeXmlAttribute(title) +
                 "\"/></map>";
