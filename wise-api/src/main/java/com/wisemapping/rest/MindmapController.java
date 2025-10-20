@@ -674,7 +674,8 @@ public class MindmapController {
     @RequestMapping(method = RequestMethod.POST, value = "", consumes = { "application/xml", "application/json" })
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createMap(@RequestBody(required = false) String mapXml, @NotNull HttpServletResponse response,
-            @RequestParam(required = false) String title, @RequestParam(required = false) String description)
+            @RequestParam(required = false) String title, @RequestParam(required = false) String description,
+            @RequestParam(required = false) String layout)
             throws WiseMappingException {
 
         final Mindmap mindmap = new Mindmap();
@@ -695,7 +696,9 @@ public class MindmapController {
 
         // If the user has not specified the xml content, add one ...
         if (mapXml == null || mapXml.isEmpty()) {
-            mapXml = Mindmap.getDefaultMindmapXml(mindmap.getTitle());
+            // Use provided layout or default to 'mindmap'
+            String layoutType = (layout != null && !layout.isEmpty()) ? layout : "mindmap";
+            mapXml = Mindmap.getDefaultMindmapXml(mindmap.getTitle(), layoutType);
         }
         mindmap.setXmlStr(mapXml);
 
