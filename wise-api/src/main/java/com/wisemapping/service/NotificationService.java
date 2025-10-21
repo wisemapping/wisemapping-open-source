@@ -58,8 +58,8 @@ final public class NotificationService {
             // Is the user already registered user ?.
             final String collabEmail = collaboration.getCollaborator().getEmail();
 
-            // Build the URL
-            final String mapEditUrl = getBaseUrl() + "/c/maps/" + mindmap.getId() + "/edit";
+            // Build the URL with shared parameter to track shared link clicks
+            final String mapEditUrl = getBaseUrl() + "/c/maps/" + mindmap.getId() + "/edit?shared=true";
 
             // Build the subject ...
             final String subject = messageSource.getMessage("SHARE_MAP.EMAIL_SUBJECT", new Object[]{user.getFullName()}, locale);
