@@ -205,9 +205,15 @@ public class InactiveMindmapMigrationService {
                     final String mindmapTitle = mindmap.getTitle();
                     
                     // Process migration in a separate transaction to ensure consistency
-                    transactionTemplate.execute(status -> {
+                    Boolean migrated = transactionTemplate.execute(status -> {
                         // Reload the mindmap within the transaction to avoid detached entity issues
                         Mindmap managedMindmap = mindmapManager.getMindmapById(mindmapId);
+                        
+                        // Check if mindmap still exists (may have been deleted by another process)
+                        if (managedMindmap == null) {
+                            logger.warn("Mindmap with ID {} no longer exists, skipping migration", mindmapId);
+                            return false;
+                        }
                         
                         // Create inactive mindmap record using InactiveMindmapManager
                         InactiveMindmap inactiveMindmap = new InactiveMindmap(
@@ -219,13 +225,15 @@ public class InactiveMindmapMigrationService {
                         // Remove the original mindmap using MindmapManager
                         mindmapManager.removeMindmap(managedMindmap);
                         
-                        return null;
+                        return true;
                     });
                     
-                    userMigrated++;
-                    
-                    logger.debug("Migrated mindmap '{}' (ID: {}) for inactive user {}", 
-                               mindmapTitle, mindmapId, user.getEmail());
+                    // Only count and log if migration was successful
+                    if (Boolean.TRUE.equals(migrated)) {
+                        userMigrated++;
+                        logger.debug("Migrated mindmap '{}' (ID: {}) for inactive user {}", 
+                                   mindmapTitle, mindmapId, user.getEmail());
+                    }
                 } else {
                     logger.debug("DRY RUN: Would migrate mindmap '{}' (ID: {}) for inactive user {}", 
                                mindmap.getTitle(), mindmap.getId(), user.getEmail());
