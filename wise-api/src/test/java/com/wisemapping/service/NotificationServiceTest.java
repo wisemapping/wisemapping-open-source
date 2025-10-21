@@ -72,7 +72,7 @@ class NotificationServiceTest {
         Account user = createAccount("John Doe", "john@example.com");
         Collaboration collaboration = createCollaboration("collaborator@example.com");
 
-        String mapEditUrl = "https://app.wisemapping.com/c/maps/123/edit";
+        String mapEditUrl = "https://app.wisemapping.com/c/maps/123/edit?shared=true";
 
         // Mock message source responses (English)
         when(messageSource.getMessage(eq("SHARE_MAP.EMAIL_SUBJECT"), any(), eq(Locale.ENGLISH)))
@@ -136,7 +136,7 @@ class NotificationServiceTest {
         Account user = createAccount("María García", "maria@example.com");
         Collaboration collaboration = createCollaboration("colaborador@example.com");
 
-        String mapEditUrl = "https://app.wisemapping.com/c/maps/456/edit";
+        String mapEditUrl = "https://app.wisemapping.com/c/maps/456/edit?shared=true";
 
         // Mock message source responses (Spanish)
         when(messageSource.getMessage(eq("SHARE_MAP.EMAIL_SUBJECT"), any(), eq(spanishLocale)))
