@@ -24,6 +24,7 @@ import com.wisemapping.exceptions.InvalidActivationCodeException;
 import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.OAuthAuthenticationException;
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.exceptions.WrongAuthenticationTypeException;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.RestResetPasswordAction;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
@@ -231,6 +232,14 @@ public class UserServiceImpl
             // Track Google OAuth registration
             String emailProvider = metricsService.extractEmailProvider(result.getEmail());
             metricsService.trackUserRegistration(result, emailProvider);
+        } else {
+            // Account exists - check if it's using a different OAuth provider
+            AuthenticationType existingAuthType = result.getAuthenticationType();
+            if (existingAuthType != AuthenticationType.DATABASE && existingAuthType != AuthenticationType.GOOGLE_OAUTH2) {
+                // User is trying to login with Google but account uses a different OAuth provider
+                logger.warn("User {} attempted to login with Google but account uses {}", data.getEmail(), existingAuthType);
+                throw new WrongAuthenticationTypeException(result, "Account is registered with a different authentication provider");
+            }
         }
 
         // Is the user a non-oauth user ?
@@ -279,6 +288,14 @@ public class UserServiceImpl
             // Track Facebook OAuth registration
             String emailProvider = metricsService.extractEmailProvider(result.getEmail());
             metricsService.trackUserRegistration(result, emailProvider);
+        } else {
+            // Account exists - check if it's using a different OAuth provider
+            AuthenticationType existingAuthType = result.getAuthenticationType();
+            if (existingAuthType != AuthenticationType.DATABASE && existingAuthType != AuthenticationType.FACEBOOK_OAUTH2) {
+                // User is trying to login with Facebook but account uses a different OAuth provider
+                logger.warn("User {} attempted to login with Facebook but account uses {}", data.getEmail(), existingAuthType);
+                throw new WrongAuthenticationTypeException(result, "Account is registered with a different authentication provider");
+            }
         }
 
         // Is the user a non-oauth user ?
