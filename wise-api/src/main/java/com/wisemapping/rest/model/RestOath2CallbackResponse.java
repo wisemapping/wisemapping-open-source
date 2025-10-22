@@ -16,13 +16,13 @@ import org.jetbrains.annotations.Nullable;
 public class RestOath2CallbackResponse {
 
     private String email;
-    private Boolean googleSync;
+    private Boolean oauthSync;
     private String syncCode;
     private String jwtToken;
 
     public RestOath2CallbackResponse(@NotNull Account user, @Nullable String jwtToken) {
         this.setEmail(user.getEmail());
-        this.setGoogleSync(user.getGoogleSync());
+        this.setOauthSync(user.getOauthSync());
         this.setSyncCode(user.getSyncCode());
         this.setJwtToken(jwtToken);
     }
@@ -35,12 +35,12 @@ public class RestOath2CallbackResponse {
         this.email = email;
     }
 
-    public Boolean getGoogleSync() {
-        return googleSync;
+    public Boolean getOauthSync() {
+        return oauthSync;
     }
 
-    public void setGoogleSync(Boolean googleSync) {
-        this.googleSync = googleSync;
+    public void setOauthSync(Boolean oauthSync) {
+        this.oauthSync = oauthSync;
     }
 
     public String getSyncCode() {
