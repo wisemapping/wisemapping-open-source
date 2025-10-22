@@ -62,13 +62,7 @@ public class OAuth2Controller {
         }
 
         final Account user = userService.createAndAuthUserFromGoogle(code);
-        String jwtToken = null;
-        if (user.getGoogleSync()) {
-            jwtToken = jwtTokenUtil.doLogin(response, user.getEmail());
-        }
-
-        // Response ...
-        return new RestOath2CallbackResponse(user, jwtToken);
+        return buildOAuthResponse(user, response);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "facebookcallback", produces = {"application/json"})
@@ -80,12 +74,14 @@ public class OAuth2Controller {
         }
 
         final Account user = userService.createAndAuthUserFromFacebook(code);
+        return buildOAuthResponse(user, response);
+    }
+
+    private RestOath2CallbackResponse buildOAuthResponse(@NotNull Account user, @NotNull HttpServletResponse response) {
         String jwtToken = null;
-        if (user.getGoogleSync()) {
+        if (user.getOauthSync()) {
             jwtToken = jwtTokenUtil.doLogin(response, user.getEmail());
         }
-
-        // Response ...
         return new RestOath2CallbackResponse(user, jwtToken);
     }
 

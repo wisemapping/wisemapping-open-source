@@ -55,14 +55,14 @@ public class Account
     @Column(name = "authenticator_uri")
     private String authenticatorUri;
 
-    @Column(name = "google_sync")
-    private Boolean googleSync;
+    @Column(name = "oauth_sync")
+    private Boolean oauthSync;
 
     @Column(name = "sync_code")
     private String syncCode;
 
-    @Column(name = "google_token")
-    private String googleToken;
+    @Column(name = "oauth_token")
+    private String oauthToken;
 
     @Column(name = "suspended")
     private boolean suspended = false;
@@ -183,12 +183,12 @@ public class Account
         this.authenticationTypeCode = authenticationTypeCode;
     }
 
-    public Boolean getGoogleSync() {
-        return googleSync != null && googleSync;
+    public Boolean getOauthSync() {
+        return oauthSync != null && oauthSync;
     }
 
-    public void setGoogleSync(Boolean googleSync) {
-        this.googleSync = googleSync;
+    public void setOauthSync(Boolean oauthSync) {
+        this.oauthSync = oauthSync;
     }
 
     public String getSyncCode() {
@@ -199,12 +199,12 @@ public class Account
         this.syncCode = syncCode;
     }
 
-    public String getGoogleToken() {
-        return googleToken;
+    public String getOauthToken() {
+        return oauthToken;
     }
 
-    public void setGoogleToken(String googleToken) {
-        this.googleToken = googleToken;
+    public void setOauthToken(String oauthToken) {
+        this.oauthToken = oauthToken;
     }
 
     public boolean isSuspended() {

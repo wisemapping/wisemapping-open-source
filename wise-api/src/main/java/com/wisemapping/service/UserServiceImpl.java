@@ -211,13 +211,12 @@ public class UserServiceImpl
             Collaborator existingCollaborator = userManager.getCollaboratorBy(data.getEmail());
 
             Account newUser = new Account();
-            // new registrations from google starts sync
-            newUser.setGoogleSync(true);
             newUser.setEmail(data.getEmail());
             newUser.setFirstname(data.getName());
             newUser.setLastname(data.getLastName());
             newUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
-            newUser.setGoogleToken(data.getAccessToken());
+            newUser.setOauthToken(data.getAccessToken());
+            newUser.setPassword(""); // OAuth users don't need passwords
 
             if (existingCollaborator != null) {
                 // Migrate existing collaborator to account
@@ -243,10 +242,10 @@ public class UserServiceImpl
         }
 
         // Is the user a non-oauth user ?
-        if (result.getGoogleSync() == null || !result.getGoogleSync()) {
-            result.setGoogleSync(false);
+        if (result.getOauthSync() == null || !result.getOauthSync()) {
+            result.setOauthSync(false);
             result.setSyncCode(callbackCode);
-            result.setGoogleToken(data.getAccessToken());
+            result.setOauthToken(data.getAccessToken());
             userManager.updateUser(result);
         }
         return result;
@@ -267,13 +266,12 @@ public class UserServiceImpl
             Collaborator existingCollaborator = userManager.getCollaboratorBy(data.getEmail());
 
             Account newUser = new Account();
-            // new registrations from facebook starts sync
-            newUser.setGoogleSync(true);
             newUser.setEmail(data.getEmail());
             newUser.setFirstname(data.getName());
             newUser.setLastname(data.getLastName());
             newUser.setAuthenticationType(AuthenticationType.FACEBOOK_OAUTH2);
-            newUser.setGoogleToken(data.getAccessToken());
+            newUser.setOauthToken(data.getAccessToken());
+            newUser.setPassword(""); // OAuth users don't need passwords
 
             if (existingCollaborator != null) {
                 // Migrate existing collaborator to account
@@ -299,10 +297,10 @@ public class UserServiceImpl
         }
 
         // Is the user a non-oauth user ?
-        if (result.getGoogleSync() == null || !result.getGoogleSync()) {
-            result.setGoogleSync(false);
+        if (result.getOauthSync() == null || !result.getOauthSync()) {
+            result.setOauthSync(false);
             result.setSyncCode(callbackCode);
-            result.setGoogleToken(data.getAccessToken());
+            result.setOauthToken(data.getAccessToken());
             userManager.updateUser(result);
         }
         return result;
@@ -314,7 +312,7 @@ public class UserServiceImpl
         if (existingUser == null || !existingUser.getSyncCode().equals(code)) {
             throw new WiseMappingException("User not found / incorrect code");
         }
-        existingUser.setGoogleSync(true);
+        existingUser.setOauthSync(true);
         existingUser.setSyncCode(null);
         // user will not be able to login again with usr/pwd schema
         existingUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
