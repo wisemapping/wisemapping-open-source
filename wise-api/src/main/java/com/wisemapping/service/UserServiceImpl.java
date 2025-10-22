@@ -272,12 +272,22 @@ public class UserServiceImpl
             }
         }
 
-        // Is the user a non-oauth user?
-        if (result.getOauthSync() == null || !result.getOauthSync()) {
-            result.setOauthSync(false);
-            result.setSyncCode(callbackCode);
-            result.setOauthToken(data.getAccessToken());
-            userManager.updateUser(result);
+        // Handle OAuth sync based on account type
+        if (result.getAuthenticationType() == AuthenticationType.DATABASE) {
+            // Existing DATABASE account trying to link with OAuth - ask for confirmation
+            if (result.getOauthSync() == null || !result.getOauthSync()) {
+                result.setOauthSync(false);
+                result.setSyncCode(callbackCode);
+                result.setOauthToken(data.getAccessToken());
+                userManager.updateUser(result);
+            }
+        } else {
+            // OAuth account (new or existing) - ensure oauthSync is true
+            if (result.getOauthSync() == null || !result.getOauthSync()) {
+                result.setOauthSync(true);
+                result.setSyncCode(null);
+                userManager.updateUser(result);
+            }
         }
         return result;
     }
