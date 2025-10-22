@@ -17,7 +17,9 @@
  */
 package com.wisemapping.service.facebook;
 
-public class FacebookAccountBasicData {
+import com.wisemapping.service.oauth.OAuthAccountData;
+
+public class FacebookAccountBasicData implements OAuthAccountData {
 	private String accountId;
 	private String email;
 	private String name;
