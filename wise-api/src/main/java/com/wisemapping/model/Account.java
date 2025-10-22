@@ -61,7 +61,7 @@ public class Account
     @Column(name = "sync_code")
     private String syncCode;
 
-    @Column(name = "oauth_token")
+    @Column(name = "oauth_token", columnDefinition = "TEXT")
     private String oauthToken;
 
     @Column(name = "suspended")

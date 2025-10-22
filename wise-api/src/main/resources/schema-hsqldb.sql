@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS ACCOUNT (
   locale              VARCHAR(5),
   oauth_sync		  BOOLEAN,
   sync_code           VARCHAR(255),
-  oauth_token         VARCHAR(255),
+  oauth_token         LONGVARCHAR,
   suspended           BOOLEAN       NOT NULL,
   suspended_date      DATETIME,
   suspension_reason   CHAR(1),

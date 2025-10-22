@@ -10,4 +10,8 @@ public class OAuthAuthenticationException extends WiseMappingException {
     public OAuthAuthenticationException(@NotNull HttpInvokerException exception) {
         super(exception.getMessage());
     }
+
+    public OAuthAuthenticationException(@NotNull String message) {
+        super(message);
+    }
 }

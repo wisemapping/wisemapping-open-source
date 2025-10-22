@@ -204,6 +204,13 @@ public class UserServiceImpl
             logger.debug(e.getMessage(), e);
             throw new OAuthAuthenticationException(e);
         }
+        
+        // Validate that Google provided an email address
+        if (data.getEmail() == null || data.getEmail().trim().isEmpty()) {
+            logger.warn("Google OAuth callback did not provide an email address");
+            throw new OAuthAuthenticationException("Email address is required but was not provided by Google. Please ensure your Google account has a verified email address.");
+        }
+        
         return createAndAuthUserFromOAuth(data, AuthenticationType.GOOGLE_OAUTH2, "Google", callbackCode);
     }
 
@@ -215,6 +222,13 @@ public class UserServiceImpl
             logger.debug(e.getMessage(), e);
             throw new OAuthAuthenticationException(e);
         }
+        
+        // Validate that Facebook provided an email address
+        if (data.getEmail() == null || data.getEmail().trim().isEmpty()) {
+            logger.warn("Facebook OAuth callback did not provide an email address");
+            throw new OAuthAuthenticationException("Email address is required but was not provided by Facebook. Please ensure your Facebook account has a verified email address and grant email permission.");
+        }
+        
         return createAndAuthUserFromOAuth(data, AuthenticationType.FACEBOOK_OAUTH2, "Facebook", callbackCode);
     }
 
