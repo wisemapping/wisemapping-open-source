@@ -248,6 +248,7 @@ public class UserServiceImpl
             newUser.setAuthenticationType(authType);
             newUser.setOauthToken(data.getAccessToken());
             newUser.setPassword(""); // OAuth users don't need passwords
+            newUser.setOauthSync(true); // New OAuth users are already synced
 
             if (existingCollaborator != null) {
                 // Migrate existing collaborator to account
@@ -270,9 +271,17 @@ public class UserServiceImpl
                 logger.warn("User {} attempted to login with {} but account uses {}", data.getEmail(), providerName, existingAuthType);
                 throw new WrongAuthenticationTypeException(result, "Account is registered with a different authentication provider");
             }
+            
+            // For existing OAuth users with same auth type, just update the token
+            if (existingAuthType == authType) {
+                result.setOauthToken(data.getAccessToken());
+                userManager.updateUser(result);
+                logger.debug("Updated OAuth token for existing {} user: {}", providerName, data.getEmail());
+                return result;
+            }
         }
 
-        // Handle OAuth sync based on account type
+        // Handle sync for DATABASE accounts only
         if (result.getAuthenticationType() == AuthenticationType.DATABASE) {
             // Existing DATABASE account trying to link with OAuth - ask for confirmation
             if (result.getOauthSync() == null || !result.getOauthSync()) {
@@ -281,14 +290,8 @@ public class UserServiceImpl
                 result.setOauthToken(data.getAccessToken());
                 userManager.updateUser(result);
             }
-        } else {
-            // OAuth account (new or existing) - ensure oauthSync is true
-            if (result.getOauthSync() == null || !result.getOauthSync()) {
-                result.setOauthSync(true);
-                result.setSyncCode(null);
-                userManager.updateUser(result);
-            }
         }
+        
         return result;
     }
 
