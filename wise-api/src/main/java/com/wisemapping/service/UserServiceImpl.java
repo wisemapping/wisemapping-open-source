@@ -275,6 +275,11 @@ public class UserServiceImpl
             // For existing OAuth users with same auth type, just update the token
             if (existingAuthType == authType) {
                 result.setOauthToken(data.getAccessToken());
+                // Ensure oauthSync is true for OAuth users (fix for legacy accounts)
+                if (result.getOauthSync() == null || !result.getOauthSync()) {
+                    result.setOauthSync(true);
+                    result.setSyncCode(null);
+                }
                 userManager.updateUser(result);
                 logger.debug("Updated OAuth token for existing {} user: {}", providerName, data.getEmail());
                 return result;
@@ -298,7 +303,7 @@ public class UserServiceImpl
     public Account confirmGoogleAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
         final Account existingUser = userManager.getUserBy(email);
         // additional security check
-        if (existingUser == null || !existingUser.getSyncCode().equals(code)) {
+        if (existingUser == null || existingUser.getSyncCode() == null || !code.equals(existingUser.getSyncCode())) {
             throw new WiseMappingException("User not found / incorrect code");
         }
         existingUser.setOauthSync(true);
