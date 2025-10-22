@@ -33,6 +33,7 @@ import com.wisemapping.service.google.GoogleService;
 import com.wisemapping.service.google.http.HttpInvokerException;
 import com.wisemapping.service.facebook.FacebookAccountBasicData;
 import com.wisemapping.service.facebook.FacebookService;
+import com.wisemapping.service.oauth.OAuthAccountData;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
 import org.apache.logging.log4j.LogManager;
@@ -203,52 +204,7 @@ public class UserServiceImpl
             logger.debug(e.getMessage(), e);
             throw new OAuthAuthenticationException(e);
         }
-
-        // Callback is successful, the email of the user exits. Is an existing account ?
-        Account result = userManager.getUserBy(data.getEmail());
-        if (result == null) {
-            // Check if there's an existing collaborator with this email
-            Collaborator existingCollaborator = userManager.getCollaboratorBy(data.getEmail());
-
-            Account newUser = new Account();
-            newUser.setEmail(data.getEmail());
-            newUser.setFirstname(data.getName());
-            newUser.setLastname(data.getLastName());
-            newUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
-            newUser.setOauthToken(data.getAccessToken());
-            newUser.setPassword(""); // OAuth users don't need passwords
-
-            if (existingCollaborator != null) {
-                // Migrate existing collaborator to account
-                logger.debug("Migrating existing collaborator to Google OAuth account for email: " + data.getEmail());
-                result = userManager.createUser(newUser, existingCollaborator);
-            } else {
-                // Create new account
-                result = this.createUser(newUser, false, true);
-            }
-            logger.debug("Google account successfully created");
-            
-            // Track Google OAuth registration
-            String emailProvider = metricsService.extractEmailProvider(result.getEmail());
-            metricsService.trackUserRegistration(result, emailProvider);
-        } else {
-            // Account exists - check if it's using a different OAuth provider
-            AuthenticationType existingAuthType = result.getAuthenticationType();
-            if (existingAuthType != AuthenticationType.DATABASE && existingAuthType != AuthenticationType.GOOGLE_OAUTH2) {
-                // User is trying to login with Google but account uses a different OAuth provider
-                logger.warn("User {} attempted to login with Google but account uses {}", data.getEmail(), existingAuthType);
-                throw new WrongAuthenticationTypeException(result, "Account is registered with a different authentication provider");
-            }
-        }
-
-        // Is the user a non-oauth user ?
-        if (result.getOauthSync() == null || !result.getOauthSync()) {
-            result.setOauthSync(false);
-            result.setSyncCode(callbackCode);
-            result.setOauthToken(data.getAccessToken());
-            userManager.updateUser(result);
-        }
-        return result;
+        return createAndAuthUserFromOAuth(data, AuthenticationType.GOOGLE_OAUTH2, "Google", callbackCode);
     }
 
     public Account createAndAuthUserFromFacebook(@NotNull String callbackCode) throws WiseMappingException {
@@ -259,7 +215,13 @@ public class UserServiceImpl
             logger.debug(e.getMessage(), e);
             throw new OAuthAuthenticationException(e);
         }
-        // Callback is successful, the email of the user exits. Is an existing account ?
+        return createAndAuthUserFromOAuth(data, AuthenticationType.FACEBOOK_OAUTH2, "Facebook", callbackCode);
+    }
+
+    @NotNull
+    private Account createAndAuthUserFromOAuth(@NotNull OAuthAccountData data, @NotNull AuthenticationType authType, 
+                                                @NotNull String providerName, @NotNull String callbackCode) throws WiseMappingException {
+        // Callback is successful, the email of the user exists. Is an existing account?
         Account result = userManager.getUserBy(data.getEmail());
         if (result == null) {
             // Check if there's an existing collaborator with this email
@@ -269,34 +231,34 @@ public class UserServiceImpl
             newUser.setEmail(data.getEmail());
             newUser.setFirstname(data.getName());
             newUser.setLastname(data.getLastName());
-            newUser.setAuthenticationType(AuthenticationType.FACEBOOK_OAUTH2);
+            newUser.setAuthenticationType(authType);
             newUser.setOauthToken(data.getAccessToken());
             newUser.setPassword(""); // OAuth users don't need passwords
 
             if (existingCollaborator != null) {
                 // Migrate existing collaborator to account
-                logger.debug("Migrating existing collaborator to Facebook OAuth account for email: " + data.getEmail());
+                logger.debug("Migrating existing collaborator to {} OAuth account for email: {}", providerName, data.getEmail());
                 result = userManager.createUser(newUser, existingCollaborator);
             } else {
                 // Create new account
                 result = this.createUser(newUser, false, true);
             }
-            logger.debug("Facebook account successfully created");
+            logger.debug("{} account successfully created", providerName);
             
-            // Track Facebook OAuth registration
+            // Track OAuth registration
             String emailProvider = metricsService.extractEmailProvider(result.getEmail());
             metricsService.trackUserRegistration(result, emailProvider);
         } else {
             // Account exists - check if it's using a different OAuth provider
             AuthenticationType existingAuthType = result.getAuthenticationType();
-            if (existingAuthType != AuthenticationType.DATABASE && existingAuthType != AuthenticationType.FACEBOOK_OAUTH2) {
-                // User is trying to login with Facebook but account uses a different OAuth provider
-                logger.warn("User {} attempted to login with Facebook but account uses {}", data.getEmail(), existingAuthType);
+            if (existingAuthType != AuthenticationType.DATABASE && existingAuthType != authType) {
+                // User is trying to login with different OAuth provider than registered
+                logger.warn("User {} attempted to login with {} but account uses {}", data.getEmail(), providerName, existingAuthType);
                 throw new WrongAuthenticationTypeException(result, "Account is registered with a different authentication provider");
             }
         }
 
-        // Is the user a non-oauth user ?
+        // Is the user a non-oauth user?
         if (result.getOauthSync() == null || !result.getOauthSync()) {
             result.setOauthSync(false);
             result.setSyncCode(callbackCode);
