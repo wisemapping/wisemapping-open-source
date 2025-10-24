@@ -166,7 +166,7 @@ app:
       batch-size: 50  # Number of users to process in each batch
       # Two-condition suspension criteria
       public-spam-ratio-threshold: 0.75  # Condition 1: Users with >= 75% of public maps marked as spam will be suspended
-      min-any-spam-count: 6  # Condition 2: Users with >= 6 spam maps (public or private) will be suspended
+      min-any-spam-count: 4  # Condition 2: Users with >= 4 spam maps (public or private) will be suspended
     spam-detection:
       enabled: true
       cron-expression: "0 0 0 * * *"  # Every 24 hours at midnight

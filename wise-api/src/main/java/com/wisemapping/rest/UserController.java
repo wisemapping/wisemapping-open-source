@@ -19,6 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.EmailNotExistsException;
+import com.wisemapping.exceptions.PasswordTooShortException;
 import com.wisemapping.exceptions.PasswordTooLongException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.AuthenticationType;
@@ -88,6 +89,10 @@ public class UserController {
         logger.debug("Register new user:" + registration.getEmail());
         if (!registrationEnabled) {
             throw new WiseMappingException("Registration is disabled. You can enable it using app.registration.enabled");
+        }
+
+        if (registration.getPassword().length() < Account.MIN_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooShortException();
         }
 
         if (registration.getPassword().length() > Account.MAX_PASSWORD_LENGTH_SIZE) {

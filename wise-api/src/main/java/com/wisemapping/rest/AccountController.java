@@ -19,6 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.PasswordTooLongException;
+import com.wisemapping.exceptions.PasswordTooShortException;
 import com.wisemapping.exceptions.PasswordChangeNotAllowedException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Collaboration;
@@ -64,9 +65,13 @@ public class AccountController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody String password) throws PasswordTooLongException, PasswordChangeNotAllowedException {
+    public void changePassword(@RequestBody String password) throws PasswordTooShortException, PasswordTooLongException, PasswordChangeNotAllowedException {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null");
+        }
+
+        if (password.length() < Account.MIN_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooShortException();
         }
 
         if (password.length() > Account.MAX_PASSWORD_LENGTH_SIZE) {

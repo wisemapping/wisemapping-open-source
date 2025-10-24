@@ -19,6 +19,8 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.exceptions.PasswordTooShortException;
+import com.wisemapping.exceptions.PasswordTooLongException;
 import com.wisemapping.exceptions.PasswordChangeNotAllowedException;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Collaboration;
@@ -167,6 +169,14 @@ public class AdminController {
             throw new IllegalArgumentException("password can not be null");
         }
 
+        if (password.length() < Account.MIN_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooShortException();
+        }
+
+        if (password.length() > Account.MAX_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooLongException();
+        }
+
         // Finally create the user ...
         delegated.setAuthenticationType(AuthenticationType.DATABASE);
         userService.createUser(delegated, false, true);
@@ -271,9 +281,17 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody String password, @PathVariable int id) throws PasswordChangeNotAllowedException {
+    public void changePassword(@RequestBody String password, @PathVariable int id) throws PasswordTooShortException, PasswordTooLongException, PasswordChangeNotAllowedException {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null");
+        }
+
+        if (password.length() < Account.MIN_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooShortException();
+        }
+
+        if (password.length() > Account.MAX_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooLongException();
         }
 
         final Account user = userService.getUserBy(id);

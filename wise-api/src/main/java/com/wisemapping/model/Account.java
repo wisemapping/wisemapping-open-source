@@ -33,6 +33,7 @@ public class Account
         extends Collaborator
         implements Serializable {
 
+    public static final int MIN_PASSWORD_LENGTH_SIZE = 8;
     public static final int MAX_PASSWORD_LENGTH_SIZE = 40;
 
     private String firstname;
@@ -191,11 +192,12 @@ public class Account
         this.oauthSync = oauthSync;
     }
 
+    @Nullable
     public String getSyncCode() {
         return syncCode;
     }
 
-    public void setSyncCode(String syncCode) {
+    public void setSyncCode(@Nullable String syncCode) {
         this.syncCode = syncCode;
     }
 

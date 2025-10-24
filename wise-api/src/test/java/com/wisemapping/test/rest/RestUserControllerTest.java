@@ -210,19 +210,19 @@ class RestUserControllerTest {
     private static Stream<Arguments> invalidRegistrationData() {
         return Stream.of(
             Arguments.of(
-                RestUserRegistration.create("invalid-email", "password", "Test", "User"),
+                RestUserRegistration.create("invalid-email", "password123", "Test", "User"),
                 "Invalid email address"
             ),
             Arguments.of(
-                RestUserRegistration.create("test@example.com", "", "Test", "User"),
+                RestUserRegistration.create("test@example.com", "short", "Test", "User"),
+                "Password must be at least 8 characters long"
+            ),
+            Arguments.of(
+                RestUserRegistration.create("test@example.com", "validpass123", "", "User"),
                 "Required field cannot be left blank"
             ),
             Arguments.of(
-                RestUserRegistration.create("test@example.com", "password", "", "User"),
-                "Required field cannot be left blank"
-            ),
-            Arguments.of(
-                RestUserRegistration.create("test@example.com", "password", "Test", ""),
+                RestUserRegistration.create("test@example.com", "validpass123", "Test", ""),
                 "Required field cannot be left blank"
             ),
             Arguments.of(
