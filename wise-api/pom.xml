@@ -199,6 +199,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-XX:+EnableDynamicAgentLoading -Djdk.attach.allowAttachSelf=true -Dnet.bytebuddy.experimental=true</argLine>
+                </configuration>
             </plugin>
             <!-- Build Info Plugin to generate build.properties -->
             <plugin>

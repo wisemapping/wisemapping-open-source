@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class TestDataManager {
     
     private static final String ADMIN_EMAIL = "admin@wisemapping.org";
-    private static final String ADMIN_PASSWORD = "test";
+    private static final String ADMIN_PASSWORD = "testAdmin123";
     private static final AtomicLong counter = new AtomicLong(System.currentTimeMillis());
     
     @Autowired
@@ -87,7 +87,7 @@ public class TestDataManager {
         user.setEmail(email);
         user.setFirstname("Test");
         user.setLastname("User");
-        user.setPassword("test");
+        user.setPassword("password");
         user.setAuthenticationType(AuthenticationType.DATABASE);
         
         return user;
