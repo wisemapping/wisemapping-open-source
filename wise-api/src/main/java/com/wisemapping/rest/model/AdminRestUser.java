@@ -45,6 +45,7 @@ public class AdminRestUser {
     private String firstname;
     private String lastname;
     private String fullName;
+    private String locale;
     private boolean isActive;
     private boolean suspended;
     private String suspensionReason;
@@ -68,6 +69,7 @@ public class AdminRestUser {
         this.firstname = account.getFirstname();
         this.lastname = account.getLastname();
         this.fullName = account.getFullName();
+        this.locale = account.getLocale();
         this.isActive = account.isActive();
         this.suspended = account.isSuspended();
         this.allowSendEmail = account.isAllowSendEmail();
@@ -118,6 +120,10 @@ public class AdminRestUser {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public String getLocale() {
+        return locale;
     }
 
     @JsonProperty("isActive")
@@ -174,6 +180,10 @@ public class AdminRestUser {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
     public void setActive(boolean isActive) {

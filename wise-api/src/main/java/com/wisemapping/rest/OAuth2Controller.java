@@ -85,15 +85,29 @@ public class OAuth2Controller {
         return new RestOath2CallbackResponse(user, jwtToken);
     }
 
+    /**
+     * Confirms account synchronization with Google OAuth.
+     * 
+     * This endpoint is Google-only for backward compatibility.
+     * When a user with an existing database account attempts to login with Google OAuth,
+     * they receive a sync code. This endpoint validates that code and converts their
+     * account to use Google OAuth authentication.
+     * 
+     * @param email the user's email address
+     * @param code the synchronization code received during OAuth callback
+     * @param response HTTP response for JWT token cookie
+     * @return response containing user info and JWT token
+     * @throws WiseMappingException if validation fails
+     */
     @RequestMapping(method = RequestMethod.PUT, value = "confirmaccountsync", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
     public RestOath2CallbackResponse confirmAccountSync(@NotNull @RequestParam String email, @NotNull @RequestParam String code, @NotNull HttpServletResponse response) throws WiseMappingException {
-        logger.debug("ConfirmAccountSync:" + email + " - " + code);
+        logger.debug("ConfirmAccountSync (Google): {} - {}", email, code);
         if (code == null) {
             throw new WiseMappingException("Illegal argument exception: " + email + " - " + code);
         }
 
-        // Update login
+        // Confirm Google OAuth account sync
         final Account user = userService.confirmGoogleAccountSync(email, code);
 
         // Add header ...

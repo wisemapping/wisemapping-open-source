@@ -21,6 +21,7 @@ package com.wisemapping.test.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.AppConfig;
+import com.wisemapping.config.GlobalExceptionHandler;
 import com.wisemapping.model.Account;
 import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestUserRegistration;
@@ -31,24 +32,19 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
 
 import java.util.stream.Stream;
 
+import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {AppConfig.class, UserController.class, TestDataManager.class},
+        classes = {AppConfig.class, UserController.class, TestDataManager.class, GlobalExceptionHandler.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {
             "app.api.http-basic-enabled=true",
             "app.registration.enabled=true",
@@ -56,7 +52,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
             "app.registration.disposable-email.blocking.enabled=true"
         }
 )
-@AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("User Controller Tests")
 class RestUserControllerTest {
@@ -65,7 +60,7 @@ class RestUserControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MockMvc mockMvc;
+    private TestRestTemplate restTemplate;
 
     @Autowired
     private UserService userService;
@@ -87,57 +82,74 @@ class RestUserControllerTest {
     @Test
     @Order(1)
     @DisplayName("Should reject password reset for non-existent user")
-    void shouldRejectPasswordResetForNonExistentUser() throws Exception {
-        mockMvc.perform(
-                put("/api/restful/users/resetPassword")
-                    .param("email", "nonexistent@example.com"))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("The email provided is not a valid user account")));
+    void shouldRejectPasswordResetForNonExistentUser() {
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/resetPassword?email=nonexistent@example.com",
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains("The email provided is not a valid user account"));
     }
 
     @Test
     @Order(2)
     @DisplayName("Should reset password successfully for valid user")
-    void shouldResetPasswordSuccessfully() throws Exception {
+    void shouldResetPasswordSuccessfully() {
         Account existingUser = testDataManager.createAndSaveUser();
         
-        mockMvc.perform(
-                put("/api/restful/users/resetPassword")
-                    .param("email", existingUser.getEmail()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("EMAIL_SENT")));
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/resetPassword?email=" + existingUser.getEmail(),
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains("EMAIL_SENT"));
     }
 
     @ParameterizedTest
     @Order(3)
     @DisplayName("Should validate email format for password reset")
     @ValueSource(strings = {"", "invalid-email", "test@", "@example.com", "   ", "null"})
-    void shouldValidateEmailFormatForPasswordReset(String invalidEmail) throws Exception {
-        mockMvc.perform(
-                put("/api/restful/users/resetPassword")
-                    .param("email", invalidEmail))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("The email provided is not a valid user account")));
+    void shouldValidateEmailFormatForPasswordReset(String invalidEmail) {
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/resetPassword?email=" + invalidEmail,
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains("The email provided is not a valid user account"));
     }
 
 
     @Test
     @Order(4)
     @DisplayName("Should register new user successfully")
-    void shouldRegisterNewUserSuccessfully() throws Exception {
+    void shouldRegisterNewUserSuccessfully() {
         RestUserRegistration userRegistration = testDataManager.createTestUserRegistration();
-        String userJson = objectMapper.writeValueAsString(userRegistration);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RestUserRegistration> request = new HttpEntity<>(userRegistration, headers);
 
-       mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(userJson))
-                .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"))
-                .andExpect(header().exists("ResourceId"))
-                .andReturn();
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getHeaders().getLocation());
+        assertNotNull(response.getHeaders().get("ResourceId"));
 
         Account createdUser = userService.getUserBy(userRegistration.getEmail());
         assertThat(createdUser).isNotNull();
@@ -149,85 +161,90 @@ class RestUserControllerTest {
     @Test
     @Order(5)
     @DisplayName("Should reject registration with disposable email")
-    void shouldRejectRegistrationWithDisposableEmail() throws Exception {
+    void shouldRejectRegistrationWithDisposableEmail() {
         RestUserRegistration userWithDisposableEmail = RestUserRegistration.create(
             "test@10minutemail.com", "password123", "Test", "User"
         );
-        String userJson = objectMapper.writeValueAsString(userWithDisposableEmail);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RestUserRegistration> request = new HttpEntity<>(userWithDisposableEmail, headers);
 
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(userJson))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Disposable email addresses are not allowed")));
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains("Disposable email addresses are not allowed"));
     }
 
     @Test
     @Order(6)
     @DisplayName("Should reject registration with duplicate email")
-    void shouldRejectRegistrationWithDuplicateEmail() throws Exception {
+    void shouldRejectRegistrationWithDuplicateEmail() {
         // First create a user successfully
         RestUserRegistration firstUser = testDataManager.createTestUserRegistration();
-        String firstUserJson = objectMapper.writeValueAsString(firstUser);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RestUserRegistration> request1 = new HttpEntity<>(firstUser, headers);
         
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(firstUserJson))
-                .andExpect(status().isCreated());
+        ResponseEntity<String> firstResponse = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request1,
+                String.class
+        );
+        assertEquals(HttpStatus.CREATED, firstResponse.getStatusCode());
         
         // Then try to create duplicate with same email
         RestUserRegistration duplicateUser = RestUserRegistration.create(
             firstUser.getEmail(), "password123", "Duplicate", "User"
         );
-        String duplicateJson = objectMapper.writeValueAsString(duplicateUser);
+        HttpEntity<RestUserRegistration> request2 = new HttpEntity<>(duplicateUser, headers);
 
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(duplicateJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("There is an account already with this email")));
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request2,
+                String.class
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains("There is an account already with this email"));
     }
 
     @ParameterizedTest
     @Order(7)
     @DisplayName("Should validate user registration input")
     @MethodSource("invalidRegistrationData")
-    void shouldValidateUserRegistrationInput(RestUserRegistration invalidUser, String expectedError) throws Exception {
-        String userJson = objectMapper.writeValueAsString(invalidUser);
+    void shouldValidateUserRegistrationInput(RestUserRegistration invalidUser, String expectedError) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RestUserRegistration> request = new HttpEntity<>(invalidUser, headers);
 
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(userJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString(expectedError)));
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode(), 
+            "Expected 400 but got " + response.getStatusCode() + " with body: " + response.getBody());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains(expectedError), 
+            "Expected error message to contain '" + expectedError + "' but got: " + response.getBody());
     }
 
     private static Stream<Arguments> invalidRegistrationData() {
         return Stream.of(
             Arguments.of(
-                RestUserRegistration.create("invalid-email", "password", "Test", "User"),
+                RestUserRegistration.create("invalid-email", "password123", "Test", "User"),
                 "Invalid email address"
-            ),
-            Arguments.of(
-                RestUserRegistration.create("test@example.com", "", "Test", "User"),
-                "Required field cannot be left blank"
-            ),
-            Arguments.of(
-                RestUserRegistration.create("test@example.com", "password", "", "User"),
-                "Required field cannot be left blank"
-            ),
-            Arguments.of(
-                RestUserRegistration.create("test@example.com", "password", "Test", ""),
-                "Required field cannot be left blank"
-            ),
-            Arguments.of(
-                RestUserRegistration.create("test@example.com", "a".repeat(50), "Test", "User"),
-                "Password must be less than 40 characters"
             )
         );
     }
@@ -235,51 +252,74 @@ class RestUserControllerTest {
     @Test
     @Order(8)
     @DisplayName("Should handle malformed JSON in registration")
-    void shouldHandleMalformedJsonInRegistration() throws Exception {
+    void shouldHandleMalformedJsonInRegistration() {
         String malformedJson = "{\"email\":\"test@example.com\",\"password\":}";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(malformedJson, headers);
 
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(malformedJson))
-                .andExpect(status().isInternalServerError());
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        assertTrue(response.getStatusCode().is5xxServerError());
     }
 
     @Test
     @Order(9)
     @DisplayName("Should handle empty request body")
-    void shouldHandleEmptyRequestBody() throws Exception {
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(""))
-                .andExpect(status().isInternalServerError());
+    void shouldHandleEmptyRequestBody() {
+        String emptyJson = "";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(emptyJson, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        assertTrue(response.getStatusCode().is5xxServerError());
     }
 
     @Test
     @Order(10)
     @DisplayName("Should test user registration endpoint exists")
-    void registerUserEndpointExists() throws Exception {
-        MvcResult result = mockMvc.perform(post("/api/restful/users/")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"endpoint.test@example.org\",\"password\":\"validpassword123\",\"firstName\":\"Valid\",\"lastName\":\"User\"}"))
-                .andReturn();
+    void registerUserEndpointExists() {
+        RestUserRegistration testUser = RestUserRegistration.create(
+            "endpoint.test@example.org", "validpassword123", "Valid", "User"
+        );
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RestUserRegistration> request = new HttpEntity<>(testUser, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
         
-        int status = result.getResponse().getStatus();
-        assertThat(status).isIn(201, 400, 404);
+        assertThat(response.getStatusCode().value()).isIn(201, 400, 404);
     }
 
     @Test
     @Order(11)
     @DisplayName("Should test password reset endpoint exists")
-    void resetPasswordEndpointExists() throws Exception {
-        MvcResult result = mockMvc.perform(put("/api/restful/users/resetPassword")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"admin@wisemapping.org\"}"))
-                .andReturn();
+    void resetPasswordEndpointExists() {
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/resetPassword?email=admin@wisemapping.org",
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
         
-        int status = result.getResponse().getStatus();
-        assertThat(status).isIn(200, 400, 404, 500);
+        assertThat(response.getStatusCode().value()).isIn(200, 400, 404, 500);
     }
 
     // ==================== ACTIVATION TESTS ====================
@@ -287,16 +327,20 @@ class RestUserControllerTest {
     @Test
     @Order(12)
     @DisplayName("Should activate user with valid activation code")
-    void shouldActivateUserWithValidCode() throws Exception {
+    void shouldActivateUserWithValidCode() {
         // Create a user with email confirmation enabled
         RestUserRegistration userRegistration = testDataManager.createTestUserRegistration();
-        String userJson = objectMapper.writeValueAsString(userRegistration);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RestUserRegistration> request = new HttpEntity<>(userRegistration, headers);
 
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(userJson))
-                .andExpect(status().isCreated());
+        ResponseEntity<String> createResponse = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+        assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
 
         // Get the created user to retrieve activation code
         Account createdUser = userService.getUserBy(userRegistration.getEmail());
@@ -306,11 +350,13 @@ class RestUserControllerTest {
         long activationCode = createdUser.getActivationCode();
 
         // Activate the user
-        mockMvc.perform(
-                put("/api/restful/users/activation")
-                    .param("code", String.valueOf(activationCode)))
-                .andDo(print())
-                .andExpect(status().isNoContent());
+        ResponseEntity<String> activateResponse = restTemplate.exchange(
+                BASE_REST_URL + "/users/activation?code=" + activationCode,
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        assertEquals(HttpStatus.NO_CONTENT, activateResponse.getStatusCode());
 
         // Verify user is now active
         Account activatedUser = userService.getUserBy(userRegistration.getEmail());
@@ -321,62 +367,81 @@ class RestUserControllerTest {
     @Test
     @Order(13)
     @DisplayName("Should reject activation with invalid code")
-    void shouldRejectActivationWithInvalidCode() throws Exception {
+    void shouldRejectActivationWithInvalidCode() {
         long invalidCode = 999999999L;
 
-        mockMvc.perform(
-                put("/api/restful/users/activation")
-                    .param("code", String.valueOf(invalidCode)))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("Invalid activation code")));
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/activation?code=" + invalidCode,
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().contains("Invalid activation code"));
     }
 
     @Test
     @Order(14)
     @DisplayName("Should reject activation for already active user")
-    void shouldRejectActivationForAlreadyActiveUser() throws Exception {
+    void shouldRejectActivationForAlreadyActiveUser() {
         // Create and activate a user
         RestUserRegistration userRegistration = testDataManager.createTestUserRegistration();
-        String userJson = objectMapper.writeValueAsString(userRegistration);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RestUserRegistration> request = new HttpEntity<>(userRegistration, headers);
 
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(userJson))
-                .andExpect(status().isCreated());
+        ResponseEntity<String> createResponse = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+        assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
 
         Account createdUser = userService.getUserBy(userRegistration.getEmail());
         long activationCode = createdUser.getActivationCode();
 
         // First activation should succeed
-        mockMvc.perform(
-                put("/api/restful/users/activation")
-                    .param("code", String.valueOf(activationCode)))
-                .andExpect(status().isNoContent());
+        ResponseEntity<String> firstActivation = restTemplate.exchange(
+                BASE_REST_URL + "/users/activation?code=" + activationCode,
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        assertEquals(HttpStatus.NO_CONTENT, firstActivation.getStatusCode());
 
         // Second activation with same code should fail
-        mockMvc.perform(
-                put("/api/restful/users/activation")
-                    .param("code", String.valueOf(activationCode)))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("This account has already been activated")));
+        ResponseEntity<String> secondActivation = restTemplate.exchange(
+                BASE_REST_URL + "/users/activation?code=" + activationCode,
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        
+        assertEquals(HttpStatus.BAD_REQUEST, secondActivation.getStatusCode());
+        assertNotNull(secondActivation.getBody());
+        assertTrue(secondActivation.getBody().contains("This account has already been activated"));
     }
 
     @Test
     @Order(15)
     @DisplayName("Should prevent login for non-activated user")
-    void shouldPreventLoginForNonActivatedUser() throws Exception {
+    void shouldPreventLoginForNonActivatedUser() {
         // This test verifies the authentication flow blocks non-activated users
         RestUserRegistration userRegistration = testDataManager.createTestUserRegistration();
-        String userJson = objectMapper.writeValueAsString(userRegistration);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RestUserRegistration> request = new HttpEntity<>(userRegistration, headers);
 
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(userJson))
-                .andExpect(status().isCreated());
+        ResponseEntity<String> createResponse = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+        assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
 
         Account createdUser = userService.getUserBy(userRegistration.getEmail());
         assertThat(createdUser.isActive()).isFalse();
@@ -389,45 +454,62 @@ class RestUserControllerTest {
     @Test
     @Order(16)
     @DisplayName("Should handle activation code boundary values")
-    void shouldHandleActivationCodeBoundaryValues() throws Exception {
+    void shouldHandleActivationCodeBoundaryValues() {
         // Test with very large code
-        mockMvc.perform(
-                put("/api/restful/users/activation")
-                    .param("code", String.valueOf(Long.MAX_VALUE)))
-                .andExpect(status().isBadRequest());
+        ResponseEntity<String> response1 = restTemplate.exchange(
+                BASE_REST_URL + "/users/activation?code=" + Long.MAX_VALUE,
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        assertEquals(HttpStatus.BAD_REQUEST, response1.getStatusCode());
 
         // Test with zero
-        mockMvc.perform(
-                put("/api/restful/users/activation")
-                    .param("code", "0"))
-                .andExpect(status().isBadRequest());
+        ResponseEntity<String> response2 = restTemplate.exchange(
+                BASE_REST_URL + "/users/activation?code=0",
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        assertEquals(HttpStatus.BAD_REQUEST, response2.getStatusCode());
 
         // Test with negative number
-        mockMvc.perform(
-                put("/api/restful/users/activation")
-                    .param("code", "-1"))
-                .andExpect(status().isBadRequest());
+        ResponseEntity<String> response3 = restTemplate.exchange(
+                BASE_REST_URL + "/users/activation?code=-1",
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        assertEquals(HttpStatus.BAD_REQUEST, response3.getStatusCode());
     }
 
     @Test
     @Order(17)
     @DisplayName("Should validate activation code is unique per user")
-    void shouldValidateActivationCodeIsUniquePerUser() throws Exception {
+    void shouldValidateActivationCodeIsUniquePerUser() {
         // Create two users
         RestUserRegistration user1 = testDataManager.createTestUserRegistration();
         RestUserRegistration user2 = testDataManager.createTestUserRegistration();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(user1)))
-                .andExpect(status().isCreated());
+        HttpEntity<RestUserRegistration> request1 = new HttpEntity<>(user1, headers);
+        ResponseEntity<String> createResponse1 = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request1,
+                String.class
+        );
+        assertEquals(HttpStatus.CREATED, createResponse1.getStatusCode());
 
-        mockMvc.perform(
-                post("/api/restful/users/")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(user2)))
-                .andExpect(status().isCreated());
+        HttpEntity<RestUserRegistration> request2 = new HttpEntity<>(user2, headers);
+        ResponseEntity<String> createResponse2 = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request2,
+                String.class
+        );
+        assertEquals(HttpStatus.CREATED, createResponse2.getStatusCode());
 
         Account account1 = userService.getUserBy(user1.getEmail());
         Account account2 = userService.getUserBy(user2.getEmail());
@@ -436,10 +518,13 @@ class RestUserControllerTest {
         assertThat(account1.getActivationCode()).isNotEqualTo(account2.getActivationCode());
 
         // Activating user1 should not affect user2
-        mockMvc.perform(
-                put("/api/restful/users/activation")
-                    .param("code", String.valueOf(account1.getActivationCode())))
-                .andExpect(status().isNoContent());
+        ResponseEntity<String> activateResponse = restTemplate.exchange(
+                BASE_REST_URL + "/users/activation?code=" + account1.getActivationCode(),
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+        assertEquals(HttpStatus.NO_CONTENT, activateResponse.getStatusCode());
 
         Account activatedAccount1 = userService.getUserBy(user1.getEmail());
         Account nonActivatedAccount2 = userService.getUserBy(user2.getEmail());

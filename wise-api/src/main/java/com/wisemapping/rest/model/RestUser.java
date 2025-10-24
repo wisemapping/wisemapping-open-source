@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.SuspensionReason;
@@ -121,6 +122,12 @@ public class RestUser {
         user.setAllowSendEmail(allowSendEmail);
     }
 
+    @JsonProperty("isActive")
+    public boolean isActive() {
+        return user.isActive();
+    }
+
+    @JsonProperty("isSuspended")
     public boolean isSuspended() {
         return user.isSuspended();
     }
@@ -156,6 +163,7 @@ public class RestUser {
         return user.getFullName();
     }
 
+    @JsonProperty("isAdmin")
     public boolean isAdmin() {
         return this.isAdmin;
     }

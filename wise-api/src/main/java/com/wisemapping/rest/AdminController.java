@@ -19,6 +19,8 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.exceptions.PasswordTooShortException;
+import com.wisemapping.exceptions.PasswordTooLongException;
 import com.wisemapping.exceptions.PasswordChangeNotAllowedException;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Collaboration;
@@ -118,22 +120,22 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
     @ResponseBody
-    public RestUser getUserById(@PathVariable int id) {
+    public com.wisemapping.rest.model.AdminRestUser getUserById(@PathVariable int id) {
         final Account userBy = userService.getUserBy(id);
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
         }
-        return new RestUser(userBy, isAdmin(userBy.getEmail()));
+        return new com.wisemapping.rest.model.AdminRestUser(userBy, isAdmin(userBy.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/email/{email:.+}", produces = {"application/json"})
     @ResponseBody
-    public RestUser getUserByEmail(@PathVariable String email) {
+    public com.wisemapping.rest.model.AdminRestUser getUserByEmail(@PathVariable String email) {
         final Account user = userService.getUserBy(email);
         if (user == null) {
             throw new IllegalArgumentException("User '" + email + "' could not be found");
         }
-        return new RestUser(user, isAdmin(user.getEmail()));
+        return new com.wisemapping.rest.model.AdminRestUser(user, isAdmin(user.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users", consumes = {"application/json"}, produces = {"application/json"})
@@ -165,6 +167,14 @@ public class AdminController {
         final String password = delegated.getPassword();
         if (password == null || password.isEmpty()) {
             throw new IllegalArgumentException("password can not be null");
+        }
+
+        if (password.length() < Account.MIN_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooShortException();
+        }
+
+        if (password.length() > Account.MAX_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooLongException();
         }
 
         // Finally create the user ...
@@ -271,9 +281,17 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}/password", consumes = {"text/plain"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void changePassword(@RequestBody String password, @PathVariable int id) throws PasswordChangeNotAllowedException {
+    public void changePassword(@RequestBody String password, @PathVariable int id) throws PasswordTooShortException, PasswordTooLongException, PasswordChangeNotAllowedException {
         if (password == null) {
             throw new IllegalArgumentException("Password can not be null");
+        }
+
+        if (password.length() < Account.MIN_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooShortException();
+        }
+
+        if (password.length() > Account.MAX_PASSWORD_LENGTH_SIZE) {
+            throw new PasswordTooLongException();
         }
 
         final Account user = userService.getUserBy(id);

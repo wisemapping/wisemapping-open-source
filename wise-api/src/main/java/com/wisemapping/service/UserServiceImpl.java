@@ -302,17 +302,34 @@ public class UserServiceImpl
 
     public Account confirmGoogleAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
         final Account existingUser = userManager.getUserBy(email);
-        // additional security check
-        if (existingUser == null || existingUser.getSyncCode() == null || !code.equals(existingUser.getSyncCode())) {
+        
+        // Validate user exists
+        if (existingUser == null) {
+            logger.warn("Google account sync confirmation failed: user not found for email {}", email);
             throw new WiseMappingException("User not found / incorrect code");
         }
+        
+        // Validate syncCode exists - this prevents NPE
+        final String userSyncCode = existingUser.getSyncCode();
+        if (userSyncCode == null) {
+            logger.warn("Google account sync confirmation failed: no sync code set for user {}", email);
+            throw new WiseMappingException("User not found / incorrect code");
+        }
+        
+        // Validate code matches - safe because we null-checked above
+        if (!code.equals(userSyncCode)) {
+            logger.warn("Google account sync confirmation failed: invalid code for user {}", email);
+            throw new WiseMappingException("User not found / incorrect code");
+        }
+        
+        // Confirm the Google OAuth sync
         existingUser.setOauthSync(true);
         existingUser.setSyncCode(null);
-        // user will not be able to login again with usr/pwd schema
         existingUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
-        existingUser.setPassword("");
+        existingUser.setPassword(""); // OAuth users don't need passwords
         userManager.updateUser(existingUser);
-
+        
+        logger.info("Google account sync confirmed for user {}", email);
         return existingUser;
     }
 
