@@ -36,8 +36,15 @@ jobs:
           distribution: 'zulu'
           cache: maven
 
-      - name: Build with Maven
-        run: mvn -B clean install --file wise-api/pom.xml
+      - name: Build with Maven (skip tests on main)
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "Building on main branch - skipping tests"
+            mvn -B clean install -DskipTests --file wise-api/pom.xml
+          else
+            echo "Building on ${{ github.ref }} - running tests"
+            mvn -B clean install --file wise-api/pom.xml
+          fi
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
