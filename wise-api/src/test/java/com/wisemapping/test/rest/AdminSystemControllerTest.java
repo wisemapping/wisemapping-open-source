@@ -35,9 +35,9 @@ import static org.junit.jupiter.api.Assertions.*;
 )
 public class AdminSystemControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
-    private static final String ADMIN_PASSWORD = "test";
+    private static final String ADMIN_PASSWORD = "testAdmin123";
     private static final String REGULAR_USER = "test@wisemapping.org";
-    private static final String REGULAR_PASSWORD = "test";
+    private static final String REGULAR_PASSWORD = "password";
 
     @Autowired
     private TestRestTemplate restTemplate;
