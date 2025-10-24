@@ -120,22 +120,22 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
     @ResponseBody
-    public RestUser getUserById(@PathVariable int id) {
+    public com.wisemapping.rest.model.AdminRestUser getUserById(@PathVariable int id) {
         final Account userBy = userService.getUserBy(id);
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
         }
-        return new RestUser(userBy, isAdmin(userBy.getEmail()));
+        return new com.wisemapping.rest.model.AdminRestUser(userBy, isAdmin(userBy.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/email/{email:.+}", produces = {"application/json"})
     @ResponseBody
-    public RestUser getUserByEmail(@PathVariable String email) {
+    public com.wisemapping.rest.model.AdminRestUser getUserByEmail(@PathVariable String email) {
         final Account user = userService.getUserBy(email);
         if (user == null) {
             throw new IllegalArgumentException("User '" + email + "' could not be found");
         }
-        return new RestUser(user, isAdmin(user.getEmail()));
+        return new com.wisemapping.rest.model.AdminRestUser(user, isAdmin(user.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users", consumes = {"application/json"}, produces = {"application/json"})

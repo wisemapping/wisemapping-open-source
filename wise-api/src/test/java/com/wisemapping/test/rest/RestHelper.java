@@ -27,7 +27,7 @@ public class RestHelper {
         restUser.setEmail(email);
         restUser.setFirstname("foo first name");
         restUser.setLastname("foo last name");
-        restUser.setPassword("fooPassword");
+        restUser.setPassword("fooPassword123");
         return restUser;
     }
 }
