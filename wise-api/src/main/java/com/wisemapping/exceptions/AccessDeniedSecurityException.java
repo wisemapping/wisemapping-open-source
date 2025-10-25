@@ -24,18 +24,27 @@ import org.jetbrains.annotations.NotNull;
 public class AccessDeniedSecurityException
         extends ClientException {
     public static final String MSG_KEY = "ACCESS_HAS_BEEN_REVOKED";
+    
+    private final String messageKey;
 
     public AccessDeniedSecurityException(@NotNull String msg) {
         super(msg, Severity.FATAL);
+        this.messageKey = MSG_KEY;
+    }
+
+    public AccessDeniedSecurityException(@NotNull String msg, @NotNull String messageKey) {
+        super(msg, Severity.FATAL);
+        this.messageKey = messageKey;
     }
 
     public AccessDeniedSecurityException(@NotNull long mapId, Collaborator user) {
         super("You do not have enough right access to see this map. This map has been changed to private or deleted.", Severity.FATAL);
+        this.messageKey = MSG_KEY;
     }
 
     @NotNull
     @Override
     protected String getMsgBundleKey() {
-        return MSG_KEY;
+        return messageKey;
     }
 }

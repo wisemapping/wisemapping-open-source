@@ -24,6 +24,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import com.wisemapping.exceptions.AccountDisabledException;
+import com.wisemapping.exceptions.AccountSuspendedException;
 import com.wisemapping.model.Account;
 import com.wisemapping.service.MetricsService;
 
@@ -53,9 +54,9 @@ public class FacebookAuthenticationProvider implements org.springframework.secur
             throw new AccountDisabledException("Facebook OAuth account not active for " + inputToken.getName());
         }
 
-        // Allow OAuth login for suspended users and remove suspension
+        // Check if account is suspended - do NOT auto-unsuspend
         if (user.isSuspended()) {
-            userDetailsService.getUserService().unsuspendUser(user);
+            throw new AccountSuspendedException("Account suspended for " + inputToken.getName());
         }
 
         PreAuthenticatedAuthenticationToken resultToken = new PreAuthenticatedAuthenticationToken(userDetails,

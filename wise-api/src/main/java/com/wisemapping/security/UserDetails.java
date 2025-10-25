@@ -63,7 +63,8 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.user.isActive();
+        // Account is locked if it's suspended
+        return !this.user.isSuspended();
     }
 
     @Override
@@ -73,8 +74,8 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public boolean isEnabled() {
-        return this.user.isActive();
-
+        // Account is enabled only if it's active AND not suspended
+        return this.user.isActive() && !this.user.isSuspended();
     }
 
     public Account getUser() {

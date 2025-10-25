@@ -43,7 +43,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<RestErrors> handleAccessDeniedSecurityException(AccessDeniedSecurityException ex) {
         // Log at DEBUG level to avoid ERROR logs
         logger.debug("Access denied for map access: {}", ex.getMessage());
-        RestErrors error = new RestErrors(ex.getMessage(), ex.getSeverity(), ex.getTechInfo());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? ex.getMessage(messageSource, locale) : ex.getMessage();
+        RestErrors error = new RestErrors(message, ex.getSeverity(), ex.getTechInfo());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
