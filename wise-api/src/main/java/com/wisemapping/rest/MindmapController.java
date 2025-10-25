@@ -114,7 +114,7 @@ public class MindmapController {
         
         // For public maps, check if the creator is not suspended
         if (mindmap.isPublic() && mindmap.getCreator().isSuspended()) {
-            throw new AccessDeniedSecurityException("This map is no longer available");
+            throw new AccessDeniedSecurityException("This map is no longer available because the creator's account has been suspended.", "SUSPENDED_USER_MAP_NOT_AVAILABLE");
         }
 
         final MindMapBean mindMapBean = new MindMapBean(mindmap, user);
@@ -230,7 +230,7 @@ public class MindmapController {
         
         // For public maps, check if the creator is not suspended
         if (mindmap.isPublic() && mindmap.getCreator().isSuspended()) {
-            throw new AccessDeniedSecurityException("This map is no longer available");
+            throw new AccessDeniedSecurityException("This map is no longer available because the creator's account has been suspended.", "SUSPENDED_USER_MAP_NOT_AVAILABLE");
         }
 
         String xmlStr = mindmap.getXmlStr();
@@ -514,6 +514,11 @@ public class MindmapController {
             throw new IllegalArgumentException("No enough to execute this operation");
         }
 
+        // Check if user is suspended - suspended users cannot publish maps
+        if (user.isSuspended()) {
+            throw new AccessDeniedSecurityException("Suspended users cannot publish maps. Please contact support for assistance.", "SUSPENDED_USER_CANNOT_PUBLISH_MAPS");
+        }
+
         // Check for spam content when trying to make public
         if (isPublic) {
             SpamDetectionResult spamResult = spamDetectionService.detectSpam(mindMap, "publish");
@@ -678,6 +683,12 @@ public class MindmapController {
             @RequestParam(required = false) String layout)
             throws WiseMappingException {
 
+        // Check if user is suspended - suspended users cannot create maps
+        final Account user = Utils.getUser(true);
+        if (user.isSuspended()) {
+            throw new AccessDeniedSecurityException("Suspended users cannot create maps. Please contact support for assistance.", "SUSPENDED_USER_CANNOT_CREATE_MAPS");
+        }
+
         final Mindmap mindmap = new Mindmap();
         if (title != null && !title.isEmpty()) {
             mindmap.setTitle(title);
@@ -724,7 +735,6 @@ public class MindmapController {
         }
 
         // Add new mindmap ...
-        final Account user = Utils.getUser(true);
         mindmapService.addMindmap(mindmap, user);
 
         // Track mindmap creation
@@ -741,15 +751,18 @@ public class MindmapController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createDuplicate(@RequestBody RestMindmapInfo restMindmap, @PathVariable int id,
             @NotNull HttpServletResponse response) throws WiseMappingException {
+        // Check if user is suspended - suspended users cannot duplicate maps
+        final Account user = Utils.getUser(true);
+        if (user.isSuspended()) {
+            throw new AccessDeniedSecurityException("Suspended users cannot duplicate maps. Please contact support for assistance.", "SUSPENDED_USER_CANNOT_DUPLICATE_MAPS");
+        }
+
         // Validate ...
         final BindingResult result = new BeanPropertyBindingResult(restMindmap, "");
         new MapInfoValidator(mindmapService).validate(restMindmap.getDelegated(), result);
         if (result.hasErrors()) {
             throw new ValidationException(result);
         }
-
-        // Some basic validations ...
-        final Account user = Utils.getUser();
 
         // Create a shallowCopy of the map ...
         final Mindmap mindMap = findMindmapById(id);
