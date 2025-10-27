@@ -54,6 +54,7 @@ public class AdminRestMap {
     private String spamDetectedDate;
     private String spamReason;
     private boolean isCreatorSuspended;
+    private int collaboratorCount;
 
     // Default constructor for Jackson deserialization
     public AdminRestMap() {
@@ -122,6 +123,13 @@ public class AdminRestMap {
             
             // Note: getSpamReason() method may not exist in current model
             // this.spamReason = mindmap.getSpamInfo().getSpamReason();
+        }
+        
+        // Count collaborations (excluding the owner)
+        if (mindmap.getCollaborations() != null) {
+            this.collaboratorCount = mindmap.getCollaborations().size();
+        } else {
+            this.collaboratorCount = 0;
         }
     }
 
@@ -245,5 +253,13 @@ public class AdminRestMap {
 
     public void setCreatorSuspended(boolean isCreatorSuspended) {
         this.isCreatorSuspended = isCreatorSuspended;
+    }
+
+    public int getCollaboratorCount() {
+        return collaboratorCount;
+    }
+
+    public void setCollaboratorCount(int collaboratorCount) {
+        this.collaboratorCount = collaboratorCount;
     }
 }
