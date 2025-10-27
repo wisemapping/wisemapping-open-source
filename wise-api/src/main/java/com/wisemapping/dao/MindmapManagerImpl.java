@@ -372,10 +372,11 @@ public class MindmapManagerImpl
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, COUNT(m.id) as spamCount " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationDate >= :cutoffDate " +
+            "AND c.creationDate >= :cutoffDate " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold", 
             Object[].class);
@@ -402,13 +403,14 @@ public class MindmapManagerImpl
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, COUNT(m.id) as spamCount " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationDate >= :cutoffDate " +
+            "AND c.creationDate >= :cutoffDate " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold " +
-            "ORDER BY m.creator.id", 
+            "ORDER BY c.id", 
             Object[].class);
         
         // Calculate cutoff date (monthsBack months ago)
@@ -435,14 +437,15 @@ public class MindmapManagerImpl
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, COUNT(m.id) as spamCount " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationDate >= :cutoffDate " +
-            "AND (:lastUserId IS NULL OR m.creator.id > :lastUserId) " +
+            "AND c.creationDate >= :cutoffDate " +
+            "AND (:lastUserId IS NULL OR c.id > :lastUserId) " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold " +
-            "ORDER BY m.creator.id", 
+            "ORDER BY c.id", 
             Object[].class);
         
         // Calculate cutoff date (monthsBack months ago)
@@ -471,13 +474,14 @@ public class MindmapManagerImpl
             "       COUNT(CASE WHEN s.spamDetected = true THEN 1 END) as spamCount, " +
             "       COUNT(m.id) as totalCount " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "LEFT JOIN m.spamInfo s " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "WHERE c.creationDate >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "GROUP BY m.creator " +
             "HAVING COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
             "   AND (COUNT(CASE WHEN s.spamDetected = true THEN 1 END) * 1.0 / COUNT(m.id)) >= :spamRatioThreshold " +
-            "ORDER BY m.creator.id", 
+            "ORDER BY c.id", 
             Object[].class);
         
         // Calculate cutoff date (monthsBack months ago)
@@ -506,13 +510,15 @@ public class MindmapManagerImpl
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
             "FROM com.wisemapping.model.Mindmap m " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "JOIN m.creator c " +
+            "WHERE c.creationDate >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "AND m.creator IN (" +
             "    SELECT m2.creator " +
             "    FROM com.wisemapping.model.Mindmap m2 " +
+            "    JOIN m2.creator c2 " +
             "    LEFT JOIN m2.spamInfo s2 " +
-            "    WHERE m2.creator.creationDate >= :cutoffDate " +
+            "    WHERE c2.creationDate >= :cutoffDate " +
             "      AND m2.isPublic = true " +
             "    GROUP BY m2.creator " +
             "    HAVING COUNT(CASE WHEN s2.spamDetected = true THEN 1 END) >= :minSpamCount " +
@@ -536,17 +542,19 @@ public class MindmapManagerImpl
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "AND m.creator.creationDate >= :cutoffDate " +
+            "AND c.creationDate >= :cutoffDate " +
             "AND m.creator IN (" +
             "    SELECT m2.creator " +
             "    FROM com.wisemapping.model.Mindmap m2 " +
+            "    JOIN m2.creator c2 " +
             "    JOIN m2.spamInfo s2 " +
             "    WHERE s2.spamDetected = true " +
             "      AND m2.isPublic = true " +
-            "    AND m2.creator.creationDate >= :cutoffDate " +
+            "    AND c2.creationDate >= :cutoffDate " +
             "    GROUP BY m2.creator " +
             "    HAVING COUNT(m2.id) >= :spamThreshold" +
             ")",
@@ -568,13 +576,14 @@ public class MindmapManagerImpl
             "SELECT m.creator, " +
             "       COUNT(CASE WHEN s.spamDetected = true THEN 1 END) as spamCount " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "LEFT JOIN m.spamInfo s " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "WHERE c.creationDate >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) > :minTotalMaps " +
             "   AND COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
-            "ORDER BY m.creator.id", 
+            "ORDER BY c.id", 
             Object[].class);
         
         // Calculate cutoff date (monthsBack months ago)
@@ -602,13 +611,15 @@ public class MindmapManagerImpl
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
             "FROM com.wisemapping.model.Mindmap m " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "JOIN m.creator c " +
+            "WHERE c.creationDate >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "AND m.creator IN (" +
             "    SELECT m2.creator " +
             "    FROM com.wisemapping.model.Mindmap m2 " +
+            "    JOIN m2.creator c2 " +
             "    LEFT JOIN m2.spamInfo s2 " +
-            "    WHERE m2.creator.creationDate >= :cutoffDate " +
+            "    WHERE c2.creationDate >= :cutoffDate " +
             "      AND m2.isPublic = true " +
             "    GROUP BY m2.creator " +
             "    HAVING COUNT(m2.id) > :minTotalMaps " +
@@ -634,13 +645,14 @@ public class MindmapManagerImpl
             "       COUNT(CASE WHEN s.spamDetected = true THEN 1 END) as spamCount, " +
             "       COUNT(m.id) as totalCount " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "LEFT JOIN m.spamInfo s " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "WHERE c.creationDate >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) > 0 " +
             "   AND (COUNT(CASE WHEN s.spamDetected = true THEN 1 END) * 1.0 / COUNT(m.id)) >= :spamRatioThreshold " +
-            "ORDER BY m.creator.id", 
+            "ORDER BY c.id", 
             Object[].class);
         
         // Calculate cutoff date (monthsBack months ago)
@@ -668,13 +680,15 @@ public class MindmapManagerImpl
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
             "FROM com.wisemapping.model.Mindmap m " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "JOIN m.creator c " +
+            "WHERE c.creationDate >= :cutoffDate " +
             "  AND m.isPublic = true " +
             "AND m.creator IN (" +
             "    SELECT m2.creator " +
             "    FROM com.wisemapping.model.Mindmap m2 " +
+            "    JOIN m2.creator c2 " +
             "    LEFT JOIN m2.spamInfo s2 " +
-            "    WHERE m2.creator.creationDate >= :cutoffDate " +
+            "    WHERE c2.creationDate >= :cutoffDate " +
             "      AND m2.isPublic = true " +
             "    GROUP BY m2.creator " +
             "    HAVING COUNT(m2.id) > 0 " +
@@ -698,11 +712,12 @@ public class MindmapManagerImpl
             "SELECT m.creator, " +
             "       COUNT(CASE WHEN s.spamDetected = true THEN 1 END) as totalSpamCount " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "LEFT JOIN m.spamInfo s " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "WHERE c.creationDate >= :cutoffDate " +
             "GROUP BY m.creator " +
             "HAVING COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
-            "ORDER BY m.creator.id", 
+            "ORDER BY c.id", 
             Object[].class);
         
         // Calculate cutoff date (monthsBack months ago)
@@ -729,12 +744,14 @@ public class MindmapManagerImpl
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
             "FROM com.wisemapping.model.Mindmap m " +
-            "WHERE m.creator.creationDate >= :cutoffDate " +
+            "JOIN m.creator c " +
+            "WHERE c.creationDate >= :cutoffDate " +
             "AND m.creator IN (" +
             "    SELECT m2.creator " +
             "    FROM com.wisemapping.model.Mindmap m2 " +
+            "    JOIN m2.creator c2 " +
             "    LEFT JOIN m2.spamInfo s2 " +
-            "    WHERE m2.creator.creationDate >= :cutoffDate " +
+            "    WHERE c2.creationDate >= :cutoffDate " +
             "    GROUP BY m2.creator " +
             "    HAVING COUNT(CASE WHEN s2.spamDetected = true THEN 1 END) >= :minSpamCount" +
             ")",
@@ -753,7 +770,7 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> findPublicMindmaps() {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true AND m.creator.suspended = false", 
+            "SELECT m FROM com.wisemapping.model.Mindmap m JOIN m.creator c WHERE m.isPublic = true AND c.suspended = false", 
             Mindmap.class);
         return query.getResultList();
     }
@@ -847,13 +864,14 @@ public class MindmapManagerImpl
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, COUNT(m.id) as spamCount " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "  AND m.creator.creationDate >= :cutoffDate " +
+            "  AND c.creationDate >= :cutoffDate " +
             "  AND s.spamTypeCode IN (" + inClause.toString() + ") " +
             "GROUP BY m.creator " +
-            "ORDER BY m.creator.id", 
+            "ORDER BY c.id", 
             Object[].class);
         
         query.setParameter("cutoffDate", cutoffDate);
@@ -893,10 +911,11 @@ public class MindmapManagerImpl
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
             "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
             "JOIN m.spamInfo s " +
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
-            "  AND m.creator.creationDate >= :cutoffDate " +
+            "  AND c.creationDate >= :cutoffDate " +
             "  AND s.spamTypeCode IN (" + inClause.toString() + ")", 
             Long.class);
         
@@ -1304,7 +1323,7 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> findByCreator(int userId) {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = :userId", 
+            "SELECT m FROM com.wisemapping.model.Mindmap m JOIN m.creator c WHERE c.id = :userId", 
             Mindmap.class);
         query.setParameter("userId", userId);
         return query.getResultList();
@@ -1315,7 +1334,7 @@ public class MindmapManagerImpl
     public Calendar findLastModificationTimeByCreator(int userId) {
         try {
             final TypedQuery<Calendar> query = entityManager.createQuery(
-                "SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = :userId", 
+                "SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m JOIN m.creator c WHERE c.id = :userId", 
                 Calendar.class);
             query.setParameter("userId", userId);
             return query.getSingleResult();
