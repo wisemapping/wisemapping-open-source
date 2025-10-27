@@ -52,7 +52,7 @@ public class InactiveMindmap implements Serializable {
     @JsonIgnore
     private Account creator;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "last_editor_id")
     @NotFound(action = NotFoundAction.IGNORE)
     @JsonIgnore
