@@ -44,7 +44,7 @@ public class UserDetailsService
         final Account user = userService.getUserBy(email);
 
         if (user != null) {
-            return new UserDetails(user, isAdmin(email));
+            return new UserDetails(user, isAdmin(email), userService);
         } else {
             throw new UsernameNotFoundException(email);
         }

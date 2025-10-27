@@ -172,6 +172,7 @@ app:
       cron-expression: "0 0 0 * * *"  # Every 24 hours at midnight
       batch-size: 100  # Number of mindmaps to process in each batch
       min-nodes-exemption: 15  # Mindmaps with more than this many nodes are automatically considered not spam
+      max-description-length: 200  # Maximum description length before considering as potential spam
       startup-enabled: false  # Enable spam detection on application startup (async)
       months-back: 45  # Only process mindmaps created since 2022 (approximately 45 months)
       version: 4  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version

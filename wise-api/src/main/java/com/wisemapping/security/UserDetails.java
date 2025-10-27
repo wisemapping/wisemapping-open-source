@@ -19,6 +19,7 @@
 package com.wisemapping.security;
 
 import com.wisemapping.model.Account;
+import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,12 +28,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
-	private final Account user;
+	private final int userId;
+    private final String email;
+    private final String password;
     private final boolean isAdmin;
+    private transient UserService userService;
 
-    public  UserDetails(@NotNull final Account user, boolean isAdmin) {
-        this.user = user;
+    public  UserDetails(@NotNull final Account user, boolean isAdmin, UserService userService) {
+        this.userId = user.getId();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
         this.isAdmin = isAdmin;
+        this.userService = userService;
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -48,12 +55,12 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return email;
     }
 
     @Override
@@ -63,8 +70,9 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public boolean isAccountNonLocked() {
-        // Account is locked if it's suspended
-        return !this.user.isSuspended();
+        // Account is locked if it's suspended - fetch fresh data from DB
+        final Account freshUser = getFreshAccount();
+        return freshUser != null && !freshUser.isSuspended();
     }
 
     @Override
@@ -74,11 +82,34 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public boolean isEnabled() {
-        // Account is enabled only if it's active AND not suspended
-        return this.user.isActive() && !this.user.isSuspended();
+        // Account is enabled only if it's active AND not suspended - fetch fresh data from DB
+        final Account freshUser = getFreshAccount();
+        return freshUser != null && freshUser.isActive() && !freshUser.isSuspended();
     }
 
+    /**
+     * Get fresh account data from database to avoid stale session data
+     */
+    private Account getFreshAccount() {
+        if (userService != null) {
+            return userService.getUserBy(userId);
+        }
+        return null;
+    }
+
+    /**
+     * Get fresh user account from database.
+     * This ensures suspension status and other mutable fields are up-to-date.
+     */
     public Account getUser() {
-        return user;
+        Account freshUser = getFreshAccount();
+        if (freshUser == null) {
+            throw new IllegalStateException("User could not be retrieved from database");
+        }
+        return freshUser;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 }

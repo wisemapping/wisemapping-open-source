@@ -39,6 +39,9 @@ public enum SpamStrategyType {
     // HTML Content Spam
     HTML_CONTENT('H', "HtmlContent"),
     
+    // Description Length Spam
+    DESCRIPTION_LENGTH('D', "DescriptionLength"),
+    
     // Unknown/Generic spam
     UNKNOWN('X', "Unknown");
     
