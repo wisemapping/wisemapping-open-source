@@ -173,9 +173,11 @@ public class SpamUserSuspensionService {
                 int batchSuspendedCount = processRatioBatch(users, conditionName);
                 suspendedCount += batchSuspendedCount;
 
-                if (users.isEmpty() || batchSuspendedCount == 0) {
+                if (users.isEmpty()) {
                     break; // No more users to process
                 }
+                
+                // Note: We continue even if batchSuspendedCount == 0 because later batches might have unsuspended users
 
                 offset += batchSize;
             } catch (Exception e) {
@@ -211,9 +213,11 @@ public class SpamUserSuspensionService {
                 int batchSuspendedCount = processBatch(users, conditionName);
                 suspendedCount += batchSuspendedCount;
 
-                if (users.isEmpty() || batchSuspendedCount == 0) {
+                if (users.isEmpty()) {
                     break; // No more users to process
                 }
+                
+                // Note: We continue even if batchSuspendedCount == 0 because later batches might have unsuspended users
 
                 offset += batchSize;
             } catch (Exception e) {
