@@ -100,11 +100,33 @@ public class AppConfig implements WebMvcConfigurer {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            // For API endpoints, return 401 instead of redirecting to OAuth login
+                            if (request.getRequestURI().startsWith("/api/")) {
+                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                response.setContentType("application/json");
+                                response.getWriter().write("{\"msg\":\"Unauthorized\"}");
+                            } else {
+                                // For non-API endpoints, let OAuth2 handle it
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                            }
+                        }))
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
                         )
                         .successHandler(oauth2AuthenticationSuccessHandler)
+                        .failureHandler((request, response, exception) -> {
+                            // For API endpoints, return 401 instead of redirecting
+                            if (request.getRequestURI().startsWith("/api/")) {
+                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                response.setContentType("application/json");
+                                response.getWriter().write("{\"msg\":\"OAuth authentication failed\"}");
+                            } else {
+                                response.sendRedirect("/c/login?error=oauth_failed");
+                            }
+                        })
                 )
                 .logout(logout -> logout.permitAll()
                         .logoutSuccessHandler((request, response, authentication) -> {
