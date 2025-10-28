@@ -33,14 +33,8 @@ public class AppController {
     @Value("${app.security.oauth2.google.enabled:false}")
     private Boolean isGoogleOauth2Enabled;
 
-    @Value("${app.security.oauth2.google.url:}")
-    private String googleOauth2Url;
-
     @Value("${app.security.oauth2.facebook.enabled:false}")
     private Boolean isFacebookOauth2Enabled;
-
-    @Value("${app.security.oauth2.facebook.url:}")
-    private String facebookOauth2Url;
 
     @Value("${app.registration.enabled:true}")
     private Boolean isRegistrationEnabled;
@@ -66,6 +60,12 @@ public class AppController {
     @RequestMapping(method = RequestMethod.GET, value = "/config")
     @ResponseStatus(value = HttpStatus.OK)
     public RestAppConfig appConfig() {
+        // Build Spring Boot OAuth2 URLs
+        String googleOauth2Url = isGoogleOauth2Enabled ? 
+                apiBaseUrl + "/oauth2/authorization/google" : null;
+        String facebookOauth2Url = isFacebookOauth2Enabled ? 
+                apiBaseUrl + "/oauth2/authorization/facebook" : null;
+        
         return new RestAppConfig.RestAppConfigBuilder()
                 .setApiUrl(apiBaseUrl)
                 .setUiUrl(uiBaseUrl)
@@ -80,13 +80,6 @@ public class AppController {
                 .build();
     }
 
-    public String getGoogleOauth2Url() {
-        return googleOauth2Url;
-    }
-
-    public void setGoogleOauth2Url(String googleOauth2Url) {
-        this.googleOauth2Url = googleOauth2Url;
-    }
 
     public Boolean getRegistrationEnabled() {
         return isRegistrationEnabled;

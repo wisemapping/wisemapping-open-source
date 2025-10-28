@@ -22,18 +22,10 @@ import com.wisemapping.dao.UserManager;
 import com.wisemapping.exceptions.AccountAlreadyActivatedException;
 import com.wisemapping.exceptions.InvalidActivationCodeException;
 import com.wisemapping.exceptions.InvalidMindmapException;
-import com.wisemapping.exceptions.OAuthAuthenticationException;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.exceptions.WrongAuthenticationTypeException;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.RestResetPasswordAction;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
-import com.wisemapping.service.google.GoogleAccountBasicData;
-import com.wisemapping.service.google.GoogleService;
-import com.wisemapping.service.google.http.HttpInvokerException;
-import com.wisemapping.service.facebook.FacebookAccountBasicData;
-import com.wisemapping.service.facebook.FacebookService;
-import com.wisemapping.service.oauth.OAuthAccountData;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
 import org.apache.logging.log4j.LogManager;
@@ -65,10 +57,6 @@ public class UserServiceImpl
     private MessageSource messageSource;
     @Autowired
     private VelocityEngineWrapper velocityEngineWrapper;
-    @Autowired
-    private GoogleService googleService;
-    @Autowired
-    private FacebookService facebookService;
     @Autowired
     private MetricsService metricsService;
 
@@ -195,145 +183,6 @@ public class UserServiceImpl
         return user;
     }
 
-    @NotNull
-    public Account createAndAuthUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException {
-        GoogleAccountBasicData data;
-        try {
-            data = googleService.processCallback(callbackCode);
-        } catch (HttpInvokerException e) {
-            logger.debug(e.getMessage(), e);
-            throw new OAuthAuthenticationException(e);
-        }
-        
-        // Validate that Google provided an email address
-        if (data.getEmail() == null || data.getEmail().trim().isEmpty()) {
-            logger.warn("Google OAuth callback did not provide an email address");
-            throw new OAuthAuthenticationException("Email address is required but was not provided by Google. Please ensure your Google account has a verified email address.");
-        }
-        
-        return createAndAuthUserFromOAuth(data, AuthenticationType.GOOGLE_OAUTH2, "Google", callbackCode);
-    }
-
-    public Account createAndAuthUserFromFacebook(@NotNull String callbackCode) throws WiseMappingException {
-        FacebookAccountBasicData data;
-        try {
-            data = facebookService.processCallback(callbackCode);
-        } catch (HttpInvokerException e) {
-            logger.debug(e.getMessage(), e);
-            throw new OAuthAuthenticationException(e);
-        }
-        
-        // Validate that Facebook provided an email address
-        if (data.getEmail() == null || data.getEmail().trim().isEmpty()) {
-            logger.warn("Facebook OAuth callback did not provide an email address");
-            throw new OAuthAuthenticationException("Email address is required but was not provided by Facebook. Please ensure your Facebook account has a verified email address and grant email permission.");
-        }
-        
-        return createAndAuthUserFromOAuth(data, AuthenticationType.FACEBOOK_OAUTH2, "Facebook", callbackCode);
-    }
-
-    @NotNull
-    private Account createAndAuthUserFromOAuth(@NotNull OAuthAccountData data, @NotNull AuthenticationType authType, 
-                                                @NotNull String providerName, @NotNull String callbackCode) throws WiseMappingException {
-        // Callback is successful, the email of the user exists. Is an existing account?
-        Account result = userManager.getUserBy(data.getEmail());
-        if (result == null) {
-            // Check if there's an existing collaborator with this email
-            Collaborator existingCollaborator = userManager.getCollaboratorBy(data.getEmail());
-
-            Account newUser = new Account();
-            newUser.setEmail(data.getEmail());
-            newUser.setFirstname(data.getName());
-            newUser.setLastname(data.getLastName());
-            newUser.setAuthenticationType(authType);
-            newUser.setOauthToken(data.getAccessToken());
-            newUser.setPassword(""); // OAuth users don't need passwords
-            newUser.setOauthSync(true); // New OAuth users are already synced
-
-            if (existingCollaborator != null) {
-                // Migrate existing collaborator to account
-                logger.debug("Migrating existing collaborator to {} OAuth account for email: {}", providerName, data.getEmail());
-                result = userManager.createUser(newUser, existingCollaborator);
-            } else {
-                // Create new account
-                result = this.createUser(newUser, false, true);
-            }
-            logger.debug("{} account successfully created", providerName);
-            
-            // Track OAuth registration
-            String emailProvider = metricsService.extractEmailProvider(result.getEmail());
-            metricsService.trackUserRegistration(result, emailProvider);
-        } else {
-            // Account exists - check if it's using a different OAuth provider
-            AuthenticationType existingAuthType = result.getAuthenticationType();
-            if (existingAuthType != AuthenticationType.DATABASE && existingAuthType != authType) {
-                // User is trying to login with different OAuth provider than registered
-                logger.warn("User {} attempted to login with {} but account uses {}", data.getEmail(), providerName, existingAuthType);
-                throw new WrongAuthenticationTypeException(result, "Account is registered with a different authentication provider");
-            }
-            
-            // For existing OAuth users with same auth type, just update the token
-            if (existingAuthType == authType) {
-                result.setOauthToken(data.getAccessToken());
-                // Ensure oauthSync is true for OAuth users (fix for legacy accounts)
-                if (result.getOauthSync() == null || !result.getOauthSync()) {
-                    result.setOauthSync(true);
-                    result.setSyncCode(null);
-                }
-                userManager.updateUser(result);
-                logger.debug("Updated OAuth token for existing {} user: {}", providerName, data.getEmail());
-                return result;
-            }
-        }
-
-        // Handle sync for DATABASE accounts only
-        if (result.getAuthenticationType() == AuthenticationType.DATABASE) {
-            // Existing DATABASE account trying to link with OAuth - ask for confirmation
-            if (result.getOauthSync() == null || !result.getOauthSync()) {
-                result.setOauthSync(false);
-                result.setSyncCode(callbackCode);
-                result.setOauthToken(data.getAccessToken());
-                userManager.updateUser(result);
-            }
-        }
-        
-        return result;
-    }
-
-    public Account confirmGoogleAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException {
-        final Account existingUser = userManager.getUserBy(email);
-        
-        // Validate user exists
-        if (existingUser == null) {
-            logger.warn("Google account sync confirmation failed: user not found for email {}", email);
-            throw new WiseMappingException("User not found / incorrect code");
-        }
-        
-        // Validate syncCode exists - this prevents NPE
-        final String userSyncCode = existingUser.getSyncCode();
-        if (userSyncCode == null) {
-            logger.warn("Google account sync confirmation failed: no sync code set for user {}", email);
-            throw new WiseMappingException("User not found / incorrect code");
-        }
-        
-        // Validate code matches - safe because we null-checked above
-        if (!code.equals(userSyncCode)) {
-            logger.warn("Google account sync confirmation failed: invalid code for user {}", email);
-            throw new WiseMappingException("User not found / incorrect code");
-        }
-        
-        // Confirm the Google OAuth sync
-        existingUser.setOauthSync(true);
-        existingUser.setSyncCode(null);
-        existingUser.setAuthenticationType(AuthenticationType.GOOGLE_OAUTH2);
-        existingUser.setPassword(""); // OAuth users don't need passwords
-        userManager.updateUser(existingUser);
-        
-        logger.info("Google account sync confirmed for user {}", email);
-        return existingUser;
-    }
-
-
     public Mindmap buildTutorialMindmap(@NotNull String firstName) throws InvalidMindmapException {
         //To change body of created methods use File | Settings | File Templates.
         final Locale locale = LocaleContextHolder.getLocale();
@@ -399,14 +248,6 @@ public class UserServiceImpl
 
     public void setVelocityEngineWrapper(VelocityEngineWrapper velocityEngineWrapper) {
         this.velocityEngineWrapper = velocityEngineWrapper;
-    }
-
-    public void setGoogleService(GoogleService googleService) {
-        this.googleService = googleService;
-    }
-
-    public void setFacebookService(FacebookService facebookService) {
-        this.facebookService = facebookService;
     }
 
     @Override

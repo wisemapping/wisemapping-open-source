@@ -8,6 +8,8 @@ import com.wisemapping.scheduler.InactiveUserSuspensionScheduler;
 import com.wisemapping.scheduler.SpamDetectionScheduler;
 import com.wisemapping.scheduler.SpamUserSuspensionScheduler;
 import com.wisemapping.security.AuthenticationProvider;
+import com.wisemapping.security.CustomOAuth2UserService;
+import com.wisemapping.security.OAuth2AuthenticationSuccessHandler;
 import com.wisemapping.service.HistoryPurgeService;
 import com.wisemapping.service.InactiveUserService;
 import com.wisemapping.service.MindmapServiceImpl;
@@ -69,6 +71,12 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+    
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+    
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
@@ -86,13 +94,18 @@ public class AppConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/restful/maps/*/document/xml-pub").permitAll()
                         .requestMatchers("/api/restful/users/resetPassword").permitAll()
                         .requestMatchers("/api/restful/users/activation").permitAll()
-                        .requestMatchers("/api/restful/oauth2/googlecallback").permitAll()
-                        .requestMatchers("/api/restful/oauth2/facebookcallback").permitAll()
-                        .requestMatchers("/api/restful/oauth2/confirmaccountsync").permitAll()
+                        .requestMatchers("/login/oauth2/**").permitAll()
+                        .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/api/restful/admin/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .successHandler(oauth2AuthenticationSuccessHandler)
+                )
                 .logout(logout -> logout.permitAll()
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);

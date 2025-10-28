@@ -53,10 +53,6 @@ public class SecurityConfig {
         return  DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    private AuthenticationProvider googleAuthenticationProvider() {
-        return new GoogleAuthenticationProvider(userDetailsService, metricsService);
-    }
-
     private AuthenticationProvider dbAuthenticationProvider() {
         final com.wisemapping.security.AuthenticationProvider provider =
                 new com.wisemapping.security.AuthenticationProvider();
@@ -74,7 +70,6 @@ public class SecurityConfig {
                 .passwordEncoder(passwordEncoder());
 
         builder.authenticationProvider(dbAuthenticationProvider());
-        builder.authenticationProvider(googleAuthenticationProvider());
 
         return builder.build();
     }

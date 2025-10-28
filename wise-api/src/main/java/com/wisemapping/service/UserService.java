@@ -32,21 +32,6 @@ public interface UserService {
 
     Account createUser(@NotNull Account user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException;
 
-	Account createAndAuthUserFromGoogle(@NotNull String callbackCode) throws WiseMappingException;
-
-	Account createAndAuthUserFromFacebook(@NotNull String callbackCode) throws WiseMappingException;
-
-	/**
-	 * Confirms Google OAuth account synchronization for an existing database user.
-	 * This method validates the sync code and converts the account to use Google OAuth authentication.
-	 * 
-	 * @param email the user's email address
-	 * @param code the synchronization code to validate
-	 * @return the updated account with Google OAuth authentication enabled
-	 * @throws WiseMappingException if user not found, sync code is null, or code doesn't match
-	 */
-	Account confirmGoogleAccountSync(@NotNull String email, @NotNull String code) throws WiseMappingException;
-
     void changePassword(@NotNull Account user);
 
     Account getUserBy(String email);

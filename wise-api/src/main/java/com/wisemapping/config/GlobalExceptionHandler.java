@@ -261,14 +261,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OAuthAuthenticationException.class)
     @ResponseBody
     public OAuthAuthenticationException handleOAuthErrors(@NotNull OAuthAuthenticationException ex, HttpServletResponse response) {
-        // @todo: Further research needed for this error. No clear why this happens.
-        // Caused by: com.wisemapping.service.http.HttpInvokerException: error invoking https://oauth2.googleapis.com/token, response: {
-        //  "error": "invalid_grant",
-        //  "error_description": "Bad Request"
-        //}, status: 400
-        //
-        logger.error(ex.getMessage(), ex);
-        response.setStatus(response.getStatus());
+        // Handle OAuth2 authentication errors from Spring Boot OAuth2 Client
+        logger.error("OAuth authentication error: {}", ex.getMessage(), ex);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return ex;
     }
 
