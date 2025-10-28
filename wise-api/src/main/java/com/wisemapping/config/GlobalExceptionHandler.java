@@ -118,6 +118,19 @@ public class GlobalExceptionHandler {
         return new RestErrors(message, Severity.SEVERE);
     }
 
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestErrors handleHttpMessageNotReadableException(@NotNull org.springframework.http.converter.HttpMessageNotReadableException ex) {
+        // Log at DEBUG level since this is usually a client error (missing request body)
+        logger.debug("HTTP message not readable: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("INVALID_REQUEST", null, "Invalid request. Required request body is missing or malformed.", locale) :
+            "Invalid request. Required request body is missing or malformed.";
+        return new RestErrors(message, Severity.WARNING);
+    }
+
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody

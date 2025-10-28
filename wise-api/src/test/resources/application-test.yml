@@ -64,6 +64,8 @@ spring:
 
 # Application configuration
 app:
+  admin:
+    user: admin@wisemapping.org  # Admin user email suffix for role checking
   api:
     http-basic-enabled: true
   registration:
