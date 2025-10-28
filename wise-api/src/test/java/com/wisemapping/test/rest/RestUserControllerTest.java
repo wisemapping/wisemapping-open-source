@@ -266,7 +266,8 @@ class RestUserControllerTest {
                 String.class
         );
 
-        assertTrue(response.getStatusCode().is5xxServerError());
+        assertTrue(response.getStatusCode().is4xxClientError(), 
+                   "Expected 4xx for malformed JSON, got: " + response.getStatusCode());
     }
 
     @Test
@@ -285,7 +286,8 @@ class RestUserControllerTest {
                 String.class
         );
 
-        assertTrue(response.getStatusCode().is5xxServerError());
+        assertTrue(response.getStatusCode().is4xxClientError(), 
+                   "Expected 4xx for empty request body, got: " + response.getStatusCode());
     }
 
     @Test
