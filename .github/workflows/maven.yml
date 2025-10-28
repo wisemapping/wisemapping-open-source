@@ -34,7 +34,6 @@ jobs:
         with:
           java-version: '24'
           distribution: 'zulu'
-          cache: maven
 
       - name: Build with Maven (skip tests on main)
         run: |
@@ -44,7 +43,6 @@ jobs:
           else
             echo "Building on ${{ github.ref }} - running tests"
             mvn -B clean install --file wise-api/pom.xml
-          fi
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
