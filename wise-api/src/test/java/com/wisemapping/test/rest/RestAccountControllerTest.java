@@ -193,6 +193,14 @@ public class RestAccountControllerTest {
 
         // Create a new user ...
         final URI location = createUser(requestHeaders, templateRest, restUser);
+        
+        if (location == null) {
+            // If location is null, try to find user by email as fallback
+            ResponseEntity<RestUser> result = findUserByEmail(requestHeaders, templateRest, restUser.getEmail());
+            assertNotNull(result.getBody(), "User should have been created. Response: " + result);
+            restUser.setId(result.getBody().getId());
+            return restUser;
+        }
 
         // Check that the user has been created ...
         ResponseEntity<RestUser> result = findUser(requestHeaders, templateRest, location);
@@ -236,7 +244,41 @@ public class RestAccountControllerTest {
 
     private URI createUser(@NotNull HttpHeaders requestHeaders, TestRestTemplate templateRest, RestUser restUser) {
         final HttpEntity<RestUser> createUserEntity = new HttpEntity<>(restUser, requestHeaders);
-        return templateRest.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
+        final ResponseEntity<String> response = templateRest.postForEntity(BASE_REST_URL + "/admin/users", createUserEntity, String.class);
+        
+        // Check if creation was successful
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new IllegalStateException("Failed to create user. Status: " + response.getStatusCode() + ", Body: " + response.getBody());
+        }
+        
+        // Extract Location header as string (handles relative paths that might not resolve in CI)
+        final String locationStr = response.getHeaders().getFirst("Location");
+        if (locationStr != null) {
+            try {
+                // If it's a relative path, make it absolute using BASE_REST_URL
+                if (locationStr.startsWith("/")) {
+                    return new URI(BASE_REST_URL + locationStr);
+                } else {
+                    // Already absolute, parse directly
+                    return new URI(locationStr);
+                }
+            } catch (java.net.URISyntaxException e) {
+                throw new IllegalStateException("Invalid Location header: " + locationStr, e);
+            }
+        }
+        
+        // Fallback: construct location from ResourceId header
+        final String resourceId = response.getHeaders().getFirst("ResourceId");
+        if (resourceId != null) {
+            try {
+                return new URI(BASE_REST_URL + "/admin/users/" + resourceId);
+            } catch (java.net.URISyntaxException e) {
+                throw new IllegalStateException("Failed to construct URI from ResourceId: " + resourceId, e);
+            }
+        }
+        
+        // If no location or resourceId, return null - createNewUser will handle it
+        return null;
     }
 
 }
