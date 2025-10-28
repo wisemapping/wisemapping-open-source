@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.stream.Stream;
 
@@ -46,12 +47,12 @@ import static org.junit.jupiter.api.Assertions.*;
         classes = {AppConfig.class, UserController.class, TestDataManager.class, GlobalExceptionHandler.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {
-            "app.api.http-basic-enabled=true",
             "app.registration.enabled=true",
             "app.registration.email-confirmation-enabled=true",
             "app.registration.disposable-email.blocking.enabled=true"
         }
 )
+@ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("User Controller Tests")
 class RestUserControllerTest {

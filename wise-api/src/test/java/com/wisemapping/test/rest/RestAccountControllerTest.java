@@ -32,6 +32,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
 
@@ -41,9 +42,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
         classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"app.api.http-basic-enabled=true"}
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class RestAccountControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";

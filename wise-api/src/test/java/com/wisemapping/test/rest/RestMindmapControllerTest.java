@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -36,8 +37,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
         classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"app.api.http-basic-enabled=true"})
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 public class RestMindmapControllerTest {
 
     private RestUser user;
@@ -327,8 +328,8 @@ public class RestMindmapControllerTest {
         mapToUpdate.setXml("<map>this is not valid</map>");
         mapToUpdate.setProperties("{zoom:x}");
 
-        // Create lock ...
-        final HttpHeaders lockHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        // Create lock headers ...
+        final HttpHeaders lockHeaders = new HttpHeaders();
         lockHeaders.setContentType(MediaType.TEXT_PLAIN);
 
         // Update map ...

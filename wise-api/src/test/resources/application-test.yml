@@ -1,0 +1,99 @@
+#
+#  Test Configuration - Common properties for all tests
+#  This configuration enforces in-memory JDBC and disables DDL creation
+#
+
+spring:
+  # Database configuration - Force in-memory HSQLDB for all tests
+  datasource:
+    url: jdbc:hsqldb:mem:wisemapping-test;sql.names=false;sql.regular_names=false
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    password: ''
+    username: sa
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: HikariPool-WiseMapping-Test
+      minimum-idle: 1
+      maximum-pool-size: 5
+      connection-timeout: 10000
+  
+  # JPA/Hibernate configuration - DDL creation is DISABLED for tests
+  # Schema will be created ONLY from SQL schema files (schema-hsqldb.sql), NOT from JPA entity mappings
+  jpa:
+    hibernate:
+      ddl-auto: none  # Disable automatic DDL generation from entity mappings
+    open-in-view: true  # Keep session open for the duration of request to handle lazy loading
+    properties:
+      hibernate:
+        current_session_context_class: thread
+        default_batch_fetch_size: 200
+        dialect: org.hibernate.dialect.HSQLDialect
+        format_sql: false
+        use_sql_comments: false
+    show-sql: false
+    # Disable automatic schema export/creation - schema comes from SQL files only
+    defer-datasource-initialization: false
+  
+  # SQL initialization - Use schema initialization instead of DDL
+  # Schema is created ONLY from SQL files, NOT from JPA entity annotations
+  sql:
+    init:
+      mode: always
+      platform: hsqldb
+      schema-locations: classpath:schema-hsqldb.sql
+      data-locations: classpath:data-hsqldb.sql
+      continue-on-error: false  # Fail if schema initialization fails
+      separator: ;  # SQL statement separator
+  
+  # Mail configuration - Disable in tests
+  mail:
+    host: localhost
+    port: 25
+    test-connection: false
+  
+  # Security - Enable HTTP Basic for tests
+  security:
+    basic:
+      enabled: true
+  
+  # Test configuration - Enable context caching to avoid reloading
+  test:
+    context:
+      cache:
+        max-size: 32  # Allow up to 32 different test contexts to be cached
+
+# Application configuration
+app:
+  api:
+    http-basic-enabled: true
+  registration:
+    enabled: true
+    email-confirmation-enabled: false
+  batch:
+    history-cleanup:
+      enabled: false
+  scheduler:
+    spam-detection:
+      enabled: false
+      startup-enabled: false
+    inactive-mindmap-migration:
+      enabled: false
+      startup-enabled: false
+    spam-user-suspension:
+      enabled: false
+      startup-enabled: false
+    inactive-user-suspension:
+      enabled: false
+      startup-enabled: false
+    history-purge:
+      enabled: false
+      startup-enabled: false
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.wisemapping: INFO
+    org.hibernate: WARN
+    org.springframework: WARN
+

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the complete flow from scheduler to service to database operations.
  */
 @SpringBootTest(classes = {AppConfig.class})
+@ActiveProfiles("test")
 @TestPropertySource(properties = {
         "app.batch.history-cleanup.enabled=true",
         "app.batch.history-cleanup.phase1-lower-boundary-years=2",
@@ -30,8 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
         "app.batch.history-cleanup.phase2-upper-boundary-years=0.5",
         "app.batch.history-cleanup.phase2-max-entries=4",
         "app.batch.history-cleanup.batch-size=100",
-        "app.batch.history-cleanup.cron-expression=0 0 2 * * *",
-        "spring.jpa.hibernate.ddl-auto=create-drop"
+        "app.batch.history-cleanup.cron-expression=0 0 2 * * *"
 })
 @Transactional
 public class HistoryPurgeSchedulerIntegrationTest {

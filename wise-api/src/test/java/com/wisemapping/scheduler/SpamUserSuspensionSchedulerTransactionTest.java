@@ -23,6 +23,7 @@ import com.wisemapping.service.SpamUserSuspensionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * transaction management with REQUIRES_NEW propagation.
  */
 @SpringBootTest(classes = {AppConfig.class})
+@ActiveProfiles("test")
 @TestPropertySource(properties = {
     "app.batch.spam-user-suspension.enabled=true",
     "app.batch.spam-user-suspension.months-back=72",

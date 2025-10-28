@@ -88,9 +88,15 @@ CREATE TABLE IF NOT EXISTS COLLABORATION (
  properties_id  INTEGER NOT NULL,
  mindmap_id     INTEGER NOT NULL,
  role_id        INTEGER NOT NULL,
-  FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id),
-  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id),
+  FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
   FOREIGN KEY (properties_id) REFERENCES COLLABORATION_PROPERTIES (id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 );
 
 CREATE TABLE IF NOT EXISTS ACCESS_AUDITORY (
@@ -100,5 +106,20 @@ CREATE TABLE IF NOT EXISTS ACCESS_AUDITORY (
   FOREIGN KEY (user_id) REFERENCES ACCOUNT (collaborator_id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
+);
+
+CREATE TABLE IF NOT EXISTS MINDMAP_INACTIVE_USER (
+  id                 INTEGER       NOT NULL IDENTITY,
+  original_mindmap_id INTEGER      NOT NULL,
+  creation_date      DATETIME,
+  edition_date       DATETIME,
+  creator_id         INTEGER,
+  last_editor_id     INTEGER,
+  description        VARCHAR(255),
+  public             BOOLEAN      NOT NULL,
+  title              VARCHAR(255),
+  xml                LONGVARBINARY,
+  migration_date     DATETIME,
+  migration_reason   VARCHAR(255)
 );
 

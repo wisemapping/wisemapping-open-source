@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.net.URI;
@@ -31,8 +32,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Disabled("Test isolation issue: Fails when running full test suite but passes individually. Context sharing problem with admin authentication.")
 @SpringBootTest(
         classes = {AppConfig.class, LabelController.class, AdminController.class, UserController.class, TestDataManager.class},
-        properties = {"app.api.http-basic-enabled=true"},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 public class RestLabelControllerTest {
     private static final String COLOR = "#000000";
 

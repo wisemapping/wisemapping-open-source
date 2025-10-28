@@ -55,7 +55,8 @@ public class AuthenticationProvider implements org.springframework.security.auth
         }
 
         // Validate password
-        if (user == null || credentials == null || !encoder.matches(user.getPassword(), credentials)) {
+        // encoder.matches(rawPassword, encodedPassword) - credentials is raw, user.getPassword() is encoded
+        if (user == null || credentials == null || !encoder.matches(credentials, user.getPassword())) {
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
         }
 

@@ -30,6 +30,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * - Already suspended users are not processed again
  */
 @SpringBootTest(classes = {AppConfig.class})
+@ActiveProfiles("test")
 @TestPropertySource(properties = {
     "app.batch.inactive-user-suspension.inactivity-years=1",
     "app.batch.inactive-user-suspension.batch-size=5",
@@ -87,7 +89,6 @@ public class InactiveUserServiceTest {
     private Mindmap suspendedUserMindmap;
 
     @BeforeEach
-    @Transactional
     void setUp() {
         // Create test users
         inactiveUser1 = createTestUser("inactive1@test.com", "Inactive", "User1");
@@ -170,7 +171,6 @@ public class InactiveUserServiceTest {
     }
 
     @AfterEach
-    @Transactional
     void tearDown() {
         // Clean up test data
         entityManager.clear();
@@ -265,7 +265,6 @@ public class InactiveUserServiceTest {
     // ===== HISTORY REMOVAL TESTS =====
 
     @Test
-    @Transactional
     void testInactiveUserSuspensionWithHistoryRemoval() {
         // Verify that inactive users are suspended and their mindmap history is cleared
         Calendar cutoffDate = Calendar.getInstance();
@@ -295,7 +294,6 @@ public class InactiveUserServiceTest {
     }
 
     @Test
-    @Transactional
     void testAlreadySuspendedUsersAreNotProcessed() {
         // Verify that already suspended users are not processed again
         Calendar cutoffDate = Calendar.getInstance();
@@ -318,7 +316,6 @@ public class InactiveUserServiceTest {
     }
 
     @Test
-    @Transactional
     void testActiveUserIsNotSuspended() {
         // Verify that active users are not suspended
         Calendar cutoffDate = Calendar.getInstance();
@@ -337,7 +334,6 @@ public class InactiveUserServiceTest {
     }
 
     @Test
-    @Transactional
     void testBatchProcessingWithSufficientData() {
         // Test the batch processing logic when there are enough inactive users to fill multiple batches
         Calendar cutoffDate = Calendar.getInstance();
@@ -376,7 +372,6 @@ public class InactiveUserServiceTest {
     }
 
     @Test
-    @Transactional
     void testTransactionRequiredExceptionReproduction() {
         // This test reproduces the exact TransactionRequiredException that occurs in production
         // when the suspendInactiveUser method tries to execute the DELETE query without proper transaction context
@@ -490,7 +485,6 @@ public class InactiveUserServiceTest {
     }
 
     @Test
-    @Transactional
     void testDryRunMode() {
         // Test dry run mode - users should not be suspended but should be identified as candidates
         // Note: dryRun is set to false in test properties, so this tests the actual suspension behavior
