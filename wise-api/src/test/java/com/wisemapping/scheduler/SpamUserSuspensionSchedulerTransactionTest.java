@@ -23,8 +23,8 @@ import com.wisemapping.service.SpamUserSuspensionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.*;
     "app.batch.spam-user-suspension.public-spam-ratio-threshold=0.75",
     "app.batch.spam-user-suspension.min-any-spam-count=6"
 })
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@Transactional
 public class SpamUserSuspensionSchedulerTransactionTest {
 
     @Autowired

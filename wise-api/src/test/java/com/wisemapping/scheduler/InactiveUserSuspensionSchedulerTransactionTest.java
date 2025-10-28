@@ -23,8 +23,8 @@ import com.wisemapping.service.InactiveUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.*;
     "app.batch.inactive-user-suspension.batch-size=2", 
     "app.batch.inactive-user-suspension.dry-run=false"
 })
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@Transactional
 public class InactiveUserSuspensionSchedulerTransactionTest {
 
     @Autowired
