@@ -1,10 +1,10 @@
 #
 #  Test Configuration - Common properties for all tests
-#  This configuration uses file system persistence for HSQLDB
+#  This configuration uses file system persistence for HSQLDB to ensure reliable database initialization
 #
 
 spring:
-  # Database configuration - Use file system persistence for HSQLDB
+  # Database configuration - Always use file system persistence for reliable test execution
   datasource:
     url: jdbc:hsqldb:file:./target/test-db/wisemapping-test;sql.names=false;sql.regular_names=false
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
@@ -106,7 +106,11 @@ app:
 logging:
   level:
     root: INFO
-    com.wisemapping: INFO
+    com.wisemapping: DEBUG
+    com.wisemapping.security: DEBUG
     org.hibernate: WARN
     org.springframework: WARN
+    org.springframework.security: DEBUG
+    org.springframework.jdbc: DEBUG
+    org.springframework.boot.autoconfigure.security: DEBUG
 

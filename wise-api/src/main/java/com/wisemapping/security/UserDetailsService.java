@@ -21,6 +21,8 @@ package com.wisemapping.security;
 
 import com.wisemapping.model.Account;
 import com.wisemapping.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsService
         implements org.springframework.security.core.userdetails.UserDetailsService {
+    private static final Logger logger = LogManager.getLogger();
+    
     @Autowired
     private UserService userService;
 
@@ -41,11 +45,18 @@ public class UserDetailsService
 
     @Override
     public UserDetails loadUserByUsername(@NotNull String email) throws UsernameNotFoundException, DataAccessException {
+        logger.debug("Loading user by username: {}", email);
+        logger.debug("Admin user pattern: {}", adminUser);
+        
         final Account user = userService.getUserBy(email);
 
         if (user != null) {
+            logger.debug("User found: {}, isActive: {}, isSuspended: {}, authType: {}", 
+                        email, user.isActive(), user.isSuspended(), user.getAuthenticationType());
+            logger.debug("Is admin: {}", isAdmin(email));
             return new UserDetails(user, isAdmin(email), userService);
         } else {
+            logger.debug("User NOT found: {}", email);
             throw new UsernameNotFoundException(email);
         }
     }

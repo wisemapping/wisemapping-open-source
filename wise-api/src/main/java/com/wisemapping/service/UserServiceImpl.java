@@ -139,6 +139,7 @@ public class UserServiceImpl
         if (user == null) {
             throw new IllegalArgumentException("User can not be null");
         }
+        logger.debug("Auditing login for user: {}", user.getEmail());
         final AccessAuditory accessAuditory = new AccessAuditory();
         accessAuditory.setUser(user);
         accessAuditory.setLoginDate(Calendar.getInstance());
@@ -146,24 +147,31 @@ public class UserServiceImpl
 
         // Track user login with enhanced metrics
         metricsService.trackUserLogin(user, "database");
+        logger.debug("Login audit completed for user: {}", user.getEmail());
     }
 
     @NotNull
     public Account createUser(@NotNull Account user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException {
+        logger.debug("Creating user: {}, emailConfirm: {}, welcomeEmail: {}", user.getEmail(), emailConfirmEnabled, welcomeEmail);
+        
         final UUID uuid = UUID.randomUUID();
         user.setCreationDate(Calendar.getInstance());
         user.setActivationCode(uuid.getLeastSignificantBits());
 
         if (emailConfirmEnabled) {
             user.setActivationDate(null);
+            logger.debug("Email confirmation required for user: {}", user.getEmail());
         } else {
             user.setActivationDate(Calendar.getInstance());
+            logger.debug("User auto-activated: {}", user.getEmail());
         }
 
         final Collaborator col = userManager.getCollaboratorBy(user.getEmail());
         if (col != null) {
+            logger.debug("Found existing collaborator for email: {}", user.getEmail());
             userManager.createUser(user, col);
         } else {
+            logger.debug("Creating new user without existing collaborator: {}", user.getEmail());
             userManager.createUser(user);
         }
 
@@ -211,13 +219,28 @@ public class UserServiceImpl
 
     @Override
     public Account getUserBy(String email) {
-        return userManager.getUserBy(email);
+        logger.debug("Looking up user by email: {}", email);
+        final Account user = userManager.getUserBy(email);
+        if (user != null) {
+            logger.debug("User found: {}, ID: {}, isActive: {}, isSuspended: {}, authType: {}", 
+                        email, user.getId(), user.isActive(), user.isSuspended(), user.getAuthenticationType());
+        } else {
+            logger.debug("User NOT found for email: {}", email);
+        }
+        return user;
     }
 
     @Override
     @Nullable
     public Account getUserBy(int id) {
-        return userManager.getUserBy(id);
+        logger.debug("Looking up user by ID: {}", id);
+        final Account user = userManager.getUserBy(id);
+        if (user != null) {
+            logger.debug("User found with ID {}: {}", id, user.getEmail());
+        } else {
+            logger.debug("User NOT found for ID: {}", id);
+        }
+        return user;
     }
 
     @Override

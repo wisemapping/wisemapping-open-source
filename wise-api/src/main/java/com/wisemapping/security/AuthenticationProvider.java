@@ -25,6 +25,8 @@ import com.wisemapping.exceptions.WrongAuthenticationTypeException;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.service.MetricsService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +36,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
+    private static final Logger logger = LogManager.getLogger();
+    
     private UserDetailsService userDetailsService;
     private PasswordEncoder encoder;
     private MetricsService metricsService;
@@ -43,33 +47,46 @@ public class AuthenticationProvider implements org.springframework.security.auth
 
         // All your user authentication needs
         final String email = auth.getName();
+        logger.debug("Authenticating user: {}", email);
 
         final UserDetails userDetails = getUserDetailsService().loadUserByUsername(email);
         final Account user = userDetails.getUser();
         final String credentials = (String) auth.getCredentials();
+        
+        logger.debug("User loaded, credentials present: {}", credentials != null);
+        logger.debug("Stored password hash: {}", user.getPassword() != null ? user.getPassword().substring(0, Math.min(20, user.getPassword().length())) + "..." : "null");
 
         // Check if user is trying to login with wrong authentication method
         // Users registered with OAuth (Google/Facebook) cannot login with email/password
         if (user != null && user.getAuthenticationType() != AuthenticationType.DATABASE) {
+            logger.debug("Wrong authentication type: {}", user.getAuthenticationType());
             throw new WrongAuthenticationTypeException(user, "Wrong authentication method");
         }
 
         // Validate password
         // encoder.matches(rawPassword, encodedPassword) - credentials is raw, user.getPassword() is encoded
-        if (user == null || credentials == null || !encoder.matches(credentials, user.getPassword())) {
+        boolean passwordMatches = encoder.matches(credentials, user.getPassword());
+        logger.debug("Password matches: {}", passwordMatches);
+        
+        if (user == null || credentials == null || !passwordMatches) {
+            logger.debug("Authentication failed - bad credentials");
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
         }
 
         // For DATABASE users, check if account is activated (email confirmed)
         // OAuth users are activated automatically during registration
         if (!user.isActive()) {
+            logger.debug("Account not activated");
             throw new AccountDisabledException("Account not activated for " + auth.getPrincipal());
         }
 
         // Check if account is suspended
         if (user.isSuspended()) {
+            logger.debug("Account suspended");
             throw new AccountSuspendedException("Account suspended for " + auth.getPrincipal());
         }
+        
+        logger.debug("Authentication successful for: {}", email);
 
         userDetailsService.getUserService().auditLogin(user);
         
