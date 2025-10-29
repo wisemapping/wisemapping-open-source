@@ -1,12 +1,12 @@
 #
 #  Test Configuration - Common properties for all tests
-#  This configuration enforces in-memory JDBC and disables DDL creation
+#  This configuration uses file system persistence for HSQLDB
 #
 
 spring:
-  # Database configuration - Force in-memory HSQLDB for all tests
+  # Database configuration - Use file system persistence for HSQLDB
   datasource:
-    url: jdbc:hsqldb:mem:wisemapping-test;sql.names=false;sql.regular_names=false
+    url: jdbc:hsqldb:file:./target/test-db/wisemapping-test;sql.names=false;sql.regular_names=false
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
     password: ''
     username: sa
