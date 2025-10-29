@@ -66,18 +66,51 @@ public class RestHelper {
         
         final HttpEntity<RestUser> createUserEntity = new HttpEntity<>(newUser, requestHeaders);
         
-        // Use postForEntity to get full response details for better error handling
-        final ResponseEntity<String> response = adminTemplate.postForEntity(
-            BASE_REST_URL + "/admin/users", 
-            createUserEntity, 
-            String.class
-        );
+        // Retry user creation in case admin user is not ready yet (up to 10 seconds)
+        final int maxCreationRetries = 10;
+        final long creationRetryDelayMillis = 1000; // 1 second between retries
+        ResponseEntity<String> response = null;
         
-        // Check if the request was successful
-        if (!response.getStatusCode().is2xxSuccessful()) {
+        for (int attempt = 1; attempt <= maxCreationRetries; attempt++) {
+            try {
+                // Use postForEntity to get full response details for better error handling
+                response = adminTemplate.postForEntity(
+                    BASE_REST_URL + "/admin/users", 
+                    createUserEntity, 
+                    String.class
+                );
+                
+                // If successful, break out of retry loop
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    break;
+                }
+                
+                // If unauthorized and not the last attempt, wait and retry
+                if (response.getStatusCode().value() == 401 && attempt < maxCreationRetries) {
+                    Thread.sleep(creationRetryDelayMillis);
+                    continue;
+                }
+                
+                // For other errors, throw immediately
+                if (!response.getStatusCode().is2xxSuccessful()) {
+                    throw new IllegalStateException(
+                        "Failed to create test user. Status: " + response.getStatusCode() + 
+                        ", Body: " + response.getBody() + 
+                        ", Email: " + email +
+                        ", Attempt: " + attempt + "/" + maxCreationRetries
+                    );
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Thread interrupted while creating test user", e);
+            }
+        }
+        
+        // Final check after retries
+        if (response == null || !response.getStatusCode().is2xxSuccessful()) {
             throw new IllegalStateException(
-                "Failed to create test user. Status: " + response.getStatusCode() + 
-                ", Body: " + response.getBody() + 
+                "Failed to create test user after " + maxCreationRetries + " attempts. " +
+                (response != null ? "Status: " + response.getStatusCode() + ", Body: " + response.getBody() : "No response") +
                 ", Email: " + email
             );
         }

@@ -167,7 +167,9 @@ public class UserController {
                 errors.rejectValue("recaptcha", Messages.CAPTCHA_LOADING_ERROR);
             }
         } else {
-            logger.warn("captchaEnabled is enabled.Recommend to enable it for production environments.");
+            // CAPTCHA is disabled - this is expected in test environments
+            // In production, CAPTCHA should be enabled for security
+            logger.debug("CAPTCHA is disabled for user registration. This is normal for test environments.");
         }
 
         if (errors.hasErrors()) {
