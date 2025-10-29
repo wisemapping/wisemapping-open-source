@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
         classes = {AppConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RestLabelControllerTest {
     private static final String COLOR = "#000000";
 

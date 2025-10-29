@@ -38,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.*;
         classes = {AppConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RestMindmapControllerTest {
 
     private RestUser user;
@@ -428,7 +429,10 @@ public class RestMindmapControllerTest {
         assertEquals(Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size(), 1);
     }
 
-    @Disabled("SECURITY ISSUE: Non-owner can delete collaborations - needs investigation")
+    /**
+     * Tests that non-owner users cannot delete collaborations from a map they don't have access to.
+     * Security is enforced by Spring Security's @PreAuthorize on findMindmapById().
+     */
     @Test
     public void deleteCollabsWithoutOwnerPermission() throws URISyntaxException {
         // Use the owner template to create the map
@@ -454,9 +458,13 @@ public class RestMindmapControllerTest {
         final TestRestTemplate anotherTemplate = this.restTemplate.withBasicAuth(anotherUser.getEmail(), anotherUser.getPassword());
 
         // Try to delete the collaborator as a non-owner - this should fail
+        // Spring Security's @PreAuthorize on findMindmapById blocks this before the manual check
         final ResponseEntity<String> exchange = anotherTemplate.exchange(resourceUri + "/collabs?email=" + collaboratorUser.getEmail(), HttpMethod.DELETE, null, String.class);
-        assertTrue(exchange.getStatusCode().is4xxClientError());
-        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("No enough permissions"));
+        assertTrue(exchange.getStatusCode().is4xxClientError(), "Expected 4xx error but got: " + exchange.getStatusCode());
+        // Spring Security returns its own access denied message
+        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("Access denied") || 
+                   exchange.getBody().contains("No enough permissions"),
+                   "Expected access denied message but got: " + exchange.getBody());
 
     }
 

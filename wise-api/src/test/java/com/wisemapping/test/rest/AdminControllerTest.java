@@ -24,13 +24,13 @@ import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.model.Mindmap;
 import java.util.Map;
 import java.util.HashMap;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import static com.wisemapping.test.rest.RestHelper.createUserViaApi;
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class AdminControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "testAdmin123";
@@ -350,20 +351,26 @@ public class AdminControllerTest {
     @Test
     public void testChangePassword_AdminAccess_Success() {
         // Test that admin can change user passwords
+        // Create a new user to avoid conflicts with pre-seeded test data
+        RestUser testUser = createUserViaApi(restTemplate, 
+            "testpwchange-" + System.nanoTime() + "@example.com",
+            "PwChange", "User", "initialPassword123");
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
         HttpEntity<String> entity = new HttpEntity<>("newpassword123", headers);
 
         ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
                 .exchange(
-                        "/api/restful/admin/users/1/password",
+                        "/api/restful/admin/users/" + testUser.getId() + "/password",
                         HttpMethod.PUT,
                         entity,
                         String.class
                 );
 
-        // Should not be forbidden (might be 404 or other error)
-        assertNotEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        // Should be successful (200 OK)
+        assertTrue(response.getStatusCode().is2xxSuccessful(), 
+            "Admin should be able to change user password: " + response.toString());
     }
 
     @Test
