@@ -75,9 +75,10 @@ public class RestHelper {
         final int maxRetries = 5;
         final long retryDelayMillis = 100; // 100ms between retries
         
+        RestUser createdUser = null;
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
             try {
-                // Fetch the created user to get the ID
+                // Fetch the created user to get the ID and confirm it exists
                 final ResponseEntity<RestUser> result = adminTemplate.exchange(
                     location.toString(), 
                     HttpMethod.GET, 
@@ -86,15 +87,16 @@ public class RestHelper {
                 );
                 
                 if (result.getStatusCode().is2xxSuccessful()) {
-                    final RestUser createdUser = result.getBody();
-                    if (createdUser != null && createdUser.getEmail() != null) {
+                    createdUser = result.getBody();
+                    // Verify user is fully created: has email and valid ID (ID > 0 means it was assigned)
+                    if (createdUser != null && createdUser.getEmail() != null && createdUser.getId() > 0) {
                         // Store password separately since it's not returned from server
                         createdUser.setPassword(password);
                         return createdUser;
                     }
                 }
                 
-                // If not successful and not the last attempt, wait and retry
+                // User not ready yet (might be 404, or missing data) - wait and retry
                 if (attempt < maxRetries) {
                     Thread.sleep(retryDelayMillis);
                 }
@@ -105,7 +107,8 @@ public class RestHelper {
                 // If it's the last attempt, throw the exception
                 if (attempt == maxRetries) {
                     throw new IllegalStateException(
-                        "Failed to confirm user creation after " + maxRetries + " attempts for email: " + email, 
+                        "Failed to confirm user creation after " + maxRetries + " attempts for email: " + email + 
+                        ". Last error: " + e.getMessage(), 
                         e
                     );
                 }
@@ -119,7 +122,13 @@ public class RestHelper {
             }
         }
         
-        throw new IllegalStateException("Failed to create test user with email: " + email + " after " + maxRetries + " retries");
+        // If we exhausted retries without getting a valid user
+        throw new IllegalStateException(
+            "Failed to confirm user creation after " + maxRetries + " retries for email: " + email + 
+            ". User may not have been fully created or is missing required fields (ID: " + 
+            (createdUser != null ? String.valueOf(createdUser.getId()) : "null") + 
+            ", Email: " + (createdUser != null && createdUser.getEmail() != null ? createdUser.getEmail() : "null") + ")"
+        );
     }
     
     /**
