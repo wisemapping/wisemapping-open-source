@@ -107,4 +107,6 @@ app:
 logging:
   level:
     root: INFO
+    # Suppress warning about custom AuthenticationProvider (intentional design for legacy password support)
+    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: ERROR
 

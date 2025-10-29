@@ -31,7 +31,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import static com.wisemapping.test.rest.RestHelper.createUserViaApi;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.*;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@Disabled
 public class AdminControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "testAdmin123";
