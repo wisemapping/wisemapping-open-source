@@ -66,7 +66,6 @@ spring:
     open-in-view: true
     properties:
       hibernate:
-        current_session_context_class: thread
         default_batch_fetch_size: 200
         dialect: org.hibernate.dialect.HSQLDialect
         format_sql: true
