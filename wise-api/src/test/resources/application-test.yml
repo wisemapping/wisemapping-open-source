@@ -110,7 +110,4 @@ logging:
     com.wisemapping.security: DEBUG
     org.hibernate: WARN
     org.springframework: WARN
-    org.springframework.security: DEBUG
-    org.springframework.jdbc: DEBUG
-    org.springframework.boot.autoconfigure.security: DEBUG
 

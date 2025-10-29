@@ -139,7 +139,6 @@ public class UserServiceImpl
         if (user == null) {
             throw new IllegalArgumentException("User can not be null");
         }
-        logger.debug("Auditing login for user: {}", user.getEmail());
         final AccessAuditory accessAuditory = new AccessAuditory();
         accessAuditory.setUser(user);
         accessAuditory.setLoginDate(Calendar.getInstance());
@@ -147,12 +146,12 @@ public class UserServiceImpl
 
         // Track user login with enhanced metrics
         metricsService.trackUserLogin(user, "database");
-        logger.debug("Login audit completed for user: {}", user.getEmail());
     }
 
     @NotNull
     public Account createUser(@NotNull Account user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException {
-        logger.debug("Creating user: {}, emailConfirm: {}, welcomeEmail: {}", user.getEmail(), emailConfirmEnabled, welcomeEmail);
+        logger.debug("Creating user: {} (emailConfirm: {}, autoActivate: {})", 
+                    user.getEmail(), emailConfirmEnabled, !emailConfirmEnabled);
         
         final UUID uuid = UUID.randomUUID();
         user.setCreationDate(Calendar.getInstance());
@@ -160,18 +159,14 @@ public class UserServiceImpl
 
         if (emailConfirmEnabled) {
             user.setActivationDate(null);
-            logger.debug("Email confirmation required for user: {}", user.getEmail());
         } else {
             user.setActivationDate(Calendar.getInstance());
-            logger.debug("User auto-activated: {}", user.getEmail());
         }
 
         final Collaborator col = userManager.getCollaboratorBy(user.getEmail());
         if (col != null) {
-            logger.debug("Found existing collaborator for email: {}", user.getEmail());
             userManager.createUser(user, col);
         } else {
-            logger.debug("Creating new user without existing collaborator: {}", user.getEmail());
             userManager.createUser(user);
         }
 
@@ -219,28 +214,16 @@ public class UserServiceImpl
 
     @Override
     public Account getUserBy(String email) {
-        logger.debug("Looking up user by email: {}", email);
+        logger.debug("getUserBy(email): {}", email);
         final Account user = userManager.getUserBy(email);
-        if (user != null) {
-            logger.debug("User found: {}, ID: {}, isActive: {}, isSuspended: {}, authType: {}", 
-                        email, user.getId(), user.isActive(), user.isSuspended(), user.getAuthenticationType());
-        } else {
-            logger.debug("User NOT found for email: {}", email);
-        }
+        logger.debug("Result: {}", user != null ? "found (ID: " + user.getId() + ")" : "NOT found");
         return user;
     }
 
     @Override
     @Nullable
     public Account getUserBy(int id) {
-        logger.debug("Looking up user by ID: {}", id);
-        final Account user = userManager.getUserBy(id);
-        if (user != null) {
-            logger.debug("User found with ID {}: {}", id, user.getEmail());
-        } else {
-            logger.debug("User NOT found for ID: {}", id);
-        }
-        return user;
+        return userManager.getUserBy(id);
     }
 
     @Override

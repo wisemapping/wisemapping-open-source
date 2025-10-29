@@ -61,8 +61,7 @@ public class RestHelper {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate adminTemplate = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
         
-        logger.debug("Attempting to authenticate with admin user: {}", ADMIN_USER);
-        logger.debug("TestRestTemplate rootUri: {}", restTemplate.getRootUri());
+        logger.debug("Creating user via API: {}", email);
         
         final RestUser newUser = new RestUser();
         newUser.setEmail(email);
@@ -78,10 +77,11 @@ public class RestHelper {
         final long creationRetryDelayMillis = 1000; // 1 second between retries
         ResponseEntity<String> response = null;
         
-        logger.debug("Starting user creation for: {}", email);
         for (int attempt = 1; attempt <= maxCreationRetries; attempt++) {
             try {
-                logger.debug("User creation attempt {}/{} for: {}", attempt, maxCreationRetries, email);
+                if (attempt > 1) {
+                    logger.debug("Retry attempt {}/{} for: {}", attempt, maxCreationRetries, email);
+                }
                 // Use postForEntity to get full response details for better error handling
                 response = adminTemplate.postForEntity(
                     BASE_REST_URL + "/admin/users", 
@@ -89,24 +89,28 @@ public class RestHelper {
                     String.class
                 );
                 
-                logger.debug("Response status: {} for: {}", response.getStatusCode(), email);
-                
                 // If successful, break out of retry loop
                 if (response.getStatusCode().is2xxSuccessful()) {
-                    logger.debug("User creation successful on attempt {} for: {}", attempt, email);
+                    if (attempt > 1) {
+                        logger.debug("User creation successful on attempt {} for: {}", attempt, email);
+                    }
                     break;
                 }
                 
                 // If unauthorized and not the last attempt, wait and retry
                 if (response.getStatusCode().value() == 401 && attempt < maxCreationRetries) {
-                    logger.debug("Got 401, waiting {}ms before retry {} for: {}", creationRetryDelayMillis, attempt + 1, email);
+                    if (attempt == 1) {
+                        logger.warn("Admin authentication failing (401) - retrying for up to {} seconds for: {}", 
+                                   maxCreationRetries, email);
+                    }
                     Thread.sleep(creationRetryDelayMillis);
                     continue;
                 }
                 
                 // For other errors on last attempt, throw immediately
                 if (!response.getStatusCode().is2xxSuccessful() && attempt >= maxCreationRetries) {
-                    logger.debug("Final attempt failed with status: {} for: {}", response.getStatusCode(), email);
+                    logger.error("Failed to create user after {} attempts. Status: {}, Email: {}", 
+                                attempt, response.getStatusCode(), email);
                     throw new IllegalStateException(
                         "Failed to create test user. Status: " + response.getStatusCode() + 
                         ", Body: " + response.getBody() + 
@@ -117,28 +121,24 @@ public class RestHelper {
                 
                 // For other non-2xx errors (not 401), wait and retry
                 if (!response.getStatusCode().is2xxSuccessful() && attempt < maxCreationRetries) {
-                    logger.debug("Got error {}, waiting {}ms before retry {} for: {}", response.getStatusCode(), creationRetryDelayMillis, attempt + 1, email);
                     Thread.sleep(creationRetryDelayMillis);
                 }
             } catch (InterruptedException e) {
-                logger.debug("Thread interrupted during user creation retry for: {}", email);
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException("Thread interrupted while creating test user", e);
             } catch (Exception e) {
-                logger.debug("Exception during user creation attempt {}: {} - {} for: {}", attempt, e.getClass().getSimpleName(), e.getMessage(), email);
                 // Handle exceptions (network errors, etc.) - retry if not last attempt
                 if (attempt >= maxCreationRetries) {
-                    logger.debug("Max retries reached, throwing exception for: {}", email);
+                    logger.error("Failed to create user after {} attempts: {} for: {}", 
+                                attempt, e.getMessage(), email);
                     throw new IllegalStateException(
                         "Failed to create test user after " + maxCreationRetries + " attempts. " +
                         "Last error: " + e.getMessage() + ", Email: " + email, e
                     );
                 }
                 try {
-                    logger.debug("Waiting {}ms before retry after exception for: {}", creationRetryDelayMillis, email);
                     Thread.sleep(creationRetryDelayMillis);
                 } catch (InterruptedException ie) {
-                    logger.debug("Thread interrupted during wait after exception for: {}", email);
                     Thread.currentThread().interrupt();
                     throw new IllegalStateException("Thread interrupted while waiting to retry", ie);
                 }
@@ -197,11 +197,10 @@ public class RestHelper {
         final int maxRetries = 20;
         final long retryDelayMillis = 1000; // 1 second between retries
         
-        logger.debug("Starting user confirmation retries for: {} at location: {}", email, location);
+        logger.debug("Confirming user creation at: {}", location);
         RestUser createdUser = null;
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
             try {
-                logger.debug("User confirmation attempt {}/{} for: {}", attempt, maxRetries, email);
                 // Fetch the created user to get the ID and confirm it exists
                 final ResponseEntity<RestUser> result = adminTemplate.exchange(
                     location.toString(), 
@@ -210,40 +209,28 @@ public class RestHelper {
                     RestUser.class
                 );
                 
-                logger.debug("Confirmation response status: {} for: {}", result.getStatusCode(), email);
-                
                 if (result.getStatusCode().is2xxSuccessful()) {
                     createdUser = result.getBody();
-                    logger.debug("User retrieved - ID: {}, Email: {} for: {}", 
-                                createdUser != null ? createdUser.getId() : "null",
-                                createdUser != null && createdUser.getEmail() != null ? createdUser.getEmail() : "null",
-                                email);
                     // Verify user is fully created: has email and valid ID (ID > 0 means it was assigned)
                     if (createdUser != null && createdUser.getEmail() != null && createdUser.getId() > 0) {
-                        logger.debug("User fully confirmed on attempt {} for: {}", attempt, email);
+                        logger.debug("User confirmed: {} (ID: {})", email, createdUser.getId());
                         // Store password separately since it's not returned from server
                         createdUser.setPassword(password);
                         return createdUser;
-                    } else {
-                        logger.debug("User data incomplete, will retry for: {}", email);
                     }
                 }
                 
                 // User not ready yet (might be 404, or missing data) - wait and retry
                 if (attempt < maxRetries) {
-                    logger.debug("Waiting {}ms before confirmation retry {} for: {}", retryDelayMillis, attempt + 1, email);
                     Thread.sleep(retryDelayMillis);
                 }
             } catch (InterruptedException e) {
-                logger.debug("Thread interrupted during confirmation retry for: {}", email);
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException("Thread interrupted while creating test user", e);
             } catch (Exception e) {
-                logger.debug("Exception during confirmation attempt {}: {} - {} for: {}", 
-                            attempt, e.getClass().getSimpleName(), e.getMessage(), email);
                 // If it's the last attempt, throw the exception
                 if (attempt >= maxRetries) {
-                    logger.debug("Max confirmation retries reached, throwing exception for: {}", email);
+                    logger.error("Failed to confirm user creation after {} attempts: {}", attempt, e.getMessage());
                     throw new IllegalStateException(
                         "Failed to confirm user creation after " + maxRetries + " attempts for email: " + email + 
                         ". Last error: " + e.getMessage(), 
@@ -252,10 +239,8 @@ public class RestHelper {
                 }
                 // Otherwise, wait and retry
                 try {
-                    logger.debug("Waiting {}ms after confirmation exception before retry for: {}", retryDelayMillis, email);
                     Thread.sleep(retryDelayMillis);
                 } catch (InterruptedException ie) {
-                    logger.debug("Thread interrupted during confirmation wait for: {}", email);
                     Thread.currentThread().interrupt();
                     throw new IllegalStateException("Thread interrupted while waiting to retry user creation", ie);
                 }

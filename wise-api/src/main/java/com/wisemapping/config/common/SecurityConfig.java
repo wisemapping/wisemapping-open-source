@@ -66,9 +66,8 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(@NotNull HttpSecurity http)
             throws Exception {
         final AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        builder.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-
+        // Only use custom authentication provider - do NOT create default DaoAuthenticationProvider
+        // The custom provider handles legacy ENC: password format and password validation
         builder.authenticationProvider(dbAuthenticationProvider());
 
         return builder.build();

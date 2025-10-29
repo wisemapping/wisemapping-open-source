@@ -45,15 +45,13 @@ public class UserDetailsService
 
     @Override
     public UserDetails loadUserByUsername(@NotNull String email) throws UsernameNotFoundException, DataAccessException {
-        logger.debug("Loading user by username: {}", email);
-        logger.debug("Admin user pattern: {}", adminUser);
+        logger.debug("Loading user: {} (admin pattern: {})", email, adminUser);
         
         final Account user = userService.getUserBy(email);
 
         if (user != null) {
-            logger.debug("User found: {}, isActive: {}, isSuspended: {}, authType: {}", 
-                        email, user.isActive(), user.isSuspended(), user.getAuthenticationType());
-            logger.debug("Is admin: {}", isAdmin(email));
+            logger.debug("User loaded: {}, isActive: {}, isAdmin: {}", 
+                        email, user.isActive(), isAdmin(email));
             return new UserDetails(user, isAdmin(email), userService);
         } else {
             logger.debug("User NOT found: {}", email);
