@@ -30,6 +30,10 @@ spring:
         dialect: org.hibernate.dialect.HSQLDialect
         format_sql: false
         use_sql_comments: false
+        # Disable all levels of cache for tests
+        cache_use_second_level_cache: false  # Disable second-level cache (shared cache across sessions)
+        cache_use_query_cache: false  # Disable query cache
+        cache_region_factory_class: org.hibernate.cache.internal.NoCachingRegionFactory  # Use no-op cache factory
     show-sql: false
     # Disable automatic schema export/creation - schema comes from SQL files only
     defer-datasource-initialization: false
@@ -55,6 +59,10 @@ spring:
   security:
     basic:
       enabled: true
+  
+  # Spring Cache - Disable for tests
+  cache:
+    type: none  # Disable Spring's cache abstraction completely
   
   # Test configuration - Enable context caching to avoid reloading
   test:
