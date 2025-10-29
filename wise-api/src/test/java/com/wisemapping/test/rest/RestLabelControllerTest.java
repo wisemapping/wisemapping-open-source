@@ -26,6 +26,7 @@ import java.util.Objects;
 
 import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
+import static com.wisemapping.test.rest.RestHelper.createTestUser;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -50,30 +51,8 @@ public class RestLabelControllerTest {
             this.restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:8081/"));
         }
         
-        // Create a new user directly using admin credentials
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate adminTemplate = restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
-        
-        // Create user
-        final RestUser newUser = new RestUser();
-        final String email = "test-" + System.nanoTime() + "@example.org";
-        newUser.setEmail(email);
-        newUser.setFirstname("Test");
-        newUser.setLastname("User");
-        newUser.setPassword("testPassword123");
-        
-        final HttpEntity<RestUser> createUserEntity = new HttpEntity<>(newUser, requestHeaders);
-        
-        try {
-            final ResponseEntity<String> response = adminTemplate.exchange(BASE_REST_URL + "/admin/users", HttpMethod.POST, createUserEntity, String.class);
-            if (response.getStatusCode().is2xxSuccessful() && response.getHeaders().getLocation() != null) {
-                this.user = newUser;
-            } else {
-                throw new IllegalStateException("Failed to create test user: " + response.getStatusCode() + " - " + response.getBody());
-            }
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to create test user: " + e.getMessage(), e);
-        }
+        // Create a new test user using the helper method
+        this.user = createTestUser(restTemplate, "testPassword123");
     }
 
     static RestLabelList getLabels(HttpHeaders requestHeaders, @NotNull TestRestTemplate template) {

@@ -7,8 +7,9 @@ import com.wisemapping.rest.AdminController;
 import com.wisemapping.rest.MindmapController;
 import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.*;
-import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
+import static com.wisemapping.test.rest.RestHelper.createTestUser;
+import static com.wisemapping.test.rest.RestHelper.createUserViaApi;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import jakarta.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
@@ -55,30 +56,8 @@ public class RestMindmapControllerTest {
             this.restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:8081/"));
         }
 
-        // Create a new user directly using admin credentials
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate adminTemplate = restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
-        
-        // Create user
-        final RestUser newUser = new RestUser();
-        final String email = "test-" + System.nanoTime() + "@example.org";
-        newUser.setEmail(email);
-        newUser.setFirstname("Test");
-        newUser.setLastname("User");
-        newUser.setPassword(userPassword);
-        
-        final HttpEntity<RestUser> createUserEntity = new HttpEntity<>(newUser, requestHeaders);
-        final URI location = adminTemplate.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
-        
-        if (location != null) {
-            // Fetch the created user to get the ID
-            final ResponseEntity<RestUser> result = adminTemplate.exchange(location.toString(), HttpMethod.GET, new HttpEntity<>(requestHeaders), RestUser.class);
-            this.user = result.getBody();
-            // Store password separately since it's not returned from server
-            this.user.setPassword(userPassword);
-        } else {
-            throw new IllegalStateException("Failed to create test user");
-        }
+        // Create a new test user using the helper method
+        this.user = createTestUser(restTemplate, userPassword);
     }
 
     @Test
@@ -279,32 +258,17 @@ public class RestMindmapControllerTest {
 
         //create another user
         final String secondUserPassword = "testPassword123";
-        final RestUser secondUser = new RestUser();
         final String secondEmail = "test-" + System.nanoTime() + "@example.org";
-        secondUser.setEmail(secondEmail);
-        secondUser.setFirstname("Test2");
-        secondUser.setLastname("User2");
-        secondUser.setPassword(secondUserPassword);
+        final RestUser createdSecondUser = createUserViaApi(this.restTemplate, secondEmail, "Test2", "User2", secondUserPassword);
         
-        final TestRestTemplate adminTemplate = this.restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
-        final HttpEntity<RestUser> createSecondUserEntity = new HttpEntity<>(secondUser, requestHeaders);
-        final URI secondUserLocation = adminTemplate.postForLocation(BASE_REST_URL + "/admin/users", createSecondUserEntity);
-        
-        if (secondUserLocation != null) {
-            final ResponseEntity<RestUser> secondUserResult = adminTemplate.exchange(secondUserLocation.toString(), HttpMethod.GET, new HttpEntity<>(requestHeaders), RestUser.class);
-            final RestUser createdSecondUser = secondUserResult.getBody();
-            createdSecondUser.setPassword(secondUserPassword);
-            final TestRestTemplate secondTemplate = this.restTemplate.withBasicAuth(createdSecondUser.getEmail(), createdSecondUser.getPassword());
+        final TestRestTemplate secondTemplate = this.restTemplate.withBasicAuth(createdSecondUser.getEmail(), createdSecondUser.getPassword());
 
-            final String title2 = "verifyMapOwnership Map user 2";
-            addNewMap(secondTemplate, title2);
+        final String title2 = "verifyMapOwnership Map user 2";
+        addNewMap(secondTemplate, title2);
 
-            final TestRestTemplate superadminTemplate = this.restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
-            final ResponseEntity<String> exchange = superadminTemplate.exchange("/api/restful/admin/users/" + createdSecondUser.getId(), HttpMethod.DELETE, null, String.class);
-            assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status Code:" + exchange.getStatusCode() + "- " + exchange.getBody());
-        } else {
-            throw new IllegalStateException("Failed to create second test user");
-        }
+        final TestRestTemplate superadminTemplate = this.restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
+        final ResponseEntity<String> exchange = superadminTemplate.exchange("/api/restful/admin/users/" + createdSecondUser.getId(), HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status Code:" + exchange.getStatusCode() + "- " + exchange.getBody());
 
         // Validate that the two maps are there ...
         final RestMindmapList body = fetchMaps(requestHeaders, firstUser);

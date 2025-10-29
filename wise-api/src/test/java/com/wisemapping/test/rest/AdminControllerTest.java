@@ -23,7 +23,6 @@ import com.wisemapping.rest.AdminController;
 import com.wisemapping.rest.model.RestMap;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.model.Mindmap;
-import java.net.URI;
 import java.util.Map;
 import java.util.HashMap;
 import org.junit.jupiter.api.Disabled;
@@ -34,6 +33,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
+import static com.wisemapping.test.rest.RestHelper.createUserViaApi;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
@@ -158,7 +158,7 @@ public class AdminControllerTest {
     public void testCreateUser_AdminAccess_Success() {
         // Test that admin can create users
         final String email = "newuser-" + System.nanoTime() + "@test.com";
-        final RestUser createdUser = RestHelper.createUserViaApi(restTemplate, email, "New", "User", "password123");
+        final RestUser createdUser = createUserViaApi(restTemplate, email, "New", "User", "password123");
         
         assertNotNull(createdUser, "User creation should succeed");
         assertEquals(email, createdUser.getEmail(), "Created user should have correct email");
@@ -222,29 +222,20 @@ public class AdminControllerTest {
     @Test
     public void testDeleteUser_AdminAccess_Success() {
         // Test that admin can delete users (create a user first, then delete)
-        RestUser newUser = new RestUser();
-        newUser.setEmail("tobedeleted@test.com");
-        newUser.setFirstname("To Be");
-        newUser.setLastname("Deleted");
-        newUser.setPassword("password123");
+        final String email = "tobedeleted-" + System.nanoTime() + "@test.com";
+        RestUser createdUser = createUserViaApi(restTemplate, email, "To Be", "Deleted", "password123");
 
-        // First create the user
-        ResponseEntity<String> createResponse = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
-                .postForEntity("/api/restful/admin/users", newUser, String.class);
+        // Then try to delete - this should succeed since we created the user
+        ResponseEntity<String> deleteResponse = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .exchange(
+                        "/api/restful/admin/users/" + createdUser.getId(),
+                        HttpMethod.DELETE,
+                        new HttpEntity<>(new HttpHeaders()),
+                        String.class
+                );
 
-        if (createResponse.getStatusCode() == HttpStatus.CREATED) {
-            // Then try to delete (this might fail if user doesn't exist, but should not be forbidden)
-            ResponseEntity<String> deleteResponse = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
-                    .exchange(
-                            "/api/restful/admin/users/999", // Use a non-existent ID to avoid actually deleting
-                            HttpMethod.DELETE,
-                            new HttpEntity<>(newUser),
-                            String.class
-                    );
-
-            // Should not be forbidden (might be 404 or other error)
-            assertNotEquals(HttpStatus.FORBIDDEN, deleteResponse.getStatusCode());
-        }
+        // Should not be forbidden (might be 404 or other error, but not forbidden)
+        assertNotEquals(HttpStatus.FORBIDDEN, deleteResponse.getStatusCode());
     }
 
     @Test
