@@ -91,8 +91,8 @@ public class RestHelper {
                     continue;
                 }
                 
-                // For other errors, throw immediately
-                if (!response.getStatusCode().is2xxSuccessful()) {
+                // For other errors on last attempt, throw immediately
+                if (!response.getStatusCode().is2xxSuccessful() && attempt >= maxCreationRetries) {
                     throw new IllegalStateException(
                         "Failed to create test user. Status: " + response.getStatusCode() + 
                         ", Body: " + response.getBody() + 
@@ -100,9 +100,28 @@ public class RestHelper {
                         ", Attempt: " + attempt + "/" + maxCreationRetries
                     );
                 }
+                
+                // For other non-2xx errors (not 401), wait and retry
+                if (!response.getStatusCode().is2xxSuccessful() && attempt < maxCreationRetries) {
+                    Thread.sleep(creationRetryDelayMillis);
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException("Thread interrupted while creating test user", e);
+            } catch (Exception e) {
+                // Handle exceptions (network errors, etc.) - retry if not last attempt
+                if (attempt >= maxCreationRetries) {
+                    throw new IllegalStateException(
+                        "Failed to create test user after " + maxCreationRetries + " attempts. " +
+                        "Last error: " + e.getMessage() + ", Email: " + email, e
+                    );
+                }
+                try {
+                    Thread.sleep(creationRetryDelayMillis);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new IllegalStateException("Thread interrupted while waiting to retry", ie);
+                }
             }
         }
         
@@ -187,7 +206,7 @@ public class RestHelper {
                 throw new IllegalStateException("Thread interrupted while creating test user", e);
             } catch (Exception e) {
                 // If it's the last attempt, throw the exception
-                if (attempt == maxRetries) {
+                if (attempt >= maxRetries) {
                     throw new IllegalStateException(
                         "Failed to confirm user creation after " + maxRetries + " attempts for email: " + email + 
                         ". Last error: " + e.getMessage(), 
