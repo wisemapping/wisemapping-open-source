@@ -26,7 +26,6 @@ spring:
     open-in-view: true  # Keep session open for the duration of request to handle lazy loading
     properties:
       hibernate:
-        current_session_context_class: thread
         default_batch_fetch_size: 200
         dialect: org.hibernate.dialect.HSQLDialect
         format_sql: false
