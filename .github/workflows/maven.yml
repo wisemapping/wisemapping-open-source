@@ -35,11 +35,6 @@ jobs:
           java-version: '24'
           distribution: 'zulu'
 
-      - name: Clean test database directory
-        run: |
-          rm -rf wise-api/target/test-db || true
-          mkdir -p wise-api/target/test-db
-      
       - name: Build with Maven (skip tests on main)
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then

@@ -3,9 +3,6 @@ package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.rest.AdminController;
-import com.wisemapping.rest.MindmapController;
-import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.*;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static com.wisemapping.test.rest.RestHelper.createTestUser;
@@ -20,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -37,7 +35,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class},
+        classes = {AppConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class RestMindmapControllerTest {

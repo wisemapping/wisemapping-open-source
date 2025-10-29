@@ -21,9 +21,7 @@ package com.wisemapping.test.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.AppConfig;
-import com.wisemapping.config.GlobalExceptionHandler;
 import com.wisemapping.model.Account;
-import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.UserService;
 import org.junit.jupiter.api.*;
@@ -44,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {AppConfig.class, UserController.class, TestDataManager.class, GlobalExceptionHandler.class},
+        classes = {AppConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {
             "app.registration.enabled=true",

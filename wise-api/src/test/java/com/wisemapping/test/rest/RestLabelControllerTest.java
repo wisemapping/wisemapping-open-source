@@ -2,21 +2,18 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.config.AppConfig;
-import com.wisemapping.rest.AdminController;
-import com.wisemapping.rest.LabelController;
-import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestLabel;
 import com.wisemapping.rest.model.RestLabelList;
 import com.wisemapping.rest.model.RestUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -30,9 +27,8 @@ import static com.wisemapping.test.rest.RestHelper.createTestUser;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@Disabled("Test isolation issue: Fails when running full test suite but passes individually. Context sharing problem with admin authentication.")
 @SpringBootTest(
-        classes = {AppConfig.class, LabelController.class, AdminController.class, UserController.class, TestDataManager.class},
+        classes = {AppConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class RestLabelControllerTest {

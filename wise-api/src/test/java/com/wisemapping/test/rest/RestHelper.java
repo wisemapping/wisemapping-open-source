@@ -61,8 +61,6 @@ public class RestHelper {
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate adminTemplate = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
         
-        logger.debug("Creating user via API: {}", email);
-        
         final RestUser newUser = new RestUser();
         newUser.setEmail(email);
         newUser.setFirstname(firstname);
@@ -71,17 +69,14 @@ public class RestHelper {
         
         final HttpEntity<RestUser> createUserEntity = new HttpEntity<>(newUser, requestHeaders);
         
-        // Retry user creation in case admin user is not ready yet (up to 20 seconds)
-        // Increased for CI/CD environments where database initialization may take longer
-        final int maxCreationRetries = 20;
-        final long creationRetryDelayMillis = 1000; // 1 second between retries
+        // Retry user creation in case of transient failures (up to 5 seconds)
+        // This handles admin authentication initialization in CI/CD environments
+        final int maxCreationRetries = 10;
+        final long creationRetryDelayMillis = 500; // 500ms between retries
         ResponseEntity<String> response = null;
         
         for (int attempt = 1; attempt <= maxCreationRetries; attempt++) {
             try {
-                if (attempt > 1) {
-                    logger.debug("Retry attempt {}/{} for: {}", attempt, maxCreationRetries, email);
-                }
                 // Use postForEntity to get full response details for better error handling
                 response = adminTemplate.postForEntity(
                     BASE_REST_URL + "/admin/users", 
@@ -91,18 +86,11 @@ public class RestHelper {
                 
                 // If successful, break out of retry loop
                 if (response.getStatusCode().is2xxSuccessful()) {
-                    if (attempt > 1) {
-                        logger.debug("User creation successful on attempt {} for: {}", attempt, email);
-                    }
                     break;
                 }
                 
                 // If unauthorized and not the last attempt, wait and retry
                 if (response.getStatusCode().value() == 401 && attempt < maxCreationRetries) {
-                    if (attempt == 1) {
-                        logger.warn("Admin authentication failing (401) - retrying for up to {} seconds for: {}", 
-                                   maxCreationRetries, email);
-                    }
                     Thread.sleep(creationRetryDelayMillis);
                     continue;
                 }
@@ -191,14 +179,12 @@ public class RestHelper {
             );
         }
         
-        // Retry logic to confirm account creation (handles eventual consistency/timing issues)
-        // Retry for up to 20 seconds (20 retries × 1 second = 20 seconds total)
-        // Increased for CI/CD environments where database operations may take longer
-        final int maxRetries = 20;
-        final long retryDelayMillis = 1000; // 1 second between retries
-        
-        logger.debug("Confirming user creation at: {}", location);
-        RestUser createdUser = null;
+            // Retry logic to confirm account creation (handles eventual consistency/timing issues)
+            // Retry for up to 3 seconds (10 retries × 300ms = 3 seconds total)
+            final int maxRetries = 10;
+            final long retryDelayMillis = 300; // 300ms between retries
+
+            RestUser createdUser = null;
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
             try {
                 // Fetch the created user to get the ID and confirm it exists
@@ -209,16 +195,15 @@ public class RestHelper {
                     RestUser.class
                 );
                 
-                if (result.getStatusCode().is2xxSuccessful()) {
-                    createdUser = result.getBody();
-                    // Verify user is fully created: has email and valid ID (ID > 0 means it was assigned)
-                    if (createdUser != null && createdUser.getEmail() != null && createdUser.getId() > 0) {
-                        logger.debug("User confirmed: {} (ID: {})", email, createdUser.getId());
-                        // Store password separately since it's not returned from server
-                        createdUser.setPassword(password);
-                        return createdUser;
+                    if (result.getStatusCode().is2xxSuccessful()) {
+                        createdUser = result.getBody();
+                        // Verify user is fully created: has email and valid ID (ID > 0 means it was assigned)
+                        if (createdUser != null && createdUser.getEmail() != null && createdUser.getId() > 0) {
+                            // Store password separately since it's not returned from server
+                            createdUser.setPassword(password);
+                            return createdUser;
+                        }
                     }
-                }
                 
                 // User not ready yet (might be 404, or missing data) - wait and retry
                 if (attempt < maxRetries) {

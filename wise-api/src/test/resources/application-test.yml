@@ -1,12 +1,13 @@
 #
 #  Test Configuration - Common properties for all tests
-#  This configuration uses file system persistence for HSQLDB to ensure reliable database initialization
+#  This configuration uses in-memory HSQLDB for fast test execution
 #
 
 spring:
-  # Database configuration - Always use file system persistence for reliable test execution
+  # Database configuration - Use in-memory database for tests
+  # Each test context gets a unique database to prevent data pollution between contexts
   datasource:
-    url: jdbc:hsqldb:file:./target/test-db/wisemapping-test;sql.names=false;sql.regular_names=false
+    url: jdbc:hsqldb:mem:test-${random.uuid};sql.names=false;sql.regular_names=false
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
     password: ''
     username: sa
@@ -106,8 +107,4 @@ app:
 logging:
   level:
     root: INFO
-    com.wisemapping: DEBUG
-    com.wisemapping.security: DEBUG
-    org.hibernate: WARN
-    org.springframework: WARN
 

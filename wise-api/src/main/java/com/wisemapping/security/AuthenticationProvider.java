@@ -47,7 +47,6 @@ public class AuthenticationProvider implements org.springframework.security.auth
 
         // All your user authentication needs
         final String email = auth.getName();
-        logger.debug("[CUSTOM AUTH PROVIDER] Authenticating user: {}", email);
 
         final UserDetails userDetails = getUserDetailsService().loadUserByUsername(email);
         final Account user = userDetails.getUser();
@@ -56,40 +55,30 @@ public class AuthenticationProvider implements org.springframework.security.auth
         if (user == null) {
             throw new BadCredentialsException("User account is null for " + email);
         }
-        
-        logger.debug("[CUSTOM AUTH PROVIDER] Password validation starting for: {}", email);
 
         // Check if user is trying to login with wrong authentication method
         // Users registered with OAuth (Google/Facebook) cannot login with email/password
         if (user.getAuthenticationType() != AuthenticationType.DATABASE) {
-            logger.debug("[CUSTOM AUTH PROVIDER] Wrong authentication type: {}", user.getAuthenticationType());
             throw new WrongAuthenticationTypeException(user, "Wrong authentication method");
         }
 
         // Validate password
         // encoder.matches(rawPassword, encodedPassword) - credentials is raw, user.getPassword() is encoded
-        boolean passwordMatches = encoder.matches(credentials, user.getPassword());
-        logger.debug("[CUSTOM AUTH PROVIDER] Password matches: {}", passwordMatches);
-        
-        if (credentials == null || !passwordMatches) {
-            logger.debug("[CUSTOM AUTH PROVIDER] Authentication FAILED - bad credentials for: {}", email);
+        if (credentials == null || !encoder.matches(credentials, user.getPassword())) {
+            logger.debug("Authentication failed for: {}", email);
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
         }
 
         // For DATABASE users, check if account is activated (email confirmed)
         // OAuth users are activated automatically during registration
         if (!user.isActive()) {
-            logger.debug("[CUSTOM AUTH PROVIDER] Account not activated: {}", email);
             throw new AccountDisabledException("Account not activated for " + auth.getPrincipal());
         }
 
         // Check if account is suspended
         if (user.isSuspended()) {
-            logger.debug("[CUSTOM AUTH PROVIDER] Account suspended: {}", email);
             throw new AccountSuspendedException("Account suspended for " + auth.getPrincipal());
         }
-        
-        logger.info("[CUSTOM AUTH PROVIDER] ✓ Authentication SUCCESSFUL for: {}", email);
 
         userDetailsService.getUserService().auditLogin(user);
         

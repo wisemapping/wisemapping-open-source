@@ -19,13 +19,9 @@
 package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
-import com.wisemapping.rest.AdminController;
-import com.wisemapping.rest.MindmapController;
-import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.security.UserDetailsService;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,6 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
@@ -42,12 +39,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(
-        classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+        classes = {AppConfig.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@Disabled
 public class RestAccountControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "testAdmin123";
@@ -102,7 +97,6 @@ public class RestAccountControllerTest {
     @Test
     public void changePassword() {
         final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
 
         final RestUser newUser = createNewUser();
         final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
@@ -146,7 +140,7 @@ public class RestAccountControllerTest {
     @Test
     public void changeFirstname() {
         final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+        this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
 
         final RestUser newUser = createNewUser();
         final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
@@ -160,7 +154,6 @@ public class RestAccountControllerTest {
     @Test
     public void changeLastname() {
         final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
 
         final RestUser newUser = createNewUser();
         final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
@@ -174,7 +167,7 @@ public class RestAccountControllerTest {
     @Test
     public void changeLocale() {
         final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+    
 
         final RestUser newUser = createNewUser();
         final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());

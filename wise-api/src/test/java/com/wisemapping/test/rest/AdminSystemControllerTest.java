@@ -18,7 +18,6 @@
 package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
-import com.wisemapping.rest.AdminController;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,8 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {AppConfig.class, AdminController.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+        classes = {AppConfig.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Disabled("Test suite disabled")
 public class AdminSystemControllerTest {

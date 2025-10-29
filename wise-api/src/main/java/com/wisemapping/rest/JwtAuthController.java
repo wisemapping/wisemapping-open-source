@@ -99,6 +99,9 @@ public class JwtAuthController {
         } catch (DisabledException e) {
             // Spring Security's generic disabled exception
             throw UserCouldNotBeAuthException.accountDisabled(e);
+        } catch (org.springframework.security.core.userdetails.UsernameNotFoundException e) {
+            // User doesn't exist
+            throw UserCouldNotBeAuthException.invalidCredentials(e);
         } catch (BadCredentialsException e) {
             // Wrong username or password
             throw UserCouldNotBeAuthException.invalidCredentials(e);

@@ -21,7 +21,6 @@ package com.wisemapping.test.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.AppConfig;
-import com.wisemapping.rest.JwtAuthController;
 import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.security.JwtTokenUtil;
 import com.wisemapping.service.UserService;
@@ -40,11 +39,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
-        classes = {AppConfig.class, JwtAuthController.class}
-)
+        classes = {AppConfig.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RestJwtAuthControllerTest {
 
     @Autowired

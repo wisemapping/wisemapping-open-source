@@ -18,25 +18,55 @@
 package com.wisemapping.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DefaultPasswordEncoderFactories {
 
     public static final String ENCODING_ID = "bcrypt";
 
     public static PasswordEncoder createDelegatingPasswordEncoder() {
-
-        final Map<String, PasswordEncoder> encoders = new HashMap<>();
-        encoders.put(ENCODING_ID, new BCryptPasswordEncoder(12));
-
-        DelegatingPasswordEncoder result = new DelegatingPasswordEncoder(ENCODING_ID, encoders);
-        result.setDefaultPasswordEncoderForMatches(new LegacyPasswordEncoder());
-
-        return result;
+        // Use a custom delegating encoder that handles legacy ENC: format
+        return new WiseMappingPasswordEncoder();
     }
 
+}
+
+/**
+ * Custom password encoder that handles both modern BCrypt and legacy ENC: password formats.
+ * Database passwords can be in two formats:
+ * - Legacy: ENC:6c69d1e41a95462be1ff01decc9c4d4022c6a082 (SHA-1 with ENC: prefix)
+ * - Modern: {bcrypt}$2a$12$... (BCrypt with {bcrypt} prefix)
+ */
+class WiseMappingPasswordEncoder implements PasswordEncoder {
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
+    private final LegacyPasswordEncoder legacyEncoder = new LegacyPasswordEncoder();
+    private final BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder(12);
+    
+    @Override
+    public String encode(CharSequence rawPassword) {
+        // New passwords use BCrypt
+        return "{bcrypt}" + bcryptEncoder.encode(rawPassword);
+    }
+    
+    @Override
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        if (rawPassword == null || encodedPassword == null || encodedPassword.isEmpty()) {
+            return false;
+        }
+        
+        // Check if it's a legacy ENC: password
+        if (encodedPassword.startsWith(LegacyPasswordEncoder.ENC_PREFIX)) {
+            return legacyEncoder.matches(rawPassword, encodedPassword);
+        }
+        
+        // Check if it's a BCrypt password
+        if (encodedPassword.startsWith("{bcrypt}")) {
+            String hash = encodedPassword.substring(8); // Remove {bcrypt} prefix
+            return bcryptEncoder.matches(rawPassword, hash);
+        }
+        
+        // No recognized prefix - try legacy encoder as default
+        logger.debug("Unknown password format (no ENC: or {{bcrypt}} prefix), trying legacy encoder");
+        return legacyEncoder.matches(rawPassword, encodedPassword);
+    }
 }

@@ -150,9 +150,6 @@ public class UserServiceImpl
 
     @NotNull
     public Account createUser(@NotNull Account user, boolean emailConfirmEnabled, boolean welcomeEmail) throws WiseMappingException {
-        logger.debug("Creating user: {} (emailConfirm: {}, autoActivate: {})", 
-                    user.getEmail(), emailConfirmEnabled, !emailConfirmEnabled);
-        
         final UUID uuid = UUID.randomUUID();
         user.setCreationDate(Calendar.getInstance());
         user.setActivationCode(uuid.getLeastSignificantBits());
@@ -214,10 +211,7 @@ public class UserServiceImpl
 
     @Override
     public Account getUserBy(String email) {
-        logger.debug("getUserBy(email): {}", email);
-        final Account user = userManager.getUserBy(email);
-        logger.debug("Result: {}", user != null ? "found (ID: " + user.getId() + ")" : "NOT found");
-        return user;
+        return userManager.getUserBy(email);
     }
 
     @Override
