@@ -53,7 +53,8 @@ public class SecurityConfig {
         return  DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    private AuthenticationProvider dbAuthenticationProvider() {
+    @Bean
+    public AuthenticationProvider dbAuthenticationProvider() {
         final com.wisemapping.security.AuthenticationProvider provider =
                 new com.wisemapping.security.AuthenticationProvider();
         provider.setEncoder(passwordEncoder());

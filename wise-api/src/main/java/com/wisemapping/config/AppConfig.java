@@ -77,9 +77,14 @@ public class AppConfig implements WebMvcConfigurer {
     
     @Autowired
     private OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
+    
+    @Autowired
+    private org.springframework.security.authentication.AuthenticationManager authenticationManager;
 
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
+        // Use custom authentication manager that handles ENC: password format
+        http.authenticationManager(authenticationManager);
         http
                 .cors(Customizer.withDefaults()) // enables WebMvcConfigurer CORS
                 .securityMatcher("/**")
