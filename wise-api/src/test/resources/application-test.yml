@@ -86,7 +86,6 @@ app:
   batch:
     history-cleanup:
       enabled: false
-  scheduler:
     spam-detection:
       enabled: false
       startup-enabled: false
