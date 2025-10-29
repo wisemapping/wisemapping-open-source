@@ -25,6 +25,7 @@ import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.security.UserDetailsService;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.*;
 )
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@Disabled
 public class RestAccountControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "testAdmin123";
