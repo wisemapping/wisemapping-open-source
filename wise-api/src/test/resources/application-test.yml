@@ -79,6 +79,10 @@ app:
   registration:
     enabled: true
     email-confirmation-enabled: false
+    captcha:
+      enabled: false
+      siteKey: test-site-key
+      secretKey: test-secret-key
   batch:
     history-cleanup:
       enabled: false

@@ -65,15 +65,64 @@ public class RestHelper {
         newUser.setPassword(password);
         
         final HttpEntity<RestUser> createUserEntity = new HttpEntity<>(newUser, requestHeaders);
-        final URI location = adminTemplate.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
         
-        if (location == null) {
-            throw new IllegalStateException("Failed to create test user - no location header returned for email: " + email);
+        // Use postForEntity to get full response details for better error handling
+        final ResponseEntity<String> response = adminTemplate.postForEntity(
+            BASE_REST_URL + "/admin/users", 
+            createUserEntity, 
+            String.class
+        );
+        
+        // Check if the request was successful
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new IllegalStateException(
+                "Failed to create test user. Status: " + response.getStatusCode() + 
+                ", Body: " + response.getBody() + 
+                ", Email: " + email
+            );
+        }
+        
+        // Extract location from response header (required, no fallback)
+        final String locationHeader = response.getHeaders().getFirst("Location");
+        if (locationHeader == null || locationHeader.isEmpty()) {
+            throw new IllegalStateException(
+                "Failed to create test user - Location header is required but was not returned. " +
+                "Status: " + response.getStatusCode() + 
+                ", Response: " + response.getBody() + 
+                ", Email: " + email
+            );
+        }
+        
+        URI location;
+        try {
+            // Handle both absolute and relative location headers
+            if (locationHeader.startsWith("http")) {
+                location = new URI(locationHeader);
+            } else {
+                // Relative URL - construct absolute URL using the restTemplate's root URI
+                String rootUri = restTemplate.getRootUri();
+                if (rootUri == null || rootUri.isEmpty()) {
+                    throw new IllegalStateException(
+                        "Cannot resolve relative Location header: " + locationHeader + 
+                        ". TestRestTemplate root URI is not set. Email: " + email
+                    );
+                }
+                // Ensure location starts with / for proper concatenation
+                String absoluteLocation = locationHeader.startsWith("/") 
+                    ? rootUri + locationHeader 
+                    : rootUri + "/" + locationHeader;
+                location = new URI(absoluteLocation);
+            }
+        } catch (java.net.URISyntaxException e) {
+            throw new IllegalStateException(
+                "Invalid location header format: " + locationHeader + " for email: " + email, e
+            );
         }
         
         // Retry logic to confirm account creation (handles eventual consistency/timing issues)
-        final int maxRetries = 5;
-        final long retryDelayMillis = 100; // 100ms between retries
+        // Retry for up to 10 seconds (10 retries × 1 second = 10 seconds total)
+        final int maxRetries = 10;
+        final long retryDelayMillis = 1000; // 1 second between retries
         
         RestUser createdUser = null;
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
