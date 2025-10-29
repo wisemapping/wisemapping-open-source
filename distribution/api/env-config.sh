@@ -23,11 +23,11 @@ mkdir -p /app/config
 
 # Write Spring config file only if content is not empty
 if [ -n "$SPRING_CONFIG_ADDITIONAL_FILE_CONTENT" ]; then
-    echo "$SPRING_CONFIG_ADDITIONAL_FILE_CONTENT" > /app/config/app.yml
-    echo "Spring config written to /app/config/app.yml"
+    echo "$SPRING_CONFIG_ADDITIONAL_FILE_CONTENT" > /app/config/application.yml
+    echo "Spring config written to /app/config/application.yml"
     echo "Spring will load additional configuration from optional:file:/app/config/"
 else
-    echo "SPRING_CONFIG_ADDITIONAL_FILE_CONTENT is empty, skipping app.yml creation"
+    echo "SPRING_CONFIG_ADDITIONAL_FILE_CONTENT is empty, skipping application.yml creation"
 fi
 
 # Write New Relic config file only if content is not empty
