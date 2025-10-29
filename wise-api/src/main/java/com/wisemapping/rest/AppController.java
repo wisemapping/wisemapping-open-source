@@ -30,10 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/restful/app")
 public class AppController {
 
-    @Value("${app.security.oauth2.google.enabled:false}")
+    @Value("${spring.security.oauth2.client.registration.google.enabled:false}")
     private Boolean isGoogleOauth2Enabled;
 
-    @Value("${app.security.oauth2.facebook.enabled:false}")
+    @Value("${spring.security.oauth2.client.registration.facebook.enabled:false}")
     private Boolean isFacebookOauth2Enabled;
 
     @Value("${app.registration.enabled:true}")

@@ -88,11 +88,13 @@ spring:
       client:
         registration:
           google:
+            enabled: false
             client-id: ${app.security.oauth2.google.clientId}
             client-secret: ${app.security.oauth2.google.clientSecret}
             scope: openid,profile,email
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
           facebook:
+            enabled: false
             client-id: ${app.security.oauth2.facebook.clientId}
             client-secret: ${app.security.oauth2.facebook.clientSecret}
             scope: email,public_profile
@@ -108,11 +110,6 @@ spring:
             token-uri: https://graph.facebook.com/v18.0/oauth/access_token
             user-info-uri: https://graph.facebook.com/me?fields=id,email,first_name,last_name
             user-name-attribute: id
-  # Conditional auto-configuration exclusion
-  autoconfigure:
-    exclude:
-
-
 #
 # OpenTelemetry Resource Attributes
 #
@@ -161,17 +158,6 @@ app:
     enabled: false
   accounts:
     max-inactive: 10  # Maximum total inactive collaborators across all mindmaps
-  # OAuth2 Configuration (Spring Boot OAuth2 Client)
-  security:
-    oauth2:
-      google:
-        enabled: false
-        clientId: 625682766634-cocbbbbb403iuvps1evecdk6d7phvbkf.apps.googleusercontent.com
-        clientSecret: <google-oauth-secret>
-      facebook:
-        enabled: false
-        clientId: <facebook-app-id>
-        clientSecret: <facebook-oauth-secret>
     #corsAllowedOrigins: https://app.wisemapping.com,https://wisemapping.com,https://dev.wisemapping.com,http://localhost:3000
   # Batch task configuration
   batch:
