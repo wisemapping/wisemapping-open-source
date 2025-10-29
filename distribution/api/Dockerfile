@@ -25,4 +25,4 @@ RUN mkdir -p /app && \
 WORKDIR /app
 USER wisemapping
 
-ENTRYPOINT ["sh", "-c", "/app/config-gen.sh && java ${JAVA_OPTS} ${NEW_RELIC_OPTS} -jar wisemapping-api.jar"]
+ENTRYPOINT ["sh", "-c", "/app/config-gen.sh && java ${JAVA_OPTS} ${NEW_RELIC_OPTS} -Dspring.config.additional-location=optional:file:/app/config/ -jar wisemapping-api.jar"]
