@@ -83,23 +83,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             // Audit the login
             userService.auditLogin(account);
             
-            // Check if there's a redirect state parameter from the OAuth flow
-            String state = request.getParameter("state");
-            
-            // Build redirect URL to frontend
+            // Always redirect to oauth-callback page in the UI
             String redirectPath = "/c/oauth-callback";
-            
-            // If state contains a redirect path, use it
-            if (state != null && !state.isEmpty() && !state.equals("wisemapping")) {
-                // State might be a full URL or just a path
-                if (state.startsWith("http")) {
-                    redirectPath = state;
-                } else if (state.startsWith("/")) {
-                    redirectPath = state;
-                } else {
-                    redirectPath = "/" + state;
-                }
-            }
             
             // Build query parameters
             String queryParams = "?jwtToken=" + URLEncoder.encode(jwt, "UTF-8") +
@@ -111,14 +96,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             }
             
             // Build full redirect URL
-            String redirectUrl;
-            if (redirectPath.startsWith("http")) {
-                redirectUrl = redirectPath + queryParams;
-            } else {
-                // Prepend UI base URL if it's set
-                String baseUrl = (uiBaseUrl != null && !uiBaseUrl.isEmpty()) ? uiBaseUrl : "";
-                redirectUrl = baseUrl + redirectPath + queryParams;
-            }
+            String baseUrl = (uiBaseUrl != null && !uiBaseUrl.isEmpty()) ? uiBaseUrl : "";
+            String redirectUrl = baseUrl + redirectPath + queryParams;
             
             response.sendRedirect(redirectUrl);
             logger.debug("OAuth2 redirecting to: {}", redirectUrl);
