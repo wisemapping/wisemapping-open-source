@@ -19,6 +19,7 @@
 package com.wisemapping.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -27,9 +28,16 @@ import java.util.Calendar;
 /**
  * Entity representing spam detection information for a mindmap.
  * This table is separate from the main MINDMAP table to denormalize it.
+ * 
+ * Caching strategy: READ_WRITE with extended TTL due to:
+ * - Sparse table (many mindmaps have no spam info - NULL results are cached)
+ * - Infrequent updates (batch jobs run periodically)
+ * - High read frequency (checked on every mindmap access)
  */
 @Entity
 @Table(name = "MINDMAP_SPAM_INFO")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MindmapSpamInfo {
     
     @Id
