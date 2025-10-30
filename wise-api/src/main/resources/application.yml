@@ -92,13 +92,13 @@ spring:
             client-id: ${app.security.oauth2.google.clientId}
             client-secret: ${app.security.oauth2.google.clientSecret}
             scope: openid,profile,email
-            redirect-uri: "${app.site.api-base-url}/login/oauth2/code/google"
+            redirect-uri: "${app.site.api-base-url}/oauth2/code/google"
           facebook:
             enabled: true
             client-id: ${app.security.oauth2.facebook.clientId}
             client-secret: ${app.security.oauth2.facebook.clientSecret}
             scope: email,public_profile
-            redirect-uri: "${app.site.api-base-url}/login/oauth2/code/facebook"
+            redirect-uri: "${app.site.api-base-url}/oauth2/code/facebook"
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
@@ -139,8 +139,8 @@ logging:
 app:
   # This information is mainly used by the frontend to connect to the backend. It must match the deployment topology used.
   site:
-    ui-base-url: http://localhost
-    api-base-url: http://localhost
+    ui-base-url: http://localhost:3000
+    api-base-url: http://localhost:8080
   # Enable API basic authentication.
   api:
     http-basic-enabled: false
