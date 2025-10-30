@@ -70,6 +70,8 @@ spring:
         dialect: org.hibernate.dialect.HSQLDialect
         format_sql: true
         # Enable second-level cache (L2) for entity caching across sessions
+        # IMPORTANT: Mindmap-related entities (Mindmap, MindmapSpamInfo, MindmapLabel) 
+        # are NOT cached to prevent inconsistencies. See ehcache.xml for details.
         cache:
           use_second_level_cache: true
           use_query_cache: true

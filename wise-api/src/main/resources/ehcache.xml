@@ -2,17 +2,15 @@
 <!DOCTYPE ehcache>
 <ehcache>
     <diskStore path="java.io.tmpdir"/>
+    <!-- 
+        NOTE: Mindmap-related entities (MindmapSpamInfo, MindmapLabel) are NOT cached
+        to prevent inconsistencies. Mindmap data changes frequently and must always
+        reflect the latest state in the database.
+    -->
     <cache name="com.wisemapping.model.Collaborator"
            maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
            timeToLiveSeconds="3600" overflowToDisk="false"/>
     <cache name="com.wisemapping.model.Account"
            maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
            timeToLiveSeconds="3600" overflowToDisk="false"/>
-    <cache name="com.wisemapping.model.MindmapLabel"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="3600" overflowToDisk="false"/>
-    <!-- Spam info cache: Larger size and longer TTL for sparse table with frequent NULL lookups -->
-    <cache name="com.wisemapping.model.MindmapSpamInfo"
-           maxElementsInMemory="20000" eternal="false" timeToIdleSeconds="1800"
-           timeToLiveSeconds="7200" overflowToDisk="false"/>
 </ehcache>

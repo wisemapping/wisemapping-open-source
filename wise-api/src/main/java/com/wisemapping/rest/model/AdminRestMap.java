@@ -52,7 +52,7 @@ public class AdminRestMap {
     private boolean isSpam;
     private String spamType;
     private String spamDetectedDate;
-    private String spamReason;
+    private String spamDescription;
     private boolean isCreatorSuspended;
     private int collaboratorCount;
 
@@ -121,8 +121,8 @@ public class AdminRestMap {
                 this.spamDetectedDate = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             }
             
-            // Note: getSpamReason() method may not exist in current model
-            // this.spamReason = mindmap.getSpamInfo().getSpamReason();
+            // Set spam description
+            this.spamDescription = mindmap.getSpamInfo().getSpamDescription();
         }
         
         // Count collaborations (excluding the owner)
@@ -182,8 +182,8 @@ public class AdminRestMap {
         return spamType;
     }
 
-    public String getSpamReason() {
-        return spamReason;
+    public String getSpamDescription() {
+        return spamDescription;
     }
 
     // Setters for testing and updates
@@ -243,8 +243,8 @@ public class AdminRestMap {
         this.spamDetectedDate = spamDetectedDate;
     }
 
-    public void setSpamReason(String spamReason) {
-        this.spamReason = spamReason;
+    public void setSpamDescription(String spamDescription) {
+        this.spamDescription = spamDescription;
     }
 
     public boolean isCreatorSuspended() {
