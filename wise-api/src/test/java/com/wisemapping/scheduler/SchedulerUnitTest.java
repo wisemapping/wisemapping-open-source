@@ -46,15 +46,8 @@ class SchedulerUnitTest {
     @InjectMocks
     private SpamUserSuspensionScheduler spamUserSuspensionScheduler;
 
-    @BeforeEach
-    void setUp() {
-        // Set enabled to true by default
-        ReflectionTestUtils.setField(spamDetectionScheduler, "enabled", true);
-        ReflectionTestUtils.setField(spamUserSuspensionScheduler, "enabled", true);
-    }
-
     @Test
-    void testSpamDetectionScheduler_WhenEnabled_ShouldCallService() {
+    void testSpamDetectionScheduler_ShouldCallService() {
         // Act
         spamDetectionScheduler.processSpamDetection();
 
@@ -63,57 +56,12 @@ class SchedulerUnitTest {
     }
 
     @Test
-    void testSpamDetectionScheduler_WhenDisabled_ShouldNotCallService() {
-        // Arrange
-        ReflectionTestUtils.setField(spamDetectionScheduler, "enabled", false);
-
-        // Act
-        spamDetectionScheduler.processSpamDetection();
-
-        // Assert
-        verify(spamDetectionBatchService, never()).processPublicMapsSpamDetection();
-    }
-
-    @Test
-    void testSpamDetectionScheduler_OnStartup_ShouldCallService() {
-        // Act
-        spamDetectionScheduler.processSpamDetectionOnStartup();
-
-        // Assert
-        verify(spamDetectionBatchService, times(1)).processPublicMapsSpamDetection();
-    }
-
-    @Test
-    void testSpamDetectionScheduler_OnStartup_WhenDisabled_ShouldNotCallService() {
-        // Arrange
-        ReflectionTestUtils.setField(spamDetectionScheduler, "enabled", false);
-
-        // Act
-        spamDetectionScheduler.processSpamDetectionOnStartup();
-
-        // Assert
-        verify(spamDetectionBatchService, never()).processPublicMapsSpamDetection();
-    }
-
-    @Test
-    void testSpamUserSuspensionScheduler_WhenEnabled_ShouldCallService() {
+    void testSpamUserSuspensionScheduler_ShouldCallService() {
         // Act
         spamUserSuspensionScheduler.processSpamUserSuspension();
 
         // Assert
         verify(spamUserSuspensionService, times(1)).processSpamUserSuspension();
-    }
-
-    @Test
-    void testSpamUserSuspensionScheduler_WhenDisabled_ShouldNotCallService() {
-        // Arrange
-        ReflectionTestUtils.setField(spamUserSuspensionScheduler, "enabled", false);
-
-        // Act
-        spamUserSuspensionScheduler.processSpamUserSuspension();
-
-        // Assert
-        verify(spamUserSuspensionService, never()).processSpamUserSuspension();
     }
 
     @Test
@@ -134,29 +82,5 @@ class SchedulerUnitTest {
         // Act & Assert
         assertDoesNotThrow(() -> spamUserSuspensionScheduler.processSpamUserSuspension());
         verify(spamUserSuspensionService, times(1)).processSpamUserSuspension();
-    }
-
-    @Test
-    void testSpamDetectionScheduler_Configuration_ShouldBeInjectable() {
-        // Test that the configuration values can be set
-        ReflectionTestUtils.setField(spamDetectionScheduler, "enabled", false);
-        
-        // Act
-        spamDetectionScheduler.processSpamDetection();
-        
-        // Assert
-        verify(spamDetectionBatchService, never()).processPublicMapsSpamDetection();
-    }
-
-    @Test
-    void testSpamUserSuspensionScheduler_Configuration_ShouldBeInjectable() {
-        // Test that the configuration values can be set
-        ReflectionTestUtils.setField(spamUserSuspensionScheduler, "enabled", false);
-        
-        // Act
-        spamUserSuspensionScheduler.processSpamUserSuspension();
-        
-        // Assert
-        verify(spamUserSuspensionService, never()).processSpamUserSuspension();
     }
 }
