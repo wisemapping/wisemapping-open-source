@@ -31,9 +31,11 @@ spring:
         format_sql: false
         use_sql_comments: false
         # Disable all levels of cache for tests
-        cache_use_second_level_cache: false  # Disable second-level cache (shared cache across sessions)
-        cache_use_query_cache: false  # Disable query cache
-        cache_region_factory_class: org.hibernate.cache.internal.NoCachingRegionFactory  # Use no-op cache factory
+        cache:
+          use_second_level_cache: false  # Disable second-level cache (shared cache across sessions)
+          use_query_cache: false  # Disable query cache
+          region:
+            factory_class: org.hibernate.cache.internal.NoCachingRegionFactory  # Use no-op cache factory
     show-sql: false
     # Disable automatic schema export/creation - schema comes from SQL files only
     defer-datasource-initialization: false
@@ -115,8 +117,4 @@ app:
 logging:
   level:
     root: INFO
-    # Suppress warning about custom AuthenticationProvider (intentional design for legacy password support)
-    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: ERROR
-    # Enable SQL script execution logging to verify DB initialization
-    org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG
 

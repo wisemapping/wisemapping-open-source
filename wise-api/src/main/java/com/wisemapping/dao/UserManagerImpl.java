@@ -293,6 +293,129 @@ public class UserManagerImpl
     }
 
     @Override
+    public List<Account> getUsersWithFilters(String search, Boolean filterActive, Boolean filterSuspended, 
+                                             String filterAuthType, int offset, int limit) {
+        StringBuilder jpql = new StringBuilder("SELECT u FROM com.wisemapping.model.Account u WHERE 1=1 ");
+        
+        // Build WHERE clause dynamically based on provided filters
+        if (search != null && !search.trim().isEmpty()) {
+            String trimmedSearch = search.trim();
+            
+            // Optimize: if search looks like an email, only search email field (uses email index)
+            if (trimmedSearch.contains("@")) {
+                jpql.append("AND LOWER(u.email) LIKE LOWER(:search) ");
+            } else {
+                // Search across all fields for non-email searches
+                jpql.append("AND (LOWER(u.email) LIKE LOWER(:search) ")
+                    .append("OR LOWER(u.firstname) LIKE LOWER(:search) ")
+                    .append("OR LOWER(u.lastname) LIKE LOWER(:search)) ");
+            }
+        }
+        
+        if (filterActive != null) {
+            if (filterActive) {
+                // Active users have activationDate set
+                jpql.append("AND u.activationDate IS NOT NULL ");
+            } else {
+                // Inactive users don't have activationDate set
+                jpql.append("AND u.activationDate IS NULL ");
+            }
+        }
+        
+        if (filterSuspended != null) {
+            jpql.append("AND u.suspended = :suspended ");
+        }
+        
+        if (filterAuthType != null && !filterAuthType.trim().isEmpty()) {
+            jpql.append("AND u.authenticationType = :authType ");
+        }
+        
+        jpql.append("ORDER BY u.id DESC");
+        
+        TypedQuery<Account> query = entityManager.createQuery(jpql.toString(), Account.class);
+        
+        // Set parameters only for conditions that were added
+        if (search != null && !search.trim().isEmpty()) {
+            query.setParameter("search", "%" + search.trim() + "%");
+        }
+        
+        if (filterSuspended != null) {
+            query.setParameter("suspended", filterSuspended);
+        }
+        
+        if (filterAuthType != null && !filterAuthType.trim().isEmpty()) {
+            try {
+                query.setParameter("authType", AuthenticationType.valueOf(filterAuthType));
+            } catch (IllegalArgumentException e) {
+                // Invalid auth type, return empty result
+                return new java.util.ArrayList<>();
+            }
+        }
+        
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
+    public long countUsersWithFilters(String search, Boolean filterActive, Boolean filterSuspended, String filterAuthType) {
+        StringBuilder jpql = new StringBuilder("SELECT COUNT(u) FROM com.wisemapping.model.Account u WHERE 1=1 ");
+        
+        // Build WHERE clause dynamically - same logic as getUsersWithFilters
+        if (search != null && !search.trim().isEmpty()) {
+            String trimmedSearch = search.trim();
+            
+            // Optimize: if search looks like an email, only search email field (uses email index)
+            if (trimmedSearch.contains("@")) {
+                jpql.append("AND LOWER(u.email) LIKE LOWER(:search) ");
+            } else {
+                // Search across all fields for non-email searches
+                jpql.append("AND (LOWER(u.email) LIKE LOWER(:search) ")
+                    .append("OR LOWER(u.firstname) LIKE LOWER(:search) ")
+                    .append("OR LOWER(u.lastname) LIKE LOWER(:search)) ");
+            }
+        }
+        
+        if (filterActive != null) {
+            if (filterActive) {
+                jpql.append("AND u.activationDate IS NOT NULL ");
+            } else {
+                jpql.append("AND u.activationDate IS NULL ");
+            }
+        }
+        
+        if (filterSuspended != null) {
+            jpql.append("AND u.suspended = :suspended ");
+        }
+        
+        if (filterAuthType != null && !filterAuthType.trim().isEmpty()) {
+            jpql.append("AND u.authenticationType = :authType ");
+        }
+        
+        TypedQuery<Long> query = entityManager.createQuery(jpql.toString(), Long.class);
+        
+        // Set parameters only for conditions that were added
+        if (search != null && !search.trim().isEmpty()) {
+            query.setParameter("search", "%" + search.trim() + "%");
+        }
+        
+        if (filterSuspended != null) {
+            query.setParameter("suspended", filterSuspended);
+        }
+        
+        if (filterAuthType != null && !filterAuthType.trim().isEmpty()) {
+            try {
+                query.setParameter("authType", AuthenticationType.valueOf(filterAuthType));
+            } catch (IllegalArgumentException e) {
+                // Invalid auth type, return 0
+                return 0L;
+            }
+        }
+        
+        return query.getSingleResult();
+    }
+
+    @Override
     public long countUsersInactiveSince(Calendar cutoffDate, Calendar creationCutoffDate) {
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT a) FROM com.wisemapping.model.Account a " +
