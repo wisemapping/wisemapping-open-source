@@ -89,14 +89,14 @@ spring:
         registration:
           google:
             enabled: true
-            client-id: ${app.security.oauth2.google.clientId}
-            client-secret: ${app.security.oauth2.google.clientSecret}
+            client-id: ${app.security.oauth2.google.clientId:}
+            client-secret: ${app.security.oauth2.google.clientSecret:}
             scope: openid,profile,email
             redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
           facebook:
             enabled: true
-            client-id: ${app.security.oauth2.facebook.clientId}
-            client-secret: ${app.security.oauth2.facebook.clientSecret}
+            client-id: ${app.security.oauth2.facebook.clientId:}
+            client-secret: ${app.security.oauth2.facebook.clientSecret:}
             scope: email,public_profile
             redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
         provider:
@@ -132,6 +132,15 @@ logging:
           core:
             StandardWrapperValve: OFF
     root: INFO
+    # OAuth2 Debug Logging
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.security.web: DEBUG
+    org.springframework.security: DEBUG
+    com.wisemapping.security: DEBUG
+    com.wisemapping.config: DEBUG
+    # HTTP Request/Response Logging
+    org.springframework.web: DEBUG
+    org.springframework.http: DEBUG
 
 #
 # Application Config related options:

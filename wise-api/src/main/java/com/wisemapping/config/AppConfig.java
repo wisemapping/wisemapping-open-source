@@ -50,6 +50,9 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Value("${app.security.corsAllowedOrigins:}")
     private String corsAllowedOrigins;
+    
+    @Value("${app.site.ui-base-url:}")
+    private String uiBaseUrl;
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -111,7 +114,8 @@ public class AppConfig implements WebMvcConfigurer {
                                 response.setContentType("application/json");
                                 response.getWriter().write("{\"msg\":\"OAuth authentication failed\"}");
                             } else {
-                                response.sendRedirect("/c/login?error=oauth_failed");
+                                // Redirect to frontend with error
+                                response.sendRedirect(uiBaseUrl + "/c/login?error=oauth_failed");
                             }
                         })
                 )
