@@ -62,10 +62,7 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
         
         // Suspicious color schemes (white text on white background)
         Pattern.compile("color\\s*:\\s*white[^;]*background\\s*:\\s*white", Pattern.CASE_INSENSITIVE),
-        Pattern.compile("color\\s*:\\s*#fff[^;]*background\\s*:\\s*#fff", Pattern.CASE_INSENSITIVE),
-        
-        // Excessive use of formatting tags (common spam technique)
-        Pattern.compile("(<(strong|b|em|i|u|span|div)>.*?</\\2>)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL),
+        Pattern.compile("color\\s*:\\s*#fff[^;]*background\\s*:#fff", Pattern.CASE_INSENSITIVE),
         
         // Hidden input fields (potential form spam)
         Pattern.compile("<input[^>]*type\\s*=\\s*[\"']hidden[\"'][^>]*>", Pattern.CASE_INSENSITIVE),
