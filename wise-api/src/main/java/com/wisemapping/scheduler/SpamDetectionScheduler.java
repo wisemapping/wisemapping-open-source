@@ -22,7 +22,7 @@ import com.wisemapping.service.SpamDetectionBatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -30,6 +30,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(name = "app.batch.spam-detection.enabled", havingValue = "true", matchIfMissing = true)
 public class SpamDetectionScheduler {
 
     private static final Logger logger = LoggerFactory.getLogger(SpamDetectionScheduler.class);
@@ -37,19 +38,13 @@ public class SpamDetectionScheduler {
     @Autowired
     private SpamDetectionBatchService spamDetectionBatchService;
 
-    @Value("${app.batch.spam-detection.enabled:true}")
-    private boolean enabled;
-
     /**
      * Execute spam detection task once at application startup (async to not block startup)
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
+    @ConditionalOnProperty(name = "app.batch.spam-detection.startup-enabled", havingValue = "true")
     public void processSpamDetectionOnStartup() {
-        if (!enabled) {
-            logger.info("Spam detection scheduler is disabled.");
-            return;
-        }
         logger.info("Executing spam detection task on application startup.");
         
         try {
@@ -75,10 +70,6 @@ public class SpamDetectionScheduler {
     @Scheduled(cron = "${app.batch.spam-detection.cron-expression:0 0 0 * * *}")
     @Async
     public void processSpamDetection() {
-        if (!enabled) {
-            logger.debug("Spam detection scheduler is disabled");
-            return;
-        }
         logger.info("Executing scheduled spam detection task for public maps (async)...");
         
         try {

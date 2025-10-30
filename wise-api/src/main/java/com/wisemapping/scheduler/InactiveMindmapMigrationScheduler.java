@@ -22,7 +22,7 @@ import com.wisemapping.service.InactiveMindmapMigrationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -34,6 +34,7 @@ import org.springframework.stereotype.Component;
  * Runs on weekends to move mindmaps of inactive users to make them inaccessible.
  */
 @Component
+@ConditionalOnProperty(name = "app.batch.inactive-mindmap-migration.enabled", havingValue = "true", matchIfMissing = true)
 public class InactiveMindmapMigrationScheduler {
 
     private static final Logger logger = LoggerFactory.getLogger(InactiveMindmapMigrationScheduler.class);
@@ -41,22 +42,13 @@ public class InactiveMindmapMigrationScheduler {
     @Autowired
     private InactiveMindmapMigrationService inactiveMindmapMigrationService;
 
-    @Value("${app.batch.inactive-mindmap-migration.enabled:true}")
-    private boolean enabled;
-
-    @Value("${app.batch.inactive-mindmap-migration.startup-enabled:false}")
-    private boolean startupEnabled;
-
     /**
      * Execute inactive mindmap migration task once at application startup (async to not block startup)
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
+    @ConditionalOnProperty(name = "app.batch.inactive-mindmap-migration.startup-enabled", havingValue = "true")
     public void processInactiveMindmapMigrationOnStartup() {
-        if (!enabled || !startupEnabled) {
-            logger.info("Inactive mindmap migration scheduler is disabled or startup is disabled.");
-            return;
-        }
         logger.info("Executing inactive mindmap migration task on application startup.");
         
         try {
@@ -81,11 +73,6 @@ public class InactiveMindmapMigrationScheduler {
     @Scheduled(cron = "${app.batch.inactive-mindmap-migration.cron-expression:0 0 2 * * SUN}")
     @Async
     public void processInactiveMindmapMigration() {
-        if (!enabled) {
-            logger.debug("Inactive mindmap migration scheduler is disabled");
-            return;
-        }
-
         logger.info("Starting scheduled inactive mindmap migration task (async)");
         
         try {

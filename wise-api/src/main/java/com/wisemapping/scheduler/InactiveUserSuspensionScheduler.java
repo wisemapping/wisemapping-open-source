@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,6 +31,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(name = "app.batch.inactive-user-suspension.enabled", havingValue = "true", matchIfMissing = true)
 public class InactiveUserSuspensionScheduler {
 
     private static final Logger logger = LoggerFactory.getLogger(InactiveUserSuspensionScheduler.class);
@@ -37,14 +39,8 @@ public class InactiveUserSuspensionScheduler {
     @Autowired
     private InactiveUserService inactiveUserService;
 
-    @Value("${app.batch.inactive-user-suspension.enabled:true}")
-    private boolean enabled;
-
     @Value("${app.batch.inactive-user-suspension.preview-enabled:false}")
     private boolean previewEnabled;
-
-    @Value("${app.batch.inactive-user-suspension.startup-enabled:true}")
-    private boolean startupEnabled;
 
     /**
      * Kick off the inactive user suspension process once the application is ready.
@@ -52,12 +48,8 @@ public class InactiveUserSuspensionScheduler {
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
+    @ConditionalOnProperty(name = "app.batch.inactive-user-suspension.startup-enabled", havingValue = "true")
     public void processInactiveUserSuspensionOnStartup() {
-        if (!enabled || !startupEnabled) {
-            logger.debug("Inactive user suspension on startup is disabled");
-            return;
-        }
-
         logger.info("Starting startup inactive user suspension task (async)");
         try {
             inactiveUserService.processInactiveUsers();
@@ -81,11 +73,6 @@ public class InactiveUserSuspensionScheduler {
     @Scheduled(cron = "${app.batch.inactive-user-suspension.cron-expression:0 0 2 * * SAT}")
     @Async
     public void processInactiveUserSuspension() {
-        if (!enabled) {
-            logger.debug("Inactive user suspension scheduler is disabled");
-            return;
-        }
-
         logger.info("Starting scheduled inactive user suspension task (async)");
         
         try {
@@ -110,12 +97,8 @@ public class InactiveUserSuspensionScheduler {
      */
     @Scheduled(cron = "${app.batch.inactive-user-suspension.preview-cron-expression:0 0 10 * * FRI}")
     @Async
+    @ConditionalOnProperty(name = "app.batch.inactive-user-suspension.preview-enabled", havingValue = "true")
     public void previewInactiveUserSuspension() {
-        if (!enabled || !previewEnabled) {
-            logger.debug("Inactive user suspension preview is disabled");
-            return;
-        }
-
         logger.info("Starting scheduled inactive user suspension preview (async)");
         
         try {
