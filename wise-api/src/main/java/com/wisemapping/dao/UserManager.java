@@ -139,4 +139,27 @@ public interface UserManager {
      */
     int unsuspendUser(@NotNull Account user);
 
+    /**
+     * Get users with advanced filtering and pagination
+     * @param search optional search term for email, firstname, or lastname
+     * @param filterActive optional filter for active status (true=active, false=inactive, null=all)
+     * @param filterSuspended optional filter for suspended status (true=suspended, false=not suspended, null=all)
+     * @param filterAuthType optional filter by authentication type
+     * @param offset starting position for pagination
+     * @param limit maximum number of results to return
+     * @return list of filtered users for the given page
+     */
+    List<Account> getUsersWithFilters(String search, Boolean filterActive, Boolean filterSuspended, 
+                                      String filterAuthType, int offset, int limit);
+
+    /**
+     * Count users matching advanced filtering criteria
+     * @param search optional search term for email, firstname, or lastname
+     * @param filterActive optional filter for active status (true=active, false=inactive, null=all)
+     * @param filterSuspended optional filter for suspended status (true=suspended, false=not suspended, null=all)
+     * @param filterAuthType optional filter by authentication type
+     * @return total count of matching users
+     */
+    long countUsersWithFilters(String search, Boolean filterActive, Boolean filterSuspended, String filterAuthType);
+
 }

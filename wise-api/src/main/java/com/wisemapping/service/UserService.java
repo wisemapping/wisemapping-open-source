@@ -86,4 +86,27 @@ public interface UserService {
      * @return number of mindmaps restored, or 0 if none were restored
      */
     int unsuspendUser(@NotNull Account user);
+
+    /**
+     * Get users with advanced filtering and pagination (admin only)
+     * @param search optional search term for email, firstname, or lastname
+     * @param filterActive optional filter for active status (true=active, false=inactive, null=all)
+     * @param filterSuspended optional filter for suspended status (true=suspended, false=not suspended, null=all)
+     * @param filterAuthType optional filter by authentication type
+     * @param page page number (0-based)
+     * @param pageSize number of users per page
+     * @return list of filtered users for the given page
+     */
+    java.util.List<Account> getUsersWithFilters(String search, Boolean filterActive, Boolean filterSuspended, 
+                                                String filterAuthType, int page, int pageSize);
+
+    /**
+     * Count users matching advanced filtering criteria (admin only)
+     * @param search optional search term for email, firstname, or lastname
+     * @param filterActive optional filter for active status (true=active, false=inactive, null=all)
+     * @param filterSuspended optional filter for suspended status (true=suspended, false=not suspended, null=all)
+     * @param filterAuthType optional filter by authentication type
+     * @return total count of matching users
+     */
+    long countUsersWithFilters(String search, Boolean filterActive, Boolean filterSuspended, String filterAuthType);
 }

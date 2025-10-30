@@ -97,25 +97,22 @@ public class AdminController {
     public PaginatedResponse<com.wisemapping.rest.model.AdminRestUser> getAllUsers(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-            @RequestParam(value = "search", required = false) String search) {
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "filterActive", required = false) Boolean filterActive,
+            @RequestParam(value = "filterSuspended", required = false) Boolean filterSuspended,
+            @RequestParam(value = "filterAuthType", required = false) String filterAuthType) {
         
-        if (search != null && !search.trim().isEmpty()) {
-            // Search users - using optimized AdminRestUser DTO
-            final List<Account> users = userService.searchUsers(search, page, pageSize);
-            final long totalElements = userService.countUsersBySearch(search);
-            final List<com.wisemapping.rest.model.AdminRestUser> restUsers = users.stream()
-                    .map(user -> new com.wisemapping.rest.model.AdminRestUser(user, isAdmin(user.getEmail())))
-                    .collect(java.util.stream.Collectors.toList());
-            return new PaginatedResponse<>(restUsers, page, pageSize, totalElements);
-        } else {
-            // Get all users with pagination - using optimized AdminRestUser DTO
-            final List<Account> users = userService.getAllUsers(page, pageSize);
-            final long totalElements = userService.countAllUsers();
-            final List<com.wisemapping.rest.model.AdminRestUser> restUsers = users.stream()
-                    .map(user -> new com.wisemapping.rest.model.AdminRestUser(user, isAdmin(user.getEmail())))
-                    .collect(java.util.stream.Collectors.toList());
-            return new PaginatedResponse<>(restUsers, page, pageSize, totalElements);
-        }
+        // Use optimized query that only adds filter conditions that are actually set
+        final List<Account> users = userService.getUsersWithFilters(
+            search, filterActive, filterSuspended, filterAuthType, page, pageSize);
+        final long totalElements = userService.countUsersWithFilters(
+            search, filterActive, filterSuspended, filterAuthType);
+        
+        final List<com.wisemapping.rest.model.AdminRestUser> restUsers = users.stream()
+                .map(user -> new com.wisemapping.rest.model.AdminRestUser(user, isAdmin(user.getEmail())))
+                .collect(java.util.stream.Collectors.toList());
+        
+        return new PaginatedResponse<>(restUsers, page, pageSize, totalElements);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})

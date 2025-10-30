@@ -282,4 +282,16 @@ public class UserServiceImpl
     public int unsuspendUser(@NotNull Account user) {
         return userManager.unsuspendUser(user);
     }
+
+    @Override
+    public List<Account> getUsersWithFilters(String search, Boolean filterActive, Boolean filterSuspended, 
+                                            String filterAuthType, int page, int pageSize) {
+        int offset = page * pageSize;
+        return userManager.getUsersWithFilters(search, filterActive, filterSuspended, filterAuthType, offset, pageSize);
+    }
+
+    @Override
+    public long countUsersWithFilters(String search, Boolean filterActive, Boolean filterSuspended, String filterAuthType) {
+        return userManager.countUsersWithFilters(search, filterActive, filterSuspended, filterAuthType);
+    }
 }

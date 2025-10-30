@@ -69,6 +69,17 @@ spring:
         default_batch_fetch_size: 200
         dialect: org.hibernate.dialect.HSQLDialect
         format_sql: true
+        # Enable second-level cache (L2) for entity caching across sessions
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+          region:
+            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+        # Configure JCache provider (EHCache)
+        jakarta:
+          cache:
+            provider: org.ehcache.jsr107.EhcacheCachingProvider
+            uri: classpath:ehcache.xml
   sql:
     init:
       mode: always
