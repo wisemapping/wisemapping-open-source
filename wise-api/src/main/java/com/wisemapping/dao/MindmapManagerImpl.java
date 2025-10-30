@@ -1251,10 +1251,45 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
-            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+            "SELECT m FROM com.wisemapping.model.Mindmap m ");
+        
+        // Handle special search patterns
+        boolean isIdSearch = false;
+        boolean isEmailSearch = false;
+        String processedSearch = search;
         
         if (search != null && !search.trim().isEmpty()) {
-            queryString.append(" AND (LOWER(m.title) LIKE LOWER(:search) OR LOWER(m.description) LIKE LOWER(:search))");
+            String trimmedSearch = search.trim();
+            
+            // Check if searching by ID (starts with #)
+            if (trimmedSearch.startsWith("#")) {
+                String idStr = trimmedSearch.substring(1);
+                try {
+                    Integer.parseInt(idStr);
+                    isIdSearch = true;
+                    processedSearch = idStr;
+                } catch (NumberFormatException e) {
+                    // Not a valid ID, treat as normal search
+                }
+            }
+            // Check if searching by email (contains @ and .)
+            else if (trimmedSearch.contains("@") && trimmedSearch.contains(".")) {
+                isEmailSearch = true;
+                processedSearch = trimmedSearch;
+            }
+        }
+        
+        // Build WHERE clause
+        queryString.append("WHERE 1=1");
+        
+        if (search != null && !search.trim().isEmpty()) {
+            if (isIdSearch) {
+                queryString.append(" AND m.id = :searchId");
+            } else if (isEmailSearch) {
+                queryString.append(" AND LOWER(m.creator.email) = LOWER(:searchEmail)");
+            } else {
+                queryString.append(" AND (LOWER(m.title) LIKE LOWER(:search) OR LOWER(m.description) LIKE LOWER(:search))");
+            }
         }
         
         if (filterPublic != null) {
@@ -1273,8 +1308,15 @@ public class MindmapManagerImpl
         
         final TypedQuery<Mindmap> query = entityManager.createQuery(queryString.toString(), Mindmap.class);
         
+        // Set parameters based on search type
         if (search != null && !search.trim().isEmpty()) {
-            query.setParameter("search", "%" + search + "%");
+            if (isIdSearch) {
+                query.setParameter("searchId", Integer.parseInt(processedSearch));
+            } else if (isEmailSearch) {
+                query.setParameter("searchEmail", processedSearch);
+            } else {
+                query.setParameter("search", "%" + processedSearch + "%");
+            }
         }
         
         if (filterPublic != null) {
@@ -1291,8 +1333,40 @@ public class MindmapManagerImpl
         StringBuilder queryString = new StringBuilder(
             "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
         
+        // Handle special search patterns
+        boolean isIdSearch = false;
+        boolean isEmailSearch = false;
+        String processedSearch = search;
+        
         if (search != null && !search.trim().isEmpty()) {
-            queryString.append(" AND (LOWER(m.title) LIKE LOWER(:search) OR LOWER(m.description) LIKE LOWER(:search))");
+            String trimmedSearch = search.trim();
+            
+            // Check if searching by ID (starts with #)
+            if (trimmedSearch.startsWith("#")) {
+                String idStr = trimmedSearch.substring(1);
+                try {
+                    Integer.parseInt(idStr);
+                    isIdSearch = true;
+                    processedSearch = idStr;
+                } catch (NumberFormatException e) {
+                    // Not a valid ID, treat as normal search
+                }
+            }
+            // Check if searching by email (contains @ and .)
+            else if (trimmedSearch.contains("@") && trimmedSearch.contains(".")) {
+                isEmailSearch = true;
+                processedSearch = trimmedSearch;
+            }
+        }
+        
+        if (search != null && !search.trim().isEmpty()) {
+            if (isIdSearch) {
+                queryString.append(" AND m.id = :searchId");
+            } else if (isEmailSearch) {
+                queryString.append(" AND LOWER(m.creator.email) = LOWER(:searchEmail)");
+            } else {
+                queryString.append(" AND (LOWER(m.title) LIKE LOWER(:search) OR LOWER(m.description) LIKE LOWER(:search))");
+            }
         }
         
         if (filterPublic != null) {
@@ -1309,8 +1383,15 @@ public class MindmapManagerImpl
         
         final TypedQuery<Long> query = entityManager.createQuery(queryString.toString(), Long.class);
         
+        // Set parameters based on search type
         if (search != null && !search.trim().isEmpty()) {
-            query.setParameter("search", "%" + search + "%");
+            if (isIdSearch) {
+                query.setParameter("searchId", Integer.parseInt(processedSearch));
+            } else if (isEmailSearch) {
+                query.setParameter("searchEmail", processedSearch);
+            } else {
+                query.setParameter("search", "%" + processedSearch + "%");
+            }
         }
         
         if (filterPublic != null) {
