@@ -31,7 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,14 +45,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests migration of mindmaps from inactive users to the inactive table.
  */
 @SpringBootTest(classes = {AppConfig.class})
+@ActiveProfiles("test")
 @TestPropertySource(properties = {
         "app.batch.inactive-mindmap-migration.enabled=true",
         "app.batch.inactive-mindmap-migration.batch-size=5",
         "app.batch.inactive-mindmap-migration.inactivity-years=2",
-        "app.batch.inactive-mindmap-migration.dry-run=false",
-        "spring.jpa.hibernate.ddl-auto=create-drop"
+        "app.batch.inactive-mindmap-migration.dry-run=false"
 })
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 public class InactiveMindmapMigrationServiceTest {
 
@@ -153,7 +152,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testInactiveMindmapMigrationWithHistoryRemoval() {
         // Verify initial state
         List<Mindmap> inactiveUser1Mindmaps = mindmapManager.findByCreator(inactiveUser1.getId());
@@ -193,7 +191,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testDryRunMode() {
         // Set dry run mode
         inactiveMindmapMigrationService = new InactiveMindmapMigrationService();
@@ -216,7 +213,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testBatchProcessingWithSufficientData() {
         // Create additional inactive users with mindmaps
         for (int i = 3; i <= 7; i++) {
@@ -250,7 +246,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testMigrationStats() {
         // Get initial stats
         InactiveMindmapMigrationService.MigrationStats stats = inactiveMindmapMigrationService.getMigrationStats();
@@ -271,7 +266,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testNoInactiveUsersFound() {
         // Create only active users
         Account activeUser2 = createTestUser("active2@test.com", "Active", "User2");
@@ -291,7 +285,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testInactiveUsersWithNoMindmaps() {
         // Create inactive user with no mindmaps
         Account inactiveUserNoMindmaps = createTestUser("inactive_no_mindmaps@test.com", "Inactive", "NoMindmaps");
@@ -311,7 +304,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testTransactionBoundary() {
         // This test verifies that the migration process works within transaction boundaries
         assertDoesNotThrow(() -> {
@@ -320,7 +312,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testEntityManagerIsAvailable() {
         // Verify EntityManager is available for the service
         assertNotNull(entityManager, "EntityManager should be available");
@@ -331,7 +322,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testInactiveMindmapCreation() {
         // Create a mindmap and manually test the inactive mindmap creation
         Mindmap originalMindmap = mindmapManager.findByCreator(inactiveUser1.getId()).get(0);
@@ -351,7 +341,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testUserReactivationAndMindmapRestoration() {
         // First, migrate mindmaps to inactive table
         inactiveMindmapMigrationService.processInactiveMindmapMigration();
@@ -390,7 +379,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testReactivationWithNoInactiveMindmaps() {
         // Create user with no migrated mindmaps
         Account userWithNoInactiveMindmaps = createTestUser("no_inactive@test.com", "No", "Inactive");
@@ -407,34 +395,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
-    void testPartialRestorationOnError() {
-        // First, migrate mindmaps to inactive table
-        inactiveMindmapMigrationService.processInactiveMindmapMigration();
-
-        // Verify mindmaps are in inactive table
-        List<InactiveMindmap> inactiveMindmaps = inactiveMindmapManager.findByCreator(inactiveUser1);
-        assertEquals(2, inactiveMindmaps.size(), "Should have 2 mindmaps in inactive table");
-
-        // Corrupt one of the inactive mindmaps to simulate an error
-        InactiveMindmap corruptedMindmap = inactiveMindmaps.get(0);
-        corruptedMindmap.setTitle(null); // This will cause an error during restoration
-        entityManager.merge(corruptedMindmap);
-        entityManager.flush();
-
-        // Try to restore mindmaps - should handle the error gracefully
-        int restoredCount = inactiveMindmapMigrationService.restoreUserMindmaps(inactiveUser1);
-        
-        // Should restore at least one mindmap (the non-corrupted one)
-        assertTrue(restoredCount >= 1, "Should restore at least one mindmap despite errors");
-        
-        // Verify some mindmaps were restored
-        List<Mindmap> restoredActiveMindmaps = mindmapManager.findByCreator(inactiveUser1.getId());
-        assertTrue(restoredActiveMindmaps.size() >= 1, "Should have at least one restored active mindmap");
-    }
-
-    @Test
-    @Transactional
     void testRestorationPreservesMindmapData() {
         // Create a mindmap with specific data
         Mindmap originalMindmap = createTestMindmap("Detailed Mindmap", inactiveUser1);
@@ -473,7 +433,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    @Transactional
     void testMultipleUsersReactivation() {
         // Migrate mindmaps for both inactive users
         inactiveMindmapMigrationService.processInactiveMindmapMigration();

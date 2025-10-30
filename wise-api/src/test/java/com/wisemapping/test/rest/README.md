@@ -82,7 +82,13 @@ JAVA_HOME=/path/to/java21 mvn test
 
 2. **Mockito Compatibility**: Tests require Java 21 with `-XX:+EnableDynamicAgentLoading` JVM flag for Mockito to work on macOS 26.0.1+
 
-3. **Test Isolation**: Tests use `@DirtiesContext` or `RANDOM_PORT` to ensure proper isolation between test classes
+3. **Test Isolation**: Tests ensure proper isolation through:
+   - `RANDOM_PORT` web environment for network isolation
+   - `@ActiveProfiles("test")` for consistent test configuration
+   - In-memory HSQLDB database (fresh per test run)
+   - `TestDataManager` for data cleanup between tests
+   - `@Transactional` on service tests for entity session management
+   - **No `@DirtiesContext`** - context is not reloaded, improving test performance
 
 4. **Log Level**: Test logging is configured to WARNING level in `logback-test.xml` to reduce noise
 

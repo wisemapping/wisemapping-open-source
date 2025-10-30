@@ -21,6 +21,8 @@ package com.wisemapping.security;
 
 import com.wisemapping.model.Account;
 import com.wisemapping.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsService
         implements org.springframework.security.core.userdetails.UserDetailsService {
+    private static final Logger logger = LogManager.getLogger();
+    
     @Autowired
     private UserService userService;
 
@@ -46,6 +50,7 @@ public class UserDetailsService
         if (user != null) {
             return new UserDetails(user, isAdmin(email), userService);
         } else {
+            logger.warn("User not found: {}", email);
             throw new UsernameNotFoundException(email);
         }
     }

@@ -19,9 +19,6 @@
 package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
-import com.wisemapping.rest.AdminController;
-import com.wisemapping.rest.MindmapController;
-import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.security.UserDetailsService;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +29,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
 
@@ -40,11 +39,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(
-        classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"app.api.http-basic-enabled=true"}
-)
+        classes = {AppConfig.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RestAccountControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "testAdmin123";
@@ -99,7 +98,6 @@ public class RestAccountControllerTest {
     @Test
     public void changePassword() {
         final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
 
         final RestUser newUser = createNewUser();
         final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
@@ -143,7 +141,7 @@ public class RestAccountControllerTest {
     @Test
     public void changeFirstname() {
         final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+        this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
 
         final RestUser newUser = createNewUser();
         final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
@@ -157,7 +155,6 @@ public class RestAccountControllerTest {
     @Test
     public void changeLastname() {
         final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
 
         final RestUser newUser = createNewUser();
         final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
@@ -171,7 +168,7 @@ public class RestAccountControllerTest {
     @Test
     public void changeLocale() {
         final HttpHeaders requestHeaders = createHeaders(MediaType.TEXT_PLAIN);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD);
+    
 
         final RestUser newUser = createNewUser();
         final TestRestTemplate userTemplate = this.restTemplate.withBasicAuth(newUser.getEmail(), newUser.getPassword());
@@ -193,6 +190,14 @@ public class RestAccountControllerTest {
 
         // Create a new user ...
         final URI location = createUser(requestHeaders, templateRest, restUser);
+        
+        if (location == null) {
+            // If location is null, try to find user by email as fallback
+            ResponseEntity<RestUser> result = findUserByEmail(requestHeaders, templateRest, restUser.getEmail());
+            assertNotNull(result.getBody(), "User should have been created. Response: " + result);
+            restUser.setId(result.getBody().getId());
+            return restUser;
+        }
 
         // Check that the user has been created ...
         ResponseEntity<RestUser> result = findUser(requestHeaders, templateRest, location);
@@ -236,6 +241,10 @@ public class RestAccountControllerTest {
 
     private URI createUser(@NotNull HttpHeaders requestHeaders, TestRestTemplate templateRest, RestUser restUser) {
         final HttpEntity<RestUser> createUserEntity = new HttpEntity<>(restUser, requestHeaders);
+        
+        // Use postForLocation like other working tests (RestMindmapControllerTest)
+        // This automatically handles relative URL resolution when TestRestTemplate has root URI set
+        // Returns null if Location header is missing or can't be resolved
         return templateRest.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
     }
 

@@ -37,17 +37,20 @@ public class LegacyPasswordEncoder implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence rawPassword) {
-
-        logger.debug("LegacyPasswordEncoder encode executed.");
-        return ENC_PREFIX + sha1Encoder.encode(rawPassword.toString(), "");
-
+        final String hash = sha1Encoder.encode(rawPassword.toString(), "");
+        return ENC_PREFIX + hash;
     }
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-
-        final String encode = encode(rawPassword);
-        return encode.equals(encodedPassword);
+        final String computedHash = encode(rawPassword);
+        boolean matches = computedHash.equals(encodedPassword);
+        
+        if (!matches) {
+            logger.debug("Legacy password match failed");
+        }
+        
+        return matches;
     }
 }
 

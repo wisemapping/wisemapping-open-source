@@ -58,6 +58,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
@@ -203,6 +207,32 @@
                     <argLine>-XX:+EnableDynamicAgentLoading -Djdk.attach.allowAttachSelf=true -Dnet.bytebuddy.experimental=true</argLine>
                 </configuration>
             </plugin>
+            <!-- Git Commit ID Plugin to add git information to build -->
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>9.0.1</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <includeOnlyProperties>
+                        <includeOnlyProperty>^git.branch$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.commit.id.abbrev$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.commit.id.full$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.commit.time$</includeOnlyProperty>
+                    </includeOnlyProperties>
+                    <commitIdGenerationMode>full</commitIdGenerationMode>
+                </configuration>
+            </plugin>
             <!-- Build Info Plugin to generate build.properties -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -222,6 +252,10 @@
                                 <maven.version>${maven.version}</maven.version>
                                 <build.number>${build.number}</build.number>
                                 <build.timestamp>${maven.build.timestamp}</build.timestamp>
+                                <git.branch>${git.branch}</git.branch>
+                                <git.commit.id.abbrev>${git.commit.id.abbrev}</git.commit.id.abbrev>
+                                <git.commit.id.full>${git.commit.id.full}</git.commit.id.full>
+                                <git.commit.time>${git.commit.time}</git.commit.time>
                             </additionalProperties>
                         </configuration>
                     </execution>

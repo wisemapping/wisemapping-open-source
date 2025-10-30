@@ -54,7 +54,8 @@ class AuthenticationProviderTest {
 
         when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
         when(userDetails.getUser()).thenReturn(account);
-        when(encoder.matches(account.getPassword(), password)).thenReturn(true);
+        when(account.getPassword()).thenReturn("encodedPassword123");
+        when(encoder.matches(password, "encodedPassword123")).thenReturn(true);
         when(account.getAuthenticationType()).thenReturn(AuthenticationType.DATABASE);
         when(account.isActive()).thenReturn(false); // Account is not active (disabled)
 
@@ -78,7 +79,8 @@ class AuthenticationProviderTest {
 
         when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
         when(userDetails.getUser()).thenReturn(account);
-        when(encoder.matches(account.getPassword(), password)).thenReturn(true);
+        when(account.getPassword()).thenReturn("encodedPassword123");
+        when(encoder.matches(password, "encodedPassword123")).thenReturn(true);
         when(account.getAuthenticationType()).thenReturn(AuthenticationType.DATABASE);
         when(account.isActive()).thenReturn(true);
         when(account.isSuspended()).thenReturn(true); // Account is suspended
@@ -103,7 +105,8 @@ class AuthenticationProviderTest {
 
         when(userDetailsService.loadUserByUsername(email)).thenReturn(userDetails);
         when(userDetails.getUser()).thenReturn(account);
-        when(encoder.matches(account.getPassword(), password)).thenReturn(true);
+        when(account.getPassword()).thenReturn("encodedPassword123");
+        when(encoder.matches(password, "encodedPassword123")).thenReturn(true);
         when(account.getAuthenticationType()).thenReturn(AuthenticationType.DATABASE);
         when(account.isActive()).thenReturn(true);
         when(account.isSuspended()).thenReturn(false); // Account is not suspended

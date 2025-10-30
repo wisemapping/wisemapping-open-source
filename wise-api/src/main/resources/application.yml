@@ -66,7 +66,6 @@ spring:
     open-in-view: true
     properties:
       hibernate:
-        current_session_context_class: thread
         default_batch_fetch_size: 200
         dialect: org.hibernate.dialect.HSQLDialect
         format_sql: true
@@ -83,11 +82,34 @@ spring:
   application:
     name: wisemapping-api
     title: wisemapping-api
-  # Conditional auto-configuration exclusion
-  autoconfigure:
-    exclude:
-
-
+  # Spring Boot OAuth2 Client Configuration
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            enabled: true
+            client-id: ${app.security.oauth2.google.clientId:}
+            client-secret: ${app.security.oauth2.google.clientSecret:}
+            scope: openid,profile,email
+            redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
+          facebook:
+            enabled: true
+            client-id: ${app.security.oauth2.facebook.clientId:}
+            client-secret: ${app.security.oauth2.facebook.clientSecret:}
+            scope: email,public_profile
+            redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+          facebook:
+            authorization-uri: https://www.facebook.com/v18.0/dialog/oauth
+            token-uri: https://graph.facebook.com/v18.0/oauth/access_token
+            user-info-uri: https://graph.facebook.com/me?fields=id,email,first_name,last_name
+            user-name-attribute: id
 #
 # OpenTelemetry Resource Attributes
 #
@@ -110,6 +132,15 @@ logging:
           core:
             StandardWrapperValve: OFF
     root: INFO
+    # OAuth2 Debug Logging
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.security.web: DEBUG
+    org.springframework.security: DEBUG
+    com.wisemapping.security: DEBUG
+    com.wisemapping.config: DEBUG
+    # HTTP Request/Response Logging
+    org.springframework.web: DEBUG
+    org.springframework.http: DEBUG
 
 #
 # Application Config related options:
@@ -117,8 +148,8 @@ logging:
 app:
   # This information is mainly used by the frontend to connect to the backend. It must match the deployment topology used.
   site:
-    ui-base-url: http://localhost
-    api-base-url: http://localhost
+    ui-base-url: http://localhost:3000
+    api-base-url: http://localhost:8080
   # Enable API basic authentication.
   api:
     http-basic-enabled: false
@@ -136,25 +167,6 @@ app:
     enabled: false
   accounts:
     max-inactive: 10  # Maximum total inactive collaborators across all mindmaps
-  # Google OAuth Authentication
-  security:
-    oauth2:
-      google:
-        enabled: false
-        clientSecret: <google-oath>
-        confirmUrl: https://oauth2.googleapis.com/token
-        userinfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
-        callbackUrl: https://app.wisemapping.com/c/registration-google
-        clientId: 625682766634-cocbbbbb403iuvps1evecdk6d7phvbkf.apps.googleusercontent.com
-        url: https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${app.security.oauth2.google.callbackUrl}&prompt=consent&response_type=code&client_id=${app.security.oauth2.google.clientId}&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&access_type=offline&state=wisemapping&include_granted_scopes=true
-      facebook:
-        enabled: false
-        clientSecret: <facebook-oauth-secret>
-        confirmUrl: https://graph.facebook.com/v18.0/oauth/access_token
-        userinfoUrl: https://graph.facebook.com/me?fields=id,email,first_name,last_name
-        callbackUrl: https://app.wisemapping.com/c/registration-facebook
-        clientId: <facebook-app-id>
-        url: https://www.facebook.com/v18.0/dialog/oauth?redirect_uri=${app.security.oauth2.facebook.callbackUrl}&client_id=${app.security.oauth2.facebook.clientId}&scope=email&response_type=code&state=wisemapping
     #corsAllowedOrigins: https://app.wisemapping.com,https://wisemapping.com,https://dev.wisemapping.com,http://localhost:3000
   # Batch task configuration
   batch:

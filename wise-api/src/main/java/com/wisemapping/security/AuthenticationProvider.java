@@ -25,6 +25,8 @@ import com.wisemapping.exceptions.WrongAuthenticationTypeException;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.service.MetricsService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +36,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
+    private static final Logger logger = LogManager.getLogger();
+    
     private UserDetailsService userDetailsService;
     private PasswordEncoder encoder;
     private MetricsService metricsService;
@@ -47,15 +51,21 @@ public class AuthenticationProvider implements org.springframework.security.auth
         final UserDetails userDetails = getUserDetailsService().loadUserByUsername(email);
         final Account user = userDetails.getUser();
         final String credentials = (String) auth.getCredentials();
+        
+        if (user == null) {
+            throw new BadCredentialsException("User account is null for " + email);
+        }
 
         // Check if user is trying to login with wrong authentication method
         // Users registered with OAuth (Google/Facebook) cannot login with email/password
-        if (user != null && user.getAuthenticationType() != AuthenticationType.DATABASE) {
+        if (user.getAuthenticationType() != AuthenticationType.DATABASE) {
             throw new WrongAuthenticationTypeException(user, "Wrong authentication method");
         }
 
         // Validate password
-        if (user == null || credentials == null || !encoder.matches(user.getPassword(), credentials)) {
+        // encoder.matches(rawPassword, encodedPassword) - credentials is raw, user.getPassword() is encoded
+        if (credentials == null || !encoder.matches(credentials, user.getPassword())) {
+            logger.debug("Authentication failed for: {}", email);
             throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
         }
 

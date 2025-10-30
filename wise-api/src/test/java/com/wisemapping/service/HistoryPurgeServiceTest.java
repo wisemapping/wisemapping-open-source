@@ -28,7 +28,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests purging of old mindmap history entries using a two-phase approach.
  */
 @SpringBootTest(classes = {AppConfig.class})
+@ActiveProfiles("test")
 @TestPropertySource(properties = {
         "app.batch.history-cleanup.enabled=true",
         "app.batch.history-cleanup.phase1-lower-boundary-years=2",
@@ -47,10 +48,8 @@ import static org.junit.jupiter.api.Assertions.*;
         "app.batch.history-cleanup.phase2-lower-boundary-years=1",
         "app.batch.history-cleanup.phase2-upper-boundary-years=0.5",
         "app.batch.history-cleanup.phase2-max-entries=4",
-        "app.batch.history-cleanup.batch-size=100",
-        "spring.jpa.hibernate.ddl-auto=create-drop"
+        "app.batch.history-cleanup.batch-size=100"
 })
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 public class HistoryPurgeServiceTest {
 

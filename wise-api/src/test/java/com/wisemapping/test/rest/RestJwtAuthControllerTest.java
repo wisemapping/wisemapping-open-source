@@ -21,7 +21,6 @@ package com.wisemapping.test.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.AppConfig;
-import com.wisemapping.rest.JwtAuthController;
 import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.security.JwtTokenUtil;
 import com.wisemapping.service.UserService;
@@ -30,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -38,10 +39,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
-        classes = {AppConfig.class, JwtAuthController.class},
-        properties = {"app.api.http-basic-enabled=true"}
-)
+        classes = {AppConfig.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RestJwtAuthControllerTest {
 
     @Autowired

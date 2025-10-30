@@ -19,7 +19,6 @@
 package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
-import com.wisemapping.rest.AdminController;
 import com.wisemapping.rest.model.RestMap;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.model.Mindmap;
@@ -32,19 +31,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
-
+import org.springframework.test.context.ActiveProfiles;
+import static com.wisemapping.test.rest.RestHelper.createUserViaApi;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {AppConfig.class, AdminController.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {
-            "app.api.http-basic-enabled=true",
-            "spring.datasource.url=jdbc:hsqldb:mem:wisemapping-admin-test;sql.names=false;sql.regular_names=false"
-        }
-)
+        classes = {AppConfig.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class AdminControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "testAdmin123";
@@ -159,16 +155,11 @@ public class AdminControllerTest {
     @Test
     public void testCreateUser_AdminAccess_Success() {
         // Test that admin can create users
-        RestUser newUser = new RestUser();
-        newUser.setEmail("newuser@test.com");
-        newUser.setFirstname("New");
-        newUser.setLastname("User");
-        newUser.setPassword("password123");
-
-        ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
-                .postForEntity("/api/restful/admin/users", newUser, String.class);
-
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        final String email = "newuser-" + System.nanoTime() + "@test.com";
+        final RestUser createdUser = createUserViaApi(restTemplate, email, "New", "User", "password123");
+        
+        assertNotNull(createdUser, "User creation should succeed");
+        assertEquals(email, createdUser.getEmail(), "Created user should have correct email");
     }
 
     @Test
@@ -229,29 +220,20 @@ public class AdminControllerTest {
     @Test
     public void testDeleteUser_AdminAccess_Success() {
         // Test that admin can delete users (create a user first, then delete)
-        RestUser newUser = new RestUser();
-        newUser.setEmail("tobedeleted@test.com");
-        newUser.setFirstname("To Be");
-        newUser.setLastname("Deleted");
-        newUser.setPassword("password123");
+        final String email = "tobedeleted-" + System.nanoTime() + "@test.com";
+        RestUser createdUser = createUserViaApi(restTemplate, email, "To Be", "Deleted", "password123");
 
-        // First create the user
-        ResponseEntity<String> createResponse = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
-                .postForEntity("/api/restful/admin/users", newUser, String.class);
+        // Then try to delete - this should succeed since we created the user
+        ResponseEntity<String> deleteResponse = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .exchange(
+                        "/api/restful/admin/users/" + createdUser.getId(),
+                        HttpMethod.DELETE,
+                        new HttpEntity<>(new HttpHeaders()),
+                        String.class
+                );
 
-        if (createResponse.getStatusCode() == HttpStatus.CREATED) {
-            // Then try to delete (this might fail if user doesn't exist, but should not be forbidden)
-            ResponseEntity<String> deleteResponse = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
-                    .exchange(
-                            "/api/restful/admin/users/999", // Use a non-existent ID to avoid actually deleting
-                            HttpMethod.DELETE,
-                            new HttpEntity<>(newUser),
-                            String.class
-                    );
-
-            // Should not be forbidden (might be 404 or other error)
-            assertNotEquals(HttpStatus.FORBIDDEN, deleteResponse.getStatusCode());
-        }
+        // Should not be forbidden (might be 404 or other error, but not forbidden)
+        assertNotEquals(HttpStatus.FORBIDDEN, deleteResponse.getStatusCode());
     }
 
     @Test
@@ -369,20 +351,26 @@ public class AdminControllerTest {
     @Test
     public void testChangePassword_AdminAccess_Success() {
         // Test that admin can change user passwords
+        // Create a new user to avoid conflicts with pre-seeded test data
+        RestUser testUser = createUserViaApi(restTemplate, 
+            "testpwchange-" + System.nanoTime() + "@example.com",
+            "PwChange", "User", "initialPassword123");
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
         HttpEntity<String> entity = new HttpEntity<>("newpassword123", headers);
 
         ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
                 .exchange(
-                        "/api/restful/admin/users/1/password",
+                        "/api/restful/admin/users/" + testUser.getId() + "/password",
                         HttpMethod.PUT,
                         entity,
                         String.class
                 );
 
-        // Should not be forbidden (might be 404 or other error)
-        assertNotEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        // Should be successful (200 OK)
+        assertTrue(response.getStatusCode().is2xxSuccessful(), 
+            "Admin should be able to change user password: " + response.toString());
     }
 
     @Test

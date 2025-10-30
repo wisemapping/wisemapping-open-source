@@ -34,7 +34,6 @@ jobs:
         with:
           java-version: '24'
           distribution: 'zulu'
-          cache: maven
 
       - name: Build with Maven (skip tests on main)
         run: |

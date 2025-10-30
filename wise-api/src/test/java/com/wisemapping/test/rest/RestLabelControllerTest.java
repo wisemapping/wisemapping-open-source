@@ -2,21 +2,19 @@ package com.wisemapping.test.rest;
 
 
 import com.wisemapping.config.AppConfig;
-import com.wisemapping.rest.AdminController;
-import com.wisemapping.rest.LabelController;
-import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.RestLabel;
 import com.wisemapping.rest.model.RestLabelList;
 import com.wisemapping.rest.model.RestUser;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.net.URI;
@@ -25,14 +23,15 @@ import java.util.Objects;
 
 import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
+import static com.wisemapping.test.rest.RestHelper.createTestUser;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@Disabled("Test isolation issue: Fails when running full test suite but passes individually. Context sharing problem with admin authentication.")
 @SpringBootTest(
-        classes = {AppConfig.class, LabelController.class, AdminController.class, UserController.class, TestDataManager.class},
-        properties = {"app.api.http-basic-enabled=true"},
+        classes = {AppConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RestLabelControllerTest {
     private static final String COLOR = "#000000";
 
@@ -49,30 +48,8 @@ public class RestLabelControllerTest {
             this.restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:8081/"));
         }
         
-        // Create a new user directly using admin credentials
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate adminTemplate = restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
-        
-        // Create user
-        final RestUser newUser = new RestUser();
-        final String email = "test-" + System.nanoTime() + "@example.org";
-        newUser.setEmail(email);
-        newUser.setFirstname("Test");
-        newUser.setLastname("User");
-        newUser.setPassword("testPassword123");
-        
-        final HttpEntity<RestUser> createUserEntity = new HttpEntity<>(newUser, requestHeaders);
-        
-        try {
-            final ResponseEntity<String> response = adminTemplate.exchange(BASE_REST_URL + "/admin/users", HttpMethod.POST, createUserEntity, String.class);
-            if (response.getStatusCode().is2xxSuccessful() && response.getHeaders().getLocation() != null) {
-                this.user = newUser;
-            } else {
-                throw new IllegalStateException("Failed to create test user: " + response.getStatusCode() + " - " + response.getBody());
-            }
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to create test user: " + e.getMessage(), e);
-        }
+        // Create a new test user using the helper method
+        this.user = createTestUser(restTemplate, "testPassword123");
     }
 
     static RestLabelList getLabels(HttpHeaders requestHeaders, @NotNull TestRestTemplate template) {

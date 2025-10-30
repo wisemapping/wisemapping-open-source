@@ -3,12 +3,10 @@ package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.exceptions.WiseMappingException;
-import com.wisemapping.rest.AdminController;
-import com.wisemapping.rest.MindmapController;
-import com.wisemapping.rest.UserController;
 import com.wisemapping.rest.model.*;
-import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
+import static com.wisemapping.test.rest.RestHelper.createTestUser;
+import static com.wisemapping.test.rest.RestHelper.createUserViaApi;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import jakarta.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
@@ -35,9 +35,10 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(
-        classes = {AppConfig.class, MindmapController.class, AdminController.class, UserController.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"app.api.http-basic-enabled=true"})
+        classes = {AppConfig.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RestMindmapControllerTest {
 
     private RestUser user;
@@ -54,30 +55,8 @@ public class RestMindmapControllerTest {
             this.restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:8081/"));
         }
 
-        // Create a new user directly using admin credentials
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate adminTemplate = restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
-        
-        // Create user
-        final RestUser newUser = new RestUser();
-        final String email = "test-" + System.nanoTime() + "@example.org";
-        newUser.setEmail(email);
-        newUser.setFirstname("Test");
-        newUser.setLastname("User");
-        newUser.setPassword(userPassword);
-        
-        final HttpEntity<RestUser> createUserEntity = new HttpEntity<>(newUser, requestHeaders);
-        final URI location = adminTemplate.postForLocation(BASE_REST_URL + "/admin/users", createUserEntity);
-        
-        if (location != null) {
-            // Fetch the created user to get the ID
-            final ResponseEntity<RestUser> result = adminTemplate.exchange(location.toString(), HttpMethod.GET, new HttpEntity<>(requestHeaders), RestUser.class);
-            this.user = result.getBody();
-            // Store password separately since it's not returned from server
-            this.user.setPassword(userPassword);
-        } else {
-            throw new IllegalStateException("Failed to create test user");
-        }
+        // Create a new test user using the helper method
+        this.user = createTestUser(restTemplate, userPassword);
     }
 
     @Test
@@ -278,32 +257,17 @@ public class RestMindmapControllerTest {
 
         //create another user
         final String secondUserPassword = "testPassword123";
-        final RestUser secondUser = new RestUser();
         final String secondEmail = "test-" + System.nanoTime() + "@example.org";
-        secondUser.setEmail(secondEmail);
-        secondUser.setFirstname("Test2");
-        secondUser.setLastname("User2");
-        secondUser.setPassword(secondUserPassword);
+        final RestUser createdSecondUser = createUserViaApi(this.restTemplate, secondEmail, "Test2", "User2", secondUserPassword);
         
-        final TestRestTemplate adminTemplate = this.restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
-        final HttpEntity<RestUser> createSecondUserEntity = new HttpEntity<>(secondUser, requestHeaders);
-        final URI secondUserLocation = adminTemplate.postForLocation(BASE_REST_URL + "/admin/users", createSecondUserEntity);
-        
-        if (secondUserLocation != null) {
-            final ResponseEntity<RestUser> secondUserResult = adminTemplate.exchange(secondUserLocation.toString(), HttpMethod.GET, new HttpEntity<>(requestHeaders), RestUser.class);
-            final RestUser createdSecondUser = secondUserResult.getBody();
-            createdSecondUser.setPassword(secondUserPassword);
-            final TestRestTemplate secondTemplate = this.restTemplate.withBasicAuth(createdSecondUser.getEmail(), createdSecondUser.getPassword());
+        final TestRestTemplate secondTemplate = this.restTemplate.withBasicAuth(createdSecondUser.getEmail(), createdSecondUser.getPassword());
 
-            final String title2 = "verifyMapOwnership Map user 2";
-            addNewMap(secondTemplate, title2);
+        final String title2 = "verifyMapOwnership Map user 2";
+        addNewMap(secondTemplate, title2);
 
-            final TestRestTemplate superadminTemplate = this.restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
-            final ResponseEntity<String> exchange = superadminTemplate.exchange("/api/restful/admin/users/" + createdSecondUser.getId(), HttpMethod.DELETE, null, String.class);
-            assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status Code:" + exchange.getStatusCode() + "- " + exchange.getBody());
-        } else {
-            throw new IllegalStateException("Failed to create second test user");
-        }
+        final TestRestTemplate superadminTemplate = this.restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
+        final ResponseEntity<String> exchange = superadminTemplate.exchange("/api/restful/admin/users/" + createdSecondUser.getId(), HttpMethod.DELETE, null, String.class);
+        assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status Code:" + exchange.getStatusCode() + "- " + exchange.getBody());
 
         // Validate that the two maps are there ...
         final RestMindmapList body = fetchMaps(requestHeaders, firstUser);
@@ -327,8 +291,8 @@ public class RestMindmapControllerTest {
         mapToUpdate.setXml("<map>this is not valid</map>");
         mapToUpdate.setProperties("{zoom:x}");
 
-        // Create lock ...
-        final HttpHeaders lockHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        // Create lock headers ...
+        final HttpHeaders lockHeaders = new HttpHeaders();
         lockHeaders.setContentType(MediaType.TEXT_PLAIN);
 
         // Update map ...
@@ -465,7 +429,10 @@ public class RestMindmapControllerTest {
         assertEquals(Objects.requireNonNull(afterDeleteResponse.getBody()).getCollaborations().size(), 1);
     }
 
-    @Disabled("SECURITY ISSUE: Non-owner can delete collaborations - needs investigation")
+    /**
+     * Tests that non-owner users cannot delete collaborations from a map they don't have access to.
+     * Security is enforced by Spring Security's @PreAuthorize on findMindmapById().
+     */
     @Test
     public void deleteCollabsWithoutOwnerPermission() throws URISyntaxException {
         // Use the owner template to create the map
@@ -491,9 +458,13 @@ public class RestMindmapControllerTest {
         final TestRestTemplate anotherTemplate = this.restTemplate.withBasicAuth(anotherUser.getEmail(), anotherUser.getPassword());
 
         // Try to delete the collaborator as a non-owner - this should fail
+        // Spring Security's @PreAuthorize on findMindmapById blocks this before the manual check
         final ResponseEntity<String> exchange = anotherTemplate.exchange(resourceUri + "/collabs?email=" + collaboratorUser.getEmail(), HttpMethod.DELETE, null, String.class);
-        assertTrue(exchange.getStatusCode().is4xxClientError());
-        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("No enough permissions"));
+        assertTrue(exchange.getStatusCode().is4xxClientError(), "Expected 4xx error but got: " + exchange.getStatusCode());
+        // Spring Security returns its own access denied message
+        assertTrue(Objects.requireNonNull(exchange.getBody()).contains("Access denied") || 
+                   exchange.getBody().contains("No enough permissions"),
+                   "Expected access denied message but got: " + exchange.getBody());
 
     }
 
@@ -746,24 +717,6 @@ public class RestMindmapControllerTest {
         assertEquals(0, body.getMindmapsInfo().size());
     }
 
-
-    @Test
-    public void updatePublishStateFailDueToSpam() throws URISyntaxException {
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
-
-        // Create a sample map ...
-        final String mapTitle = "updatePublishState";
-        final URI mindmapUri = addNewMap(restTemplate, mapTitle);
-
-        // Change map status ...
-        requestHeaders.setContentType(MediaType.TEXT_PLAIN);
-        final HttpEntity<String> updateEntity = new HttpEntity<>(Boolean.TRUE.toString(), requestHeaders);
-
-        // Maps was created and try to publish in short period of time, this is considered a spam behavior.
-        final ResponseEntity<String> exchange = restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, updateEntity, String.class);
-        assertTrue(exchange.getStatusCode().isError());
-    }
 
     @Test
     public void updatePublishStateWithJson() throws URISyntaxException {

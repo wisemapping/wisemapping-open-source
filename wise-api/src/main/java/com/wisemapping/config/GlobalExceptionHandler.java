@@ -1,3 +1,20 @@
+/*
+ *    Copyright [2007-2025] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       https://github.com/wisemapping/wisemapping-open-source/blob/main/LICENSE.md
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 package com.wisemapping.config;
 
 import com.wisemapping.exceptions.*;
@@ -12,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
@@ -37,6 +55,26 @@ public class GlobalExceptionHandler {
     @Qualifier("messageSource")
     @Autowired(required = false)
     private ResourceBundleMessageSource messageSource;
+
+    @Value("${app.site.ui-base-url:}")
+    private String uiBaseUrl;
+
+    private boolean isApiRequest(@NotNull HttpServletRequest request) {
+        final String uri = request.getRequestURI();
+        return uri != null && uri.startsWith("/api/");
+    }
+
+    private void redirectToUi(HttpServletResponse response, String pathWithParams) {
+        try {
+            if (uiBaseUrl != null && !uiBaseUrl.isEmpty()) {
+                response.sendRedirect(uiBaseUrl + pathWithParams);
+            } else {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+        } catch (Exception ignored) {
+            // If redirect fails, fall back to default error handling
+        }
+    }
 
     @ExceptionHandler(AccessDeniedSecurityException.class)
     @ResponseBody
@@ -116,6 +154,19 @@ public class GlobalExceptionHandler {
             messageSource.getMessage("COMMUNICATION_ERROR", null, "Communication error", locale) :
             "Communication error";
         return new RestErrors(message, Severity.SEVERE);
+    }
+
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestErrors handleHttpMessageNotReadableException(@NotNull org.springframework.http.converter.HttpMessageNotReadableException ex) {
+        // Log at DEBUG level since this is usually a client error (missing request body)
+        logger.debug("HTTP message not readable: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ? 
+            messageSource.getMessage("INVALID_REQUEST", null, "Invalid request. Required request body is missing or malformed.", locale) :
+            "Invalid request. Required request body is missing or malformed.";
+        return new RestErrors(message, Severity.WARNING);
     }
 
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
@@ -259,23 +310,24 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(OAuthAuthenticationException.class)
-    @ResponseBody
-    public OAuthAuthenticationException handleOAuthErrors(@NotNull OAuthAuthenticationException ex, HttpServletResponse response) {
-        // @todo: Further research needed for this error. No clear why this happens.
-        // Caused by: com.wisemapping.service.http.HttpInvokerException: error invoking https://oauth2.googleapis.com/token, response: {
-        //  "error": "invalid_grant",
-        //  "error_description": "Bad Request"
-        //}, status: 400
-        //
-        logger.error(ex.getMessage(), ex);
-        response.setStatus(response.getStatus());
-        return ex;
+    public Object handleOAuthErrors(@NotNull OAuthAuthenticationException ex,
+                                    @NotNull HttpServletRequest request,
+                                    @NotNull HttpServletResponse response) {
+        logger.error("OAuth authentication error: {}", ex.getMessage(), ex);
+        if (isApiRequest(request)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return ex;
+        }
+        redirectToUi(response, "/c/login?error=oauth_failed");
+        return null;
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public RestErrors handleServerErrors(@NotNull Exception ex, @NotNull HttpServletRequest request) {
+    public Object handleServerErrors(@NotNull Exception ex,
+                                     @NotNull HttpServletRequest request,
+                                     @NotNull HttpServletResponse response) {
         // Log at DEBUG level for expected exceptions to avoid ERROR logs
         if (ex instanceof AccessDeniedSecurityException || ex instanceof InvalidEmailException || 
             ex instanceof ValidationException || ex instanceof ClientException) {
@@ -283,7 +335,11 @@ public class GlobalExceptionHandler {
         } else {
             logger.error(ex.getMessage(), ex);
         }
-        return new RestErrors(ex.getMessage(), Severity.SEVERE);
+        if (isApiRequest(request)) {
+            return new RestErrors(ex.getMessage(), Severity.SEVERE);
+        }
+        redirectToUi(response, "/c/login?error=server_error");
+        return null;
     }
 
     @ExceptionHandler(RegistrationException.class)

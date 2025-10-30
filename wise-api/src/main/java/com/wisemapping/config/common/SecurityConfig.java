@@ -2,20 +2,18 @@ package com.wisemapping.config.common;
 
 import com.wisemapping.security.*;
 import com.wisemapping.service.MetricsService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -53,11 +51,8 @@ public class SecurityConfig {
         return  DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    private AuthenticationProvider googleAuthenticationProvider() {
-        return new GoogleAuthenticationProvider(userDetailsService, metricsService);
-    }
-
-    private AuthenticationProvider dbAuthenticationProvider() {
+    @Bean
+    public AuthenticationProvider dbAuthenticationProvider() {
         final com.wisemapping.security.AuthenticationProvider provider =
                 new com.wisemapping.security.AuthenticationProvider();
         provider.setEncoder(passwordEncoder());
@@ -67,15 +62,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(@NotNull HttpSecurity http)
-            throws Exception {
-        final AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        builder.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-
-        builder.authenticationProvider(dbAuthenticationProvider());
-        builder.authenticationProvider(googleAuthenticationProvider());
-
-        return builder.build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        // Expose the framework-built AuthenticationManager so tests and controllers can autowire it
+        return configuration.getAuthenticationManager();
     }
 }

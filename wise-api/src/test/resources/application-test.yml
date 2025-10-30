@@ -1,0 +1,122 @@
+#
+#  Test Configuration - Common properties for all tests
+#  This configuration uses in-memory HSQLDB for fast test execution
+#
+
+spring:
+  # Database configuration - Use in-memory database for tests
+  # Each test context gets a unique database to prevent data pollution between contexts
+  datasource:
+    url: jdbc:hsqldb:mem:test-${random.uuid};sql.names=false;sql.regular_names=false
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    password: ''
+    username: sa
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: HikariPool-WiseMapping-Test
+      minimum-idle: 1
+      maximum-pool-size: 5
+      connection-timeout: 10000
+  
+  # JPA/Hibernate configuration - DDL creation is DISABLED for tests
+  # Schema will be created ONLY from SQL schema files (schema-hsqldb.sql), NOT from JPA entity mappings
+  jpa:
+    hibernate:
+      ddl-auto: none  # Disable automatic DDL generation from entity mappings
+    open-in-view: true  # Keep session open for the duration of request to handle lazy loading
+    properties:
+      hibernate:
+        default_batch_fetch_size: 200
+        dialect: org.hibernate.dialect.HSQLDialect
+        format_sql: false
+        use_sql_comments: false
+        # Disable all levels of cache for tests
+        cache_use_second_level_cache: false  # Disable second-level cache (shared cache across sessions)
+        cache_use_query_cache: false  # Disable query cache
+        cache_region_factory_class: org.hibernate.cache.internal.NoCachingRegionFactory  # Use no-op cache factory
+    show-sql: false
+    # Disable automatic schema export/creation - schema comes from SQL files only
+    defer-datasource-initialization: false
+  
+  # SQL initialization - Use schema initialization instead of DDL
+  # Schema is created ONLY from SQL files, NOT from JPA entity annotations
+  sql:
+    init:
+      mode: always
+      platform: hsqldb
+      schema-locations: classpath:schema-hsqldb.sql
+      data-locations: classpath:data-hsqldb.sql
+      continue-on-error: false  # Fail if schema initialization fails
+      separator: ;  # SQL statement separator
+  
+  # Mail configuration - Disable in tests
+  mail:
+    host: localhost
+    port: 25
+    test-connection: false
+  
+  # Security - Enable HTTP Basic for tests
+  security:
+    basic:
+      enabled: true
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-client-id
+            client-secret: test-client-secret
+          facebook:
+            client-id: test-client-id
+            client-secret: test-client-secret
+  
+  # Spring Cache - Disable for tests
+  cache:
+    type: none  # Disable Spring's cache abstraction completely
+  
+  # Test configuration - Enable context caching to avoid reloading
+  test:
+    context:
+      cache:
+        max-size: 32  # Allow up to 32 different test contexts to be cached
+
+# Application configuration
+app:
+  admin:
+    user: admin@wisemapping.org  # Admin user email suffix for role checking
+  api:
+    http-basic-enabled: true
+  registration:
+    enabled: true
+    email-confirmation-enabled: false
+    captcha:
+      enabled: false
+      siteKey: test-site-key
+      secretKey: test-secret-key
+  batch:
+    history-cleanup:
+      enabled: false
+    spam-detection:
+      enabled: false
+      startup-enabled: false
+    inactive-mindmap-migration:
+      enabled: false
+      startup-enabled: false
+    spam-user-suspension:
+      enabled: false
+      startup-enabled: false
+    inactive-user-suspension:
+      enabled: false
+      startup-enabled: false
+    history-purge:
+      enabled: false
+      startup-enabled: false
+
+# Logging
+logging:
+  level:
+    root: INFO
+    # Suppress warning about custom AuthenticationProvider (intentional design for legacy password support)
+    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: ERROR
+    # Enable SQL script execution logging to verify DB initialization
+    org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG
+

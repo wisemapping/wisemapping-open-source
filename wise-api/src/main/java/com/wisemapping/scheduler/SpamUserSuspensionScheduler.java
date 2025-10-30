@@ -22,7 +22,7 @@ import com.wisemapping.service.SpamUserSuspensionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -30,6 +30,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(name = "app.batch.spam-user-suspension.enabled", havingValue = "true", matchIfMissing = true)
 public class SpamUserSuspensionScheduler {
 
     private static final Logger logger = LoggerFactory.getLogger(SpamUserSuspensionScheduler.class);
@@ -37,22 +38,13 @@ public class SpamUserSuspensionScheduler {
     @Autowired
     private SpamUserSuspensionService spamUserSuspensionService;
 
-    @Value("${app.batch.spam-user-suspension.enabled:true}")
-    private boolean enabled;
-
-    @Value("${app.batch.spam-user-suspension.startup-enabled:true}")
-    private boolean startupEnabled;
-
     /**
      * Execute spam user suspension task once at application startup (async to not block startup)
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
+    @ConditionalOnProperty(name = "app.batch.spam-user-suspension.startup-enabled", havingValue = "true")
     public void processSpamUserSuspensionOnStartup() {
-        if (!enabled || !startupEnabled) {
-            logger.info("Spam user suspension scheduler is disabled or startup is disabled.");
-            return;
-        }
         logger.info("Executing spam user suspension task on application startup.");
         
         try {
@@ -78,11 +70,6 @@ public class SpamUserSuspensionScheduler {
     @Scheduled(cron = "${app.batch.spam-user-suspension.cron-expression:0 0 */6 * * *}")
     @Async
     public void processSpamUserSuspension() {
-        if (!enabled) {
-            logger.debug("Spam user suspension scheduler is disabled");
-            return;
-        }
-
         logger.info("Starting scheduled spam user suspension task (async)");
         
         try {

@@ -1,19 +1,37 @@
+/*
+ *    Copyright [2007-2025] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       https://github.com/wisemapping/wisemapping-open-source/blob/main/LICENSE.md
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+
 package com.wisemapping.scheduler;
 
 import com.wisemapping.service.HistoryPurgeService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for HistoryCleanupScheduler
+ * Unit tests for HistoryCleanupScheduler.
+ * Note: Scheduler is controlled by @ConditionalOnProperty at bean creation time.
+ * These tests verify the scheduler logic when it's enabled and created.
  */
 @ExtendWith(MockitoExtension.class)
 class HistoryCleanupSchedulerTest {
@@ -24,15 +42,8 @@ class HistoryCleanupSchedulerTest {
     @InjectMocks
     private HistoryCleanupScheduler historyCleanupScheduler;
 
-    @BeforeEach
-    void setUp() {
-        // Set default configuration values
-        ReflectionTestUtils.setField(historyCleanupScheduler, "enabled", true);
-        ReflectionTestUtils.setField(historyCleanupScheduler, "startupEnabled", false);
-    }
-
     @Test
-    void testCleanupHistory_WhenEnabled_ShouldCallService() {
+    void testCleanupHistory_ShouldCallService() {
         // Arrange
         when(historyPurgeService.purgeHistory()).thenReturn(25);
 
@@ -41,18 +52,6 @@ class HistoryCleanupSchedulerTest {
 
         // Assert
         verify(historyPurgeService, times(1)).purgeHistory();
-    }
-
-    @Test
-    void testCleanupHistory_WhenDisabled_ShouldNotCallService() {
-        // Arrange
-        ReflectionTestUtils.setField(historyCleanupScheduler, "enabled", false);
-
-        // Act
-        historyCleanupScheduler.cleanupHistory();
-
-        // Assert
-        verify(historyPurgeService, never()).purgeHistory();
     }
 
     @Test
@@ -93,19 +92,6 @@ class HistoryCleanupSchedulerTest {
     }
 
     @Test
-    void testCleanupHistory_WhenEnabledWithCustomConfiguration_ShouldWork() {
-        // Arrange
-        ReflectionTestUtils.setField(historyCleanupScheduler, "enabled", true);
-        when(historyPurgeService.purgeHistory()).thenReturn(50);
-
-        // Act
-        historyCleanupScheduler.cleanupHistory();
-
-        // Assert
-        verify(historyPurgeService, times(1)).purgeHistory();
-    }
-
-    @Test
     void testCleanupHistory_AsyncExecution_ShouldNotBlock() {
         // This test verifies that the @Async annotation doesn't cause issues in unit tests
         // In a real application, this would run asynchronously, but in unit tests it runs synchronously
@@ -137,25 +123,5 @@ class HistoryCleanupSchedulerTest {
 
         // Assert
         verify(historyPurgeService, times(3)).purgeHistory();
-    }
-
-    @Test
-    void testCleanupHistory_EnabledDisabledToggle_ShouldRespectCurrentState() {
-        // Arrange
-        when(historyPurgeService.purgeHistory()).thenReturn(15);
-
-        // Act & Assert - First call when enabled
-        historyCleanupScheduler.cleanupHistory();
-        verify(historyPurgeService, times(1)).purgeHistory();
-
-        // Disable and call again
-        ReflectionTestUtils.setField(historyCleanupScheduler, "enabled", false);
-        historyCleanupScheduler.cleanupHistory();
-        verify(historyPurgeService, times(1)).purgeHistory(); // Still only 1 call
-
-        // Re-enable and call again
-        ReflectionTestUtils.setField(historyCleanupScheduler, "enabled", true);
-        historyCleanupScheduler.cleanupHistory();
-        verify(historyPurgeService, times(2)).purgeHistory(); // Now 2 calls
     }
 }
