@@ -1,3 +1,20 @@
+/*
+ *    Copyright [2007-2025] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       https://github.com/wisemapping/wisemapping-open-source/blob/main/LICENSE.md
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 package com.wisemapping.config;
 
 import com.wisemapping.filter.JwtAuthenticationFilter;
@@ -26,6 +43,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import com.wisemapping.model.Account;
 import com.wisemapping.security.Utils;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -63,16 +81,16 @@ public class AppConfig implements WebMvcConfigurer {
     @Autowired
     private OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     
+    
     @Autowired
-    private org.springframework.security.authentication.AuthenticationManager authenticationManager;
+    private AuthenticationProvider dbAuthenticationProvider;
 
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
-        // Use custom authentication manager that handles ENC: password format
-        http.authenticationManager(authenticationManager);
         http
                 .cors(Customizer.withDefaults()) // enables WebMvcConfigurer CORS
                 .securityMatcher("/**")
+                .authenticationProvider(dbAuthenticationProvider)
                 .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
@@ -124,7 +142,7 @@ public class AppConfig implements WebMvcConfigurer {
                             response.setStatus(HttpServletResponse.SC_OK);
                         }))
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .headers(headers -> headers
                         // Content Security Policy for HTML content
                         .contentSecurityPolicy(csp -> csp

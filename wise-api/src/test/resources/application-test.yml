@@ -59,6 +59,15 @@ spring:
   security:
     basic:
       enabled: true
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-client-id
+            client-secret: test-client-secret
+          facebook:
+            client-id: test-client-id
+            client-secret: test-client-secret
   
   # Spring Cache - Disable for tests
   cache:
