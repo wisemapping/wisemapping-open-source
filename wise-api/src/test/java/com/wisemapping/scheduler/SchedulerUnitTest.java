@@ -25,11 +25,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.Re flectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for spam-related schedulers.
+ * Note: Schedulers are controlled by @ConditionalOnProperty at bean creation time.
+ * These tests verify the scheduler logic when they're enabled and created.
+ */
 @ExtendWith(MockitoExtension.class)
 class SchedulerUnitTest {
 
