@@ -92,13 +92,13 @@ spring:
             client-id: ${app.security.oauth2.google.clientId}
             client-secret: ${app.security.oauth2.google.clientSecret}
             scope: openid,profile,email
-            redirect-uri: "${app.site.api-base-url}/oauth2/code/google"
+            redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
           facebook:
             enabled: true
             client-id: ${app.security.oauth2.facebook.clientId}
             client-secret: ${app.security.oauth2.facebook.clientSecret}
             scope: email,public_profile
-            redirect-uri: "${app.site.api-base-url}/oauth2/code/facebook"
+            redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
