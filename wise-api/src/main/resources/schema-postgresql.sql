@@ -59,9 +59,6 @@ CREATE TABLE IF NOT EXISTS MINDMAP_SPAM_INFO (
     ON UPDATE NO ACTION
 );
 
-CREATE INDEX IF NOT EXISTS idx_spam_detected ON MINDMAP_SPAM_INFO(spam_detected);
-CREATE INDEX IF NOT EXISTS idx_spam_detection_version ON MINDMAP_SPAM_INFO(spam_detection_version);
-
 create TABLE IF NOT EXISTS R_LABEL_MINDMAP (
   mindmap_id       INTEGER            NOT NULL,
   label_id         INTEGER            NOT NULL,
