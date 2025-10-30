@@ -18,8 +18,8 @@
 package com.wisemapping.security;
 
 import com.wisemapping.model.Account;
-import com.wisemapping.security.JwtTokenUtil;
-import com.wisemapping.security.UserDetailsService;
+import com.wisemapping.model.AuthenticationType;
+import com.wisemapping.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
@@ -27,12 +27,15 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
 
 @Component
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -45,8 +48,14 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
     @Autowired
     private UserDetailsService userDetailsService;
     
+    @Autowired
+    private UserService userService;
+    
     @Value("${app.site.ui-base-url:}")
     private String uiBaseUrl;
+    
+    @Value("${app.admin.user:}")
+    private String adminUser;
     
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, 
@@ -55,16 +64,25 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         
         logger.debug("OAuth2 authentication successful for user: {}", authentication.getName());
         
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-        Account account = customOAuth2User.getAccount();
+        // Get the OAuth2/OIDC user from Spring Security
+        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
         
-        // Generate JWT token using UserDetails
-        String jwt = jwtTokenUtil.generateJwtToken(userDetailsService.loadUserByUsername(account.getEmail()));
-        
-        // Audit the login
-        userDetailsService.getUserService().auditLogin(account);
+        // Extract user info from OAuth2 attributes
+        String email = extractEmail(oauth2User);
+        String firstName = extractFirstName(oauth2User);
+        String lastName = extractLastName(oauth2User);
+        String provider = extractProvider(request);
         
         try {
+            // Find or create WiseMapping account
+            Account account = findOrCreateOAuthUser(email, firstName, lastName, provider);
+            
+            // Generate JWT token using UserDetails
+            String jwt = jwtTokenUtil.generateJwtToken(userDetailsService.loadUserByUsername(account.getEmail()));
+            
+            // Audit the login
+            userService.auditLogin(account);
+            
             // Check if there's a redirect state parameter from the OAuth flow
             String state = request.getParameter("state");
             
@@ -108,8 +126,117 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         } catch (UnsupportedEncodingException e) {
             logger.error("Error encoding OAuth callback URL", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "OAuth callback error");
+        } catch (Exception e) {
+            logger.error("Error processing OAuth user: {}", email, e);
+            response.sendRedirect(uiBaseUrl + "/c/login?error=oauth_failed");
         }
         
-        logger.debug("OAuth2 authentication completed successfully for user: {}", account.getEmail());
+        logger.debug("OAuth2 authentication completed successfully for user: {}", email);
+    }
+    
+    private String extractEmail(OAuth2User oauth2User) {
+        if (oauth2User instanceof OidcUser) {
+            return ((OidcUser) oauth2User).getEmail();
+        }
+        return (String) oauth2User.getAttributes().get("email");
+    }
+    
+    private String extractFirstName(OAuth2User oauth2User) {
+        Map<String, Object> attributes = oauth2User.getAttributes();
+        // Try OIDC claim first
+        String firstName = (String) attributes.get("given_name");
+        if (firstName == null) {
+            // Fall back to Facebook format
+            firstName = (String) attributes.get("first_name");
+        }
+        return firstName;
+    }
+    
+    private String extractLastName(OAuth2User oauth2User) {
+        Map<String, Object> attributes = oauth2User.getAttributes();
+        // Try OIDC claim first
+        String lastName = (String) attributes.get("family_name");
+        if (lastName == null) {
+            // Fall back to Facebook format
+            lastName = (String) attributes.get("last_name");
+        }
+        return lastName;
+    }
+    
+    private String extractProvider(HttpServletRequest request) {
+        // Extract provider from the callback URL path
+        String uri = request.getRequestURI();
+        if (uri.contains("/oauth2/code/")) {
+            String[] parts = uri.split("/");
+            return parts[parts.length - 1];
+        }
+        return "unknown";
+    }
+    
+    private Account findOrCreateOAuthUser(String email, String firstName, String lastName, String provider) throws Exception {
+        AuthenticationType authType = mapProviderToAuthType(provider);
+        
+        // Check if user exists
+        Account existingUser = userService.getUserBy(email);
+        
+        if (existingUser == null) {
+            // Create new OAuth user
+            return createNewOAuthUser(email, firstName, lastName, authType);
+        } else {
+            // Handle existing user
+            return handleExistingUser(existingUser, authType);
+        }
+    }
+    
+    private Account createNewOAuthUser(String email, String firstName, String lastName, AuthenticationType authType) throws Exception {
+        Account newUser = new Account();
+        newUser.setEmail(email);
+        newUser.setFirstname(firstName);
+        newUser.setLastname(lastName);
+        newUser.setAuthenticationType(authType);
+        newUser.setOauthToken("");
+        newUser.setPassword("");
+        newUser.setOauthSync(true);
+        
+        return userService.createUser(newUser, false, true);
+    }
+    
+    private Account handleExistingUser(Account existingUser, AuthenticationType authType) throws Exception {
+        AuthenticationType existingAuthType = existingUser.getAuthenticationType();
+        
+        if (existingAuthType != AuthenticationType.DATABASE && existingAuthType != authType) {
+            logger.warn("User {} attempted to login with {} but account uses {}", 
+                       existingUser.getEmail(), authType, existingAuthType);
+            throw new Exception("Account is registered with a different authentication provider");
+        }
+        
+        // For existing OAuth users with same auth type, update if needed
+        if (existingAuthType == authType) {
+            if (existingUser.getOauthSync() == null || !existingUser.getOauthSync()) {
+                existingUser.setOauthSync(true);
+                existingUser.setSyncCode(null);
+                userService.updateUser(existingUser);
+            }
+            return existingUser;
+        }
+        
+        // Handle linking for DATABASE accounts
+        if (existingUser.getAuthenticationType() == AuthenticationType.DATABASE) {
+            if (existingUser.getOauthSync() == null || !existingUser.getOauthSync()) {
+                existingUser.setOauthSync(false);
+                existingUser.setSyncCode("oauth_pending");
+                userService.updateUser(existingUser);
+            }
+        }
+        
+        return existingUser;
+    }
+    
+    private AuthenticationType mapProviderToAuthType(String provider) {
+        return switch (provider.toLowerCase()) {
+            case "google" -> AuthenticationType.GOOGLE_OAUTH2;
+            case "facebook" -> AuthenticationType.FACEBOOK_OAUTH2;
+            default -> throw new IllegalArgumentException("Unsupported OAuth provider: " + provider);
+        };
     }
 }

@@ -18,7 +18,6 @@
 package com.wisemapping.config;
 
 import com.wisemapping.filter.JwtAuthenticationFilter;
-import com.wisemapping.security.CustomOAuth2UserService;
 import com.wisemapping.security.OAuth2AuthenticationSuccessHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -76,11 +75,7 @@ public class AppConfig implements WebMvcConfigurer {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     
     @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
-    
-    @Autowired
     private OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
-    
     
     @Autowired
     private AuthenticationProvider dbAuthenticationProvider;
@@ -121,9 +116,6 @@ public class AppConfig implements WebMvcConfigurer {
                             }
                         }))
                 .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)
-                        )
                         .successHandler(oauth2AuthenticationSuccessHandler)
                         .failureHandler((request, response, exception) -> {
                             // For API endpoints, return 401 instead of redirecting
