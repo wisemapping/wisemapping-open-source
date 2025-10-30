@@ -132,15 +132,7 @@ logging:
           core:
             StandardWrapperValve: OFF
     root: INFO
-    # OAuth2 Debug Logging
-    org.springframework.security.oauth2: DEBUG
-    org.springframework.security.web: DEBUG
-    org.springframework.security: DEBUG
-    com.wisemapping.security: DEBUG
-    com.wisemapping.config: DEBUG
-    # HTTP Request/Response Logging
-    org.springframework.web: DEBUG
-    org.springframework.http: DEBUG
+
 
 #
 # Application Config related options:
