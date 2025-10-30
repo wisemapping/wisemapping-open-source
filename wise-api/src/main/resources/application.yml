@@ -104,7 +104,7 @@ spring:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-            user-name-attribute: id
+            user-name-attribute: sub
           facebook:
             authorization-uri: https://www.facebook.com/v18.0/dialog/oauth
             token-uri: https://graph.facebook.com/v18.0/oauth/access_token
