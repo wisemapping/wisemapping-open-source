@@ -18,7 +18,6 @@
 package com.wisemapping.model;
 
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,10 +25,12 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * IMPORTANT: Caching is DISABLED for this entity to prevent inconsistencies.
+ * Labels are frequently associated with mindmaps which must always reflect the latest state.
+ */
 @Entity
 @Table(name = "MINDMAP_LABEL")
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MindmapLabel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
