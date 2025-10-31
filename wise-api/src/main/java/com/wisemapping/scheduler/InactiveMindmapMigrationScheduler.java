@@ -51,15 +51,12 @@ public class InactiveMindmapMigrationScheduler {
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
-    @ConditionalOnProperty(name = "app.batch.inactive-mindmap-migration.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processInactiveMindmapMigrationOnStartup() {
-        // Double check: verify startup-enabled property is actually true at runtime
         if (!startupEnabled) {
-            logger.warn("Startup task enabled but startupEnabled property is false - this should not happen!");
             return;
         }
         
-        logger.info("Executing inactive mindmap migration task on application startup - startupEnabled={}", startupEnabled);
+        logger.info("Executing inactive mindmap migration task on application startup");
         
         try {
             inactiveMindmapMigrationService.processInactiveMindmapMigration();

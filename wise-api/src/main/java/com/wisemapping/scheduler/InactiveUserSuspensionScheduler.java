@@ -51,15 +51,12 @@ public class InactiveUserSuspensionScheduler {
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
-    @ConditionalOnProperty(name = "app.batch.inactive-user-suspension.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processInactiveUserSuspensionOnStartup() {
-        // Double check: verify startup-enabled property is actually true at runtime
         if (!startupEnabled) {
-            logger.warn("Startup task enabled but startupEnabled property is false - this should not happen!");
             return;
         }
         
-        logger.info("Starting startup inactive user suspension task (async) - startupEnabled={}", startupEnabled);
+        logger.info("Starting startup inactive user suspension task (async)");
         try {
             inactiveUserService.processInactiveUsers();
             logger.info("Startup inactive user suspension task completed successfully");
