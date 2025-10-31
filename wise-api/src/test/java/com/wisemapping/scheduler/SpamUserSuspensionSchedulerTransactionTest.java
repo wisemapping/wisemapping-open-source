@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
     "app.batch.spam-user-suspension.enabled=true",
-    "app.batch.spam-user-suspension.months-back=72",
+    "app.batch.spam-user-suspension.months-back=6",
     "app.batch.spam-user-suspension.batch-size=2", 
     "app.batch.spam-user-suspension.public-spam-ratio-threshold=0.75",
     "app.batch.spam-user-suspension.min-any-spam-count=6"

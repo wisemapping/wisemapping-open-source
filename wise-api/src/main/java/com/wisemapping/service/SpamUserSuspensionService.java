@@ -55,7 +55,7 @@ public class SpamUserSuspensionService {
     @Value("${app.batch.spam-user-suspension.enabled:true}")
     private boolean enabled;
 
-    @Value("${app.batch.spam-user-suspension.months-back:72}")
+    @Value("${app.batch.spam-user-suspension.months-back:6}")
     private int monthsBack;
 
     @Value("${app.batch.spam-user-suspension.batch-size:50}")
@@ -95,7 +95,7 @@ public class SpamUserSuspensionService {
                 "START SUMMARY:\n" +
                 "  → Users with High Public Spam Ratio: {}\n" +
                 "  → Users with Any Spam: {}\n" +
-                "  → Accounts Created Since: Last {} months (6 years)\n" +
+                "  → Accounts Created Since: Last {} months\n" +
                 "\n" +
                 "Suspension Criteria:\n" +
                 "  → Condition 1: >= {}% of public maps are spam\n" +
@@ -136,7 +136,7 @@ public class SpamUserSuspensionService {
                 "Applied Criteria:\n" +
                 "  → Condition 1: >= {}% of public maps are spam\n" +
                 "  → Condition 2: >= {} spam maps (any visibility)\n" +
-                "  → Account age: Last {} months (6 years)\n" +
+                "  → Account age: Last {} months\n" +
                 "════════════════════════════════════════════════════════════════",
                 totalSuspended, 
                 suspendedCountPublicRatio,

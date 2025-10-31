@@ -178,8 +178,8 @@ app:
     spam-user-suspension:
       enabled: true
       startup-enabled: false  # Enable spam user suspension on application startup (async)
-      cron-expression: "0 0 */6 * * *"  # Every 6 hours
-      months-back: 72  # Only process accounts created in the last 6 years (72 months)
+      cron-expression: "0 0 18 * * *"  # Once a day at 6 PM Argentina time (America/Argentina/Buenos_Aires timezone)
+      months-back: 3  # Only process accounts created in the last 3 months
       batch-size: 50  # Number of users to process in each batch
       # Two-condition suspension criteria
       public-spam-ratio-threshold: 0.75  # Condition 1: Users with >= 75% of public maps marked as spam will be suspended
