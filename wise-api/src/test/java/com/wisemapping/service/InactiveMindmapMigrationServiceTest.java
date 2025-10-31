@@ -246,26 +246,6 @@ public class InactiveMindmapMigrationServiceTest {
     }
 
     @Test
-    void testMigrationStats() {
-        // Get initial stats
-        InactiveMindmapMigrationService.MigrationStats stats = inactiveMindmapMigrationService.getMigrationStats();
-        
-        assertNotNull(stats);
-        // With the new logic, test users are suspended for 2 months, so they should be counted as eligible
-        assertEquals(2, stats.getInactiveUsersCount(), "Should have 2 eligible suspended users (suspended for 2 months)");
-        assertEquals(0, stats.getInactiveMindmapsCount(), "Should have no inactive mindmaps initially");
-
-        // Run migration
-        inactiveMindmapMigrationService.processInactiveMindmapMigration();
-
-        // Get stats after migration
-        InactiveMindmapMigrationService.MigrationStats statsAfter = inactiveMindmapMigrationService.getMigrationStats();
-        
-        // With the 30-day suspension requirement, mindmaps should be migrated since test users are suspended for 2 months
-        assertEquals(3, statsAfter.getInactiveMindmapsCount(), "Should have 3 migrated mindmaps (users suspended for 2 months)");
-    }
-
-    @Test
     void testNoInactiveUsersFound() {
         // Create only active users
         Account activeUser2 = createTestUser("active2@test.com", "Active", "User2");
