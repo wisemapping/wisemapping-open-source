@@ -47,15 +47,12 @@ public class SpamUserSuspensionScheduler {
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
-    @ConditionalOnProperty(name = "app.batch.spam-user-suspension.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processSpamUserSuspensionOnStartup() {
-        // Double check: verify startup-enabled property is actually true at runtime
         if (!startupEnabled) {
-            logger.warn("Startup task enabled but startupEnabled property is false - this should not happen!");
             return;
         }
         
-        logger.info("Executing spam user suspension task on application startup - startupEnabled={}", startupEnabled);
+        logger.info("Executing spam user suspension task on application startup");
         
         try {
             spamUserSuspensionService.processSpamUserSuspension();

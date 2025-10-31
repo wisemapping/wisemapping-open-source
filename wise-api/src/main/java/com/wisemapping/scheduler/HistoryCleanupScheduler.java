@@ -74,20 +74,17 @@ public class HistoryCleanupScheduler {
 
     /**
      * Startup task that runs when the application is ready.
-     * Only executes if both enabled and startupEnabled are true.
+     * Only executes if startupEnabled is true.
      * Runs asynchronously to avoid blocking application startup.
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
-    @ConditionalOnProperty(name = "app.batch.history-cleanup.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processHistoryCleanupOnStartup() {
-        // Double check: verify startup-enabled property is actually true at runtime
         if (!startupEnabled) {
-            logger.warn("Startup task enabled but startupEnabled property is false - this should not happen!");
             return;
         }
         
-        logger.info("Starting history cleanup task on application startup (async) - startupEnabled={}", startupEnabled);
+        logger.info("Starting history cleanup task on application startup (async)");
         
         try {
             int deletedCount = historyPurgeService.purgeHistory();
