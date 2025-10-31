@@ -706,19 +706,26 @@ public class MindmapManagerImpl
 
     @Override
     public long countUsersWithHighPublicSpamRatio(double spamRatioThreshold, int monthsBack) {
-        // Optimized query: Eliminated redundant outer query that was causing full table scans.
-        // The original query had an outer COUNT(DISTINCT) that filtered the same data as the subquery,
-        // so we can directly count from the subquery result.
+        // Count distinct users with high public spam ratio.
+        // Uses outer COUNT over subquery to ensure we always get a result (0 if no matches),
+        // avoiding EmptyResultDataAccessException when the database is empty.
         final TypedQuery<Long> query = entityManager.createQuery(
-            "SELECT COUNT(DISTINCT m2.creator) " +
-            "FROM com.wisemapping.model.Mindmap m2 " +
-            "JOIN m2.creator c2 " +
-            "LEFT JOIN m2.spamInfo s2 " +
-            "WHERE c2.creationDate >= :cutoffDate " +
-            "  AND m2.isPublic = true " +
-            "GROUP BY m2.creator " +
-            "HAVING COUNT(m2.id) > 0 " +
-            "   AND (COUNT(CASE WHEN s2.spamDetected = true THEN 1 END) * 1.0 / COUNT(m2.id)) >= :spamRatioThreshold",
+            "SELECT COUNT(DISTINCT m.creator) " +
+            "FROM com.wisemapping.model.Mindmap m " +
+            "JOIN m.creator c " +
+            "WHERE c.creationDate >= :cutoffDate " +
+            "  AND m.isPublic = true " +
+            "  AND m.creator IN (" +
+            "    SELECT m2.creator " +
+            "    FROM com.wisemapping.model.Mindmap m2 " +
+            "    JOIN m2.creator c2 " +
+            "    LEFT JOIN m2.spamInfo s2 " +
+            "    WHERE c2.creationDate >= :cutoffDate " +
+            "      AND m2.isPublic = true " +
+            "    GROUP BY m2.creator " +
+            "    HAVING COUNT(m2.id) > 0 " +
+            "       AND (COUNT(CASE WHEN s2.spamDetected = true THEN 1 END) * 1.0 / COUNT(m2.id)) >= :spamRatioThreshold" +
+            "  )",
             Long.class);
         
         // Calculate cutoff date (monthsBack months ago)
