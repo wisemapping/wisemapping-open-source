@@ -1186,13 +1186,16 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> getAllMindmaps(Boolean filterSpam, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
-            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+            "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN FETCH m.spamInfo s " +
+            "LEFT JOIN FETCH m.lastEditor le " +
+            "LEFT JOIN FETCH m.collaborations col WHERE 1=1");
         
         if (filterSpam != null) {
             if (filterSpam) {
-                queryString.append(" AND m.spamInfo.spamDetected = true");
+                queryString.append(" AND s.spamDetected = true");
             } else {
-                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+                queryString.append(" AND (s IS NULL OR s.spamDetected = false)");
             }
         }
         
@@ -1207,13 +1210,14 @@ public class MindmapManagerImpl
     @Override
     public long countAllMindmaps(Boolean filterSpam) {
         StringBuilder queryString = new StringBuilder(
-            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+            "SELECT COUNT(DISTINCT m.id) FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN m.spamInfo s WHERE 1=1");
         
         if (filterSpam != null) {
             if (filterSpam) {
-                queryString.append(" AND m.spamInfo.spamDetected = true");
+                queryString.append(" AND s.spamDetected = true");
             } else {
-                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+                queryString.append(" AND (s IS NULL OR s.spamDetected = false)");
             }
         }
         
@@ -1224,7 +1228,10 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
-            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+            "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN FETCH m.spamInfo s " +
+            "LEFT JOIN FETCH m.lastEditor le " +
+            "LEFT JOIN FETCH m.collaborations col WHERE 1=1");
         
         if (filterPublic != null) {
             if (filterPublic) {
@@ -1234,19 +1241,14 @@ public class MindmapManagerImpl
             }
         }
         
-        if (filterLocked != null) {
-            if (filterLocked) {
-                queryString.append(" AND m.isLocked = true");
-            } else {
-                queryString.append(" AND m.isLocked = false");
-            }
-        }
+        // Note: isLocked field doesn't exist in Mindmap entity, so this filter is ignored
+        // Keeping the parameter for API compatibility but not applying it to the query
         
         if (filterSpam != null) {
             if (filterSpam) {
-                queryString.append(" AND m.spamInfo.spamDetected = true");
+                queryString.append(" AND s.spamDetected = true");
             } else {
-                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+                queryString.append(" AND (s IS NULL OR s.spamDetected = false)");
             }
         }
         
@@ -1284,7 +1286,8 @@ public class MindmapManagerImpl
     @Override
     public long countAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter) {
         StringBuilder queryString = new StringBuilder(
-            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+            "SELECT COUNT(DISTINCT m.id) FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN m.spamInfo s WHERE 1=1");
         
         if (filterPublic != null) {
             if (filterPublic) {
@@ -1294,19 +1297,14 @@ public class MindmapManagerImpl
             }
         }
         
-        if (filterLocked != null) {
-            if (filterLocked) {
-                queryString.append(" AND m.isLocked = true");
-            } else {
-                queryString.append(" AND m.isLocked = false");
-            }
-        }
+        // Note: isLocked field doesn't exist in Mindmap entity, so this filter is ignored
+        // Keeping the parameter for API compatibility but not applying it to the query
         
         if (filterSpam != null) {
             if (filterSpam) {
-                queryString.append(" AND m.spamInfo.spamDetected = true");
+                queryString.append(" AND s.spamDetected = true");
             } else {
-                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+                queryString.append(" AND (s IS NULL OR s.spamDetected = false)");
             }
         }
         
@@ -1340,7 +1338,10 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
-            "SELECT m FROM com.wisemapping.model.Mindmap m ");
+            "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN FETCH m.spamInfo s " +
+            "LEFT JOIN FETCH m.lastEditor le " +
+            "LEFT JOIN FETCH m.collaborations col ");
         
         // Handle special search patterns
         boolean isIdSearch = false;
@@ -1385,11 +1386,14 @@ public class MindmapManagerImpl
             queryString.append(" AND m.isPublic = :filterPublic");
         }
         
+        // Note: isLocked field doesn't exist in Mindmap entity, so this filter is ignored
+        // Keeping the parameter for API compatibility but not applying it to the query
+        
         if (filterSpam != null) {
             if (filterSpam) {
-                queryString.append(" AND m.spamInfo.spamDetected = true");
+                queryString.append(" AND s.spamDetected = true");
             } else {
-                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+                queryString.append(" AND (s IS NULL OR s.spamDetected = false)");
             }
         }
         
@@ -1420,7 +1424,8 @@ public class MindmapManagerImpl
     @Override
     public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam) {
         StringBuilder queryString = new StringBuilder(
-            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
+            "SELECT COUNT(DISTINCT m.id) FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN m.spamInfo s WHERE 1=1");
         
         // Handle special search patterns
         boolean isIdSearch = false;
@@ -1462,11 +1467,14 @@ public class MindmapManagerImpl
             queryString.append(" AND m.isPublic = :filterPublic");
         }
         
+        // Note: isLocked field doesn't exist in Mindmap entity, so this filter is ignored
+        // Keeping the parameter for API compatibility but not applying it to the query
+        
         if (filterSpam != null) {
             if (filterSpam) {
-                queryString.append(" AND m.spamInfo.spamDetected = true");
+                queryString.append(" AND s.spamDetected = true");
             } else {
-                queryString.append(" AND (m.spamInfo IS NULL OR m.spamInfo.spamDetected = false)");
+                queryString.append(" AND (s IS NULL OR s.spamDetected = false)");
             }
         }
         
