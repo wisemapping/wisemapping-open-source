@@ -22,6 +22,7 @@ import com.wisemapping.service.InactiveMindmapMigrationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -42,6 +43,9 @@ public class InactiveMindmapMigrationScheduler {
     @Autowired
     private InactiveMindmapMigrationService inactiveMindmapMigrationService;
 
+    @Value("${app.batch.inactive-mindmap-migration.startup-enabled:false}")
+    private boolean startupEnabled;
+
     /**
      * Execute inactive mindmap migration task once at application startup (async to not block startup)
      */
@@ -49,7 +53,13 @@ public class InactiveMindmapMigrationScheduler {
     @Async
     @ConditionalOnProperty(name = "app.batch.inactive-mindmap-migration.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processInactiveMindmapMigrationOnStartup() {
-        logger.info("Executing inactive mindmap migration task on application startup.");
+        // Double check: verify startup-enabled property is actually true at runtime
+        if (!startupEnabled) {
+            logger.warn("Startup task enabled but startupEnabled property is false - this should not happen!");
+            return;
+        }
+        
+        logger.info("Executing inactive mindmap migration task on application startup - startupEnabled={}", startupEnabled);
         
         try {
             inactiveMindmapMigrationService.processInactiveMindmapMigration();

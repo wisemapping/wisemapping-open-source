@@ -22,6 +22,7 @@ import com.wisemapping.service.SpamDetectionBatchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -38,6 +39,9 @@ public class SpamDetectionScheduler {
     @Autowired
     private SpamDetectionBatchService spamDetectionBatchService;
 
+    @Value("${app.batch.spam-detection.startup-enabled:false}")
+    private boolean startupEnabled;
+
     /**
      * Execute spam detection task once at application startup (async to not block startup)
      */
@@ -45,7 +49,13 @@ public class SpamDetectionScheduler {
     @Async
     @ConditionalOnProperty(name = "app.batch.spam-detection.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processSpamDetectionOnStartup() {
-        logger.info("Executing spam detection task on application startup.");
+        // Double check: verify startup-enabled property is actually true at runtime
+        if (!startupEnabled) {
+            logger.warn("Startup task enabled but startupEnabled property is false - this should not happen!");
+            return;
+        }
+        
+        logger.info("Executing spam detection task on application startup - startupEnabled={}", startupEnabled);
         
         try {
             spamDetectionBatchService.processPublicMapsSpamDetection();
