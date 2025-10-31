@@ -22,6 +22,7 @@ import com.wisemapping.service.HistoryPurgeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -43,6 +44,9 @@ public class HistoryCleanupScheduler {
 
     @Autowired
     private HistoryPurgeService historyPurgeService;
+
+    @Value("${app.batch.history-cleanup.startup-enabled:false}")
+    private boolean startupEnabled;
 
     /**
      * Scheduled task that runs daily at 2:00 AM to clean up old mindmap history entries.
@@ -77,7 +81,13 @@ public class HistoryCleanupScheduler {
     @Async
     @ConditionalOnProperty(name = "app.batch.history-cleanup.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processHistoryCleanupOnStartup() {
-        logger.info("Starting history cleanup task on application startup (async)");
+        // Double check: verify startup-enabled property is actually true at runtime
+        if (!startupEnabled) {
+            logger.warn("Startup task enabled but startupEnabled property is false - this should not happen!");
+            return;
+        }
+        
+        logger.info("Starting history cleanup task on application startup (async) - startupEnabled={}", startupEnabled);
         
         try {
             int deletedCount = historyPurgeService.purgeHistory();

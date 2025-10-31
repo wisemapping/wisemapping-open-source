@@ -42,6 +42,9 @@ public class InactiveUserSuspensionScheduler {
     @Value("${app.batch.inactive-user-suspension.preview-enabled:false}")
     private boolean previewEnabled;
 
+    @Value("${app.batch.inactive-user-suspension.startup-enabled:false}")
+    private boolean startupEnabled;
+
     /**
      * Kick off the inactive user suspension process once the application is ready.
      * Runs asynchronously so it will not block application startup.
@@ -50,7 +53,13 @@ public class InactiveUserSuspensionScheduler {
     @Async
     @ConditionalOnProperty(name = "app.batch.inactive-user-suspension.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processInactiveUserSuspensionOnStartup() {
-        logger.info("Starting startup inactive user suspension task (async)");
+        // Double check: verify startup-enabled property is actually true at runtime
+        if (!startupEnabled) {
+            logger.warn("Startup task enabled but startupEnabled property is false - this should not happen!");
+            return;
+        }
+        
+        logger.info("Starting startup inactive user suspension task (async) - startupEnabled={}", startupEnabled);
         try {
             inactiveUserService.processInactiveUsers();
             logger.info("Startup inactive user suspension task completed successfully");
