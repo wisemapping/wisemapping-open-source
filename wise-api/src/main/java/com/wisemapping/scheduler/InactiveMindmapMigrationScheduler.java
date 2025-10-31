@@ -47,7 +47,7 @@ public class InactiveMindmapMigrationScheduler {
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
-    @ConditionalOnProperty(name = "app.batch.inactive-mindmap-migration.startup-enabled", havingValue = "true")
+    @ConditionalOnProperty(name = "app.batch.inactive-mindmap-migration.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processInactiveMindmapMigrationOnStartup() {
         logger.info("Executing inactive mindmap migration task on application startup.");
         

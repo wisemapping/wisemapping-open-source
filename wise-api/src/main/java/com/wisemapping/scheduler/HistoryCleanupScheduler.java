@@ -75,7 +75,7 @@ public class HistoryCleanupScheduler {
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
-    @ConditionalOnProperty(name = "app.batch.history-cleanup.startup-enabled", havingValue = "true")
+    @ConditionalOnProperty(name = "app.batch.history-cleanup.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processHistoryCleanupOnStartup() {
         logger.info("Starting history cleanup task on application startup (async)");
         

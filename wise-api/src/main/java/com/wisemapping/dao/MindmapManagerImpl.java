@@ -640,8 +640,10 @@ public class MindmapManagerImpl
 
     @Override
     public List<SpamRatioUserResult> findUsersWithHighPublicSpamRatio(double spamRatioThreshold, int monthsBack, int offset, int limit) {
+        // Optimized: Select Account ID instead of full Account entity to avoid eager loading of large fields
+        // This prevents loading oauthToken (TEXT), password, and other unnecessary data
         final TypedQuery<Object[]> query = entityManager.createQuery(
-            "SELECT m.creator, " +
+            "SELECT c.id, " +
             "       COUNT(CASE WHEN s.spamDetected = true THEN 1 END) as spamCount, " +
             "       COUNT(m.id) as totalCount " +
             "FROM com.wisemapping.model.Mindmap m " +
@@ -649,7 +651,7 @@ public class MindmapManagerImpl
             "LEFT JOIN m.spamInfo s " +
             "WHERE c.creationDate >= :cutoffDate " +
             "  AND m.isPublic = true " +
-            "GROUP BY m.creator " +
+            "GROUP BY c.id " +
             "HAVING COUNT(m.id) > 0 " +
             "   AND (COUNT(CASE WHEN s.spamDetected = true THEN 1 END) * 1.0 / COUNT(m.id)) >= :spamRatioThreshold " +
             "ORDER BY c.id", 
@@ -664,14 +666,41 @@ public class MindmapManagerImpl
         query.setFirstResult(offset);
         query.setMaxResults(limit);
         
+        // Get query results first
+        List<Object[]> results = query.getResultList();
+        
+        // Batch load Account entities to avoid N+1 queries
+        List<Integer> accountIds = results.stream()
+                .map(result -> (Integer) result[0])
+                .collect(java.util.stream.Collectors.toList());
+        
+        // Load all Account entities in a single query
+        List<Account> accounts = accountIds.isEmpty() ? new ArrayList<>() :
+            entityManager.createQuery(
+                "SELECT a FROM com.wisemapping.model.Account a WHERE a.id IN :ids",
+                Account.class)
+                .setParameter("ids", accountIds)
+                .getResultList();
+        
+        // Create a map for quick lookup
+        java.util.Map<Integer, Account> accountMap = accounts.stream()
+                .collect(java.util.stream.Collectors.toMap(Account::getId, account -> account));
+        
         // Convert Object[] results to SpamRatioUserResult objects
-        return query.getResultList().stream()
+        // Load Account entities separately to avoid eager loading of unnecessary relationships
+        return results.stream()
                 .map(result -> {
-                    Account user = (Account) result[0];
+                    Integer accountId = (Integer) result[0];
                     Long spamCount = (Long) result[1];
                     Long totalCount = (Long) result[2];
+                    Account user = accountMap.get(accountId);
+                    if (user == null) {
+                        logger.warn("Account with ID {} not found in batch load", accountId);
+                        return null;
+                    }
                     return new SpamRatioUserResult(user, spamCount, totalCount);
                 })
+                .filter(result -> result != null)
                 .collect(java.util.stream.Collectors.toList());
     }
 
@@ -704,14 +733,16 @@ public class MindmapManagerImpl
 
     @Override
     public List<SpamUserResult> findUsersWithAnySpamMaps(int minSpamCount, int monthsBack, int offset, int limit) {
+        // Optimized: Select Account ID instead of full Account entity to avoid eager loading of large fields
+        // This prevents loading oauthToken (TEXT), password, and other unnecessary data
         final TypedQuery<Object[]> query = entityManager.createQuery(
-            "SELECT m.creator, " +
+            "SELECT c.id, " +
             "       COUNT(CASE WHEN s.spamDetected = true THEN 1 END) as totalSpamCount " +
             "FROM com.wisemapping.model.Mindmap m " +
             "JOIN m.creator c " +
             "LEFT JOIN m.spamInfo s " +
             "WHERE c.creationDate >= :cutoffDate " +
-            "GROUP BY m.creator " +
+            "GROUP BY c.id " +
             "HAVING COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
             "ORDER BY c.id", 
             Object[].class);
@@ -725,13 +756,40 @@ public class MindmapManagerImpl
         query.setFirstResult(offset);
         query.setMaxResults(limit);
         
+        // Get query results first
+        List<Object[]> results = query.getResultList();
+        
+        // Batch load Account entities to avoid N+1 queries
+        List<Integer> accountIds = results.stream()
+                .map(result -> (Integer) result[0])
+                .collect(java.util.stream.Collectors.toList());
+        
+        // Load all Account entities in a single query
+        List<Account> accounts = accountIds.isEmpty() ? new ArrayList<>() :
+            entityManager.createQuery(
+                "SELECT a FROM com.wisemapping.model.Account a WHERE a.id IN :ids",
+                Account.class)
+                .setParameter("ids", accountIds)
+                .getResultList();
+        
+        // Create a map for quick lookup
+        java.util.Map<Integer, Account> accountMap = accounts.stream()
+                .collect(java.util.stream.Collectors.toMap(Account::getId, account -> account));
+        
         // Convert Object[] results to SpamUserResult objects
-        return query.getResultList().stream()
+        // Load Account entities separately to avoid eager loading of unnecessary relationships
+        return results.stream()
                 .map(result -> {
-                    Account user = (Account) result[0];
+                    Integer accountId = (Integer) result[0];
                     Long spamCount = (Long) result[1];
+                    Account user = accountMap.get(accountId);
+                    if (user == null) {
+                        logger.warn("Account with ID {} not found in batch load", accountId);
+                        return null;
+                    }
                     return new SpamUserResult(user, spamCount);
                 })
+                .filter(result -> result != null)
                 .collect(java.util.stream.Collectors.toList());
     }
 
@@ -857,8 +915,9 @@ public class MindmapManagerImpl
             inClause.append(":spamType").append(i);
         }
 
+        // Optimized: Select Account ID instead of full Account entity to avoid eager loading of large fields
         final TypedQuery<Object[]> query = entityManager.createQuery(
-            "SELECT m.creator, COUNT(m.id) as spamCount " +
+            "SELECT c.id, COUNT(m.id) as spamCount " +
             "FROM com.wisemapping.model.Mindmap m " +
             "JOIN m.creator c " +
             "JOIN m.spamInfo s " +
@@ -866,7 +925,7 @@ public class MindmapManagerImpl
             "  AND m.isPublic = true " +
             "  AND c.creationDate >= :cutoffDate " +
             "  AND s.spamTypeCode IN (" + inClause.toString() + ") " +
-            "GROUP BY m.creator " +
+            "GROUP BY c.id " +
             "ORDER BY c.id", 
             Object[].class);
         
@@ -877,13 +936,40 @@ public class MindmapManagerImpl
         query.setFirstResult(offset);
         query.setMaxResults(limit);
         
+        // Get query results first
+        List<Object[]> results = query.getResultList();
+        
+        // Batch load Account entities to avoid N+1 queries
+        List<Integer> accountIds = results.stream()
+                .map(result -> (Integer) result[0])
+                .collect(java.util.stream.Collectors.toList());
+        
+        // Load all Account entities in a single query
+        List<Account> accounts = accountIds.isEmpty() ? new ArrayList<>() :
+            entityManager.createQuery(
+                "SELECT a FROM com.wisemapping.model.Account a WHERE a.id IN :ids",
+                Account.class)
+                .setParameter("ids", accountIds)
+                .getResultList();
+        
+        // Create a map for quick lookup
+        java.util.Map<Integer, Account> accountMap = accounts.stream()
+                .collect(java.util.stream.Collectors.toMap(Account::getId, account -> account));
+        
         // Convert Object[] results to SpamUserResult objects
-        return query.getResultList().stream()
+        // Load Account entities separately to avoid eager loading of unnecessary relationships
+        return results.stream()
                 .map(result -> {
-                    Account user = (Account) result[0];
+                    Integer accountId = (Integer) result[0];
                     Long spamCount = (Long) result[1];
+                    Account user = accountMap.get(accountId);
+                    if (user == null) {
+                        logger.warn("Account with ID {} not found in batch load", accountId);
+                        return null;
+                    }
                     return new SpamUserResult(user, spamCount);
                 })
+                .filter(result -> result != null)
                 .collect(java.util.stream.Collectors.toList());
     }
 

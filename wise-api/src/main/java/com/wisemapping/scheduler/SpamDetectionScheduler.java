@@ -43,7 +43,7 @@ public class SpamDetectionScheduler {
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
-    @ConditionalOnProperty(name = "app.batch.spam-detection.startup-enabled", havingValue = "true")
+    @ConditionalOnProperty(name = "app.batch.spam-detection.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processSpamDetectionOnStartup() {
         logger.info("Executing spam detection task on application startup.");
         

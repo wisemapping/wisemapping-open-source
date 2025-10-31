@@ -43,7 +43,7 @@ public class SpamUserSuspensionScheduler {
      */
     @EventListener(ApplicationReadyEvent.class)
     @Async
-    @ConditionalOnProperty(name = "app.batch.spam-user-suspension.startup-enabled", havingValue = "true")
+    @ConditionalOnProperty(name = "app.batch.spam-user-suspension.startup-enabled", havingValue = "true", matchIfMissing = false)
     public void processSpamUserSuspensionOnStartup() {
         logger.info("Executing spam user suspension task on application startup.");
         
@@ -56,18 +56,18 @@ public class SpamUserSuspensionScheduler {
     }
 
     /**
-     * Scheduled task that runs every 6 hours to check for users with multiple spam mindmaps
+     * Scheduled task that runs once a day at 6 PM Argentina time to check for users with multiple spam mindmaps
      * and suspend them if necessary.
      * 
-     * Cron expression: "0 0 /6 * * *" means:
+     * Cron expression: "0 0 18 * * *" means:
      * - 0 seconds
      * - 0 minutes  
-     * - Every 6 hours
+     * - 18 hours (6 PM in Argentina timezone)
      * - Every day of month
      * - Every month
      * - Every day of week
      */
-    @Scheduled(cron = "${app.batch.spam-user-suspension.cron-expression:0 0 */6 * * *}")
+    @Scheduled(cron = "${app.batch.spam-user-suspension.cron-expression:0 0 18 * * *}", zone = "America/Argentina/Buenos_Aires")
     @Async
     public void processSpamUserSuspension() {
         logger.info("Starting scheduled spam user suspension task (async)");
