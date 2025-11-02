@@ -66,17 +66,17 @@ public class InactiveUserSuspensionScheduler {
     }
 
     /**
-     * Scheduled task that runs every Saturday at 02:00 AM to suspend inactive users.
+     * Scheduled task that runs every Saturday at 09:00 AM Argentina time to suspend inactive users.
      * 
-     * Cron expression: "0 0 2 * * SAT" means:
+     * Cron expression: "0 0 9 * * SAT" means:
      * - 0 seconds
      * - 0 minutes  
-     * - 2 hours (2:00 AM)
+     * - 9 hours (9:00 AM)
      * - Every day of month
      * - Every month
      * - Saturday only
      */
-    @Scheduled(cron = "${app.batch.inactive-user-suspension.cron-expression:0 0 2 * * SAT}")
+    @Scheduled(cron = "${app.batch.inactive-user-suspension.cron-expression:0 0 9 * * SAT}", zone = "America/Argentina/Buenos_Aires")
     @Async
     public void processInactiveUserSuspension() {
         logger.info("Starting scheduled inactive user suspension task (async)");

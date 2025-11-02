@@ -196,7 +196,7 @@ app:
     history-cleanup:
       enabled: true
       startup-enabled: false  # Disable startup execution by default (can be heavy)
-      cron-expression: "0 0 2 * * FRI"  # Every Friday at 2:00 AM
+      cron-expression: "0 0 21 * * SAT"  # Every Saturday at 9:00 PM (21:00) Argentina time
       # Two-phase history cleanup approach:
       # Phase 1: Complete history removal for moderately old mindmaps
       #   - Maps between phase1-lower-boundary-years and phase1-upper-boundary-years have ALL history removed
@@ -215,7 +215,7 @@ app:
     inactive-user-suspension:
       enabled: true
       startup-enabled: false  # Enable inactive user suspension on application startup (async)
-      cron-expression: "0 0 2 * * SAT"  # Every Saturday at 2:00 AM
+      cron-expression: "0 0 9 * * SAT"  # Every Saturday at 9:00 AM Argentina time
       preview-enabled: false  # Enable preview task on Fridays
       inactivity-years: 7  # Users inactive for this many years will be suspended
       grace-period-years: 1  # Additional grace period beyond inactivity threshold (inactivity-years + grace-period-years = minimum account age)
@@ -224,7 +224,7 @@ app:
     inactive-mindmap-migration:
       enabled: true
       startup-enabled: false  # Disable startup execution by default
-      cron-expression: "0 0 10 * * *"  # Daily at 10:00 AM Argentina time
+      cron-expression: "0 0 15 * * SAT"  # Every Saturday at 3:00 PM (15:00) Argentina time
       batch-size: 25  # Number of users to process in each batch (reduced for memory efficiency)
       mindmap-batch-size: 10  # Number of mindmaps to process in each sub-batch (memory optimization)
       dry-run: false  # Set to true for testing without actual migration

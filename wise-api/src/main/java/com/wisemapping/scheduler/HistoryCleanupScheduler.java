@@ -49,17 +49,18 @@ public class HistoryCleanupScheduler {
     private boolean startupEnabled;
 
     /**
-     * Scheduled task that runs every Friday at 2:00 AM to clean up old mindmap history entries.
+     * Scheduled task that runs every Saturday at 09:00 PM (21:00) Argentina time to clean up old mindmap history entries.
+     * Scheduled 6 hours after inactive mindmap migration to spread weekend batch jobs.
      * 
-     * Cron expression: "0 0 2 * * FRI" means:
+     * Cron expression: "0 0 21 * * SAT" means:
      * - 0 seconds
      * - 0 minutes
-     * - 2 hours (2:00 AM)
+     * - 21 hours (9:00 PM / 21:00)
      * - Every day of month
      * - Every month
-     * - Friday only
+     * - Saturday only
      */
-    @Scheduled(cron = "${app.batch.history-cleanup.cron-expression:0 0 2 * * FRI}")
+    @Scheduled(cron = "${app.batch.history-cleanup.cron-expression:0 0 21 * * SAT}", zone = "America/Argentina/Buenos_Aires")
     @Async
     public void cleanupHistory() {
         logger.info("Starting scheduled history cleanup task (async)");
