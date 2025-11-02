@@ -50,6 +50,9 @@ public class MindmapManagerImpl
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private jakarta.persistence.EntityManagerFactory entityManagerFactory;
+
     @Override
     public Collaborator findCollaborator(@NotNull final String email) {
         // Use Criteria API for type-safe query that handles inheritance properly
@@ -361,29 +364,75 @@ public class MindmapManagerImpl
         }
     }
 
+    /**
+     * Evicts Collaborator entities from Hibernate second-level cache.
+     * This ensures that cached Collaborator entities with stale collaboration collections
+     * are refreshed after bulk collaboration deletions.
+     */
+    private void evictCollaboratorCache(java.util.Set<Integer> collaboratorIds) {
+        if (collaboratorIds.isEmpty()) {
+            return;
+        }
+        try {
+            org.hibernate.SessionFactory sessionFactory = entityManagerFactory.unwrap(org.hibernate.SessionFactory.class);
+            for (Integer collaboratorId : collaboratorIds) {
+                sessionFactory.getCache().evict(Collaborator.class, collaboratorId);
+            }
+        } catch (Exception e) {
+            // Log but don't fail the operation - cache eviction is best effort
+            logger.warn("Failed to evict Collaborator cache for IDs {}: {}", collaboratorIds, e.getMessage());
+        }
+    }
+
     @Override
     public void removeMindmap(@NotNull final Mindmap mindmap) {
+        final int mindmapId = mindmap.getId();
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
-        // Delete history first using bulk delete query (avoids optimistic locking issues)
+        // Get collaborator IDs to evict from cache BEFORE bulk delete
+        // Query directly from database to avoid loading lazy associations
+        final java.util.Set<Integer> collaboratorIdsToEvict = new java.util.HashSet<>();
+        final TypedQuery<Integer> collaboratorIdQuery = entityManager.createQuery(
+            "SELECT c.collaborator.id FROM Collaboration c WHERE c.mindMap.id = :mindmapId", 
+            Integer.class);
+        collaboratorIdQuery.setParameter("mindmapId", mindmapId);
+        collaboratorIdsToEvict.addAll(collaboratorIdQuery.getResultList());
+
+        // Delete history first using bulk delete query
         final CriteriaDelete<MindMapHistory> historyDelete = cb.createCriteriaDelete(MindMapHistory.class);
         final Root<MindMapHistory> historyRoot = historyDelete.from(MindMapHistory.class);
-        historyDelete.where(cb.equal(historyRoot.get("mindmapId"), mindmap.getId()));
+        historyDelete.where(cb.equal(historyRoot.get("mindmapId"), mindmapId));
         entityManager.createQuery(historyDelete).executeUpdate();
 
-        // Delete collaborations using bulk delete query (avoids optimistic locking issues)
-        // This is safer than relying on cascade/orphanRemoval which can cause StaleObjectStateException
-        // when collaborations are modified by concurrent transactions
+        // Delete collaborations using bulk delete query
         final CriteriaDelete<Collaboration> collaborationDelete = cb.createCriteriaDelete(Collaboration.class);
         final Root<Collaboration> collaborationRoot = collaborationDelete.from(Collaboration.class);
-        collaborationDelete.where(cb.equal(collaborationRoot.get("mindMap").get("id"), mindmap.getId()));
+        collaborationDelete.where(cb.equal(collaborationRoot.get("mindMap").get("id"), mindmapId));
         entityManager.createQuery(collaborationDelete).executeUpdate();
+        
+        // Evict Collaborator entities from second-level cache to prevent stale references
+        evictCollaboratorCache(collaboratorIdsToEvict);
+        
+        // Flush to commit the bulk deletes
+        entityManager.flush();
+        
+        // After bulk deleting collaborations, the mindmap entity may have stale references
+        // in its collaborations collection. To prevent orphanRemoval from trying to delete
+        // already-deleted collaborations, we detach and reload the mindmap entity fresh.
+        // This ensures the collaborations collection reflects the current database state (empty).
+        entityManager.detach(mindmap);
+        
+        // Reload the mindmap fresh from database - it will have no collaborations
+        final Mindmap freshMindmap = entityManager.find(Mindmap.class, mindmapId);
+        if (freshMindmap == null) {
+            // Mindmap no longer exists (shouldn't happen, but handle gracefully)
+            return;
+        }
 
-        // Remove collaborations from in-memory collection to maintain consistency
-        mindmap.removedCollaboration(mindmap.getCollaborations());
-
-        // Delete mindmap
-        entityManager.remove(mindmap);
+        // Delete mindmap using fresh entity
+        // orphanRemoval will see an empty collaborations collection, so it won't try to delete
+        // already-deleted collaborations
+        entityManager.remove(freshMindmap);
     }
 
     @Override

@@ -337,8 +337,21 @@ public class AdminController {
         }
 
         final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
+        final java.util.Set<Integer> processedMindmapIds = new java.util.HashSet<>();
+        
         for (Collaboration collaboration : collaborations) {
             final Mindmap mindmap = collaboration.getMindMap();
+            // Skip if this mindmap was already processed (user was creator and mindmap was fully deleted)
+            if (processedMindmapIds.contains(mindmap.getId())) {
+                continue;
+            }
+            
+            // Track mindmaps where user is creator (will be fully deleted)
+            final boolean isCreator = mindmap.getCreator().identityEquality(user);
+            if (isCreator) {
+                processedMindmapIds.add(mindmap.getId());
+            }
+            
             mindmapService.removeMindmap(mindmap, user);
         }
         userService.removeUser(user);
