@@ -52,7 +52,7 @@ public class Mindmap implements Serializable {
     @Column(name = "edition_date")
     private Calendar lastModificationTime;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
     @JsonIgnore
     private Account creator;

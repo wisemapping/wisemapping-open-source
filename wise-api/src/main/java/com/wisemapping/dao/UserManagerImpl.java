@@ -24,9 +24,13 @@ import com.wisemapping.security.LegacyPasswordEncoder;
 import com.wisemapping.service.InactiveMindmapMigrationService;
 import com.wisemapping.service.MetricsService;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,8 +45,12 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @Repository
 public class UserManagerImpl
         implements UserManager {
+    private static final Logger logger = LoggerFactory.getLogger(UserManagerImpl.class);
+    
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -164,18 +172,47 @@ public class UserManagerImpl
         entityManager.persist(accessAuditory);
     }
 
+    /**
+     * Evicts Account entity from Hibernate second-level cache.
+     * This ensures that subsequent loads get fresh data from the database,
+     * which is critical for fields like suspension status and activation date.
+     */
+    private void evictAccountCache(int accountId) {
+        try {
+            SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+            sessionFactory.getCache().evict(Account.class, accountId);
+        } catch (Exception e) {
+            // Log but don't fail the operation - cache eviction is best effort
+            logger.warn("Failed to evict Account cache for ID {}: {}", accountId, e.getMessage());
+        }
+    }
+
     @Transactional
     public void updateUser(@NotNull Account user) {
         assert user != null : "user is null";
 
+        // Store previous state to detect critical changes (before merge modifies the entity)
+        int accountId = user.getId();
+        boolean previousSuspended = user.isSuspended();
+        Calendar previousActivationDate = user.getActivationDate();
+        
         // Does the password need to be encrypted ?
         final String password = user.getPassword();
         if (password != null && (!password.startsWith(LegacyPasswordEncoder.ENC_PREFIX) && !password.startsWith("{" + DefaultPasswordEncoderFactories.ENCODING_ID))) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        entityManager.merge(user);
+        Account mergedUser = entityManager.merge(user);
         entityManager.flush();
+        
+        // Evict cache if critical fields changed (suspension or activation status)
+        boolean suspendedChanged = previousSuspended != mergedUser.isSuspended();
+        boolean activationChanged = (previousActivationDate == null && mergedUser.getActivationDate() != null) ||
+                                   (previousActivationDate != null && mergedUser.getActivationDate() == null);
+        
+        if (suspendedChanged || activationChanged) {
+            evictAccountCache(accountId);
+        }
     }
 
     public Account getUserByActivationCode(long code) {
@@ -493,6 +530,10 @@ public class UserManagerImpl
         user.setSuspended(true);
         user.setSuspensionReason(reason);
         entityManager.merge(user);
+        entityManager.flush();
+        
+        // Evict from cache to ensure suspension status is immediately reflected
+        evictAccountCache(user.getId());
     }
 
     @Override
@@ -505,6 +546,9 @@ public class UserManagerImpl
         user.unsuspend();
         entityManager.merge(user);
         entityManager.flush();
+        
+        // Evict from cache to ensure unsuspension status is immediately reflected
+        evictAccountCache(user.getId());
 
         // Restore mindmaps if user was suspended for inactivity
         int restoredCount = 0;

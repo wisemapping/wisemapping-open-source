@@ -6,11 +6,82 @@
         NOTE: Mindmap-related entities (MindmapSpamInfo, MindmapLabel) are NOT cached
         to prevent inconsistencies. Mindmap data changes frequently and must always
         reflect the latest state in the database.
+        
+        IMPORTANT CACHE CONSISTENCY CONSIDERATION:
+        - Mindmap entity now uses LAZY fetch for Account creator (@ManyToOne fetch = LAZY) - IMPLEMENTED
+        - Account cache TTL reduced to 60s idle, 300s total (from 600s/3600s) - IMPLEMENTED
+        - Explicit cache eviction added on Account suspension/activation updates - IMPLEMENTED
+        - This minimizes stale Account data when loading Mindmap
+        - Critical fields protected: suspended status, activation status
+        - Long-term evaluation: Monitor if Account caching is still beneficial given consistency requirements
+    -->
+    
+    <!-- 
+        Entity Cache Regions - Second Level Cache for JPA Entities
+        These caches store entity instances across sessions.
     -->
     <cache name="com.wisemapping.model.Collaborator"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
+           maxElementsInMemory="2000" eternal="false" timeToIdleSeconds="600"
            timeToLiveSeconds="3600" overflowToDisk="false"/>
+    <!-- 
+        Account cache: Reduced TTL (60s idle, 300s total) to minimize staleness when
+        loaded by non-cached Mindmap entities.
+        
+        LONG-TERM EVALUATION CONSIDERATIONS:
+        Account caching provides performance benefits but creates consistency risks:
+        
+        PROS of caching Account:
+        - Reduces database queries for frequently accessed user data
+        - Improves performance for user lookups, authentication checks
+        - Account data changes infrequently (relative to Mindmap)
+        
+        CONS of caching Account:
+        - Consistency risk: Suspended/activated accounts may appear stale in cache
+        - Dependency risk: Non-cached Mindmap depends on cached Account
+        - Complexity: Requires explicit cache eviction on critical updates
+        - Memory: Uses 2000 entries × ~1KB per Account = ~2MB cache
+        
+        RECOMMENDATION FOR LONG-TERM:
+        - Monitor cache hit rates and performance impact
+        - Consider disabling Account cache if:
+          * Cache hit rate is low (<50%)
+          * Consistency issues are reported
+          * Performance impact is negligible
+        - Alternative: Use application-level caching (Caffeine/Guava) with shorter TTL
+          instead of Hibernate second-level cache for better control
+        
+        Current mitigation strategies:
+        - LAZY fetch for Mindmap.creator reduces eager cache hits
+        - Reduced TTL (300s) limits staleness window
+        - Explicit eviction on suspension/activation changes
+        - Best-effort eviction (non-blocking, logs warnings on failure)
+    -->
     <cache name="com.wisemapping.model.Account"
-           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
+           maxElementsInMemory="2000" eternal="false" timeToIdleSeconds="60"
+           timeToLiveSeconds="300" overflowToDisk="false"/>
+    
+    <!-- 
+        Hibernate Query Cache Regions
+        Required when hibernate.cache.use_query_cache=true
+    -->
+    <!-- 
+        default-query-results-region: Stores query results (IDs and values)
+        Limit: 2000 entries
+        TTL: 3600 seconds (1 hour) - queries can become stale, so we limit lifetime
+        TTI: 600 seconds (10 minutes) - evict unused queries after 10 minutes
+    -->
+    <cache name="default-query-results-region"
+           maxElementsInMemory="2000" eternal="false" timeToIdleSeconds="600"
+           timeToLiveSeconds="3600" overflowToDisk="false"/>
+    
+    <!-- 
+        default-update-timestamps-region: Tracks when database tables were last updated
+        Used by Hibernate to invalidate query cache when underlying data changes.
+        Limit: 1000 entries (one per table typically)
+        TTL: 3600 seconds (1 hour) 
+        TTI: 600 seconds (10 minutes)
+    -->
+    <cache name="default-update-timestamps-region"
+           maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600"
            timeToLiveSeconds="3600" overflowToDisk="false"/>
 </ehcache>
