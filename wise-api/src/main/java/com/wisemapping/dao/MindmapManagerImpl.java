@@ -378,14 +378,9 @@ public class MindmapManagerImpl
         final Root<Collaboration> collaborationRoot = collaborationDelete.from(Collaboration.class);
         collaborationDelete.where(cb.equal(collaborationRoot.get("mindMap").get("id"), mindmap.getId()));
         entityManager.createQuery(collaborationDelete).executeUpdate();
-        
-        // Flush to ensure Hibernate syncs with database state after bulk delete
-        entityManager.flush();
-        
-        // Refresh the mindmap entity to reload it from database without collaborations
-        // This ensures the in-memory state matches the database state and prevents
-        // Hibernate from trying to cascade delete already-deleted collaborations
-        entityManager.refresh(mindmap);
+
+        // Remove collaborations from in-memory collection to maintain consistency
+        mindmap.removedCollaboration(mindmap.getCollaborations());
 
         // Delete mindmap
         entityManager.remove(mindmap);
