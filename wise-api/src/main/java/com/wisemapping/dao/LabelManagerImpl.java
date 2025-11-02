@@ -20,7 +20,10 @@ package com.wisemapping.dao;
 import com.wisemapping.model.MindmapLabel;
 import com.wisemapping.model.Account;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,29 +50,45 @@ public class LabelManagerImpl
     @NotNull
     @Override
     public List<MindmapLabel> getAllLabels(@NotNull final Account user) {
-        final TypedQuery<MindmapLabel> query = entityManager.createQuery("from com.wisemapping.model.MindmapLabel wisemapping where creator=:creatorId", MindmapLabel.class);
-        query.setParameter("creatorId", user);
-        return query.getResultList();
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<MindmapLabel> cq = cb.createQuery(MindmapLabel.class);
+        final Root<MindmapLabel> root = cq.from(MindmapLabel.class);
+        
+        cq.select(root).where(cb.equal(root.get("creator"), user));
+        
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Nullable
     @Override
     public MindmapLabel getLabelById(int id, @NotNull final Account user) {
-        final TypedQuery<MindmapLabel> query = entityManager.createQuery("from com.wisemapping.model.MindmapLabel wisemapping where id=:id and creator=:creator", MindmapLabel.class);
-        query.setParameter("id", id);
-        query.setParameter("creator", user);
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<MindmapLabel> cq = cb.createQuery(MindmapLabel.class);
+        final Root<MindmapLabel> root = cq.from(MindmapLabel.class);
+        
+        final Predicate idPredicate = cb.equal(root.get("id"), id);
+        final Predicate creatorPredicate = cb.equal(root.get("creator"), user);
+        cq.select(root).where(cb.and(idPredicate, creatorPredicate));
 
-        final List<MindmapLabel> resultList = query.getResultList();
+        final List<MindmapLabel> resultList = entityManager.createQuery(cq).getResultList();
         return getFirst(resultList);
     }
 
     @Nullable
     @Override
     public MindmapLabel getLabelByTitle(@NotNull String title, @NotNull final Account user) {
-        final TypedQuery<MindmapLabel> query = entityManager.createQuery("from com.wisemapping.model.MindmapLabel wisemapping where title=:title and creator=:creator", MindmapLabel.class);
-        query.setParameter("title", title);
-        query.setParameter("creator", user);
-        return query.getResultList().stream().findFirst().orElse(null);
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<MindmapLabel> cq = cb.createQuery(MindmapLabel.class);
+        final Root<MindmapLabel> root = cq.from(MindmapLabel.class);
+        
+        final Predicate titlePredicate = cb.equal(root.get("title"), title);
+        final Predicate creatorPredicate = cb.equal(root.get("creator"), user);
+        cq.select(root).where(cb.and(titlePredicate, creatorPredicate));
+        
+        return entityManager.createQuery(cq).getResultList().stream().findFirst().orElse(null);
     }
 
     @Override

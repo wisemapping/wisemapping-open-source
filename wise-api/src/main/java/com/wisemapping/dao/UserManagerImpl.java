@@ -26,6 +26,9 @@ import com.wisemapping.service.MetricsService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,42 +72,47 @@ public class UserManagerImpl
     }
 
     public List<Account> getAllUsers() {
-        return entityManager.createQuery("from com.wisemapping.model.Account user", Account.class).getResultList();
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Account> cq = cb.createQuery(Account.class);
+        final Root<Account> root = cq.from(Account.class);
+        cq.select(root);
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override
     @Nullable
     public Account getUserBy(@NotNull final String email) {
-        Account user = null;
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Account> cq = cb.createQuery(Account.class);
+        final Root<Account> root = cq.from(Account.class);
+        
+        cq.select(root).where(cb.equal(root.get("email"), email));
 
-        TypedQuery<Account> query = entityManager.createQuery("from com.wisemapping.model.Account colaborator where email=:email", Account.class);
-        query.setParameter("email", email);
-
-        final List<Account> users = query.getResultList();
+        final List<Account> users = entityManager.createQuery(cq).getResultList();
         if (users != null && !users.isEmpty()) {
             assert users.size() == 1 : "More than one user with the same email!";
-            user = users.get(0);
+            return users.get(0);
         }
-        return user;
-
+        return null;
     }
 
     @Override
     public Collaborator getCollaboratorBy(final String email) {
-        final Collaborator result;
+        // Use Criteria API for type-safe query that handles inheritance properly
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Collaborator> cq = cb.createQuery(Collaborator.class);
+        final Root<Collaborator> root = cq.from(Collaborator.class);
+        
+        cq.select(root).where(cb.equal(root.get("email"), email));
 
-        final TypedQuery<Collaborator> query = entityManager.createQuery("from com.wisemapping.model.Collaborator colaborator where " +
-                "email=:email", Collaborator.class);
-        query.setParameter("email", email);
-
-        final List<Collaborator> cols = query.getResultList();
+        final List<Collaborator> cols = entityManager.createQuery(cq).getResultList();
         if (cols != null && !cols.isEmpty()) {
             assert cols.size() == 1 : "More than one colaborator with the same email!";
-            result = cols.get(0);
-        } else {
-            result = null;
+            return cols.get(0);
         }
-        return result;
+        return null;
     }
 
     @Nullable

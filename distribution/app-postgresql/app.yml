@@ -4,6 +4,12 @@ spring:
     username: wisemapping
     password: password
     driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      data-source-properties:
+        prepareThreshold: 0
+        # PostgreSQL uses prepared statements by default, prepareThreshold=0 
+        # means always use prepared statements (cached automatically)
   jpa:
     hibernate:
       ddl-auto: validate

@@ -25,6 +25,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaDelete;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -51,22 +52,22 @@ public class MindmapManagerImpl
 
     @Override
     public Collaborator findCollaborator(@NotNull final String email) {
-        final Collaborator collaborator;
-        // Use a more explicit query that handles inheritance properly
+        // Use Criteria API for type-safe query that handles inheritance properly
         // This ensures we find both Collaborator and Account entities
-        final TypedQuery<Collaborator> query = entityManager.createQuery(
-            "SELECT c FROM com.wisemapping.model.Collaborator c WHERE c.email = :email", 
-            Collaborator.class);
-        query.setParameter("email", email);
-
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Collaborator> cq = cb.createQuery(Collaborator.class);
+        final Root<Collaborator> root = cq.from(Collaborator.class);
+        
+        cq.select(root).where(cb.equal(root.get("email"), email));
+        
+        final TypedQuery<Collaborator> query = entityManager.createQuery(cq);
         final List<Collaborator> collaborators = query.getResultList();
+        
         if (collaborators != null && !collaborators.isEmpty()) {
             assert collaborators.size() == 1 : "More than one user with the same email!";
-            collaborator = collaborators.get(0);
-        } else {
-            collaborator = null;
+            return collaborators.get(0);
         }
-        return collaborator;
+        return null;
     }
 
     @Override
@@ -156,19 +157,37 @@ public class MindmapManagerImpl
 
     @Override
     public List<Mindmap> findMindmapByUser(@NotNull Account user) {
-
-        final TypedQuery<Mindmap> query = entityManager
-                .createQuery("from com.wisemapping.model.Mindmap m where m.id in (select c.mindMap.id from com.wisemapping.model.Collaboration as c where c.collaborator.id=:collabId )", Mindmap.class);
-        query.setParameter("collabId", user.getId());
-
-        return query.getResultList();
+        // Use Criteria API with JOIN FETCH to explicitly load Account creator (not Collaborator proxy)
+        // This avoids proxy narrowing warnings for JOINED inheritance
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Mindmap> cq = cb.createQuery(Mindmap.class);
+        final Root<Mindmap> root = cq.from(Mindmap.class);
+        
+        // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
+        root.fetch("creator", JoinType.LEFT);
+        
+        // Subquery for collaborations - using Subquery API
+        final jakarta.persistence.criteria.Subquery<Integer> subquery = cq.subquery(Integer.class);
+        final Root<Collaboration> collaborationRoot = subquery.from(Collaboration.class);
+        subquery.select(collaborationRoot.get("mindMap").get("id"))
+                .where(cb.equal(collaborationRoot.get("collaborator").get("id"), user.getId()));
+        
+        // Main query with IN subquery
+        cq.select(root).where(root.get("id").in(subquery));
+        
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override
     public List<Collaboration> findCollaboration(final int collaboratorId) {
-        final TypedQuery<Collaboration> query = entityManager.createQuery("SELECT c FROM com.wisemapping.model.Collaboration c WHERE c.collaborator.id = :collaboratorId", Collaboration.class);
-        query.setParameter("collaboratorId", collaboratorId);
-        return query.getResultList();
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Collaboration> cq = cb.createQuery(Collaboration.class);
+        final Root<Collaboration> root = cq.from(Collaboration.class);
+        
+        cq.select(root).where(cb.equal(root.get("collaborator").get("id"), collaboratorId));
+        
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override
@@ -218,23 +237,43 @@ public class MindmapManagerImpl
     @Override
     @Nullable
     public Mindmap getMindmapById(int id) {
-        return entityManager.find(Mindmap.class, id);
+        // Use Criteria API with JOIN FETCH to explicitly load Account (not Collaborator proxy)
+        // This avoids proxy narrowing warnings for JOINED inheritance
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Mindmap> cq = cb.createQuery(Mindmap.class);
+        final Root<Mindmap> root = cq.from(Mindmap.class);
+        
+        // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
+        root.fetch("creator", JoinType.LEFT);
+        
+        cq.select(root).where(cb.equal(root.get("id"), id));
+        
+        final TypedQuery<Mindmap> query = entityManager.createQuery(cq);
+        final List<Mindmap> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
     }
 
     @Override
     public Mindmap getMindmapByTitle(final String title, final Account user) {
+        // Use Criteria API with JOIN FETCH to explicitly load Account creator (not Collaborator proxy)
+        // This avoids proxy narrowing warnings for JOINED inheritance
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Mindmap> cq = cb.createQuery(Mindmap.class);
+        final Root<Mindmap> root = cq.from(Mindmap.class);
+        
+        // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
+        root.fetch("creator", JoinType.LEFT);
+        
+        cq.select(root)
+          .where(cb.and(
+              cb.equal(root.get("title"), title),
+              cb.equal(root.get("creator"), user)
+          ));
 
-        final TypedQuery<Mindmap> query = entityManager.createQuery("SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.title = :title AND m.creator = :creator", Mindmap.class);
-        query.setParameter("title", title);
-        query.setParameter("creator", user);
+        final TypedQuery<Mindmap> query = entityManager.createQuery(cq);
+        final List<Mindmap> mindMaps = query.getResultList();
 
-        List<Mindmap> mindMaps = query.getResultList();
-
-        Mindmap result = null;
-        if (mindMaps != null && !mindMaps.isEmpty()) {
-            result = mindMaps.get(0);
-        }
-        return result;
+        return mindMaps != null && !mindMaps.isEmpty() ? mindMaps.get(0) : null;
     }
 
     @Override
@@ -1185,44 +1224,63 @@ public class MindmapManagerImpl
 
     @Override
     public List<Mindmap> getAllMindmaps(Boolean filterSpam, int offset, int limit) {
-        StringBuilder queryString = new StringBuilder(
-            "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
-            "LEFT JOIN FETCH m.spamInfo s " +
-            "LEFT JOIN FETCH m.lastEditor le " +
-            "LEFT JOIN FETCH m.collaborations col WHERE 1=1");
+        // Use Criteria API with JOIN FETCH to explicitly load Account creator (not Collaborator proxy)
+        // This avoids proxy narrowing warnings for JOINED inheritance
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Mindmap> cq = cb.createQuery(Mindmap.class);
+        final Root<Mindmap> root = cq.from(Mindmap.class);
         
+        // JOIN FETCH all related entities to avoid lazy loading issues
+        root.fetch("creator", JoinType.LEFT);
+        root.fetch("spamInfo", JoinType.LEFT);
+        root.fetch("lastEditor", JoinType.LEFT);
+        root.fetch("collaborations", JoinType.LEFT);
+        
+        // Apply spam filter if provided - need to join again for WHERE clause
         if (filterSpam != null) {
+            final jakarta.persistence.criteria.Join<Mindmap, ?> spamJoin = root.join("spamInfo", JoinType.LEFT);
             if (filterSpam) {
-                queryString.append(" AND s.spamDetected = true");
+                cq.where(cb.isTrue(spamJoin.get("spamDetected")));
             } else {
-                queryString.append(" AND (s IS NULL OR s.spamDetected = false)");
+                cq.where(cb.or(
+                    cb.isNull(spamJoin),
+                    cb.isFalse(spamJoin.get("spamDetected"))
+                ));
             }
         }
         
-        queryString.append(" ORDER BY m.creationTime DESC");
+        cq.select(root).distinct(true).orderBy(cb.desc(root.get("creationTime")));
         
-        final TypedQuery<Mindmap> query = entityManager.createQuery(queryString.toString(), Mindmap.class);
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        return query.getResultList();
+        return entityManager.createQuery(cq)
+            .setFirstResult(offset)
+            .setMaxResults(limit)
+            .getResultList();
     }
 
     @Override
     public long countAllMindmaps(Boolean filterSpam) {
-        StringBuilder queryString = new StringBuilder(
-            "SELECT COUNT(DISTINCT m.id) FROM com.wisemapping.model.Mindmap m " +
-            "LEFT JOIN m.spamInfo s WHERE 1=1");
+        // Use Criteria API for type-safe count query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        final Root<Mindmap> root = cq.from(Mindmap.class);
         
+        // Apply spam filter if provided
         if (filterSpam != null) {
             if (filterSpam) {
-                queryString.append(" AND s.spamDetected = true");
+                final jakarta.persistence.criteria.Join<Mindmap, ?> spamJoin = root.join("spamInfo", JoinType.INNER);
+                cq.where(cb.isTrue(spamJoin.get("spamDetected")));
             } else {
-                queryString.append(" AND (s IS NULL OR s.spamDetected = false)");
+                final jakarta.persistence.criteria.Join<Mindmap, ?> spamJoin = root.join("spamInfo", JoinType.LEFT);
+                cq.where(cb.or(
+                    cb.isNull(spamJoin),
+                    cb.isFalse(spamJoin.get("spamDetected"))
+                ));
             }
         }
         
-        final TypedQuery<Long> query = entityManager.createQuery(queryString.toString(), Long.class);
-        return query.getSingleResult();
+        cq.select(cb.countDistinct(root.get("id")));
+        
+        return entityManager.createQuery(cq).getSingleResult();
     }
 
     @Override
@@ -1500,33 +1558,54 @@ public class MindmapManagerImpl
 
     @Override
     public List<Mindmap> findByCreator(int userId) {
-        final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m JOIN m.creator c WHERE c.id = :userId", 
-            Mindmap.class);
-        query.setParameter("userId", userId);
-        return query.getResultList();
+        // Use Criteria API with JOIN FETCH to explicitly load Account (not Collaborator proxy)
+        // This avoids proxy narrowing warnings for JOINED inheritance
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Mindmap> cq = cb.createQuery(Mindmap.class);
+        final Root<Mindmap> root = cq.from(Mindmap.class);
+        
+        // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
+        root.fetch("creator", JoinType.LEFT);
+        // Also create a join for the WHERE clause
+        final jakarta.persistence.criteria.Join<Mindmap, Account> creatorJoin = root.join("creator", JoinType.LEFT);
+        
+        cq.select(root).where(cb.equal(creatorJoin.get("id"), userId));
+        
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override
     public List<Integer> findMindmapIdsByCreator(int userId, int offset, int limit) {
-        final TypedQuery<Integer> query = entityManager.createQuery(
-            "SELECT m.id FROM com.wisemapping.model.Mindmap m JOIN m.creator c WHERE c.id = :userId ORDER BY m.id", 
-            Integer.class);
-        query.setParameter("userId", userId);
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        return query.getResultList();
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Integer> cq = cb.createQuery(Integer.class);
+        final Root<Mindmap> root = cq.from(Mindmap.class);
+        final jakarta.persistence.criteria.Join<Mindmap, Account> creatorJoin = root.join("creator", JoinType.INNER);
+        
+        cq.select(root.get("id"))
+          .where(cb.equal(creatorJoin.get("id"), userId))
+          .orderBy(cb.asc(root.get("id")));
+        
+        return entityManager.createQuery(cq)
+            .setFirstResult(offset)
+            .setMaxResults(limit)
+            .getResultList();
     }
 
     @Override
     @Nullable
     public Calendar findLastModificationTimeByCreator(int userId) {
         try {
-            final TypedQuery<Calendar> query = entityManager.createQuery(
-                "SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m JOIN m.creator c WHERE c.id = :userId", 
-                Calendar.class);
-            query.setParameter("userId", userId);
-            return query.getSingleResult();
+            // Use Criteria API for type-safe query with aggregation
+            final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            final CriteriaQuery<Calendar> cq = cb.createQuery(Calendar.class);
+            final Root<Mindmap> root = cq.from(Mindmap.class);
+            final jakarta.persistence.criteria.Join<Mindmap, Account> creatorJoin = root.join("creator", JoinType.INNER);
+            
+            cq.select(cb.greatest(root.get("lastModificationTime").as(Calendar.class)))
+              .where(cb.equal(creatorJoin.get("id"), userId));
+            
+            return entityManager.createQuery(cq).getSingleResult();
         } catch (Exception e) {
             return null;
         }

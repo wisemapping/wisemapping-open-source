@@ -22,8 +22,10 @@ import com.wisemapping.model.Account;
 import com.wisemapping.model.InactiveMindmap;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,49 +57,68 @@ public class InactiveMindmapManagerImpl implements InactiveMindmapManager {
 
     @Override
     public List<InactiveMindmap> findByCreator(int creatorId) {
-        final TypedQuery<InactiveMindmap> query = entityManager.createQuery(
-                "SELECT im FROM com.wisemapping.model.InactiveMindmap im WHERE im.creator.id = :creatorId",
-                InactiveMindmap.class);
-        query.setParameter("creatorId", creatorId);
-        return query.getResultList();
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<InactiveMindmap> cq = cb.createQuery(InactiveMindmap.class);
+        final Root<InactiveMindmap> root = cq.from(InactiveMindmap.class);
+        
+        cq.select(root).where(cb.equal(root.get("creator").get("id"), creatorId));
+        
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override
     public List<InactiveMindmap> findCreatedBefore(@NotNull Calendar cutoffDate) {
         assert cutoffDate != null : "cutoffDate is null";
-        final TypedQuery<InactiveMindmap> query = entityManager.createQuery(
-                "SELECT im FROM com.wisemapping.model.InactiveMindmap im WHERE im.creationTime <= :cutoffDate ORDER BY im.creationTime DESC",
-                InactiveMindmap.class);
-        query.setParameter("cutoffDate", cutoffDate);
-        return query.getResultList();
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<InactiveMindmap> cq = cb.createQuery(InactiveMindmap.class);
+        final Root<InactiveMindmap> root = cq.from(InactiveMindmap.class);
+        
+        cq.select(root)
+          .where(cb.lessThanOrEqualTo(root.get("creationTime"), cutoffDate))
+          .orderBy(cb.desc(root.get("creationTime")));
+        
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override
     public long countCreatedBefore(@NotNull Calendar cutoffDate) {
         assert cutoffDate != null : "cutoffDate is null";
-        final TypedQuery<Long> query = entityManager.createQuery(
-                "SELECT COUNT(im) FROM com.wisemapping.model.InactiveMindmap im WHERE im.creationTime <= :cutoffDate",
-                Long.class);
-        query.setParameter("cutoffDate", cutoffDate);
-        return query.getSingleResult();
+        // Use Criteria API for type-safe count query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        final Root<InactiveMindmap> root = cq.from(InactiveMindmap.class);
+        
+        cq.select(cb.count(root))
+          .where(cb.lessThanOrEqualTo(root.get("creationTime"), cutoffDate));
+        
+        return entityManager.createQuery(cq).getSingleResult();
     }
 
     @Override
     public long countAllInactiveMindmaps() {
-        final TypedQuery<Long> query = entityManager.createQuery(
-                "SELECT COUNT(im) FROM com.wisemapping.model.InactiveMindmap im",
-                Long.class);
-        Long result = query.getSingleResult();
+        // Use Criteria API for type-safe count query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        final Root<InactiveMindmap> root = cq.from(InactiveMindmap.class);
+        
+        cq.select(cb.count(root));
+        
+        Long result = entityManager.createQuery(cq).getSingleResult();
         return result != null ? result : 0L;
     }
 
     @Override
     public InactiveMindmap findByOriginalMindmapId(int originalMindmapId) {
-        final TypedQuery<InactiveMindmap> query = entityManager.createQuery(
-                "SELECT im FROM com.wisemapping.model.InactiveMindmap im WHERE im.originalMindmapId = :originalMindmapId",
-                InactiveMindmap.class);
-        query.setParameter("originalMindmapId", originalMindmapId);
-        final List<InactiveMindmap> results = query.getResultList();
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<InactiveMindmap> cq = cb.createQuery(InactiveMindmap.class);
+        final Root<InactiveMindmap> root = cq.from(InactiveMindmap.class);
+        
+        cq.select(root).where(cb.equal(root.get("originalMindmapId"), originalMindmapId));
+        
+        final List<InactiveMindmap> results = entityManager.createQuery(cq).getResultList();
         return results.isEmpty() ? null : results.get(0);
     }
 
@@ -105,28 +126,41 @@ public class InactiveMindmapManagerImpl implements InactiveMindmapManager {
     @Transactional
     public int deleteOlderThan(@NotNull Calendar cutoffDate) {
         assert cutoffDate != null : "cutoffDate is null";
-        final Query query = entityManager.createQuery(
-                "DELETE FROM com.wisemapping.model.InactiveMindmap im WHERE im.creationTime <= :cutoffDate");
-        query.setParameter("cutoffDate", cutoffDate);
-        return query.executeUpdate();
+        // Use Criteria API for type-safe delete query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaDelete<InactiveMindmap> cd = cb.createCriteriaDelete(InactiveMindmap.class);
+        final Root<InactiveMindmap> root = cd.from(InactiveMindmap.class);
+        
+        cd.where(cb.lessThanOrEqualTo(root.get("creationTime"), cutoffDate));
+        
+        return entityManager.createQuery(cd).executeUpdate();
     }
 
     @Override
     public List<InactiveMindmap> findAll() {
-        final TypedQuery<InactiveMindmap> query = entityManager.createQuery(
-                "SELECT im FROM com.wisemapping.model.InactiveMindmap im ORDER BY im.migrationDate DESC",
-                InactiveMindmap.class);
-        return query.getResultList();
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<InactiveMindmap> cq = cb.createQuery(InactiveMindmap.class);
+        final Root<InactiveMindmap> root = cq.from(InactiveMindmap.class);
+        
+        cq.select(root).orderBy(cb.desc(root.get("migrationDate")));
+        
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override
     public List<InactiveMindmap> findAll(int offset, int limit) {
-        final TypedQuery<InactiveMindmap> query = entityManager.createQuery(
-                "SELECT im FROM com.wisemapping.model.InactiveMindmap im ORDER BY im.migrationDate DESC",
-                InactiveMindmap.class);
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        return query.getResultList();
+        // Use Criteria API for type-safe query with pagination
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<InactiveMindmap> cq = cb.createQuery(InactiveMindmap.class);
+        final Root<InactiveMindmap> root = cq.from(InactiveMindmap.class);
+        
+        cq.select(root).orderBy(cb.desc(root.get("migrationDate")));
+        
+        return entityManager.createQuery(cq)
+            .setFirstResult(offset)
+            .setMaxResults(limit)
+            .getResultList();
     }
 
     @Override
