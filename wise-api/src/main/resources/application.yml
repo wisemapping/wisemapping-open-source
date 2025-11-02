@@ -271,6 +271,8 @@ management:
   metrics:
     tags:
       application: wisemapping-api
+    export:
+      step: 60s
   otlp:
     metrics:
       export:
