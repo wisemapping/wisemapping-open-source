@@ -1508,6 +1508,17 @@ public class MindmapManagerImpl
     }
 
     @Override
+    public List<Integer> findMindmapIdsByCreator(int userId, int offset, int limit) {
+        final TypedQuery<Integer> query = entityManager.createQuery(
+            "SELECT m.id FROM com.wisemapping.model.Mindmap m JOIN m.creator c WHERE c.id = :userId ORDER BY m.id", 
+            Integer.class);
+        query.setParameter("userId", userId);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    @Override
     @Nullable
     public Calendar findLastModificationTimeByCreator(int userId) {
         try {
