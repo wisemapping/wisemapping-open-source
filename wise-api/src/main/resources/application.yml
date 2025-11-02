@@ -82,6 +82,9 @@ spring:
           cache:
             provider: org.ehcache.jsr107.EhcacheCachingProvider
             uri: classpath:ehcache.xml
+            # Suppress warning when caches are created on-the-fly during initialization
+            # This occurs during startup when Hibernate accesses entities before EHCache fully loads ehcache.xml
+            missing_cache_strategy: create
   sql:
     init:
       mode: always
@@ -268,6 +271,8 @@ management:
   metrics:
     tags:
       application: wisemapping-api
+    export:
+      step: 60s
   otlp:
     metrics:
       export:

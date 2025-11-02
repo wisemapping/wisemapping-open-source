@@ -19,6 +19,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.model.Account;
 import com.wisemapping.model.AuthenticationType;
+import com.wisemapping.service.MetricsService;
 import com.wisemapping.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,6 +52,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
     @Autowired
     private UserService userService;
     
+    @Autowired
+    private MetricsService metricsService;
+    
     @Value("${app.site.ui-base-url:}")
     private String uiBaseUrl;
     
@@ -82,6 +86,10 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             
             // Audit the login
             userService.auditLogin(account);
+            
+            // Track OAuth login telemetry
+            String authType = mapProviderToAuthTypeString(provider);
+            metricsService.trackUserLogin(account, authType);
             
             // Always redirect to oauth-callback page in the UI
             String redirectPath = "/c/oauth-callback";
@@ -215,6 +223,14 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         return switch (provider.toLowerCase()) {
             case "google" -> AuthenticationType.GOOGLE_OAUTH2;
             case "facebook" -> AuthenticationType.FACEBOOK_OAUTH2;
+            default -> throw new IllegalArgumentException("Unsupported OAuth provider: " + provider);
+        };
+    }
+    
+    private String mapProviderToAuthTypeString(String provider) {
+        return switch (provider.toLowerCase()) {
+            case "google" -> "google_oauth";
+            case "facebook" -> "facebook_oauth";
             default -> throw new IllegalArgumentException("Unsupported OAuth provider: " + provider);
         };
     }
