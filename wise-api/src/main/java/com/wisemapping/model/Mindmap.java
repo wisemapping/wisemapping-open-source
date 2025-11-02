@@ -40,6 +40,24 @@ import java.util.*;
 
 @Entity
 @Table(name = "MINDMAP")
+@NamedQueries({
+    @NamedQuery(
+        name = "Mindmap.findPublicMindmaps",
+        query = "SELECT m FROM Mindmap m JOIN m.creator c WHERE m.isPublic = true AND c.suspended = false"
+    ),
+    @NamedQuery(
+        name = "Mindmap.countAllPublicMindmaps",
+        query = "SELECT COUNT(m) FROM Mindmap m WHERE m.isPublic = true"
+    ),
+    @NamedQuery(
+        name = "Mindmap.getAllMindmaps",
+        query = "SELECT m FROM Mindmap m ORDER BY m.creationTime DESC"
+    ),
+    @NamedQuery(
+        name = "Mindmap.countAllMindmaps",
+        query = "SELECT COUNT(m) FROM Mindmap m"
+    )
+})
 public class Mindmap implements Serializable {
 
     @Id

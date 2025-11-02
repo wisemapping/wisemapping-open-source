@@ -27,6 +27,12 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "COLLABORATION")
+@NamedQueries({
+    @NamedQuery(
+        name = "Collaboration.findByCollaboratorId",
+        query = "SELECT c FROM Collaboration c WHERE c.collaborator.id = :collaboratorId"
+    )
+})
 public class Collaboration implements Serializable {
 
     @Id

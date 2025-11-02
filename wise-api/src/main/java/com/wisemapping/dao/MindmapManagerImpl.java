@@ -180,14 +180,10 @@ public class MindmapManagerImpl
 
     @Override
     public List<Collaboration> findCollaboration(final int collaboratorId) {
-        // Use Criteria API for type-safe query
-        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        final CriteriaQuery<Collaboration> cq = cb.createQuery(Collaboration.class);
-        final Root<Collaboration> root = cq.from(Collaboration.class);
-        
-        cq.select(root).where(cb.equal(root.get("collaborator").get("id"), collaboratorId));
-        
-        return entityManager.createQuery(cq).getResultList();
+        // Use named query for better performance and maintainability
+        final TypedQuery<Collaboration> query = entityManager.createNamedQuery("Collaboration.findByCollaboratorId", Collaboration.class);
+        query.setParameter("collaboratorId", collaboratorId);
+        return query.getResultList();
     }
 
     @Override
@@ -869,9 +865,7 @@ public class MindmapManagerImpl
 
     @Override
     public List<Mindmap> findPublicMindmaps() {
-        final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m JOIN m.creator c WHERE m.isPublic = true AND c.suspended = false", 
-            Mindmap.class);
+        final TypedQuery<Mindmap> query = entityManager.createNamedQuery("Mindmap.findPublicMindmaps", Mindmap.class);
         return query.getResultList();
     }
 
@@ -887,9 +881,7 @@ public class MindmapManagerImpl
 
     @Override
     public long countAllPublicMindmaps() {
-        final TypedQuery<Long> query = entityManager.createQuery(
-            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true", 
-            Long.class);
+        final TypedQuery<Long> query = entityManager.createNamedQuery("Mindmap.countAllPublicMindmaps", Long.class);
         return query.getSingleResult();
     }
 
@@ -1140,16 +1132,13 @@ public class MindmapManagerImpl
 
     @Override
     public List<Mindmap> getAllMindmaps() {
-        final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m ORDER BY m.creationTime DESC", Mindmap.class);
+        final TypedQuery<Mindmap> query = entityManager.createNamedQuery("Mindmap.getAllMindmaps", Mindmap.class);
         return query.getResultList();
     }
 
     @Override
     public List<Mindmap> getAllMindmaps(int offset, int limit) {
-        final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m " +
-            "ORDER BY m.creationTime DESC", Mindmap.class);
+        final TypedQuery<Mindmap> query = entityManager.createNamedQuery("Mindmap.getAllMindmaps", Mindmap.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
         return query.getResultList();
@@ -1157,8 +1146,7 @@ public class MindmapManagerImpl
 
     @Override
     public long countAllMindmaps() {
-        final TypedQuery<Long> query = entityManager.createQuery(
-            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m", Long.class);
+        final TypedQuery<Long> query = entityManager.createNamedQuery("Mindmap.countAllMindmaps", Long.class);
         return query.getSingleResult();
     }
 

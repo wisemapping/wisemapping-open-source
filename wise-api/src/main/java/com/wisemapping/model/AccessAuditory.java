@@ -26,6 +26,12 @@ import java.util.Calendar;
 
 @Entity
 @Table(name = "ACCESS_AUDITORY")
+@NamedQueries({
+    @NamedQuery(
+        name = "AccessAuditory.findLastLoginDate",
+        query = "SELECT MAX(aa.loginDate) FROM AccessAuditory aa WHERE aa.user.id = :userId"
+    )
+})
 public class AccessAuditory
         implements Serializable {
 
