@@ -8,7 +8,7 @@
         reflect the latest state in the database.
         
         IMPORTANT CACHE CONSISTENCY CONSIDERATION:
-        - Mindmap entity now uses LAZY fetch for Account creator (@ManyToOne fetch = LAZY) - IMPLEMENTED
+        - Mindmap entity uses EAGER fetch for Account creator (@ManyToOne fetch = EAGER)
         - Account cache TTL reduced to 60s idle, 300s total (from 600s/3600s) - IMPLEMENTED
         - Explicit cache eviction added on Account suspension/activation updates - IMPLEMENTED
         - This minimizes stale Account data when loading Mindmap

@@ -26,6 +26,9 @@ import com.wisemapping.service.MetricsService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,42 +72,47 @@ public class UserManagerImpl
     }
 
     public List<Account> getAllUsers() {
-        return entityManager.createQuery("from com.wisemapping.model.Account user", Account.class).getResultList();
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Account> cq = cb.createQuery(Account.class);
+        final Root<Account> root = cq.from(Account.class);
+        cq.select(root);
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override
     @Nullable
     public Account getUserBy(@NotNull final String email) {
-        Account user = null;
+        // Use Criteria API for type-safe query
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Account> cq = cb.createQuery(Account.class);
+        final Root<Account> root = cq.from(Account.class);
+        
+        cq.select(root).where(cb.equal(root.get("email"), email));
 
-        TypedQuery<Account> query = entityManager.createQuery("from com.wisemapping.model.Account colaborator where email=:email", Account.class);
-        query.setParameter("email", email);
-
-        final List<Account> users = query.getResultList();
+        final List<Account> users = entityManager.createQuery(cq).getResultList();
         if (users != null && !users.isEmpty()) {
             assert users.size() == 1 : "More than one user with the same email!";
-            user = users.get(0);
+            return users.get(0);
         }
-        return user;
-
+        return null;
     }
 
     @Override
     public Collaborator getCollaboratorBy(final String email) {
-        final Collaborator result;
+        // Use Criteria API for type-safe query that handles inheritance properly
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Collaborator> cq = cb.createQuery(Collaborator.class);
+        final Root<Collaborator> root = cq.from(Collaborator.class);
+        
+        cq.select(root).where(cb.equal(root.get("email"), email));
 
-        final TypedQuery<Collaborator> query = entityManager.createQuery("from com.wisemapping.model.Collaborator colaborator where " +
-                "email=:email", Collaborator.class);
-        query.setParameter("email", email);
-
-        final List<Collaborator> cols = query.getResultList();
+        final List<Collaborator> cols = entityManager.createQuery(cq).getResultList();
         if (cols != null && !cols.isEmpty()) {
             assert cols.size() == 1 : "More than one colaborator with the same email!";
-            result = cols.get(0);
-        } else {
-            result = null;
+            return cols.get(0);
         }
-        return result;
+        return null;
     }
 
     @Nullable
@@ -218,8 +226,7 @@ public class UserManagerImpl
     public Account getUserByActivationCode(long code) {
         final Account user;
 
-        final TypedQuery<Account> query = entityManager.createQuery("from com.wisemapping.model.Account user where " +
-                "activationCode=:activationCode", Account.class);
+        final TypedQuery<Account> query = entityManager.createNamedQuery("Account.getUserByActivationCode", Account.class);
         query.setParameter("activationCode", code);
 
         final List<Account> users = query.getResultList();
@@ -235,10 +242,7 @@ public class UserManagerImpl
 
     @Override
     public List<Account> getAllUsers(int offset, int limit) {
-        final TypedQuery<Account> query = entityManager.createQuery(
-            "SELECT u FROM com.wisemapping.model.Account u " +
-            "ORDER BY u.id DESC", 
-            Account.class);
+        final TypedQuery<Account> query = entityManager.createNamedQuery("Account.getAllUsers", Account.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
         return query.getResultList();
@@ -246,21 +250,13 @@ public class UserManagerImpl
 
     @Override
     public long countAllUsers() {
-        final TypedQuery<Long> query = entityManager.createQuery(
-            "SELECT COUNT(u) FROM com.wisemapping.model.Account u", 
-            Long.class);
+        final TypedQuery<Long> query = entityManager.createNamedQuery("Account.countAllUsers", Long.class);
         return query.getSingleResult();
     }
 
     @Override
     public List<Account> searchUsers(String search, int offset, int limit) {
-        final TypedQuery<Account> query = entityManager.createQuery(
-            "SELECT u FROM com.wisemapping.model.Account u " +
-            "WHERE LOWER(u.email) LIKE LOWER(:search) " +
-            "   OR LOWER(u.firstname) LIKE LOWER(:search) " +
-            "   OR LOWER(u.lastname) LIKE LOWER(:search) " +
-            "ORDER BY u.id DESC", 
-            Account.class);
+        final TypedQuery<Account> query = entityManager.createNamedQuery("Account.searchUsers", Account.class);
         query.setParameter("search", "%" + search + "%");
         query.setFirstResult(offset);
         query.setMaxResults(limit);
@@ -269,12 +265,7 @@ public class UserManagerImpl
 
     @Override
     public long countUsersBySearch(String search) {
-        final TypedQuery<Long> query = entityManager.createQuery(
-            "SELECT COUNT(u) FROM com.wisemapping.model.Account u " +
-            "WHERE LOWER(u.email) LIKE LOWER(:search) " +
-            "   OR LOWER(u.firstname) LIKE LOWER(:search) " +
-            "   OR LOWER(u.lastname) LIKE LOWER(:search)", 
-            Long.class);
+        final TypedQuery<Long> query = entityManager.createNamedQuery("Account.countUsersBySearch", Long.class);
         query.setParameter("search", "%" + search + "%");
         return query.getSingleResult();
     }
@@ -305,11 +296,7 @@ public class UserManagerImpl
 
     @Override
     public List<Account> findSuspendedUsers(int offset, int limit) {
-        final TypedQuery<Account> query = entityManager.createQuery(
-            "SELECT a FROM com.wisemapping.model.Account a " +
-            "WHERE a.suspended = true " +
-            "ORDER BY a.id", 
-            Account.class);
+        final TypedQuery<Account> query = entityManager.createNamedQuery("Account.findSuspendedUsers", Account.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
         return query.getResultList();
@@ -317,12 +304,7 @@ public class UserManagerImpl
 
     @Override
     public List<Account> findUsersSuspendedForInactivity(int offset, int limit) {
-        final TypedQuery<Account> query = entityManager.createQuery(
-            "SELECT a FROM com.wisemapping.model.Account a " +
-            "WHERE a.suspended = true " +
-            "AND a.suspensionReasonCode = :inactivityCode " +
-            "ORDER BY a.id", 
-            Account.class);
+        final TypedQuery<Account> query = entityManager.createNamedQuery("Account.findUsersSuspendedForInactivity", Account.class);
         query.setParameter("inactivityCode", SuspensionReason.INACTIVITY.getCode().charAt(0));
         query.setFirstResult(offset);
         query.setMaxResults(limit);
@@ -477,9 +459,7 @@ public class UserManagerImpl
     @Nullable
     public Calendar findLastLoginDate(int userId) {
         try {
-            final TypedQuery<Calendar> query = entityManager.createQuery(
-                "SELECT MAX(aa.loginDate) FROM com.wisemapping.model.AccessAuditory aa WHERE aa.user.id = :userId", 
-                Calendar.class);
+            final TypedQuery<Calendar> query = entityManager.createNamedQuery("AccessAuditory.findLastLoginDate", Calendar.class);
             query.setParameter("userId", userId);
             return query.getSingleResult();
         } catch (Exception e) {

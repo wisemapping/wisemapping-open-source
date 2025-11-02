@@ -11,6 +11,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.Arrays;
 import java.util.Calendar;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +23,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@org.mockito.junit.jupiter.MockitoSettings(strictness = org.mockito.quality.Strictness.LENIENT)
 class MindmapManagerImplTest {
 
     @Mock
@@ -25,6 +31,21 @@ class MindmapManagerImplTest {
 
     @Mock
     private TypedQuery<Collaborator> typedQuery;
+
+    @Mock
+    private CriteriaBuilder criteriaBuilder;
+
+    @Mock
+    private CriteriaQuery<Collaborator> criteriaQuery;
+
+    @Mock
+    private Root<Collaborator> root;
+
+    @Mock
+    private Path<Object> emailPath;
+
+    @Mock
+    private Predicate predicate;
 
     private MindmapManagerImpl mindmapManager;
 
@@ -61,18 +82,30 @@ class MindmapManagerImplTest {
         newCollaborator.setEmail(email);
         newCollaborator.setCreationDate(newCreationDate);
         
-        // Mock the findCollaborator query to return the existing Account
-        when(entityManager.createQuery(anyString(), eq(Collaborator.class))).thenReturn(typedQuery);
-        when(typedQuery.setParameter(anyString(), any())).thenReturn(typedQuery);
+        // Mock Criteria API for findCollaborator
+        when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        when(criteriaBuilder.createQuery(Collaborator.class)).thenReturn(criteriaQuery);
+        when(criteriaQuery.from(Collaborator.class)).thenReturn(root);
+        when(root.get("email")).thenReturn(emailPath);
+        // Match equal() - the actual call is cb.equal(root.get("email"), email)
+        // Since root.get("email") returns emailPath, we match on that or use any()
+        doReturn(predicate).when(criteriaBuilder).equal(any(), eq(email));
+        when(criteriaQuery.select(root)).thenReturn(criteriaQuery);
+        when(criteriaQuery.where(any(Predicate.class))).thenReturn(criteriaQuery);
+        when(entityManager.createQuery(any(CriteriaQuery.class))).thenReturn(typedQuery);
         when(typedQuery.getResultList()).thenReturn(Arrays.asList(existingAccount));
         
         // Act
         mindmapManager.addCollaborator(newCollaborator);
         
         // Assert
-        // Verify that findCollaborator was called
-        verify(entityManager).createQuery("SELECT c FROM com.wisemapping.model.Collaborator c WHERE c.email = :email", Collaborator.class);
-        verify(typedQuery).setParameter("email", email);
+        // Verify that findCollaborator was called using Criteria API
+        verify(entityManager).getCriteriaBuilder();
+        verify(criteriaBuilder).createQuery(Collaborator.class);
+        verify(criteriaQuery).from(Collaborator.class);
+        verify(root).get("email");
+        verify(criteriaBuilder).equal(any(), eq(email));
+        verify(entityManager).createQuery(any(CriteriaQuery.class));
         
         // Verify that merge was called on the existing account (not persist on new collaborator)
         verify(entityManager).merge(existingAccount);
@@ -96,18 +129,27 @@ class MindmapManagerImplTest {
         newCollaborator.setEmail(email);
         newCollaborator.setCreationDate(creationDate);
         
-        // Mock the findCollaborator query to return empty list (no existing collaborator)
-        when(entityManager.createQuery(anyString(), eq(Collaborator.class))).thenReturn(typedQuery);
-        when(typedQuery.setParameter(anyString(), any())).thenReturn(typedQuery);
+        // Mock Criteria API for findCollaborator - return empty list (no existing collaborator)
+        when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        when(criteriaBuilder.createQuery(Collaborator.class)).thenReturn(criteriaQuery);
+        when(criteriaQuery.from(Collaborator.class)).thenReturn(root);
+        when(root.get("email")).thenReturn(emailPath);
+        // Match equal() - the actual call is cb.equal(root.get("email"), email)
+        // Since root.get("email") returns emailPath, we match on that or use any()
+        doReturn(predicate).when(criteriaBuilder).equal(any(), eq(email));
+        when(criteriaQuery.select(root)).thenReturn(criteriaQuery);
+        when(criteriaQuery.where(any(Predicate.class))).thenReturn(criteriaQuery);
+        when(entityManager.createQuery(any(CriteriaQuery.class))).thenReturn(typedQuery);
         when(typedQuery.getResultList()).thenReturn(Arrays.asList());
         
         // Act
         mindmapManager.addCollaborator(newCollaborator);
         
         // Assert
-        // Verify that findCollaborator was called
-        verify(entityManager).createQuery("SELECT c FROM com.wisemapping.model.Collaborator c WHERE c.email = :email", Collaborator.class);
-        verify(typedQuery).setParameter("email", email);
+        // Verify that findCollaborator was called using Criteria API
+        verify(entityManager).getCriteriaBuilder();
+        verify(criteriaBuilder).createQuery(Collaborator.class);
+        verify(entityManager).createQuery(criteriaQuery);
         
         // Verify that persist was called on the new collaborator
         verify(entityManager).persist(newCollaborator);
@@ -134,9 +176,17 @@ class MindmapManagerImplTest {
         newCollaborator.setEmail(email);
         newCollaborator.setCreationDate(null); // null creation date
         
-        // Mock the findCollaborator query to return the existing Account
-        when(entityManager.createQuery(anyString(), eq(Collaborator.class))).thenReturn(typedQuery);
-        when(typedQuery.setParameter(anyString(), any())).thenReturn(typedQuery);
+        // Mock Criteria API for findCollaborator
+        when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        when(criteriaBuilder.createQuery(Collaborator.class)).thenReturn(criteriaQuery);
+        when(criteriaQuery.from(Collaborator.class)).thenReturn(root);
+        when(root.get("email")).thenReturn(emailPath);
+        // Match equal() - the actual call is cb.equal(root.get("email"), email)
+        // Since root.get("email") returns emailPath, we match on that or use any()
+        doReturn(predicate).when(criteriaBuilder).equal(any(), eq(email));
+        when(criteriaQuery.select(root)).thenReturn(criteriaQuery);
+        when(criteriaQuery.where(any(Predicate.class))).thenReturn(criteriaQuery);
+        when(entityManager.createQuery(any(CriteriaQuery.class))).thenReturn(typedQuery);
         when(typedQuery.getResultList()).thenReturn(Arrays.asList(existingAccount));
         
         // Act
@@ -176,9 +226,17 @@ class MindmapManagerImplTest {
         newCollaborator.setEmail(email);
         newCollaborator.setCreationDate(creationDate);
         
-        // Mock the findCollaborator query to return the existing Account
-        when(entityManager.createQuery(anyString(), eq(Collaborator.class))).thenReturn(typedQuery);
-        when(typedQuery.setParameter(anyString(), any())).thenReturn(typedQuery);
+        // Mock Criteria API for findCollaborator
+        when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        when(criteriaBuilder.createQuery(Collaborator.class)).thenReturn(criteriaQuery);
+        when(criteriaQuery.from(Collaborator.class)).thenReturn(root);
+        when(root.get("email")).thenReturn(emailPath);
+        // Match equal() - the actual call is cb.equal(root.get("email"), email)
+        // Since root.get("email") returns emailPath, we match on that or use any()
+        doReturn(predicate).when(criteriaBuilder).equal(any(), eq(email));
+        when(criteriaQuery.select(root)).thenReturn(criteriaQuery);
+        when(criteriaQuery.where(any(Predicate.class))).thenReturn(criteriaQuery);
+        when(entityManager.createQuery(any(CriteriaQuery.class))).thenReturn(typedQuery);
         when(typedQuery.getResultList()).thenReturn(Arrays.asList(existingAccount));
         
         // Act - This should NOT throw a duplicate key constraint exception

@@ -29,6 +29,36 @@ import java.util.Calendar;
 @Entity
 @Table(name = "ACCOUNT")
 @PrimaryKeyJoinColumn(name = "collaborator_id")
+@NamedQueries({
+    @NamedQuery(
+        name = "Account.getUserByActivationCode",
+        query = "SELECT a FROM Account a WHERE a.activationCode = :activationCode"
+    ),
+    @NamedQuery(
+        name = "Account.getAllUsers",
+        query = "SELECT a FROM Account a ORDER BY a.id DESC"
+    ),
+    @NamedQuery(
+        name = "Account.countAllUsers",
+        query = "SELECT COUNT(a) FROM Account a"
+    ),
+    @NamedQuery(
+        name = "Account.findSuspendedUsers",
+        query = "SELECT a FROM Account a WHERE a.suspended = true ORDER BY a.id"
+    ),
+    @NamedQuery(
+        name = "Account.findUsersSuspendedForInactivity",
+        query = "SELECT a FROM Account a WHERE a.suspended = true AND a.suspensionReasonCode = :inactivityCode ORDER BY a.id"
+    ),
+    @NamedQuery(
+        name = "Account.searchUsers",
+        query = "SELECT a FROM Account a WHERE LOWER(a.email) LIKE LOWER(:search) OR LOWER(a.firstname) LIKE LOWER(:search) OR LOWER(a.lastname) LIKE LOWER(:search) ORDER BY a.id DESC"
+    ),
+    @NamedQuery(
+        name = "Account.countUsersBySearch",
+        query = "SELECT COUNT(a) FROM Account a WHERE LOWER(a.email) LIKE LOWER(:search) OR LOWER(a.firstname) LIKE LOWER(:search) OR LOWER(a.lastname) LIKE LOWER(:search)"
+    )
+})
 public class Account
         extends Collaborator
         implements Serializable {
