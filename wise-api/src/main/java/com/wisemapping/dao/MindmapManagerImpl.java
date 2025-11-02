@@ -363,19 +363,26 @@ public class MindmapManagerImpl
 
     @Override
     public void removeMindmap(@NotNull final Mindmap mindmap) {
-        // Delete history first ...
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
-        final CriteriaDelete<MindMapHistory> cr = cb.createCriteriaDelete(MindMapHistory.class);
-        final Root<MindMapHistory> root = cr.from(MindMapHistory.class);
+        // Delete history first using bulk delete query (avoids optimistic locking issues)
+        final CriteriaDelete<MindMapHistory> historyDelete = cb.createCriteriaDelete(MindMapHistory.class);
+        final Root<MindMapHistory> historyRoot = historyDelete.from(MindMapHistory.class);
+        historyDelete.where(cb.equal(historyRoot.get("mindmapId"), mindmap.getId()));
+        entityManager.createQuery(historyDelete).executeUpdate();
 
-        final CriteriaDelete<MindMapHistory> deleteStatement = cr.where(cb.equal(root.get("mindmapId"), mindmap.getId()));
-        entityManager.createQuery(deleteStatement).executeUpdate();
+        // Delete collaborations using bulk delete query (avoids optimistic locking issues)
+        // This is safer than relying on cascade/orphanRemoval which can cause StaleObjectStateException
+        // when collaborations are modified by concurrent transactions
+        final CriteriaDelete<Collaboration> collaborationDelete = cb.createCriteriaDelete(Collaboration.class);
+        final Root<Collaboration> collaborationRoot = collaborationDelete.from(Collaboration.class);
+        collaborationDelete.where(cb.equal(collaborationRoot.get("mindMap").get("id"), mindmap.getId()));
+        entityManager.createQuery(collaborationDelete).executeUpdate();
 
-        // Remove collaborations ...
+        // Remove collaborations from in-memory collection to maintain consistency
         mindmap.removedCollaboration(mindmap.getCollaborations());
 
-        // Delete mindmap ....
+        // Delete mindmap
         entityManager.remove(mindmap);
     }
 
