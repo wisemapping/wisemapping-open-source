@@ -152,23 +152,13 @@ public class InactiveMindmapMigrationService {
                     continue;
                 }
                 
-                // Use MindmapManager to find all mindmaps created by this user
-                List<Mindmap> userMindmaps = mindmapManager.findByCreator(user.getId());
-                
-                if (userMindmaps.isEmpty()) {
-                    logger.debug("User {} has no mindmaps to migrate", user.getEmail());
-                    continue;
-                }
-
-                logger.debug("Migrating {} mindmaps for user {} (ID: {}) in batches of {}", 
-                           userMindmaps.size(), user.getEmail(), user.getId(), mindmapBatchSize);
-
-                // Process mindmaps in smaller batches to manage memory usage
-                int userMigrated = processUserMindmapsInBatches(user, userMindmaps);
+                // Process mindmaps in batches using ID-based pagination to prevent OOM
+                // This avoids loading all mindmap entities into memory at once
+                int userMigrated = processUserMindmapsByPagination(user);
                 batchMigrated += userMigrated;
 
                 logger.info("Migrated {} mindmaps for inactive user: email={}, id={}, creationDate={}", 
-                           userMindmaps.size(), user.getEmail(), user.getId(), user.getCreationDate());
+                           userMigrated, user.getEmail(), user.getId(), user.getCreationDate());
 
             } catch (Exception e) {
                 logger.error("Failed to migrate mindmaps for user: {} (ID: {}) - continuing with batch", 
@@ -180,69 +170,99 @@ public class InactiveMindmapMigrationService {
     }
 
     /**
-     * Process mindmaps for a single user in smaller batches to manage memory usage.
+     * Process mindmaps for a single user using ID-based pagination to prevent OOM.
+     * Loads mindmap IDs first, then loads entities in small batches as needed.
      * @param user the user whose mindmaps are being migrated
-     * @param userMindmaps list of mindmaps to migrate
      * @return number of mindmaps migrated for this user
      */
-    private int processUserMindmapsInBatches(Account user, List<Mindmap> userMindmaps) {
+    private int processUserMindmapsByPagination(Account user) {
         int userMigrated = 0;
+        int offset = 0;
         
-        // Process mindmaps in smaller batches to manage memory
-        for (int i = 0; i < userMindmaps.size(); i += mindmapBatchSize) {
-            int endIndex = Math.min(i + mindmapBatchSize, userMindmaps.size());
-            List<Mindmap> mindmapBatch = userMindmaps.subList(i, endIndex);
+        // Process mindmap IDs in batches to avoid loading all entities into memory
+        while (true) {
+            List<Integer> mindmapIds = mindmapManager.findMindmapIdsByCreator(user.getId(), offset, mindmapBatchSize);
             
-            logger.debug("Processing mindmap batch {}/{} for user {} ({} mindmaps)", 
-                        (i / mindmapBatchSize) + 1, 
-                        (userMindmaps.size() + mindmapBatchSize - 1) / mindmapBatchSize,
-                        user.getEmail(), mindmapBatch.size());
+            if (mindmapIds.isEmpty()) {
+                break; // No more mindmaps to process
+            }
             
-            for (Mindmap mindmap : mindmapBatch) {
-                if (!dryRun) {
-                    // Store mindmap ID and title for logging (entity may become detached)
-                    final int mindmapId = mindmap.getId();
-                    final String mindmapTitle = mindmap.getTitle();
-                    
-                    // Process migration in a separate transaction to ensure consistency
-                    Boolean migrated = transactionTemplate.execute(status -> {
-                        // Reload the mindmap within the transaction to avoid detached entity issues
-                        Mindmap managedMindmap = mindmapManager.getMindmapById(mindmapId);
-                        
-                        // Check if mindmap still exists (may have been deleted by another process)
-                        if (managedMindmap == null) {
-                            logger.warn("Mindmap with ID {} no longer exists, skipping migration", mindmapId);
-                            return false;
-                        }
-                        
-                        // Create inactive mindmap record using InactiveMindmapManager
-                        InactiveMindmap inactiveMindmap = new InactiveMindmap(
-                            managedMindmap, 
-                            "User suspended for at least " + minimumSuspensionDays + " days"
-                        );
-                        inactiveMindmapManager.addInactiveMindmap(inactiveMindmap);
-
-                        // Remove the original mindmap using MindmapManager
-                        mindmapManager.removeMindmap(managedMindmap);
-                        
-                        return true;
-                    });
-                    
-                    // Only count and log if migration was successful
-                    if (Boolean.TRUE.equals(migrated)) {
-                        userMigrated++;
-                        logger.debug("Migrated mindmap '{}' (ID: {}) for inactive user {}", 
-                                   mindmapTitle, mindmapId, user.getEmail());
+            logger.debug("Processing mindmap batch {}-{} ({} IDs) for user {} (ID: {})", 
+                        offset + 1, offset + mindmapIds.size(), mindmapIds.size(), user.getEmail(), user.getId());
+            
+            // Load and migrate mindmaps for this batch of IDs
+            for (Integer mindmapId : mindmapIds) {
+                try {
+                    Mindmap mindmap = mindmapManager.getMindmapById(mindmapId);
+                    if (mindmap == null) {
+                        logger.debug("Mindmap {} no longer exists, skipping", mindmapId);
+                        continue;
                     }
-                } else {
-                    logger.debug("DRY RUN: Would migrate mindmap '{}' (ID: {}) for inactive user {}", 
-                               mindmap.getTitle(), mindmap.getId(), user.getEmail());
-                    userMigrated++;
+                    
+                    // Migrate this mindmap
+                    if (!dryRun) {
+                        boolean migrated = migrateSingleMindmap(mindmap, user);
+                        if (migrated) {
+                            userMigrated++;
+                        }
+                    } else {
+                        logger.debug("DRY RUN: Would migrate mindmap '{}' (ID: {}) for inactive user {}", 
+                                   mindmap.getTitle(), mindmapId, user.getEmail());
+                        userMigrated++;
+                    }
+                } catch (Exception e) {
+                    logger.error("Failed to migrate mindmap {} for user {} - continuing", 
+                               mindmapId, user.getEmail(), e);
                 }
             }
+            
+            offset += mindmapBatchSize;
         }
         
         return userMigrated;
+    }
+
+    /**
+     * Migrate a single mindmap for an inactive user.
+     * @param mindmap the mindmap to migrate
+     * @param user the inactive user
+     * @return true if migration was successful
+     */
+    private boolean migrateSingleMindmap(Mindmap mindmap, Account user) {
+        final int mindmapId = mindmap.getId();
+        final String mindmapTitle = mindmap.getTitle();
+        
+        Boolean migrated = transactionTemplate.execute(status -> {
+            // Reload the mindmap within the transaction to avoid detached entity issues
+            Mindmap managedMindmap = mindmapManager.getMindmapById(mindmapId);
+            
+            // Check if mindmap still exists (may have been deleted by another process)
+            if (managedMindmap == null) {
+                logger.warn("Mindmap with ID {} no longer exists, skipping migration", mindmapId);
+                return false;
+            }
+            
+            // Create inactive mindmap record using InactiveMindmapManager
+            InactiveMindmap inactiveMindmap = new InactiveMindmap(
+                managedMindmap, 
+                "User suspended for at least " + minimumSuspensionDays + " days"
+            );
+            inactiveMindmapManager.addInactiveMindmap(inactiveMindmap);
+
+            // Remove the original mindmap using MindmapManager
+            mindmapManager.removeMindmap(managedMindmap);
+            
+            return true;
+        });
+        
+        // Only count and log if migration was successful
+        if (Boolean.TRUE.equals(migrated)) {
+            logger.debug("Migrated mindmap '{}' (ID: {}) for inactive user {}", 
+                       mindmapTitle, mindmapId, user.getEmail());
+            return true;
+        }
+        
+        return false;
     }
 
     /**

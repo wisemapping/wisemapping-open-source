@@ -67,17 +67,17 @@ public class InactiveMindmapMigrationScheduler {
     }
 
     /**
-     * Scheduled task that runs on weekends to migrate mindmaps from inactive users.
+     * Scheduled task that runs daily at 10:00 AM Argentina time to migrate mindmaps from inactive users.
      * 
-     * Cron expression: "0 0 2 * * SUN" means:
+     * Cron expression: "0 0 10 * * *" means:
      * - 0 seconds
      * - 0 minutes  
-     * - 2 hours (2:00 AM)
+     * - 10 hours (10:00 AM)
      * - Every day of month
      * - Every month
-     * - Sunday only
+     * - Every day of week
      */
-    @Scheduled(cron = "${app.batch.inactive-mindmap-migration.cron-expression:0 0 2 * * SUN}")
+    @Scheduled(cron = "${app.batch.inactive-mindmap-migration.cron-expression:0 0 10 * * *}", zone = "America/Argentina/Buenos_Aires")
     @Async
     public void processInactiveMindmapMigration() {
         logger.info("Starting scheduled inactive mindmap migration task (async)");
