@@ -36,9 +36,6 @@ abstract public class ClientException extends WiseMappingException {
 
     public String getMessage(@NotNull final MessageSource messageSource, final @NotNull Locale locale) {
         String message = messageSource.getMessage(this.getMsgBundleKey(), this.getMsgBundleArgs(), locale);
-        if(message==null){
-            message = this.getMessage();
-        }
         return message;
     }
 

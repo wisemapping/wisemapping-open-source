@@ -168,6 +168,13 @@ public class MindmapServiceImpl
             throw new CollaborationException("User is the creator and must have ownership permissions.Creator Email:" + mindMap.getCreator().getEmail() + ",Collaborator:" + collaboration.getCollaborator().getEmail());
         }
 
+        // Check if collaboration still exists in the mindmap's collection
+        // It might have been already removed by a bulk delete operation
+        if (!mindMap.getCollaborations().contains(collaboration)) {
+            // Collaboration already removed, nothing to do
+            return;
+        }
+
         // When you delete an object from hibernate you have to delete it from *all* collections it exists in...
         mindMap.removedCollaboration(collaboration);
         mindmapManager.removeCollaboration(collaboration);
