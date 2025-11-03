@@ -151,7 +151,11 @@ public class RestAppConfig {
 
         public RestAppConfigBuilder setCaptchaSiteKey(@NotNull String captchaSiteKey) {
             this.captchaSiteKey = captchaSiteKey;
-            this.isCatchaEnabled = true;
+            return this;
+        }
+
+        public RestAppConfigBuilder setCaptchaEnabled(boolean enabled) {
+            this.isCatchaEnabled = enabled;
             return this;
         }
 
@@ -187,10 +191,6 @@ public class RestAppConfig {
         public RestAppConfigBuilder setFacebookOauth2Enabled(boolean facebookOauth2Enabled) {
             this.facebookOauth2Enabled = facebookOauth2Enabled;
             return this;
-        }
-
-        private void setGoogleAnalyticsAccount(@NotNull String analyticsAccount) {
-            this.analyticsAccount = analyticsAccount;
         }
 
         public RestAppConfigBuilder setRegistrationEnabled(@NotNull boolean registrationEnabled) {
