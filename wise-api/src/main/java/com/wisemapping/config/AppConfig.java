@@ -83,6 +83,14 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Autowired(required = false)
     private ClientRegistrationRepository clientRegistrationRepository;
+    
+    @Bean
+    public com.wisemapping.security.ChatGptOAuth2AuthorizationRequestResolver chatGptOAuth2AuthorizationRequestResolver() {
+        if (clientRegistrationRepository != null) {
+            return new com.wisemapping.security.ChatGptOAuth2AuthorizationRequestResolver(clientRegistrationRepository);
+        }
+        return null;
+    }
 
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
@@ -124,7 +132,13 @@ public class AppConfig implements WebMvcConfigurer {
         boolean isOAuth2Enabled = (oauth2AuthenticationSuccessHandler != null) &&
                                    (clientRegistrationRepository != null);
         if (isOAuth2Enabled) {
+            var chatGptResolver = chatGptOAuth2AuthorizationRequestResolver();
             http.oauth2Login(oauth2 -> oauth2
+                    .authorizationEndpoint(authorization -> {
+                        if (chatGptResolver != null) {
+                            authorization.authorizationRequestResolver(chatGptResolver);
+                        }
+                    })
                     .successHandler(oauth2AuthenticationSuccessHandler)
                     .failureHandler((request, response, exception) -> {
                         // For API endpoints, return 401 instead of redirecting
