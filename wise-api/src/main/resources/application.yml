@@ -173,6 +173,9 @@ app:
   # Admin account with super admin permissions on the API.
   admin:
     user: admin@wisemapping.org
+  # ChatGPT OAuth integration configuration
+  chatgpt:
+    ai-base-url: https://ai.wisemapping.com
   # STMP email configurations
   mail:
     sender-email: root@localhost
