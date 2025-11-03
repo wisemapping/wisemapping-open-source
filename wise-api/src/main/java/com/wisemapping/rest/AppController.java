@@ -67,6 +67,7 @@ public class AppController {
                 .setApiUrl(apiBaseUrl)
                 .setUiUrl(uiBaseUrl)
                 .setCaptchaSiteKey(captchaSiteKey)
+                .setCaptchaEnabled(isCaptchaEnabled)
                 .setGoogleOauth2Enabled(googleEnabled)
                 .setFacebookOauth2Enabled(facebookEnabled)
                 .setAnalyticsAccount(analyticsAccount)

@@ -248,10 +248,12 @@ app:
     enabled: true
     # Require email confirmation for DATABASE users (OAuth users are auto-activated)
     email-confirmation-enabled: true
+    # Google reCAPTCHA v2 configuration (disabled by default)
+    # To enable: set enabled to true and provide your reCAPTCHA keys from https://www.google.com/recaptcha/admin
     captcha:
       enabled: false
-      siteKey: some-key
-      secretKey: some-secret
+      siteKey: ''
+      secretKey: ''
     disposable-email:
       blocking:
         enabled: true
