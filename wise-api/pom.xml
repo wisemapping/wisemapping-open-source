@@ -241,6 +241,7 @@
                         <includeOnlyProperty>^git.commit.time$</includeOnlyProperty>
                     </includeOnlyProperties>
                     <commitIdGenerationMode>full</commitIdGenerationMode>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
                 </configuration>
             </plugin>
             <!-- Build Info Plugin to generate build.properties -->

@@ -5,7 +5,7 @@
 
 ## About WiseMapping
 
-**WiseMapping** is a powerful, web-based mind mapping application that helps you organize ideas, plan projects, and visualize complex information through intuitive visual diagrams. Whether you're brainstorming, taking notes, or structuring thoughts, WiseMapping provides an easy-to-use interface for creating and sharing mind maps.
+**WiseMapping** is a powerful, web-based mind mapping application that helps you organize ideas, plan projects, and visualize complex information through intuitive visual diagrams. Whether you're brainstorming, taking notes, or structuring thoughts, WiseMapping provides an easy-to-use interface for creating and sharing mind maps. Learn more at the **official website**: [https://www.wisemapping.com](https://www.wisemapping.com).
 
 ### 🌟 Key Features
 
@@ -80,6 +80,10 @@ docker run -d --name wisemapping -p 80:80 \
 - **Frontend**: http://localhost
 - **API**: http://localhost/api
 - **Health Check**: http://localhost/health
+
+### Default Credentials
+- Test user: `test@wisemapping.org` / `password`
+- Admin user: `admin@wisemapping.org` / `testAdmin123`
 
 ## Database Configuration
 
@@ -265,6 +269,35 @@ spring:
   - Frontend: `http://localhost`
   - API: `http://localhost/api`
   - Health: `http://localhost/health`
+
+### Change the default port
+
+WiseMapping listens on container port `80`. You can map it to any host port.
+
+```bash
+# Run on host port 8081
+docker run -d --name wisemapping \
+  -p 8081:80 \
+  wisemapping/wisemapping:latest
+
+# Access the UI at:
+#   http://localhost:8081
+# API:
+#   http://localhost:8081/api
+```
+
+Docker Compose example:
+
+```yaml
+services:
+  wisemapping:
+    image: wisemapping/wisemapping:latest
+    ports:
+      - "8081:80"  # maps host 8081 to container 80
+```
+
+Note:
+- If you place WiseMapping behind another reverse proxy (Traefik, Nginx, etc.), ensure the original `Host` header (including port) is forwarded.
 
 ## Environment Variables
 
