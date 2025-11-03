@@ -71,10 +71,16 @@ public class AppConfig implements WebMvcConfigurer {
     @Value("${app.site.ui-base-url:}")
     private String uiBaseUrl;
 
+    @Value("${spring.security.oauth2.client.registration.google.enabled:false}")
+    private boolean googleOauthEnabled;
+
+    @Value("${spring.security.oauth2.client.registration.facebook.enabled:false}")
+    private boolean facebookOauthEnabled;
+
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     
-    @Autowired
+    @Autowired(required = false)
     private OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
     
     @Autowired
@@ -114,22 +120,29 @@ public class AppConfig implements WebMvcConfigurer {
                                 // For non-API endpoints, let OAuth2 handle it
                                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                             }
-                        }))
-                .oauth2Login(oauth2 -> oauth2
-                        .successHandler(oauth2AuthenticationSuccessHandler)
-                        .failureHandler((request, response, exception) -> {
-                            // For API endpoints, return 401 instead of redirecting
-                            if (request.getRequestURI().startsWith("/api/")) {
-                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                                response.setContentType("application/json");
-                                response.getWriter().write("{\"msg\":\"OAuth authentication failed\"}");
-                            } else {
-                                // Redirect to frontend with error
-                                response.sendRedirect(uiBaseUrl + "/c/login?error=oauth_failed");
-                            }
-                        })
-                )
-                .logout(logout -> logout.permitAll()
+                        }));
+        
+        // Only configure OAuth2 login if at least one provider is enabled
+        boolean isOAuth2Enabled = (oauth2AuthenticationSuccessHandler != null) &&
+                                   (googleOauthEnabled || facebookOauthEnabled);
+        if (isOAuth2Enabled) {
+            http.oauth2Login(oauth2 -> oauth2
+                    .successHandler(oauth2AuthenticationSuccessHandler)
+                    .failureHandler((request, response, exception) -> {
+                        // For API endpoints, return 401 instead of redirecting
+                        if (request.getRequestURI().startsWith("/api/")) {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"msg\":\"OAuth authentication failed\"}");
+                        } else {
+                            // Redirect to frontend with error
+                            response.sendRedirect(uiBaseUrl + "/c/login?error=oauth_failed");
+                        }
+                    })
+            );
+        }
+        
+        http.logout(logout -> logout.permitAll()
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);
                         }))

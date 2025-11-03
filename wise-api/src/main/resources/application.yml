@@ -99,18 +99,20 @@ spring:
     name: wisemapping-api
     title: wisemapping-api
   # Spring Boot OAuth2 Client Configuration
+  # Note: OAuth2 registration will only be created if app.security.oauth2.google.clientId 
+  # or app.security.oauth2.facebook.clientId are provided
   security:
     oauth2:
       client:
         registration:
           google:
-            enabled: true
+            # Only configure if app.security.oauth2.google.clientId is provided
             client-id: ${app.security.oauth2.google.clientId:}
             client-secret: ${app.security.oauth2.google.clientSecret:}
             scope: openid,profile,email
             redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
           facebook:
-            enabled: true
+            # Only configure if app.security.oauth2.facebook.clientId is provided
             client-id: ${app.security.oauth2.facebook.clientId:}
             client-secret: ${app.security.oauth2.facebook.clientSecret:}
             scope: email,public_profile
