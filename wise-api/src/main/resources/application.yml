@@ -99,24 +99,27 @@ spring:
     name: wisemapping-api
     title: wisemapping-api
   # Spring Boot OAuth2 Client Configuration
-  # Note: OAuth2 registration will only be created if app.security.oauth2.google.clientId 
-  # or app.security.oauth2.facebook.clientId are provided
+  # Note: No default OAuth2 client registrations are defined here to avoid startup
+  # validation when OAuth2 is disabled. Provide registrations in your external app.yml
+  # only when enabling OAuth2 (google/facebook).
   security:
     oauth2:
       client:
-        registration:
-          google:
-            # Only configure if app.security.oauth2.google.clientId is provided
-            client-id: ${app.security.oauth2.google.clientId:}
-            client-secret: ${app.security.oauth2.google.clientSecret:}
-            scope: openid,profile,email
-            redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
-          facebook:
-            # Only configure if app.security.oauth2.facebook.clientId is provided
-            client-id: ${app.security.oauth2.facebook.clientId:}
-            client-secret: ${app.security.oauth2.facebook.clientSecret:}
-            scope: email,public_profile
-            redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
+        #
+        # OAuth2 Registrations (commented examples)
+        # Uncomment and configure when enabling OAuth2 providers.
+        #
+        # registration:
+        #   google:
+        #     client-id: your-google-client-id
+        #     client-secret: your-google-client-secret
+        #     scope: openid,profile,email
+        #     redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
+        #   facebook:
+        #     client-id: your-facebook-client-id
+        #     client-secret: your-facebook-client-secret
+        #     scope: email,public_profile
+        #     redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth

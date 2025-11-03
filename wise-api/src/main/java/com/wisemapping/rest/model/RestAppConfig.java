@@ -169,12 +169,12 @@ public class RestAppConfig {
             return this;
         }
 
-        public RestAppConfigBuilder setGoogleOauth2Url(@NotNull String googleOauth2Url) {
+        public RestAppConfigBuilder setGoogleOauth2Url(String googleOauth2Url) {
             this.googleOauth2Url = googleOauth2Url;
             return this;
         }
 
-        public RestAppConfigBuilder setFacebookOauth2Url(@NotNull String facebookOauth2Url) {
+        public RestAppConfigBuilder setFacebookOauth2Url(String facebookOauth2Url) {
             this.facebookOauth2Url = facebookOauth2Url;
             return this;
         }
