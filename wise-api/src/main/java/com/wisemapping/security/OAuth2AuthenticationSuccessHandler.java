@@ -102,7 +102,17 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             // Determine redirect URL based on OAuth flow type
             String state = request.getParameter("state");
             String redirectUrl;
+            
+            // DEBUG: Log state parameter and detection logic
+            logger.info("=== OAuth2 Callback Debug Info ===");
+            logger.info("User: {}, Provider: {}", email, provider);
+            logger.info("State parameter: {}", state);
+            logger.info("State is null: {}", state == null);
+            logger.info("ChatGPT AI Base URL configured: {}", chatgptAiBaseUrl);
+            
             boolean isChatGptFlow = state != null && isChatGptOAuthFlow(state);
+            logger.info("Is ChatGPT flow: {}", isChatGptFlow);
+            logger.info("==================================");
             
             if (isChatGptFlow) {
                 // Track ChatGPT OAuth flow usage
@@ -112,8 +122,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                 redirectUrl = chatgptAiBaseUrl + "/oauth/social-callback" +
                     "?jwtToken=" + URLEncoder.encode(jwt, "UTF-8") +
                     "&state=" + URLEncoder.encode(state, "UTF-8");
-                logger.info("OAuth2 ChatGPT flow detected for user: {}, provider: {}", email, provider);
-                logger.debug("Redirecting to AI proxy: {}", redirectUrl);
+                logger.info("✓ OAuth2 ChatGPT flow DETECTED for user: {}, provider: {}", email, provider);
+                logger.info("✓ Redirecting to AI proxy: {}", redirectUrl);
             } else {
                 // Normal OAuth flow - redirect to frontend oauth-callback page
                 String baseUrl = (uiBaseUrl != null && !uiBaseUrl.isEmpty()) ? uiBaseUrl : "";
@@ -126,7 +136,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                 }
                 
                 redirectUrl = baseUrl + "/c/oauth-callback" + queryParams;
-                logger.debug("OAuth2 normal flow, redirecting to frontend: {}", redirectUrl);
+                logger.info("✗ OAuth2 NORMAL flow (not ChatGPT), redirecting to frontend: {}", redirectUrl);
+                logger.info("✗ UI Base URL: {}", baseUrl);
             }
             
             // Redirect to determined URL
@@ -262,23 +273,42 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
      * ChatGPT OAuth state is base64-encoded JSON containing "chatgptRedirectUri".
      */
     private boolean isChatGptOAuthFlow(String state) {
+        logger.debug(">>> Checking if ChatGPT OAuth flow...");
+        logger.debug(">>> State parameter length: {}", state != null ? state.length() : 0);
+        
         if (state == null || state.isEmpty()) {
+            logger.debug(">>> State is null or empty - NOT ChatGPT flow");
             return false;
         }
         
         try {
             // Try to decode as base64
+            logger.debug(">>> Attempting to decode state as base64...");
             String decoded = new String(Base64.getDecoder().decode(state));
+            logger.debug(">>> Decoded state: {}", decoded);
             
             // Parse as JSON
             JsonNode stateData = objectMapper.readTree(decoded);
+            logger.debug(">>> Parsed as JSON successfully");
+            logger.debug(">>> JSON fields: {}", stateData.fieldNames());
             
             // Check if it has chatgptRedirectUri field
-            return stateData.has("chatgptRedirectUri");
+            boolean hasChatGptField = stateData.has("chatgptRedirectUri");
+            logger.debug(">>> Has 'chatgptRedirectUri' field: {}", hasChatGptField);
+            
+            if (hasChatGptField) {
+                logger.info(">>> ✓ CONFIRMED: This is a ChatGPT OAuth flow!");
+                logger.info(">>> ChatGPT redirect URI: {}", stateData.get("chatgptRedirectUri").asText());
+            } else {
+                logger.info(">>> ✗ NOT a ChatGPT OAuth flow (missing 'chatgptRedirectUri' field)");
+            }
+            
+            return hasChatGptField;
             
         } catch (Exception e) {
             // Not a ChatGPT OAuth flow
-            logger.debug("State is not ChatGPT OAuth format: {}", e.getMessage());
+            logger.info(">>> ✗ State is not ChatGPT OAuth format (decoding failed): {}", e.getMessage());
+            logger.debug(">>> Exception details:", e);
             return false;
         }
     }
