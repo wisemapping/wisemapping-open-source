@@ -17,6 +17,8 @@
  */
 package com.wisemapping.security;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.service.MetricsService;
@@ -36,6 +38,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.Map;
 
 @Component
@@ -60,6 +63,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
     
     @Value("${app.admin.user:}")
     private String adminUser;
+    
+    @Value("${app.chatgpt.ai-base-url:https://ai.wisemapping.com}")
+    private String chatgptAiBaseUrl;
+    
+    private final ObjectMapper objectMapper = new ObjectMapper();
     
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, 
@@ -91,24 +99,38 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             String authType = mapProviderToAuthTypeString(provider);
             metricsService.trackUserLogin(account, authType);
             
-            // Always redirect to oauth-callback page in the UI
-            String redirectPath = "/c/oauth-callback";
+            // Determine redirect URL based on OAuth flow type
+            String state = request.getParameter("state");
+            String redirectUrl;
+            boolean isChatGptFlow = state != null && isChatGptOAuthFlow(state);
             
-            // Build query parameters
-            String queryParams = "?jwtToken=" + URLEncoder.encode(jwt, "UTF-8") +
-                                "&email=" + URLEncoder.encode(account.getEmail(), "UTF-8") +
-                                "&oauthSync=" + account.getOauthSync();
-            
-            if (account.getSyncCode() != null) {
-                queryParams += "&syncCode=" + URLEncoder.encode(account.getSyncCode(), "UTF-8");
+            if (isChatGptFlow) {
+                // Track ChatGPT OAuth flow usage
+                metricsService.trackUserLogin(account, "chatgpt_oauth_" + provider.toLowerCase());
+                
+                // ChatGPT OAuth flow - redirect to ai.wisemapping.com for conversion
+                redirectUrl = chatgptAiBaseUrl + "/oauth/social-callback" +
+                    "?jwtToken=" + URLEncoder.encode(jwt, "UTF-8") +
+                    "&state=" + URLEncoder.encode(state, "UTF-8");
+                logger.info("OAuth2 ChatGPT flow detected for user: {}, provider: {}", email, provider);
+                logger.debug("Redirecting to AI proxy: {}", redirectUrl);
+            } else {
+                // Normal OAuth flow - redirect to frontend oauth-callback page
+                String baseUrl = (uiBaseUrl != null && !uiBaseUrl.isEmpty()) ? uiBaseUrl : "";
+                String queryParams = "?jwtToken=" + URLEncoder.encode(jwt, "UTF-8") +
+                                    "&email=" + URLEncoder.encode(account.getEmail(), "UTF-8") +
+                                    "&oauthSync=" + account.getOauthSync();
+                
+                if (account.getSyncCode() != null) {
+                    queryParams += "&syncCode=" + URLEncoder.encode(account.getSyncCode(), "UTF-8");
+                }
+                
+                redirectUrl = baseUrl + "/c/oauth-callback" + queryParams;
+                logger.debug("OAuth2 normal flow, redirecting to frontend: {}", redirectUrl);
             }
             
-            // Build full redirect URL
-            String baseUrl = (uiBaseUrl != null && !uiBaseUrl.isEmpty()) ? uiBaseUrl : "";
-            String redirectUrl = baseUrl + redirectPath + queryParams;
-            
+            // Redirect to determined URL
             response.sendRedirect(redirectUrl);
-            logger.debug("OAuth2 redirecting to: {}", redirectUrl);
             
         } catch (UnsupportedEncodingException e) {
             logger.error("Error encoding OAuth callback URL", e);
@@ -233,5 +255,31 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             case "facebook" -> "facebook_oauth";
             default -> throw new IllegalArgumentException("Unsupported OAuth provider: " + provider);
         };
+    }
+    
+    /**
+     * Check if the state parameter indicates this is a ChatGPT OAuth flow.
+     * ChatGPT OAuth state is base64-encoded JSON containing "chatgptRedirectUri".
+     */
+    private boolean isChatGptOAuthFlow(String state) {
+        if (state == null || state.isEmpty()) {
+            return false;
+        }
+        
+        try {
+            // Try to decode as base64
+            String decoded = new String(Base64.getDecoder().decode(state));
+            
+            // Parse as JSON
+            JsonNode stateData = objectMapper.readTree(decoded);
+            
+            // Check if it has chatgptRedirectUri field
+            return stateData.has("chatgptRedirectUri");
+            
+        } catch (Exception e) {
+            // Not a ChatGPT OAuth flow
+            logger.debug("State is not ChatGPT OAuth format: {}", e.getMessage());
+            return false;
+        }
     }
 }
