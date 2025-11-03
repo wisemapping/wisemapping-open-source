@@ -101,11 +101,11 @@ This will:
 
 **Default Test Credentials:**
 - Email: `test@wisemapping.org`
-- Password: `test`
+- Password: `password`
 
 **Default Admin Credentials:**
 - Email: `admin@wisemapping.org`
-- Password: `test`
+- Password: `testAdmin123`
 
 ### Step 4: Verify Setup
 
@@ -186,8 +186,8 @@ The WiseMapping application is configured via `app.yml`:
 
 ### Default Credentials
 
-- **Test User**: test@wisemapping.org / test
-- **Admin User**: admin@wisemapping.org / test
+- **Test User**: test@wisemapping.org / password
+- **Admin User**: admin@wisemapping.org / testAdmin123
 
 ## 🔧 Customization
 

@@ -67,11 +67,11 @@ Open your browser and navigate to:
 
 **Test User:**
 - Email: `test@wisemapping.org`
-- Password: `test`
+- Password: `password`
 
 **Admin User:**
 - Email: `admin@wisemapping.org`
-- Password: `test`
+- Password: `testAdmin123`
 
 ⚠️ **Important**: Change these default passwords in production!
 

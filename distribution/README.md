@@ -99,7 +99,7 @@ docker-compose up -d
 
 **Access**:
 - Application: http://localhost
-- Default credentials: test@wisemapping.org / test
+- Default credentials: test@wisemapping.org / password
 
 **Documentation**: See [app-postgresql/README.md](app-postgresql/README.md) for detailed instructions.
 

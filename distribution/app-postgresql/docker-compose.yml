@@ -12,8 +12,8 @@
 #
 # ACCESS:
 #   Application: http://localhost (or http://localhost:${WISEMAPPING_PORT})
-#   Default login: test@wisemapping.org / test
-#   Admin login:   admin@wisemapping.org / test
+#   Default login: test@wisemapping.org / password
+#   Admin login:   admin@wisemapping.org / testAdmin123
 #
 # LOGS:
 #   Location: ${WISEMAPPING_DATA_DIR}/logs/
