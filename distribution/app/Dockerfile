@@ -20,7 +20,11 @@ COPY wise-api/src ./wise-api/src/
 
 # Build the backend JAR
 WORKDIR /build/wise-api
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests \
+    -Dgit.branch=unknown \
+    -Dgit.commit.id.abbrev=unknown \
+    -Dgit.commit.id.full=unknown \
+    -Dgit.commit.time=unknown
 
 ################################################################################
 # Stage 2: Build Frontend (React/TypeScript)
