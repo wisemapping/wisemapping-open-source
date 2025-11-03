@@ -19,7 +19,9 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.rest.model.RestAppConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,11 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/restful/app")
 public class AppController {
 
-    @Value("${spring.security.oauth2.client.registration.google.enabled:false}")
-    private Boolean isGoogleOauth2Enabled;
-
-    @Value("${spring.security.oauth2.client.registration.facebook.enabled:false}")
-    private Boolean isFacebookOauth2Enabled;
+    @Autowired
+    private Environment environment;
 
     @Value("${app.registration.enabled:true}")
     private Boolean isRegistrationEnabled;
@@ -60,24 +59,37 @@ public class AppController {
     @RequestMapping(method = RequestMethod.GET, value = "/config")
     @ResponseStatus(value = HttpStatus.OK)
     public RestAppConfig appConfig() {
-        // Build Spring Boot OAuth2 URLs
-        String googleOauth2Url = isGoogleOauth2Enabled ? 
-                apiBaseUrl + "/oauth2/authorization/google" : null;
-        String facebookOauth2Url = isFacebookOauth2Enabled ? 
-                apiBaseUrl + "/oauth2/authorization/facebook" : null;
+        // Detect enabled OAuth2 providers based on existing client registrations
+        boolean googleEnabled = isRegistrationPresent("google");
+        boolean facebookEnabled = isRegistrationPresent("facebook");
         
-        return new RestAppConfig.RestAppConfigBuilder()
+        RestAppConfig.RestAppConfigBuilder builder = new RestAppConfig.RestAppConfigBuilder()
                 .setApiUrl(apiBaseUrl)
                 .setUiUrl(uiBaseUrl)
                 .setCaptchaSiteKey(captchaSiteKey)
-                .setGoogleOauth2Url(googleOauth2Url)
-                .setGoogleOauth2Enabled(isGoogleOauth2Enabled)
-                .setFacebookOauth2Url(facebookOauth2Url)
-                .setFacebookOauth2Enabled(isFacebookOauth2Enabled)
+                .setGoogleOauth2Enabled(googleEnabled)
+                .setFacebookOauth2Enabled(facebookEnabled)
                 .setAnalyticsAccount(analyticsAccount)
                 .setRegistrationEnabled(isRegistrationEnabled)
-                .setJwtExpirationMin(jwtExpirationMin)
-                .build();
+                .setJwtExpirationMin(jwtExpirationMin);
+        
+        // Only set OAuth2 URLs if providers are configured
+        if (googleEnabled) {
+            builder.setGoogleOauth2Url(apiBaseUrl + "/oauth2/authorization/google");
+        }
+        if (facebookEnabled) {
+            builder.setFacebookOauth2Url(apiBaseUrl + "/oauth2/authorization/facebook");
+        }
+        
+        return builder.build();
+    }
+
+    private boolean isRegistrationPresent(String registrationId) {
+        // Check if spring.security.oauth2.client.registration.{registrationId}.client-id is configured
+        String clientIdProperty = String.format("spring.security.oauth2.client.registration.%s.client-id", registrationId);
+        String clientId = environment.getProperty(clientIdProperty);
+        // Registration is present if client-id is configured and not empty
+        return clientId != null && !clientId.trim().isEmpty();
     }
 
 

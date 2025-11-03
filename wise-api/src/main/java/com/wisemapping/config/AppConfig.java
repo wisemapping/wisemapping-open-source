@@ -38,6 +38,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import com.wisemapping.model.Account;
@@ -71,12 +72,6 @@ public class AppConfig implements WebMvcConfigurer {
     @Value("${app.site.ui-base-url:}")
     private String uiBaseUrl;
 
-    @Value("${spring.security.oauth2.client.registration.google.enabled:false}")
-    private boolean googleOauthEnabled;
-
-    @Value("${spring.security.oauth2.client.registration.facebook.enabled:false}")
-    private boolean facebookOauthEnabled;
-
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     
@@ -85,6 +80,9 @@ public class AppConfig implements WebMvcConfigurer {
     
     @Autowired
     private AuthenticationProvider dbAuthenticationProvider;
+
+    @Autowired(required = false)
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
@@ -122,9 +120,9 @@ public class AppConfig implements WebMvcConfigurer {
                             }
                         }));
         
-        // Only configure OAuth2 login if at least one provider is enabled
+        // Only configure OAuth2 login if at least one registration is defined
         boolean isOAuth2Enabled = (oauth2AuthenticationSuccessHandler != null) &&
-                                   (googleOauthEnabled || facebookOauthEnabled);
+                                   (clientRegistrationRepository != null);
         if (isOAuth2Enabled) {
             http.oauth2Login(oauth2 -> oauth2
                     .successHandler(oauth2AuthenticationSuccessHandler)
