@@ -418,37 +418,35 @@ public class MindmapManagerImpl
         labelDelete.setParameter("mindmapId", mindmapId);
         labelDelete.executeUpdate();
         
+        // Delete spam info using native SQL (though DB CASCADE should handle it, doing it explicitly avoids issues)
+        final Query spamInfoDelete = entityManager.createNativeQuery(
+            "DELETE FROM MINDMAP_SPAM_INFO WHERE mindmap_id = :mindmapId");
+        spamInfoDelete.setParameter("mindmapId", mindmapId);
+        spamInfoDelete.executeUpdate();
+        
         // Evict Collaborator entities from second-level cache to prevent stale references
         evictCollaboratorCache(collaboratorIdsToEvict);
+        
+        // Evict the mindmap itself from cache to prevent stale references
+        entityManager.getEntityManagerFactory().getCache().evict(Mindmap.class, mindmapId);
         
         // Flush to commit the bulk deletes
         entityManager.flush();
         
-        // After bulk deleting collaborations and labels, the mindmap entity may have stale references
-        // in its collections. To prevent orphanRemoval and cascade operations from trying to manage
-        // already-deleted associations, we detach and reload the mindmap entity fresh.
-        // This ensures all collections reflect the current database state (empty).
+        // Detach the original mindmap entity to ensure it's not in the persistence context
         entityManager.detach(mindmap);
         
-        // Reload the mindmap fresh from database - it will have no collaborations or labels
-        final Mindmap freshMindmap = entityManager.find(Mindmap.class, mindmapId);
-        if (freshMindmap == null) {
-            // Mindmap no longer exists (shouldn't happen, but handle gracefully)
-            return;
+        // Use native SQL DELETE to remove the mindmap directly, avoiding all JPA cascading issues.
+        // This is the safest approach since we've already deleted all related data explicitly.
+        // Database foreign key constraints with CASCADE DELETE will handle any remaining cleanup.
+        final Query mindmapDelete = entityManager.createNativeQuery(
+            "DELETE FROM MINDMAP WHERE id = :mindmapId");
+        mindmapDelete.setParameter("mindmapId", mindmapId);
+        final int deletedCount = mindmapDelete.executeUpdate();
+        
+        if (deletedCount == 0) {
+            logger.warn("Mindmap with ID {} was not found during deletion", mindmapId);
         }
-
-        // Explicitly clear the labels collection to prevent CascadeType.PERSIST from trying
-        // to persist detached label entities during mindmap deletion.
-        // Even though we've deleted the label associations via native SQL, the labels collection
-        // might still be loaded (from cache or lazy loading), and Hibernate will try to cascade
-        // PERSIST operations on them when removing the mindmap, causing "detached entity passed
-        // to persist" errors.
-        freshMindmap.getLabels().clear();
-
-        // Delete mindmap using fresh entity
-        // orphanRemoval and cascade operations will see empty collections, so they won't try
-        // to manage already-deleted associations
-        entityManager.remove(freshMindmap);
     }
 
     @Override
