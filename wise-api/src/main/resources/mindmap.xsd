@@ -18,6 +18,8 @@
     </xs:choice>
     <xs:attribute name="name" type="xs:string" use="optional"/>
     <xs:attribute name="version" type="xs:string" use="optional"/>
+    <xs:attribute name="theme" type="xs:string" use="optional"/>
+    <xs:attribute name="layout" type="xs:string" use="optional"/>
   </xs:complexType>
 
   <!-- Topic type definition -->
@@ -27,11 +29,12 @@
       <xs:element name="note" type="wm:NoteType" minOccurs="0" maxOccurs="1"/>
       <xs:element name="link" type="wm:LinkType" minOccurs="0" maxOccurs="1"/>
       <xs:element name="icon" type="wm:IconType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="eicon" type="wm:EmojiIconType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="topic" type="wm:TopicType" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="central" type="xs:boolean" use="optional"/>
     <xs:attribute name="text" type="xs:string" use="optional"/>
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
     <xs:attribute name="position" type="wm:PositionType" use="optional"/>
     <xs:attribute name="order" type="xs:nonNegativeInteger" use="optional"/>
     <xs:attribute name="shape" type="wm:ShapeType" use="optional"/>
@@ -42,6 +45,8 @@
     <xs:attribute name="connStyle" type="xs:nonNegativeInteger" use="optional"/>
     <xs:attribute name="shrink" type="xs:boolean" use="optional"/>
     <xs:attribute name="image" type="xs:string" use="optional"/>
+    <xs:attribute name="imageEmoji" type="xs:string" use="optional"/>
+    <xs:attribute name="imageGallery" type="xs:string" use="optional"/>
     <xs:attribute name="metadata" type="xs:string" use="optional"/>
   </xs:complexType>
 
@@ -63,13 +68,18 @@
 
   <!-- Icon type definition -->
   <xs:complexType name="IconType">
-    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Emoji Icon type definition -->
+  <xs:complexType name="EmojiIconType">
+    <xs:attribute name="id" type="xs:string" use="required"/>
   </xs:complexType>
 
   <!-- Relationship type definition -->
   <xs:complexType name="RelationshipType">
-    <xs:attribute name="srcTopicId" type="xs:IDREF" use="required"/>
-    <xs:attribute name="destTopicId" type="xs:IDREF" use="required"/>
+    <xs:attribute name="srcTopicId" type="xs:positiveInteger" use="required"/>
+    <xs:attribute name="destTopicId" type="xs:positiveInteger" use="required"/>
     <xs:attribute name="lineType" type="xs:nonNegativeInteger" use="optional"/>
     <xs:attribute name="srcCtrlPoint" type="wm:PositionType" use="optional"/>
     <xs:attribute name="destCtrlPoint" type="wm:PositionType" use="optional"/>
@@ -100,6 +110,7 @@
       <xs:enumeration value="image"/>
       <xs:enumeration value="star"/>
       <xs:enumeration value="diamond"/>
+      <xs:enumeration value="none"/>
     </xs:restriction>
   </xs:simpleType>
 
