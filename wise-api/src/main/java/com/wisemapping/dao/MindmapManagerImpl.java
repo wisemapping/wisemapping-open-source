@@ -410,19 +410,27 @@ public class MindmapManagerImpl
         collaborationDelete.where(cb.equal(collaborationRoot.get("mindMap").get("id"), mindmapId));
         entityManager.createQuery(collaborationDelete).executeUpdate();
         
+        // Delete label associations using native SQL to avoid JPA cascade issues
+        // The labels ManyToMany relationship has CascadeType.PERSIST which can cause
+        // "detached entity passed to persist" errors during mindmap deletion
+        final Query labelDelete = entityManager.createNativeQuery(
+            "DELETE FROM R_LABEL_MINDMAP WHERE mindmap_id = :mindmapId");
+        labelDelete.setParameter("mindmapId", mindmapId);
+        labelDelete.executeUpdate();
+        
         // Evict Collaborator entities from second-level cache to prevent stale references
         evictCollaboratorCache(collaboratorIdsToEvict);
         
         // Flush to commit the bulk deletes
         entityManager.flush();
         
-        // After bulk deleting collaborations, the mindmap entity may have stale references
-        // in its collaborations collection. To prevent orphanRemoval from trying to delete
-        // already-deleted collaborations, we detach and reload the mindmap entity fresh.
-        // This ensures the collaborations collection reflects the current database state (empty).
+        // After bulk deleting collaborations and labels, the mindmap entity may have stale references
+        // in its collections. To prevent orphanRemoval and cascade operations from trying to manage
+        // already-deleted associations, we detach and reload the mindmap entity fresh.
+        // This ensures all collections reflect the current database state (empty).
         entityManager.detach(mindmap);
         
-        // Reload the mindmap fresh from database - it will have no collaborations
+        // Reload the mindmap fresh from database - it will have no collaborations or labels
         final Mindmap freshMindmap = entityManager.find(Mindmap.class, mindmapId);
         if (freshMindmap == null) {
             // Mindmap no longer exists (shouldn't happen, but handle gracefully)
@@ -430,8 +438,8 @@ public class MindmapManagerImpl
         }
 
         // Delete mindmap using fresh entity
-        // orphanRemoval will see an empty collaborations collection, so it won't try to delete
-        // already-deleted collaborations
+        // orphanRemoval and cascade operations will see empty collections, so they won't try
+        // to manage already-deleted associations
         entityManager.remove(freshMindmap);
     }
 
