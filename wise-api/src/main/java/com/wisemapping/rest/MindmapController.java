@@ -44,6 +44,8 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -282,6 +284,11 @@ public class MindmapController {
         // Update title ...
         final String title = restMindmap.getTitle();
         if (title != null && !title.equals(mindmap.getTitle())) {
+            // Check if showcase mode is enabled - if so, disable rename
+            if (isShowcaseModeEnabled(mindmap, user)) {
+                throw buildValidationException("Renaming is not allowed in showcase mode");
+            }
+            
             if (mindmapService.getMindmapByTitle(title, user) != null) {
                 throw buildValidationException("You already have a map with this title");
             }
@@ -323,6 +330,11 @@ public class MindmapController {
 
         final Mindmap mindMap = findMindmapById(id);
         final Account user = Utils.getUser(true);
+
+        // Check if showcase mode is enabled - if so, disable rename
+        if (isShowcaseModeEnabled(mindMap, user)) {
+            throw buildValidationException("Renaming is not allowed in showcase mode");
+        }
 
         // Is there a map with the same name ?
         if (mindmapService.getMindmapByTitle(title, user) != null) {
@@ -870,6 +882,37 @@ public class MindmapController {
         final BindingResult result = new BeanPropertyBindingResult(new RestMindmap(), "");
         result.rejectValue("title", "error.not-specified", null, message);
         return new ValidationException(result);
+    }
+
+    /**
+     * Checks if showcase mode is enabled for the given mindmap and user.
+     * Showcase mode is stored in the collaboration properties as a JSON property.
+     * 
+     * @param mindmap the mindmap to check
+     * @param user the user to check showcase mode for
+     * @return true if showcase mode is enabled, false otherwise
+     */
+    private boolean isShowcaseModeEnabled(@NotNull Mindmap mindmap, @NotNull Account user) {
+        try {
+            final CollaborationProperties collaborationProperties = mindmap.findCollaborationProperties(user, false);
+            if (collaborationProperties == null) {
+                return false;
+            }
+            
+            final String propertiesJson = collaborationProperties.getMindmapProperties();
+            if (propertiesJson == null || propertiesJson.isEmpty()) {
+                return false;
+            }
+            
+            final ObjectMapper objectMapper = new ObjectMapper();
+            final JsonNode jsonNode = objectMapper.readTree(propertiesJson);
+            final JsonNode showcaseNode = jsonNode.get("showcase");
+            
+            return showcaseNode != null && showcaseNode.asBoolean(false);
+        } catch (Exception e) {
+            logger.debug("Error checking showcase mode for mindmap {}: {}", mindmap.getId(), e.getMessage());
+            return false;
+        }
     }
 
     private void verifyActiveCollabs(@NotNull RestCollaborationList restCollabs, Account user)
