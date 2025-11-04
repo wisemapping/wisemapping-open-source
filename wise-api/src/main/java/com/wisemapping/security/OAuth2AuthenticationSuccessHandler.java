@@ -106,8 +106,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             // Extract ChatGPT parameters from enhanced state parameter
             // Format: CHATGPT:<chatgpt-params>:<spring-original-state>
             String chatgptParams = null;
-            String originalState = state;
-            
             if (state != null && state.startsWith("CHATGPT:")) {
                 logger.debug("Detected ChatGPT OAuth flow from state parameter");
                 try {
@@ -116,7 +114,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                     
                     if (lastColon > 0) {
                         chatgptParams = withoutPrefix.substring(0, lastColon);
-                        originalState = withoutPrefix.substring(lastColon + 1);
                         logger.debug("Extracted ChatGPT params from enhanced state");
                     }
                 } catch (Exception e) {
