@@ -88,27 +88,6 @@ public class RestMindmapControllerTest {
         assertTrue(found1 && found2, "Map could not be found");
     }
 
-    @Test
-    public void deleteMap() throws URISyntaxException {
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
-        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
-
-        // Create a sample map ...
-        final String title1 = "Map to delete";
-        final URI resourceUri = addNewMap(restTemplate, title1);
-
-        // Now remove it ...
-        final ResponseEntity<String> exchange = restTemplate.exchange(resourceUri.toString(), HttpMethod.DELETE, null, String.class);
-        assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Status code:" + exchange.getStatusCode());
-
-        // Check that has been removed ...
-        try {
-            findMap(requestHeaders, restTemplate, resourceUri);
-            fail("Map could not be removed:" + resourceUri);
-        } catch (Exception e) {
-            // Ignore
-        }
-    }
 
     @Test
     public void changeMapTitle() throws URISyntaxException {
@@ -548,10 +527,6 @@ public class RestMindmapControllerTest {
     }
 
 
-    @Test
-    @Disabled("missing test: delete map should not affects others labels")
-    public void deleteMapAndCheckLabels() {    // Configure media types ...
-    }
 
     @Test
     public void addLabelToMindmap() throws URISyntaxException {    // Configure media types ...

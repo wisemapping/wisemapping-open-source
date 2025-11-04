@@ -18,8 +18,8 @@
     </xs:choice>
     <xs:attribute name="name" type="xs:string" use="optional"/>
     <xs:attribute name="version" type="xs:string" use="optional"/>
-    <xs:attribute name="theme" type="xs:string" use="optional"/>
-    <xs:attribute name="layout" type="xs:string" use="optional"/>
+    <xs:attribute name="theme" type="wm:ThemeType" use="optional"/>
+    <xs:attribute name="layout" type="wm:LayoutType" use="optional"/>
   </xs:complexType>
 
   <!-- Topic type definition -->
@@ -142,6 +142,23 @@
         </xs:restriction>
       </xs:simpleType>
     </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="ThemeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="classic"/>
+      <xs:enumeration value="prism"/>
+      <xs:enumeration value="robot"/>
+      <xs:enumeration value="sunrise"/>
+      <xs:enumeration value="ocean"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="LayoutType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="mindmap"/>
+      <xs:enumeration value="tree"/>
+    </xs:restriction>
   </xs:simpleType>
 
 </xs:schema>
