@@ -387,66 +387,49 @@ public class MindmapManagerImpl
     @Override
     public void removeMindmap(@NotNull final Mindmap mindmap) {
         final int mindmapId = mindmap.getId();
-        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-
-        // Get collaborator IDs to evict from cache BEFORE bulk delete
-        // Query directly from database to avoid loading lazy associations
-        final java.util.Set<Integer> collaboratorIdsToEvict = new java.util.HashSet<>();
-        final TypedQuery<Integer> collaboratorIdQuery = entityManager.createQuery(
-            "SELECT c.collaborator.id FROM Collaboration c WHERE c.mindMap.id = :mindmapId", 
-            Integer.class);
-        collaboratorIdQuery.setParameter("mindmapId", mindmapId);
-        collaboratorIdsToEvict.addAll(collaboratorIdQuery.getResultList());
-
-        // Delete history first using bulk delete query
-        final CriteriaDelete<MindMapHistory> historyDelete = cb.createCriteriaDelete(MindMapHistory.class);
-        final Root<MindMapHistory> historyRoot = historyDelete.from(MindMapHistory.class);
-        historyDelete.where(cb.equal(historyRoot.get("mindmapId"), mindmapId));
-        entityManager.createQuery(historyDelete).executeUpdate();
-
-        // Delete collaborations using bulk delete query
-        final CriteriaDelete<Collaboration> collaborationDelete = cb.createCriteriaDelete(Collaboration.class);
-        final Root<Collaboration> collaborationRoot = collaborationDelete.from(Collaboration.class);
-        collaborationDelete.where(cb.equal(collaborationRoot.get("mindMap").get("id"), mindmapId));
-        entityManager.createQuery(collaborationDelete).executeUpdate();
-        
-        // Delete label associations using native SQL to avoid JPA cascade issues
-        // The labels ManyToMany relationship has CascadeType.PERSIST which can cause
-        // "detached entity passed to persist" errors during mindmap deletion
-        final Query labelDelete = entityManager.createNativeQuery(
-            "DELETE FROM R_LABEL_MINDMAP WHERE mindmap_id = :mindmapId");
-        labelDelete.setParameter("mindmapId", mindmapId);
-        labelDelete.executeUpdate();
-        
-        // Delete spam info using native SQL (though DB CASCADE should handle it, doing it explicitly avoids issues)
-        final Query spamInfoDelete = entityManager.createNativeQuery(
-            "DELETE FROM MINDMAP_SPAM_INFO WHERE mindmap_id = :mindmapId");
-        spamInfoDelete.setParameter("mindmapId", mindmapId);
-        spamInfoDelete.executeUpdate();
-        
-        // Evict Collaborator entities from second-level cache to prevent stale references
-        evictCollaboratorCache(collaboratorIdsToEvict);
-        
-        // Evict the mindmap itself from cache to prevent stale references
-        entityManager.getEntityManagerFactory().getCache().evict(Mindmap.class, mindmapId);
-        
-        // Flush to commit the bulk deletes
-        entityManager.flush();
-        
-        // Detach the original mindmap entity to ensure it's not in the persistence context
-        entityManager.detach(mindmap);
-        
-        // Use native SQL DELETE to remove the mindmap directly, avoiding all JPA cascading issues.
-        // This is the safest approach since we've already deleted all related data explicitly.
-        // Database foreign key constraints with CASCADE DELETE will handle any remaining cleanup.
-        final Query mindmapDelete = entityManager.createNativeQuery(
-            "DELETE FROM MINDMAP WHERE id = :mindmapId");
-        mindmapDelete.setParameter("mindmapId", mindmapId);
-        final int deletedCount = mindmapDelete.executeUpdate();
-        
-        if (deletedCount == 0) {
+        final Mindmap managedMindmap = entityManager.find(Mindmap.class, mindmapId);
+        if (managedMindmap == null) {
             logger.warn("Mindmap with ID {} was not found during deletion", mindmapId);
+            return;
         }
+
+        final java.util.Set<Integer> collaboratorIdsToEvict = managedMindmap.getCollaborations().stream()
+            .map(Collaboration::getCollaborator)
+            .filter(java.util.Objects::nonNull)
+            .map(Collaborator::getId)
+            .collect(java.util.stream.Collectors.toSet());
+
+        // Break the many-to-many to prevent cascade re-persist attempts
+        if (!managedMindmap.getLabels().isEmpty()) {
+            managedMindmap.getLabels().clear();
+        }
+
+        // Explicitly remove the spam info to avoid @MapsId re-persist side effects
+        final MindmapSpamInfo spamInfo = managedMindmap.getSpamInfo();
+        if (spamInfo != null) {
+            managedMindmap.setSpamInfo(null);
+            entityManager.remove(spamInfo);
+        }
+
+        // Remove collaborations to keep both sides of the relationship consistent
+        if (!managedMindmap.getCollaborations().isEmpty()) {
+            final java.util.Set<Collaboration> collaborations = new java.util.HashSet<>(managedMindmap.getCollaborations());
+            for (Collaboration collaboration : collaborations) {
+                final Collaborator collaborator = collaboration.getCollaborator();
+                if (collaborator != null) {
+                    collaborator.getCollaborations().remove(collaboration);
+                }
+                managedMindmap.removedCollaboration(collaboration);
+                entityManager.remove(collaboration);
+            }
+        }
+
+        entityManager.remove(managedMindmap);
+        entityManager.flush();
+
+        // Evict caches after the delete is safely flushed
+        evictCollaboratorCache(collaboratorIdsToEvict);
+        entityManager.getEntityManagerFactory().getCache().evict(Mindmap.class, mindmapId);
     }
 
     @Override
