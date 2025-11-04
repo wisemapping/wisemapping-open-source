@@ -54,11 +54,9 @@ public class ChatGptOAuth2AuthorizationRequestResolver implements OAuth2Authoriz
         String chatgptParams = request.getParameter("chatgpt_params");
         
         if (chatgptParams != null && !chatgptParams.isEmpty()) {
-            logger.info("=== ChatGPT OAuth Authorization Request ===");
-            logger.info("ChatGPT params detected, length: {}", chatgptParams.length());
-            logger.debug("ChatGPT params: {}", chatgptParams);
+            logger.debug("ChatGPT params detected in OAuth request");
             
-            // BETTER APPROACH: Encode ChatGPT params INTO Spring's state parameter
+            // Encode ChatGPT params INTO Spring's state parameter
             // Format: CHATGPT:<chatgpt-params>:<spring-original-state>
             // This way we don't rely on session persistence!
             String originalState = authorizationRequest.getState();
@@ -66,12 +64,10 @@ public class ChatGptOAuth2AuthorizationRequestResolver implements OAuth2Authoriz
             
             authorizationRequest = OAuth2AuthorizationRequest
                 .from(authorizationRequest)
-                .state(enhancedState)  // Replace state with our enhanced version
+                .state(enhancedState)
                 .build();
             
-            logger.info("✓ Encoded ChatGPT params into state parameter (no session needed!)");
-            logger.info("✓ Enhanced state length: {}", enhancedState.length());
-            logger.debug("✓ Enhanced state format: CHATGPT:<params>:<original-state>");
+            logger.info("ChatGPT OAuth request - encoded params into state (stateless)");
         }
         
         return authorizationRequest;
