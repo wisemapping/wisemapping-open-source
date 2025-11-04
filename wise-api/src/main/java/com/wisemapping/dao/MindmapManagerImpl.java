@@ -437,6 +437,14 @@ public class MindmapManagerImpl
             return;
         }
 
+        // Explicitly clear the labels collection to prevent CascadeType.PERSIST from trying
+        // to persist detached label entities during mindmap deletion.
+        // Even though we've deleted the label associations via native SQL, the labels collection
+        // might still be loaded (from cache or lazy loading), and Hibernate will try to cascade
+        // PERSIST operations on them when removing the mindmap, causing "detached entity passed
+        // to persist" errors.
+        freshMindmap.getLabels().clear();
+
         // Delete mindmap using fresh entity
         // orphanRemoval and cascade operations will see empty collections, so they won't try
         // to manage already-deleted associations
