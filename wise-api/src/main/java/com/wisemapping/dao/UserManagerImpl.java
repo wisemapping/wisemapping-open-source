@@ -117,6 +117,7 @@ public class UserManagerImpl
 
     @Nullable
     @Override
+    @Transactional(readOnly = true)
     public Account getUserBy(int id) {
         return entityManager.find(Account.class, id);
     }
