@@ -137,11 +137,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public RestErrors handleValidationErrors(@NotNull final ValidationException ex) {
+    public ResponseEntity<RestErrors> handleValidationErrors(@NotNull final ValidationException ex) {
         logger.debug(ex.getMessage(), ex);
-        return new RestErrors(ex.getErrors(), messageSource);
+        RestErrors error = new RestErrors(ex.getErrors(), messageSource);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(JsonHttpMessageNotReadableException.class)
