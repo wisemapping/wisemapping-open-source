@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.security.JwtTokenUtil;
-import com.wisemapping.service.UserService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -55,13 +54,9 @@ public class RestJwtAuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserService userService;
-
     @Test
-    @Disabled("TODO: Fails in github action. To be reviewed.")
     void generateTokenValidUser() throws Exception {
-        final RestJwtUser user = new RestJwtUser("test@wisemapping.org", "test");
+        final RestJwtUser user = new RestJwtUser("test@wisemapping.org", "password");
         final String userJson = objectMapper.writeValueAsString(user);
 
         final MvcResult result = mockMvc.perform(

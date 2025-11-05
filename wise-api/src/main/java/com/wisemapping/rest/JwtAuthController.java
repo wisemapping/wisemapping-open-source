@@ -27,6 +27,7 @@ import com.wisemapping.rest.model.RestJwtUser;
 import com.wisemapping.security.JwtTokenUtil;
 import com.wisemapping.service.MetricsService;
 import com.wisemapping.service.UserService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
@@ -70,17 +71,25 @@ public class JwtAuthController {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader != null && authHeader.startsWith(JwtTokenUtil.BEARER_TOKEN_PREFIX)) {
             String token = authHeader.substring(JwtTokenUtil.BEARER_TOKEN_PREFIX.length());
-            String email = jwtTokenUtil.extractFromJwtToken(token);
             
-            if (email != null) {
-                try {
-                    Account user = userService.getUserBy(email);
-                    if (user != null) {
-                        metricsService.trackUserLogout(user, "manual");
+            try {
+                String email = jwtTokenUtil.extractFromJwtToken(token);
+                
+                if (email != null) {
+                    try {
+                        Account user = userService.getUserBy(email);
+                        if (user != null) {
+                            metricsService.trackUserLogout(user, "manual");
+                        }
+                    } catch (Exception e) {
+                        // Log error but don't fail logout
                     }
-                } catch (Exception e) {
-                    // Log error but don't fail logout
                 }
+            } catch (ExpiredJwtException e) {
+                // Token is expired - logout is still allowed (idempotent operation)
+                // No need to track logout metrics for expired tokens
+            } catch (Exception e) {
+                // Invalid token format or other JWT errors - logout still succeeds
             }
         }
         
