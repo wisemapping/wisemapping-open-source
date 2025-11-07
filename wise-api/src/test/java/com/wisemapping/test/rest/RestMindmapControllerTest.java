@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import jakarta.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -554,17 +553,27 @@ public class RestMindmapControllerTest {
 
     @Test
     public void fetchMapMetadata() throws URISyntaxException {
-        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 
         // Create a sample map ...
         final String mapTitle = "Maps 1 !";
         final URI mindmapUri = addNewMap(restTemplate, mapTitle);
-        final String mapId = mindmapUri.getPath().replace("/api/restful/maps/", "");
 
         final ResponseEntity<RestMindmapMetadata> exchange = restTemplate.exchange(mindmapUri + "/metadata", HttpMethod.GET, null, RestMindmapMetadata.class);
         assertTrue(exchange.getStatusCode().is2xxSuccessful());
-        assertEquals(mapTitle, exchange.getBody().getTitle());
+        assertEquals(mapTitle, Objects.requireNonNull(exchange.getBody()).getTitle());
+
+        final ResponseEntity<RestMindmapMetadata> exchangeWithXml = restTemplate.exchange(
+                mindmapUri + "/metadata?xml=true",
+                HttpMethod.GET,
+                null,
+                RestMindmapMetadata.class);
+
+        assertTrue(exchangeWithXml.getStatusCode().is2xxSuccessful(), "Metadata fetch with xml flag should succeed");
+        final RestMindmapMetadata metadataWithXml = exchangeWithXml.getBody();
+        assertNotNull(metadataWithXml, "Metadata should not be null when requesting xml");
+        assertNotNull(metadataWithXml.getXml(), "Metadata xml should not be null when xml flag is provided");
+        assertFalse(metadataWithXml.getXml().isEmpty(), "Metadata xml should not be empty when xml flag is provided");
 
     }
 
@@ -600,12 +609,34 @@ public class RestMindmapControllerTest {
         final HttpEntity<Map<String, Boolean>> publishEntity = new HttpEntity<>(publishRequest, jsonHeaders);
         restTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, publishEntity, String.class);
 
-        // Fetch metadata
-        final ResponseEntity<RestMindmapMetadata> exchange = restTemplate.exchange(mindmapUri + "/metadata", HttpMethod.GET, null, RestMindmapMetadata.class);
-        assertTrue(exchange.getStatusCode().is2xxSuccessful(), "Metadata fetch should succeed");
+        RestMindmapMetadata metadata = null;
+        boolean metadataStarred = false;
+        for (int attempt = 0; attempt < 3; attempt++) {
+            final ResponseEntity<RestMindmapMetadata> metadataResponse = restTemplate.exchange(
+                    mindmapUri + "/metadata",
+                    HttpMethod.GET,
+                    null,
+                    RestMindmapMetadata.class);
 
-        final RestMindmapMetadata metadata = exchange.getBody();
-        assertNotNull(metadata, "Metadata should not be null");
+            assertTrue(metadataResponse.getStatusCode().is2xxSuccessful(), "Metadata fetch should succeed");
+            metadata = metadataResponse.getBody();
+            assertNotNull(metadata, "Metadata should not be null");
+
+            if (metadata.isStarred()) {
+                metadataStarred = true;
+                break;
+            }
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Interrupted while waiting for metadata to reflect starred state", e);
+            }
+        }
+
+        assertNotNull(metadata, "Metadata should not be null after retries");
+        assertTrue(metadataStarred, "starred should be true after setting it via the starred endpoint");
 
         // Verify all extended fields are populated
         assertEquals(mapTitle, metadata.getTitle(), "Title should match");
@@ -624,6 +655,17 @@ public class RestMindmapControllerTest {
         // Verify public field (may be false if spam detection blocked it, but should be set)
         // We just verify it's a boolean value, not null
         assertNotNull(Boolean.valueOf(metadata.isPublic()), "public field should be set (boolean)");
+
+        final ResponseEntity<RestMindmapMetadata> metadataWithXmlResponse = restTemplate.exchange(
+                mindmapUri + "/metadata?xml=true",
+                HttpMethod.GET,
+                null,
+                RestMindmapMetadata.class);
+        assertTrue(metadataWithXmlResponse.getStatusCode().is2xxSuccessful(), "Metadata with xml flag should succeed");
+        final RestMindmapMetadata metadataWithXml = metadataWithXmlResponse.getBody();
+        assertNotNull(metadataWithXml, "Metadata with xml flag should not be null");
+        assertNotNull(metadataWithXml.getXml(), "Metadata should include xml when xml flag is provided");
+        assertFalse(metadataWithXml.getXml().isEmpty(), "Metadata xml should not be empty when xml flag is provided");
     }
 
 
@@ -644,6 +686,7 @@ public class RestMindmapControllerTest {
         
         // Try to publish - this might fail due to spam detection
         final ResponseEntity<String> publishResponse = ownerTemplate.exchange(mindmapUri + "/publish", HttpMethod.PUT, publishEntity, String.class);
+        assertNotNull(publishResponse, "Publish response should not be null");
         
         // Test metadata access as owner - this should always work regardless of spam status
         final ResponseEntity<RestMindmapMetadata> exchange = ownerTemplate.exchange(mindmapUri + "/metadata", HttpMethod.GET, null, RestMindmapMetadata.class);
@@ -1147,11 +1190,17 @@ public class RestMindmapControllerTest {
         final ResponseEntity<String> unauthMetadataResponse = unauthenticatedTemplate.exchange(mapUri + "/metadata", HttpMethod.GET, null, String.class);
         assertFalse(unauthMetadataResponse.getStatusCode().is2xxSuccessful(),
                    "Unauthenticated access to private map metadata should be denied. Got: " + unauthMetadataResponse.getStatusCode());
+        final ResponseEntity<String> unauthMetadataXmlResponse = unauthenticatedTemplate.exchange(mapUri + "/metadata?xml=true", HttpMethod.GET, null, String.class);
+        assertFalse(unauthMetadataXmlResponse.getStatusCode().is2xxSuccessful(),
+                "Unauthenticated access to private map metadata xml should be denied. Got: " + unauthMetadataXmlResponse.getStatusCode());
         
         // Test 2: Unauthorized user access to private map metadata should be denied (not 2xx)  
         final ResponseEntity<String> unauthorizedMetadataResponse = unauthorizedTemplate.exchange(mapUri + "/metadata", HttpMethod.GET, null, String.class);
         assertFalse(unauthorizedMetadataResponse.getStatusCode().is2xxSuccessful(),
                    "Unauthorized user access to private map metadata should be denied. Got: " + unauthorizedMetadataResponse.getStatusCode());
+        final ResponseEntity<String> unauthorizedMetadataXmlResponse = unauthorizedTemplate.exchange(mapUri + "/metadata?xml=true", HttpMethod.GET, null, String.class);
+        assertFalse(unauthorizedMetadataXmlResponse.getStatusCode().is2xxSuccessful(),
+                "Unauthorized user access to private map metadata xml should be denied. Got: " + unauthorizedMetadataXmlResponse.getStatusCode());
         
         // Test 3: Unauthenticated access to private map document should be denied (not 2xx)
         final String mapId = mapUri.getPath().replace("/api/restful/maps/", "");
@@ -1173,6 +1222,17 @@ public class RestMindmapControllerTest {
         assertTrue(ownerMetadataResponse.getStatusCode().is2xxSuccessful(),
                    "Map owner should be able to access their own map metadata. Got: " + ownerMetadataResponse.getStatusCode());
         assertEquals(mapTitle, ownerMetadataResponse.getBody().getTitle(), "Owner should get correct map title");
+        final ResponseEntity<RestMindmapMetadata> ownerMetadataXmlResponse = ownerTemplate.exchange(
+                mapUri + "/metadata?xml=true",
+                HttpMethod.GET,
+                null,
+                RestMindmapMetadata.class);
+        assertTrue(ownerMetadataXmlResponse.getStatusCode().is2xxSuccessful(),
+                "Map owner should be able to retrieve metadata xml. Got: " + ownerMetadataXmlResponse.getStatusCode());
+        final RestMindmapMetadata ownerMetadataWithXml = ownerMetadataXmlResponse.getBody();
+        assertNotNull(ownerMetadataWithXml, "Owner metadata with xml flag should not be null");
+        assertNotNull(ownerMetadataWithXml.getXml(), "Owner metadata should include xml when xml flag is provided");
+        assertFalse(ownerMetadataWithXml.getXml().isEmpty(), "Owner metadata xml should not be empty");
         
         // Test 6: Owner should be able to access their own map document (this should always work)
         final ResponseEntity<String> ownerDocumentResponse = ownerTemplate.exchange("/api/restful/maps/" + mapId + "/document/xml", HttpMethod.GET, requestEntity, String.class);
@@ -1211,6 +1271,19 @@ public class RestMindmapControllerTest {
             
             assertNotNull(response.getBody(), "Response body should not be null");
             assertEquals(mapTitle, response.getBody().getTitle(), "Should get correct title");
+
+            final ResponseEntity<RestMindmapMetadata> responseWithXml = unauthenticatedTemplate.exchange(
+                    mapUri + "/metadata?xml=true",
+                    HttpMethod.GET,
+                    null,
+                    RestMindmapMetadata.class);
+
+            assertTrue(responseWithXml.getStatusCode().is2xxSuccessful(),
+                    "Public map metadata with xml flag should be accessible without authentication");
+            final RestMindmapMetadata publicMetadataWithXml = responseWithXml.getBody();
+            assertNotNull(publicMetadataWithXml, "Public metadata with xml flag should not be null");
+            assertNotNull(publicMetadataWithXml.getXml(), "Public metadata should include xml when xml flag is provided");
+            assertFalse(publicMetadataWithXml.getXml().isEmpty(), "Public metadata xml should not be empty");
         } else {
             // If spam detection blocked making it public, just log and skip
             System.out.println("Map was not made public (likely spam detection), skipping public access test");

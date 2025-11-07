@@ -52,6 +52,7 @@ public class RestMindmapMetadata {
     private String lastModificationTime;
     private boolean starred;
     private boolean public_;
+    private String xml;
 
     // Default constructor for Jackson deserialization
     public RestMindmapMetadata() {
@@ -71,8 +72,16 @@ public class RestMindmapMetadata {
         return new RestMindmapMetadata(mindmap, collaborator, jsonProps, locked, isLockedBy);
     }
 
-    public static RestMindmapMetadata createAnonymous(Mindmap mindmap, String jsonProps,
+    public static RestMindmapMetadata createPrivate(Mindmap mindmap, Collaborator collaborator, String jsonProps,
+                                             boolean locked, String isLockedBy) {
+        return new RestMindmapMetadata(mindmap, collaborator, jsonProps, locked, isLockedBy);
+    }
+
+    public static RestMindmapMetadata createPublic(Mindmap mindmap, String jsonProps,
                                                       boolean locked, String isLockedBy) {
+        if (!mindmap.isPublic()) {
+            throw new IllegalStateException("createPublic can only be called for public maps. Map with id " + mindmap.getId() + " is not public.");
+        }
         return new RestMindmapMetadata(mindmap, null, jsonProps, locked, isLockedBy);
     }
 
@@ -217,5 +226,13 @@ public class RestMindmapMetadata {
     @JsonProperty("public")
     public void setPublic(boolean public_) {
         this.public_ = public_;
+    }
+
+    public String getXml() {
+        return xml;
+    }
+
+    public void setXml(String xml) {
+        this.xml = xml;
     }
 }
