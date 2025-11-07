@@ -100,7 +100,8 @@ public class MindmapController {
     @PreAuthorize("permitAll()")
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/metadata", produces = { "application/json" })
     @ResponseBody
-    public RestMindmapMetadata retrieveMetadata(@PathVariable int id) throws WiseMappingException {
+    public RestMindmapMetadata retrieveMetadata(@PathVariable int id,
+            @RequestParam(required = false, defaultValue = "false") boolean xml) throws WiseMappingException {
         final Account user = Utils.getUser(false);
         final Mindmap mindmap = findMindmapById(id);
 
@@ -113,10 +114,12 @@ public class MindmapController {
         if (!mindmap.isPublic() && !mindmapService.hasPermissions(user, mindmap, CollaborationRole.VIEWER)) {
             throw new AccessDeniedSecurityException("You do not have enough right access to see this map");
         }
-        
+
         // For public maps, check if the creator is not suspended
         if (mindmap.isPublic() && mindmap.getCreator().isSuspended()) {
-            throw new AccessDeniedSecurityException("This map is no longer available because the creator's account has been suspended.", "SUSPENDED_USER_MAP_NOT_AVAILABLE");
+            throw new AccessDeniedSecurityException(
+                    "This map is no longer available because the creator's account has been suspended.",
+                    "SUSPENDED_USER_MAP_NOT_AVAILABLE");
         }
 
         final MindMapBean mindMapBean = new MindMapBean(mindmap, user);
@@ -135,13 +138,22 @@ public class MindmapController {
         if (user != null) {
             collaborator = user;
         }
-        if (collaborator != null) {
-            return RestMindmapMetadata.create(mindmap, collaborator, mindMapBean.getProperties(),
+
+        RestMindmapMetadata metadata;
+        if (mindmap.isPublic() && collaborator == null) {
+            metadata = RestMindmapMetadata.createPublic(mindmap, mindMapBean.getProperties(),
+                    isLocked, lockFullName);
+        } else {
+            metadata = RestMindmapMetadata.create(mindmap, collaborator, mindMapBean.getProperties(),
                     isLocked, lockFullName);
         }
 
-        return RestMindmapMetadata.createAnonymous(mindmap, mindMapBean.getProperties(),
-                isLocked, lockFullName);
+        if (xml) {
+            String xmlStr = getMapXmlString(mindmap);
+            metadata.setXml(xmlStr);
+        }
+
+        return metadata;
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
@@ -238,14 +250,32 @@ public class MindmapController {
         if (user == null && mindmap.isSpamDetected()) {
             throw new SpamContentException();
         }
-        
+
         // For public maps, check if the creator is not suspended
         if (mindmap.isPublic() && mindmap.getCreator().isSuspended()) {
-            throw new AccessDeniedSecurityException("This map is no longer available because the creator's account has been suspended.", "SUSPENDED_USER_MAP_NOT_AVAILABLE");
+            throw new AccessDeniedSecurityException(
+                    "This map is no longer available because the creator's account has been suspended.",
+                    "SUSPENDED_USER_MAP_NOT_AVAILABLE");
         }
 
-        String xmlStr = mindmap.getXmlStr();
+        String xmlStr = getMapXmlString(mindmap);
         return xmlStr.getBytes(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Retrieves the XML string representation of a mindmap.
+     * This is a helper method used by both retrieveMetadata and retrieveDocument.
+     * 
+     * @param mindmap The mindmap to get XML from
+     * @return The XML string representation
+     * @throws WiseMappingException if XML retrieval fails
+     */
+    private String getMapXmlString(Mindmap mindmap) throws WiseMappingException {
+        try {
+            return mindmap.getXmlStr();
+        } catch (Exception e) {
+            throw new WiseMappingException("Failed to retrieve map XML", e);
+        }
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
@@ -297,7 +327,7 @@ public class MindmapController {
             if (isShowcaseModeEnabled(mindmap, user)) {
                 throw buildValidationException("Renaming is not allowed in showcase mode");
             }
-            
+
             if (mindmapService.getMindmapByTitle(title, user) != null) {
                 throw buildValidationException("You already have a map with this title");
             }
@@ -537,7 +567,9 @@ public class MindmapController {
 
         // Check if user is suspended - suspended users cannot publish maps
         if (user.isSuspended()) {
-            throw new AccessDeniedSecurityException("Suspended users cannot publish maps. Please contact support for assistance.", "SUSPENDED_USER_CANNOT_PUBLISH_MAPS");
+            throw new AccessDeniedSecurityException(
+                    "Suspended users cannot publish maps. Please contact support for assistance.",
+                    "SUSPENDED_USER_CANNOT_PUBLISH_MAPS");
         }
 
         // Check for spam content when trying to make public
@@ -707,7 +739,9 @@ public class MindmapController {
         // Check if user is suspended - suspended users cannot create maps
         final Account user = Utils.getUser(true);
         if (user.isSuspended()) {
-            throw new AccessDeniedSecurityException("Suspended users cannot create maps. Please contact support for assistance.", "SUSPENDED_USER_CANNOT_CREATE_MAPS");
+            throw new AccessDeniedSecurityException(
+                    "Suspended users cannot create maps. Please contact support for assistance.",
+                    "SUSPENDED_USER_CANNOT_CREATE_MAPS");
         }
 
         final Mindmap mindmap = new Mindmap();
@@ -775,7 +809,9 @@ public class MindmapController {
         // Check if user is suspended - suspended users cannot duplicate maps
         final Account user = Utils.getUser(true);
         if (user.isSuspended()) {
-            throw new AccessDeniedSecurityException("Suspended users cannot duplicate maps. Please contact support for assistance.", "SUSPENDED_USER_CANNOT_DUPLICATE_MAPS");
+            throw new AccessDeniedSecurityException(
+                    "Suspended users cannot duplicate maps. Please contact support for assistance.",
+                    "SUSPENDED_USER_CANNOT_DUPLICATE_MAPS");
         }
 
         // Validate ...
@@ -898,7 +934,7 @@ public class MindmapController {
      * Showcase mode is stored in the collaboration properties as a JSON property.
      * 
      * @param mindmap the mindmap to check
-     * @param user the user to check showcase mode for
+     * @param user    the user to check showcase mode for
      * @return true if showcase mode is enabled, false otherwise
      */
     private boolean isShowcaseModeEnabled(@NotNull Mindmap mindmap, @NotNull Account user) {
@@ -907,16 +943,16 @@ public class MindmapController {
             if (collaborationProperties == null) {
                 return false;
             }
-            
+
             final String propertiesJson = collaborationProperties.getMindmapProperties();
             if (propertiesJson == null || propertiesJson.isEmpty()) {
                 return false;
             }
-            
+
             final ObjectMapper objectMapper = new ObjectMapper();
             final JsonNode jsonNode = objectMapper.readTree(propertiesJson);
             final JsonNode showcaseNode = jsonNode.get("showcase");
-            
+
             return showcaseNode != null && showcaseNode.asBoolean(false);
         } catch (Exception e) {
             logger.debug("Error checking showcase mode for mindmap {}: {}", mindmap.getId(), e.getMessage());
