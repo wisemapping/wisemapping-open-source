@@ -25,4 +25,6 @@ RUN mkdir -p /app && \
 WORKDIR /app
 USER wisemapping
 
+ENV JAVA_OPTS="-XX:InitialRAMPercentage=60 -XX:MaxRAMPercentage=70"
+
 ENTRYPOINT ["sh", "-c", "/app/config-gen.sh && java ${JAVA_OPTS} ${NEW_RELIC_OPTS} -Dspring.config.additional-location=optional:file:/app/config/ -jar wisemapping-api.jar"]
