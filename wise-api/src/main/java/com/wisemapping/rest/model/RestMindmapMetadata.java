@@ -21,6 +21,12 @@ package com.wisemapping.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.Collaborator;
+import com.wisemapping.model.Account;
+import com.wisemapping.util.TimeUtils;
+import java.util.Calendar;
 
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.NONE,
@@ -36,13 +42,75 @@ public class RestMindmapMetadata {
     private String isLockedBy;
 
     private String creatorFullName;
+    private String role;
+    
+    // Extended fields to match MapInfo
+    private String description;
+    private String createdBy; // Email
+    private String creationTime;
+    private String lastModificationBy;
+    private String lastModificationTime;
+    private boolean starred;
+    private boolean public_;
 
-    public RestMindmapMetadata(String title, String jsonProps, String creatorFullName, boolean locked, String isLockedBy) {
+    // Default constructor for Jackson deserialization
+    public RestMindmapMetadata() {
+    }
+
+    private RestMindmapMetadata(String title, String jsonProps, String creatorFullName, boolean locked, String isLockedBy, String role) {
         this.jsonProps = jsonProps;
         this.title = title;
         this.locked = locked;
         this.isLockedBy = isLockedBy;
         this.creatorFullName = creatorFullName;
+        this.role = role;
+    }
+
+    public static RestMindmapMetadata create(Mindmap mindmap, Collaborator collaborator, String jsonProps,
+                                             boolean locked, String isLockedBy) {
+        return new RestMindmapMetadata(mindmap, collaborator, jsonProps, locked, isLockedBy);
+    }
+
+    public static RestMindmapMetadata createAnonymous(Mindmap mindmap, String jsonProps,
+                                                      boolean locked, String isLockedBy) {
+        return new RestMindmapMetadata(mindmap, null, jsonProps, locked, isLockedBy);
+    }
+
+    private RestMindmapMetadata(Mindmap mindmap, Collaborator collaborator, String jsonProps, boolean locked, String isLockedBy) {
+        this(
+                mindmap.getTitle(),
+                jsonProps,
+                mindmap.getCreator() != null ? mindmap.getCreator().getFullName() : null,
+                locked,
+                isLockedBy,
+                resolveRole(mindmap, collaborator)
+        );
+
+        // Extended fields
+        this.description = mindmap.getDescription();
+        this.createdBy = mindmap.getCreator() != null ? mindmap.getCreator().getEmail() : null;
+        Calendar creationTime = mindmap.getCreationTime();
+        this.creationTime = creationTime != null ? TimeUtils.toISO8601(creationTime.getTime()) : null;
+
+        Account lastEditor = mindmap.getLastEditor();
+        this.lastModificationBy = lastEditor != null ? lastEditor.getFullName() : (mindmap.getCreator() != null ? mindmap.getCreator().getFullName() : "unknown");
+        Calendar lastModificationTime = mindmap.getLastModificationTime();
+        this.lastModificationTime = lastModificationTime != null ? TimeUtils.toISO8601(lastModificationTime.getTime()) : null;
+
+        this.starred = collaborator != null && mindmap.isStarred(collaborator);
+        this.public_ = mindmap.isPublic();
+    }
+
+    private static String resolveRole(Mindmap mindmap, Collaborator collaborator) {
+        if (collaborator == null) {
+            return "none";
+        }
+        if (collaborator instanceof Account && mindmap.isCreator((Account) collaborator)) {
+            return "owner";
+        }
+        return mindmap.findCollaboration(collaborator)
+                .map(value -> value.getRole().getLabel())
+                .orElse("none");
     }
 
     public String getJsonProps() {
@@ -83,5 +151,71 @@ public class RestMindmapMetadata {
 
     public void setCreatorFullName(String creatorFullName) {
         this.creatorFullName = creatorFullName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(String creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public String getLastModificationBy() {
+        return lastModificationBy;
+    }
+
+    public void setLastModificationBy(String lastModificationBy) {
+        this.lastModificationBy = lastModificationBy;
+    }
+
+    public String getLastModificationTime() {
+        return lastModificationTime;
+    }
+
+    public void setLastModificationTime(String lastModificationTime) {
+        this.lastModificationTime = lastModificationTime;
+    }
+
+    public boolean isStarred() {
+        return starred;
+    }
+
+    public void setStarred(boolean starred) {
+        this.starred = starred;
+    }
+
+    @JsonProperty("public")
+    public boolean isPublic() {
+        return public_;
+    }
+
+    @JsonProperty("public")
+    public void setPublic(boolean public_) {
+        this.public_ = public_;
     }
 }

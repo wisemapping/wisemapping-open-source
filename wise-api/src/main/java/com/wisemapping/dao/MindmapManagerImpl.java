@@ -97,7 +97,13 @@ public class MindmapManagerImpl
 
     @Override
     public void updateCollaboration(@NotNull Collaboration collaboration) {
-        entityManager.persist(collaboration);
+        // Merge collaboration and ensure collaboration properties are also merged
+        Collaboration merged = entityManager.merge(collaboration);
+        // Explicitly merge collaboration properties to ensure starred status is persisted
+        if (merged.getCollaborationProperties() != null) {
+            entityManager.merge(merged.getCollaborationProperties());
+        }
+        entityManager.flush(); // Ensure changes are written to database immediately
     }
 
     @Override
@@ -244,7 +250,10 @@ public class MindmapManagerImpl
         
         // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
         root.fetch("creator", JoinType.LEFT);
-        root.fetch("collaborations", JoinType.LEFT);
+        // Eagerly fetch collaborations, their properties, and collaborators to avoid lazy loading issues
+        final jakarta.persistence.criteria.Fetch<Mindmap, Collaboration> collaborationsFetch = root.fetch("collaborations", JoinType.LEFT);
+        collaborationsFetch.fetch("collaborationProperties", JoinType.LEFT);
+        collaborationsFetch.fetch("collaborator", JoinType.LEFT);
         root.fetch("labels", JoinType.LEFT);
         root.fetch("spamInfo", JoinType.LEFT);
         

@@ -131,8 +131,17 @@ public class MindmapController {
             lockFullName = lockInfo.getUser().getFullName();
         }
 
-        return new RestMindmapMetadata(mindmap.getTitle(), mindMapBean.getProperties(),
-                mindmap.getCreator().getFullName(), isLocked, lockFullName);
+        Collaborator collaborator = null;
+        if (user != null) {
+            collaborator = user;
+        }
+        if (collaborator != null) {
+            return RestMindmapMetadata.create(mindmap, collaborator, mindMapBean.getProperties(),
+                    isLocked, lockFullName);
+        }
+
+        return RestMindmapMetadata.createAnonymous(mindmap, mindMapBean.getProperties(),
+                isLocked, lockFullName);
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
