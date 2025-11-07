@@ -154,6 +154,10 @@ logging:
             StandardWrapperValve: OFF
     root: INFO
 
+wisemapping:
+  performance:
+    log-mindmap-listing: true
+
 
 #
 # Application Config related options:
