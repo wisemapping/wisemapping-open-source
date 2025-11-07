@@ -244,8 +244,11 @@ public class MindmapManagerImpl
         
         // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
         root.fetch("creator", JoinType.LEFT);
+        root.fetch("collaborations", JoinType.LEFT);
+        root.fetch("labels", JoinType.LEFT);
+        root.fetch("spamInfo", JoinType.LEFT);
         
-        cq.select(root).where(cb.equal(root.get("id"), id));
+        cq.select(root).distinct(true).where(cb.equal(root.get("id"), id));
         
         final TypedQuery<Mindmap> query = entityManager.createQuery(cq);
         final List<Mindmap> results = query.getResultList();
@@ -262,8 +265,12 @@ public class MindmapManagerImpl
         
         // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
         root.fetch("creator", JoinType.LEFT);
+        root.fetch("collaborations", JoinType.LEFT);
+        root.fetch("labels", JoinType.LEFT);
+        root.fetch("spamInfo", JoinType.LEFT);
         
         cq.select(root)
+          .distinct(true)
           .where(cb.and(
               cb.equal(root.get("title"), title),
               cb.equal(root.get("creator"), user)
@@ -1275,7 +1282,6 @@ public class MindmapManagerImpl
         root.fetch("creator", JoinType.LEFT);
         root.fetch("spamInfo", JoinType.LEFT);
         root.fetch("lastEditor", JoinType.LEFT);
-        root.fetch("collaborations", JoinType.LEFT);
         
         // Apply spam filter if provided - need to join again for WHERE clause
         if (filterSpam != null) {
@@ -1329,8 +1335,7 @@ public class MindmapManagerImpl
         StringBuilder queryString = new StringBuilder(
             "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
             "LEFT JOIN FETCH m.spamInfo s " +
-            "LEFT JOIN FETCH m.lastEditor le " +
-            "LEFT JOIN FETCH m.collaborations col WHERE 1=1");
+            "LEFT JOIN FETCH m.lastEditor le WHERE 1=1");
         
         if (filterPublic != null) {
             if (filterPublic) {
@@ -1439,8 +1444,7 @@ public class MindmapManagerImpl
         StringBuilder queryString = new StringBuilder(
             "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
             "LEFT JOIN FETCH m.spamInfo s " +
-            "LEFT JOIN FETCH m.lastEditor le " +
-            "LEFT JOIN FETCH m.collaborations col ");
+            "LEFT JOIN FETCH m.lastEditor le ");
         
         // Handle special search patterns
         boolean isIdSearch = false;

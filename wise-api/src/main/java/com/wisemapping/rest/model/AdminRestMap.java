@@ -125,12 +125,8 @@ public class AdminRestMap {
             this.spamDescription = mindmap.getSpamInfo().getSpamDescription();
         }
         
-        // Count collaborations (excluding the owner)
-        if (mindmap.getCollaborations() != null) {
-            this.collaboratorCount = mindmap.getCollaborations().size();
-        } else {
-            this.collaboratorCount = 0;
-        }
+        // Use pre-computed collaborator count to avoid initializing the collection
+        this.collaboratorCount = mindmap.getCollaboratorCount();
     }
 
     // Getters

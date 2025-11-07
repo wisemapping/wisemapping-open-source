@@ -19,6 +19,7 @@
 package com.wisemapping.model;
 
 import com.wisemapping.util.ZipUtils;
+import org.hibernate.annotations.LazyGroup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,6 +42,9 @@ public class MindMapHistory {
     private Account editor;
 
     @Column(name = "xml")
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @LazyGroup("xmlContent")
     private byte[] zippedXml;
 
     @Column(name = "mindmap_id")

@@ -22,8 +22,11 @@ import com.wisemapping.exceptions.AccessDeniedSecurityException;
 import com.wisemapping.exceptions.InvalidMindmapException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.util.ZipUtils;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.LazyGroup;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.jetbrains.annotations.NotNull;
@@ -92,12 +95,13 @@ public class Mindmap implements Serializable {
     private MindmapSpamInfo spamInfo;
 
     @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
+    @Fetch(FetchMode.SUBSELECT)
     @JsonIgnore
     private Set<Collaboration> collaborations = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
-    @Fetch(FetchMode.JOIN)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 50)
     @JoinTable(
             name = "R_LABEL_MINDMAP",
             joinColumns = @JoinColumn(name = "mindmap_id"),
@@ -108,9 +112,14 @@ public class Mindmap implements Serializable {
     private String title;
 
     @Column(name = "xml")
+    @Lob
     @Basic(fetch = FetchType.LAZY)
+    @LazyGroup("xmlContent")
     @JsonIgnore
     private byte[] zippedXml;
+
+    @Formula("(select count(distinct c.id) from COLLABORATION c where c.mindmap_id = id)")
+    private int collaboratorCount;
 
     public Mindmap() {
     }
@@ -193,6 +202,10 @@ public class Mindmap implements Serializable {
 
     public void addLabel(@NotNull final MindmapLabel label) {
         this.labels.add(label);
+    }
+
+    public int getCollaboratorCount() {
+        return collaboratorCount;
     }
 
     public Optional<Collaboration> findCollaboration(@NotNull Collaborator collaborator) {

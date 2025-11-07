@@ -18,7 +18,8 @@
 
 package com.wisemapping.model;
 
-
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.jetbrains.annotations.Nullable;
 
 import jakarta.persistence.*;
@@ -42,7 +43,7 @@ public class Collaboration implements Serializable {
     @Column(name = "role_id", unique = true)
     private CollaborationRole role;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mindmap_id", nullable = false)
     private Mindmap mindMap;
 
@@ -50,7 +51,8 @@ public class Collaboration implements Serializable {
     @JoinColumn(name = "collaborator_id", nullable = false)
     private Collaborator collaborator;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "properties_id", nullable = true, unique = true)
     private CollaborationProperties collaborationProperties = new CollaborationProperties();
 
