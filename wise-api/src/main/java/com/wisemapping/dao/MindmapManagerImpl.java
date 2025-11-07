@@ -25,6 +25,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaDelete;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Fetch;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 import org.jetbrains.annotations.NotNull;
@@ -166,24 +167,25 @@ public class MindmapManagerImpl
 
     @Override
     public List<Mindmap> findMindmapByUser(@NotNull Account user) {
-        // Use Criteria API with JOIN FETCH to explicitly load Account creator (not Collaborator proxy)
-        // This avoids proxy narrowing warnings for JOINED inheritance
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         final CriteriaQuery<Mindmap> cq = cb.createQuery(Mindmap.class);
         final Root<Mindmap> root = cq.from(Mindmap.class);
-        
-        // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
+
+        // Load creator and labels (plus label creator) in a single query to avoid N+1 access later
         root.fetch("creator", JoinType.LEFT);
-        
+        final Fetch<Mindmap, MindmapLabel> labelsFetch = root.fetch("labels", JoinType.LEFT);
+        labelsFetch.fetch("creator", JoinType.LEFT);
+
         // Subquery for collaborations - using Subquery API
         final jakarta.persistence.criteria.Subquery<Integer> subquery = cq.subquery(Integer.class);
         final Root<Collaboration> collaborationRoot = subquery.from(Collaboration.class);
         subquery.select(collaborationRoot.get("mindMap").get("id"))
                 .where(cb.equal(collaborationRoot.get("collaborator").get("id"), user.getId()));
-        
-        // Main query with IN subquery
-        cq.select(root).where(root.get("id").in(subquery));
-        
+
+        cq.select(root)
+                .distinct(true)
+                .where(root.get("id").in(subquery));
+
         return entityManager.createQuery(cq).getResultList();
     }
 
