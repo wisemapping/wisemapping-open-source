@@ -3,12 +3,22 @@ package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.Account;
+import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.MindmapLabel;
+import com.wisemapping.rest.MindmapController;
 import com.wisemapping.rest.model.*;
+import com.wisemapping.service.MindmapService;
+import com.wisemapping.service.UserService;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static com.wisemapping.test.rest.RestHelper.createTestUser;
 import static com.wisemapping.test.rest.RestHelper.createUserViaApi;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManagerFactory;
+import org.hibernate.SessionFactory;
+import org.hibernate.stat.QueryStatistics;
+import org.hibernate.stat.Statistics;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClientException;
@@ -24,11 +37,17 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,11 +59,24 @@ import static org.junit.jupiter.api.Assertions.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RestMindmapControllerTest {
 
+    private static final String COLLAB_BY_USER_NAMED_QUERY = "Collaboration.findByCollaboratorId";
     private RestUser user;
     private String userPassword = "testPassword123";
+    private static final int BULK_MAP_COUNT = 1000;
+    private static final int LABELS_PER_MAP = 10;
+    private static final int MAX_EXPECTED_QUERIES_FOR_LISTING = 50;
+    private static final String BULK_MAP_TITLE_PREFIX = "Bulk Performance Map ";
 
     @Autowired
     private TestRestTemplate restTemplate;
+    @Autowired
+    private MindmapService mindmapService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
+    @Autowired
+    private MindmapController mindmapController;
 
     @BeforeEach
     void createUser() {
@@ -85,6 +117,59 @@ public class RestMindmapControllerTest {
             }
         }
         assertTrue(found1 && found2, "Map could not be found");
+    }
+
+    @Test
+    public void bulkMindmapListingAvoidsCollaborationStorm() {
+        final Account owner = userService.getUserBy(user.getEmail());
+        assertNotNull(owner, "Owner account must exist");
+
+        createBulkMindmaps(owner, BULK_MAP_COUNT, LABELS_PER_MAP);
+
+        final SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        final Statistics statistics = sessionFactory.getStatistics();
+        statistics.setStatisticsEnabled(true);
+        statistics.clear();
+
+        final RestMindmapList response = fetchMaps(createHeaders(MediaType.APPLICATION_JSON),
+                this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword()));
+
+        final long createdMaps = response.getMindmapsInfo()
+                .stream()
+                .filter(m -> m.getTitle().startsWith(BULK_MAP_TITLE_PREFIX))
+                .count();
+
+        assertEquals(BULK_MAP_COUNT, createdMaps, "Expected to retrieve every generated mindmap");
+
+        final long executedStatements = statistics.getPrepareStatementCount();
+        final long entityFetches = statistics.getEntityFetchCount();
+        final long collectionFetches = statistics.getCollectionFetchCount();
+        final long loadCount = statistics.getEntityLoadCount();
+
+        final String topQueries = Arrays.stream(statistics.getQueries())
+                .collect(Collectors.toMap(
+                        query -> query,
+                        query -> statistics.getQueryStatistics(query).getExecutionCount(),
+                        Long::sum,
+                        () -> new LinkedHashMap<>()))
+                .entrySet()
+                .stream()
+                .sorted((left, right) -> Long.compare(right.getValue(), left.getValue()))
+                .limit(5)
+                .map(entry -> entry.getValue() + "x | " + entry.getKey().replaceAll("\\s+", " ").trim())
+                .collect(Collectors.joining("\n"));
+
+        assertTrue(executedStatements <= MAX_EXPECTED_QUERIES_FOR_LISTING,
+                "Listing should not trigger excessive SQL statements.\n" +
+                        "Executed: " + executedStatements +
+                        ", entityFetches: " + entityFetches +
+                        ", collectionFetches: " + collectionFetches +
+                        ", entityLoadCount: " + loadCount +
+                        "\nTop queries:\n" + topQueries);
+
+        final long collabQueryExecutions = getNamedQueryExecutionCount(statistics, COLLAB_BY_USER_NAMED_QUERY);
+        assertEquals(0, collabQueryExecutions,
+                "Mindmap listing should not rely on Collaboration.findByCollaboratorId per mindmap.");
     }
 
 
@@ -1288,6 +1373,58 @@ public class RestMindmapControllerTest {
             // If spam detection blocked making it public, just log and skip
             System.out.println("Map was not made public (likely spam detection), skipping public access test");
         }
+    }
+
+    private void createBulkMindmaps(@NotNull Account owner, int totalMaps, int labelsPerMap) {
+        final SecurityContext previousContext = impersonate(owner);
+        try {
+            for (int i = 0; i < totalMaps; i++) {
+                final Mindmap mindmap = new Mindmap();
+                final String title = BULK_MAP_TITLE_PREFIX + i;
+                mindmap.setTitle(title);
+                mindmap.setDescription("Performance load mindmap #" + i);
+                mindmap.setUnzipXml(Mindmap.getDefaultMindmapXml(title).getBytes(StandardCharsets.UTF_8));
+                mindmap.setLabels(buildLabelSet(owner, labelsPerMap, i));
+                try {
+                    mindmapService.addMindmap(mindmap, owner);
+                } catch (WiseMappingException e) {
+                    throw new IllegalStateException("Failed to seed mindmap data for bulk listing test", e);
+                }
+            }
+        } finally {
+            SecurityContextHolder.setContext(previousContext);
+        }
+    }
+
+    private Set<MindmapLabel> buildLabelSet(@NotNull Account owner, int labelsPerMap, int mapIndex) {
+        final Set<MindmapLabel> labels = Collections.newSetFromMap(new IdentityHashMap<>());
+        for (int labelIndex = 0; labelIndex < labelsPerMap; labelIndex++) {
+            final MindmapLabel label = new MindmapLabel();
+            label.setCreator(owner);
+            label.setTitle("bulk-label-" + mapIndex + "-" + labelIndex);
+            label.setColor(String.format("#%06X", (mapIndex * labelsPerMap + labelIndex) & 0xFFFFFF));
+            labels.add(label);
+        }
+        return labels;
+    }
+
+    private long getNamedQueryExecutionCount(@NotNull Statistics statistics, @NotNull String namedQuery) {
+        final QueryStatistics queryStats = statistics.getQueryStatistics(namedQuery);
+        return queryStats != null ? queryStats.getExecutionCount() : 0L;
+    }
+
+    private SecurityContext impersonate(@NotNull Account account) {
+        final SecurityContext previousContext = SecurityContextHolder.getContext();
+        final SecurityContext testContext = SecurityContextHolder.createEmptyContext();
+        final com.wisemapping.security.UserDetails principal = new com.wisemapping.security.UserDetails(account, mindmapService.isAdmin(account), userService);
+        final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                principal,
+                principal.getPassword(),
+                principal.getAuthorities());
+        authentication.setDetails(principal);
+        testContext.setAuthentication(authentication);
+        SecurityContextHolder.setContext(testContext);
+        return previousContext;
     }
 
     private String changeMapTitle(final HttpHeaders requestHeaders, final MediaType mediaType, final TestRestTemplate template, final URI resourceUri) throws RestClientException {

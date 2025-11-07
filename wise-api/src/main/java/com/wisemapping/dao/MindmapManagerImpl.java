@@ -23,7 +23,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaDelete;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Fetch;
 import jakarta.persistence.criteria.JoinType;
@@ -173,8 +172,13 @@ public class MindmapManagerImpl
 
         // Load creator and labels (plus label creator) in a single query to avoid N+1 access later
         root.fetch("creator", JoinType.LEFT);
+        root.fetch("lastEditor", JoinType.LEFT);
+        root.fetch("spamInfo", JoinType.LEFT);
         final Fetch<Mindmap, MindmapLabel> labelsFetch = root.fetch("labels", JoinType.LEFT);
         labelsFetch.fetch("creator", JoinType.LEFT);
+        final Fetch<Mindmap, Collaboration> collaborationsFetch = root.fetch("collaborations", JoinType.LEFT);
+        collaborationsFetch.fetch("collaborationProperties", JoinType.LEFT);
+        collaborationsFetch.fetch("collaborator", JoinType.LEFT);
 
         // Subquery for collaborations - using Subquery API
         final jakarta.persistence.criteria.Subquery<Integer> subquery = cq.subquery(Integer.class);
