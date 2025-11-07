@@ -31,7 +31,9 @@ import java.io.Serializable;
 @NamedQueries({
     @NamedQuery(
         name = "Collaboration.findByCollaboratorId",
-        query = "SELECT c FROM Collaboration c WHERE c.collaborator.id = :collaboratorId"
+        query = "SELECT c FROM Collaboration c " +
+                "LEFT JOIN FETCH c.collaborationProperties " +
+                "WHERE c.collaborator.id = :collaboratorId"
     )
 })
 public class Collaboration implements Serializable {

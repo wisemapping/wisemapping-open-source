@@ -20,6 +20,7 @@ package com.wisemapping.rest.model;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import jakarta.xml.bind.annotation.XmlElement;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @JsonAutoDetect(
@@ -42,8 +44,13 @@ public class RestMindmapList {
     }
 
     public RestMindmapList(@NotNull List<Mindmap> mindmaps, Collaborator collaborator) {
+        this(mindmaps, collaborator, Collections.emptyMap());
+    }
+
+    public RestMindmapList(@NotNull List<Mindmap> mindmaps, Collaborator collaborator,
+                           @NotNull Map<Integer, Collaboration> collaborationsByMap) {
         this.mindmapsInfo = mindmaps.stream()
-                .map(m->new RestMindmapInfo(m, collaborator))
+                .map(m -> new RestMindmapInfo(m, collaborator, collaborationsByMap.get(m.getId())))
                 .collect(Collectors.toList());
     }
 

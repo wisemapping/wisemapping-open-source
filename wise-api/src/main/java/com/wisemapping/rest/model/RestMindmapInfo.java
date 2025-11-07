@@ -46,6 +46,8 @@ public class RestMindmapInfo {
     @JsonIgnore
     private final Mindmap mindmap;
     @JsonIgnore
+    private final Collaboration userCollaboration;
+    @JsonIgnore
     private Set<RestLabel> restLabels;
 
     @JsonIgnore
@@ -54,13 +56,19 @@ public class RestMindmapInfo {
     private final Collaborator collaborator;
 
     public RestMindmapInfo() {
-        this(new Mindmap(), null);
+        this(new Mindmap(), null, null);
 
     }
 
     public RestMindmapInfo(@NotNull Mindmap mindmap, @Nullable Collaborator collaborator) {
+        this(mindmap, collaborator, null);
+    }
+
+    public RestMindmapInfo(@NotNull Mindmap mindmap, @Nullable Collaborator collaborator,
+                           @Nullable Collaboration userCollaboration) {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
+        this.userCollaboration = userCollaboration;
     }
 
     public void setCreationTime(String value) {
@@ -132,9 +140,12 @@ public class RestMindmapInfo {
     }
 
     public String getRole() {
-        final Account user = Utils.getUser();
-        final Optional<Collaboration> collaboration = mindmap.findCollaboration(user);
-        return  collaboration.map(value -> value.getRole().getLabel()).orElse(ROLE_NONE);
+        Collaboration collaboration = this.userCollaboration;
+        if (collaboration == null) {
+            final Account user = Utils.getUser();
+            collaboration = mindmap.findCollaboration(user).orElse(null);
+        }
+        return collaboration != null ? collaboration.getRole().getLabel() : ROLE_NONE;
     }
 
     public void setRole(String value) {
@@ -166,7 +177,13 @@ public class RestMindmapInfo {
     }
 
     public boolean getStarred() {
-        return mindmap.isStarred(collaborator);
+        if (userCollaboration != null && userCollaboration.getCollaborationProperties() != null) {
+            return userCollaboration.getCollaborationProperties().getStarred();
+        }
+        if (collaborator != null) {
+            return mindmap.isStarred(collaborator);
+        }
+        return false;
     }
 
     public void setStarred(boolean value) {

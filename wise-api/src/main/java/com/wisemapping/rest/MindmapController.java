@@ -162,12 +162,16 @@ public class MindmapController {
         final Account user = Utils.getUser(true);
 
         final MindmapFilter filter = MindmapFilter.parse(q);
+        final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
+        final Map<Integer, Collaboration> collaborationsByMap = collaborations.stream()
+                .collect(Collectors.toMap(c -> c.getMindMap().getId(), c -> c, (existing, ignored) -> existing));
+
         List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
         mindmaps = mindmaps
                 .stream()
-                .filter(m -> filter.accept(m, user)).toList();
+                .filter(m -> filter.accept(m, user, collaborationsByMap.get(m.getId()))).toList();
 
-        return new RestMindmapList(mindmaps, user);
+        return new RestMindmapList(mindmaps, user, collaborationsByMap);
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
