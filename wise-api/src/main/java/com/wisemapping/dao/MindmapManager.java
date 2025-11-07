@@ -402,14 +402,6 @@ public interface MindmapManager {
     List<Integer> findMindmapIdsByCreator(int userId, int offset, int limit);
 
     /**
-     * Find the last modification time for mindmaps created by a specific user
-     * @param userId the user ID
-     * @return the last modification time, or null if no mindmaps found
-     */
-    @Nullable
-    Calendar findLastModificationTimeByCreator(int userId);
-
-    /**
      * Remove history entries for a specific mindmap
      * @param mindmapId the mindmap ID
      * @return number of history entries removed

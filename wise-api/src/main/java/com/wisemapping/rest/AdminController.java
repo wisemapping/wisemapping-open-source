@@ -33,6 +33,8 @@ import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.MetricsService;
 import com.wisemapping.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,6 +55,11 @@ import java.lang.management.OperatingSystemMXBean;
 @RequestMapping("/api/restful/admin")
 @PreAuthorize("isAuthenticated() and hasRole('ROLE_ADMIN')")
 public class AdminController {
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static final int DEFAULT_PAGE_SIZE = 10;
+    private static final int MAX_PAGE_SIZE = 200;
+    private static final int MAX_PAGE_INDEX = 10_000;
+
     @Qualifier("userService")
     @Autowired
     private UserService userService;
@@ -102,9 +109,12 @@ public class AdminController {
             @RequestParam(value = "filterSuspended", required = false) Boolean filterSuspended,
             @RequestParam(value = "filterAuthType", required = false) String filterAuthType) {
         
+        final int safePage = sanitizePage(page);
+        final int safePageSize = sanitizePageSize(pageSize);
+        
         // Use optimized query that only adds filter conditions that are actually set
         final List<Account> users = userService.getUsersWithFilters(
-            search, filterActive, filterSuspended, filterAuthType, page, pageSize);
+            search, filterActive, filterSuspended, filterAuthType, safePage, safePageSize);
         final long totalElements = userService.countUsersWithFilters(
             search, filterActive, filterSuspended, filterAuthType);
         
@@ -112,7 +122,7 @@ public class AdminController {
                 .map(user -> new com.wisemapping.rest.model.AdminRestUser(user, isAdmin(user.getEmail())))
                 .collect(java.util.stream.Collectors.toList());
         
-        return new PaginatedResponse<>(restUsers, page, pageSize, totalElements);
+        return new PaginatedResponse<>(restUsers, safePage, safePageSize, totalElements);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
@@ -385,23 +395,28 @@ public class AdminController {
             @RequestParam(value = "filterLocked", required = false) Boolean filterLocked,
             @RequestParam(value = "filterSpam", required = false) Boolean filterSpam,
             @RequestParam(value = "dateFilter", defaultValue = "1") String dateFilter) {
+
+        final int safePage = sanitizePage(page);
+        final int safePageSize = sanitizePageSize(pageSize);
         
         if (search != null && !search.trim().isEmpty()) {
             // Search mindmaps - using optimized AdminRestMap DTO
-            final List<Mindmap> mindmaps = mindmapService.searchMindmaps(search, filterPublic, filterLocked, filterSpam, page, pageSize);
+            final List<Mindmap> mindmaps = mindmapService.searchMindmaps(
+                    search, filterPublic, filterLocked, filterSpam, safePage, safePageSize);
             final long totalElements = mindmapService.countMindmapsBySearch(search, filterPublic, filterLocked, filterSpam);
             final List<com.wisemapping.rest.model.AdminRestMap> restMaps = mindmaps.stream()
                     .map(com.wisemapping.rest.model.AdminRestMap::new)
                     .collect(java.util.stream.Collectors.toList());
-            return new PaginatedResponse<>(restMaps, page, pageSize, totalElements);
+            return new PaginatedResponse<>(restMaps, safePage, safePageSize, totalElements);
         } else {
             // Get all mindmaps with pagination and date filtering - using optimized AdminRestMap DTO
-            final List<Mindmap> mindmaps = mindmapService.getAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter, page, pageSize);
+            final List<Mindmap> mindmaps = mindmapService.getAllMindmaps(
+                    filterPublic, filterLocked, filterSpam, dateFilter, safePage, safePageSize);
             final long totalElements = mindmapService.countAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter);
             final List<com.wisemapping.rest.model.AdminRestMap> restMaps = mindmaps.stream()
                     .map(com.wisemapping.rest.model.AdminRestMap::new)
                     .collect(java.util.stream.Collectors.toList());
-            return new PaginatedResponse<>(restMaps, page, pageSize, totalElements);
+            return new PaginatedResponse<>(restMaps, safePage, safePageSize, totalElements);
         }
     }
 
@@ -670,5 +685,29 @@ public class AdminController {
         }
         
         return url;
+    }
+
+    private int sanitizePage(int requestedPage) {
+        if (requestedPage < 0) {
+            logger.warn("Admin API received negative page {}. Using 0 instead.", requestedPage);
+            return 0;
+        }
+        if (requestedPage > MAX_PAGE_INDEX) {
+            logger.warn("Admin API page {} exceeds configured limit {}. Using cap.", requestedPage, MAX_PAGE_INDEX);
+            return MAX_PAGE_INDEX;
+        }
+        return requestedPage;
+    }
+
+    private int sanitizePageSize(int requestedPageSize) {
+        if (requestedPageSize <= 0) {
+            logger.warn("Admin API received non-positive pageSize {}. Using default {}.", requestedPageSize, DEFAULT_PAGE_SIZE);
+            return DEFAULT_PAGE_SIZE;
+        }
+        if (requestedPageSize > MAX_PAGE_SIZE) {
+            logger.warn("Admin API pageSize {} exceeds configured limit {}. Using cap.", requestedPageSize, MAX_PAGE_SIZE);
+            return MAX_PAGE_SIZE;
+        }
+        return requestedPageSize;
     }
 }

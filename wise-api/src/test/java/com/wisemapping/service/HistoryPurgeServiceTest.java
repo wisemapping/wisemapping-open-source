@@ -31,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Calendar;
 import static org.junit.jupiter.api.Assertions.*;
@@ -133,6 +134,18 @@ public class HistoryPurgeServiceTest {
     void testGetBatchSize_ShouldReturnCorrectValue() {
         // Act & Assert
         assertEquals(100, historyPurgeService.getBatchSize());
+    }
+
+    @Test
+    void testBatchSizeClampedToSafeRange() {
+        ReflectionTestUtils.setField(historyPurgeService, "batchSize", 2_000);
+        assertEquals(500, historyPurgeService.getBatchSize());
+
+        ReflectionTestUtils.setField(historyPurgeService, "batchSize", 0);
+        assertEquals(1, historyPurgeService.getBatchSize());
+
+        // Reset to default for other tests
+        ReflectionTestUtils.setField(historyPurgeService, "batchSize", 100);
     }
 
     @Test

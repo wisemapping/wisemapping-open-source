@@ -24,6 +24,8 @@ import java.util.List;
 public class HistoryPurgeService {
 
     private static final Logger logger = LoggerFactory.getLogger(HistoryPurgeService.class);
+    private static final int MIN_BATCH_SIZE = 1;
+    private static final int MAX_BATCH_SIZE = 500;
 
     @Autowired
     private MindmapManager mindmapManager;
@@ -65,15 +67,16 @@ public class HistoryPurgeService {
             return 0;
         }
 
+        final int safeBatchSize = resolveBatchSize();
         // Log summary information at the beginning
         logger.info("Starting two-phase history cleanup - Phase 1: remove all history for maps {} to {} years old, Phase 2: limit history to {} entries for maps {} to {} years old, batch size: {}",
-                phase1UpperBoundaryYears, phase1LowerBoundaryYears, phase2MaxEntries, phase2UpperBoundaryYears, phase2LowerBoundaryYears, batchSize);
+                phase1UpperBoundaryYears, phase1LowerBoundaryYears, phase2MaxEntries, phase2UpperBoundaryYears, phase2LowerBoundaryYears, safeBatchSize);
 
         try {
             // Create context for the cleanup operation
             HistoryCleanupContext context = new HistoryCleanupContext(phase1LowerBoundaryYears,
                     phase1UpperBoundaryYears,
-                    phase2LowerBoundaryYears, phase2MaxEntries, batchSize);
+                    phase2LowerBoundaryYears, phase2MaxEntries, safeBatchSize);
 
             // Set up the chain of responsibility
             final AbstractHistoryCleanupHandler phase1Handler = new Phase1HistoryCleanupHandler(
@@ -160,7 +163,7 @@ public class HistoryPurgeService {
      * @return batch size
      */
     public int getBatchSize() {
-        return batchSize;
+        return clampBatchSize(false);
     }
 
     /**
@@ -250,5 +253,26 @@ public class HistoryPurgeService {
         }
 
         return 0; // No handler could process this mindmap
+    }
+
+    private int resolveBatchSize() {
+        return clampBatchSize(true);
+    }
+
+    private int clampBatchSize(boolean logAdjustments) {
+        int normalized = batchSize;
+        if (normalized < MIN_BATCH_SIZE) {
+            if (logAdjustments) {
+                logger.warn("History cleanup batch size {} is too small. Using minimum {}.", normalized, MIN_BATCH_SIZE);
+            }
+            normalized = MIN_BATCH_SIZE;
+        }
+        if (normalized > MAX_BATCH_SIZE) {
+            if (logAdjustments) {
+                logger.warn("History cleanup batch size {} exceeds safe limit {}. Using cap.", normalized, MAX_BATCH_SIZE);
+            }
+            normalized = MAX_BATCH_SIZE;
+        }
+        return normalized;
     }
 }

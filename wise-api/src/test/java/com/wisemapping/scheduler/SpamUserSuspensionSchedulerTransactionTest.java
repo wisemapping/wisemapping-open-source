@@ -26,6 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -174,6 +175,20 @@ public class SpamUserSuspensionSchedulerTransactionTest {
                        "Public spam ratio threshold should be between 0.0 and 1.0");
             assertTrue(spamUserSuspensionService.getMinAnySpamCount() >= 0, "Min any spam count should be valid");
         }, "Service configuration should be accessible and valid");
+    }
+
+    @Test
+    void testBatchSizeClampedToSafeRange() {
+        int original = spamUserSuspensionService.getBatchSize();
+        try {
+            ReflectionTestUtils.setField(spamUserSuspensionService, "batchSize", 5_000);
+            assertEquals(500, spamUserSuspensionService.getBatchSize(), "Batch size should be capped at safe max");
+
+            ReflectionTestUtils.setField(spamUserSuspensionService, "batchSize", 0);
+            assertEquals(1, spamUserSuspensionService.getBatchSize(), "Batch size should not drop below 1");
+        } finally {
+            ReflectionTestUtils.setField(spamUserSuspensionService, "batchSize", original);
+        }
     }
 
     @Test

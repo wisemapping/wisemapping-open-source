@@ -21,6 +21,7 @@ package com.wisemapping.service;
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.model.Account;
+import com.wisemapping.model.InactiveUserResult;
 import com.wisemapping.model.MindMapHistory;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SuspensionReason;
@@ -193,7 +194,8 @@ public class InactiveUserServiceTest {
             Calendar creationCutoffDate = Calendar.getInstance();
             creationCutoffDate.add(Calendar.YEAR, -1);
             
-            InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, creationCutoffDate, 0, 5);
+            List<InactiveUserResult> batch = userManager.findInactiveUsersWithActivity(cutoffDate, creationCutoffDate, 0, 5);
+            InactiveUserService.BatchResult result = inactiveUserService.processBatch(batch);
             assertNotNull(result, "Should return a valid result");
             assertTrue(result.processed >= 0, "Processed count should be non-negative");
             assertTrue(result.suspended >= 0, "Suspended count should be non-negative");
@@ -237,7 +239,8 @@ public class InactiveUserServiceTest {
             assertTrue(count >= 0, "Count should be non-negative");
             
             // Process a batch - this is where the error occurred
-            InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, creationCutoffDate, 0, 10);
+            List<InactiveUserResult> batch = userManager.findInactiveUsersWithActivity(cutoffDate, creationCutoffDate, 0, 10);
+            InactiveUserService.BatchResult result = inactiveUserService.processBatch(batch);
             
             // If we get here, the transaction fix worked!
             assertNotNull(result, "Should return a result");
@@ -403,7 +406,8 @@ public class InactiveUserServiceTest {
         creationCutoffDate.add(Calendar.MONTH, -10); // 2.8 years ago
         
         // This should NOT throw TransactionRequiredException because we're in a transactional context
-        InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, creationCutoffDate, 0, 5);
+        List<InactiveUserResult> batch = userManager.findInactiveUsersWithActivity(cutoffDate, creationCutoffDate, 0, 5);
+        InactiveUserService.BatchResult result = inactiveUserService.processBatch(batch);
         
         // Verify the user was processed and suspended
         assertEquals(1, result.processed, "Should process exactly 1 inactive user");
@@ -497,7 +501,8 @@ public class InactiveUserServiceTest {
         creationCutoffDate.add(Calendar.YEAR, -1);
         
         // Process inactive users (should actually suspend since dryRun=false)
-        InactiveUserService.BatchResult result = inactiveUserService.processBatch(cutoffDate, creationCutoffDate, 0, 5);
+        List<InactiveUserResult> batch = userManager.findInactiveUsersWithActivity(cutoffDate, creationCutoffDate, 0, 5);
+        InactiveUserService.BatchResult result = inactiveUserService.processBatch(batch);
 
         // Verify result - should process the 2 inactive users we created
         assertEquals(2, result.processed, "Should process exactly 2 inactive users");

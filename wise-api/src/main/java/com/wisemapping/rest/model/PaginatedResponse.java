@@ -39,13 +39,15 @@ public class PaginatedResponse<T> {
     }
     
     public PaginatedResponse(List<T> data, int page, int pageSize, long totalElements) {
-        this.data = data;
-        this.page = page;
-        this.pageSize = pageSize;
-        this.totalElements = totalElements;
-        this.totalPages = (int) Math.ceil((double) totalElements / pageSize);
-        this.hasNext = page < totalPages - 1;
-        this.hasPrevious = page > 0;
+        this.data = data != null ? data : new java.util.ArrayList<>();
+        this.page = Math.max(page, 0);
+        this.pageSize = pageSize > 0 ? pageSize : 1;
+        this.totalElements = Math.max(totalElements, 0);
+        this.totalPages = this.pageSize == 0
+                ? 0
+                : (int) Math.ceil((double) this.totalElements / this.pageSize);
+        this.hasNext = this.page < totalPages - 1;
+        this.hasPrevious = this.page > 0;
     }
     
     public List<T> getData() {

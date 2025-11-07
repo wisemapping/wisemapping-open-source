@@ -39,6 +39,8 @@ import java.util.List;
 public class SpamUserSuspensionService {
 
     private static final Logger logger = LoggerFactory.getLogger(SpamUserSuspensionService.class);
+    private static final int MIN_BATCH_SIZE = 1;
+    private static final int MAX_BATCH_SIZE = 500;
 
     @Autowired
     private MindmapManager mindmapManager;
@@ -80,6 +82,7 @@ public class SpamUserSuspensionService {
             return;
         }
 
+        final int safeBatchSize = resolveBatchSize();
         try {
             long totalUsersPublicSpamRatio = getTotalUsersWithPublicSpamRatio();
             long totalUsersAnySpam = getTotalUsersWithAnySpam();
@@ -103,7 +106,7 @@ public class SpamUserSuspensionService {
                 "  → Batch Size: {}\n" +
                 "════════════════════════════════════════════════════════════════",
                 totalUsersPublicSpamRatio, totalUsersAnySpam, monthsBack, 
-                (int)(publicSpamRatioThreshold * 100), minAnySpamCount, batchSize);
+                (int)(publicSpamRatioThreshold * 100), minAnySpamCount, safeBatchSize);
 
             int suspendedCountPublicRatio = 0;
             int suspendedCountAny = 0;
@@ -111,11 +114,11 @@ public class SpamUserSuspensionService {
             // Process Condition 1: Users with >= 75% public spam ratio
             logger.info("\n▶ Processing Condition 1: Users with >= {}% public spam ratio", 
                 (int)(publicSpamRatioThreshold * 100));
-            suspendedCountPublicRatio = processPublicSpamRatioCondition(totalUsersPublicSpamRatio);
+            suspendedCountPublicRatio = processPublicSpamRatioCondition(totalUsersPublicSpamRatio, safeBatchSize);
 
             // Process Condition 2: Users with 6+ spam maps (any visibility)
             logger.info("\n▶ Processing Condition 2: Users with >= {} spam maps (any visibility)", minAnySpamCount);
-            suspendedCountAny = processAnySpamCondition(totalUsersAnySpam);
+            suspendedCountAny = processAnySpamCondition(totalUsersAnySpam, safeBatchSize);
 
             int totalSuspended = suspendedCountPublicRatio + suspendedCountAny;
 
@@ -156,7 +159,7 @@ public class SpamUserSuspensionService {
      * @param totalUsers total number of users to process
      * @return number of users suspended
      */
-    private int processPublicSpamRatioCondition(long totalUsers) {
+    private int processPublicSpamRatioCondition(long totalUsers, int effectiveBatchSize) {
         int suspendedCount = 0;
         int offset = 0;
         int batchNumber = 0;
@@ -165,10 +168,10 @@ public class SpamUserSuspensionService {
         while (offset < totalUsers) {
             try {
                 batchNumber++;
-                logger.info("Processing {} batch #{} (offset: {}, size: {})", conditionName, batchNumber, offset, batchSize);
+                logger.info("Processing {} batch #{} (offset: {}, size: {})", conditionName, batchNumber, offset, effectiveBatchSize);
                 
                 List<SpamRatioUserResult> users = mindmapManager.findUsersWithHighPublicSpamRatio(
-                    publicSpamRatioThreshold, monthsBack, offset, batchSize);
+                    publicSpamRatioThreshold, monthsBack, offset, effectiveBatchSize);
                 
                 int batchSuspendedCount = processRatioBatch(users, conditionName);
                 suspendedCount += batchSuspendedCount;
@@ -179,11 +182,11 @@ public class SpamUserSuspensionService {
                 
                 // Note: We continue even if batchSuspendedCount == 0 because later batches might have unsuspended users
 
-                offset += batchSize;
+                offset += effectiveBatchSize;
             } catch (Exception e) {
                 logger.error("Error processing {} batch #{} at offset {}: {}", conditionName, batchNumber, offset, e.getMessage(), e);
                 // Continue with next batch instead of failing completely
-                offset += batchSize;
+                offset += effectiveBatchSize;
             }
         }
 
@@ -196,7 +199,7 @@ public class SpamUserSuspensionService {
      * @param totalUsers total number of users to process
      * @return number of users suspended
      */
-    private int processAnySpamCondition(long totalUsers) {
+    private int processAnySpamCondition(long totalUsers, int effectiveBatchSize) {
         int suspendedCount = 0;
         int offset = 0;
         int batchNumber = 0;
@@ -205,10 +208,10 @@ public class SpamUserSuspensionService {
         while (offset < totalUsers) {
             try {
                 batchNumber++;
-                logger.info("Processing {} batch #{} (offset: {}, size: {})", conditionName, batchNumber, offset, batchSize);
+                logger.info("Processing {} batch #{} (offset: {}, size: {})", conditionName, batchNumber, offset, effectiveBatchSize);
                 
                 List<SpamUserResult> users = mindmapManager.findUsersWithAnySpamMaps(
-                    minAnySpamCount, monthsBack, offset, batchSize);
+                    minAnySpamCount, monthsBack, offset, effectiveBatchSize);
                 
                 int batchSuspendedCount = processBatch(users, conditionName);
                 suspendedCount += batchSuspendedCount;
@@ -219,11 +222,11 @@ public class SpamUserSuspensionService {
                 
                 // Note: We continue even if batchSuspendedCount == 0 because later batches might have unsuspended users
 
-                offset += batchSize;
+                offset += effectiveBatchSize;
             } catch (Exception e) {
                 logger.error("Error processing {} batch #{} at offset {}: {}", conditionName, batchNumber, offset, e.getMessage(), e);
                 // Continue with next batch instead of failing completely
-                offset += batchSize;
+                offset += effectiveBatchSize;
             }
         }
 
@@ -445,7 +448,7 @@ public class SpamUserSuspensionService {
      * Get the batch size configuration
      */
     public int getBatchSize() {
-        return batchSize;
+        return clampBatchSize(false);
     }
 
     /**
@@ -493,23 +496,24 @@ public class SpamUserSuspensionService {
 
             int suspendedCount = 0;
             int offset = 0;
+            final int safeBatchSize = resolveBatchSize();
 
             while (offset < totalUsers) {
                 try {
-                    int batchSuspendedCount = processSpamTypeBatch(spamTypeCodes, monthsBack, offset, batchSize, suspensionReason);
+                    int batchSuspendedCount = processSpamTypeBatch(spamTypeCodes, monthsBack, offset, safeBatchSize, suspensionReason);
                     suspendedCount += batchSuspendedCount;
 
                     if (batchSuspendedCount == 0) {
                         break; // No more users to process
                     }
 
-                    offset += batchSize;
+                    offset += safeBatchSize;
                     logger.debug("Processed batch: offset={}, batchSize={}, totalSuspended={}",
-                        offset - batchSize, batchSize, suspendedCount);
+                        offset - safeBatchSize, safeBatchSize, suspendedCount);
                 } catch (Exception e) {
                     logger.error("Error processing spam type batch at offset {}: {}", offset, e.getMessage(), e);
                     // Continue with next batch instead of failing completely
-                    offset += batchSize;
+                    offset += safeBatchSize;
                 }
             }
 
@@ -590,5 +594,26 @@ public class SpamUserSuspensionService {
                 throw e;
             }
         });
+    }
+
+    private int resolveBatchSize() {
+        return clampBatchSize(true);
+    }
+
+    private int clampBatchSize(boolean logAdjustments) {
+        int normalized = batchSize;
+        if (normalized < MIN_BATCH_SIZE) {
+            if (logAdjustments) {
+                logger.warn("Spam user suspension batch size {} is too small. Using minimum {}.", normalized, MIN_BATCH_SIZE);
+            }
+            normalized = MIN_BATCH_SIZE;
+        }
+        if (normalized > MAX_BATCH_SIZE) {
+            if (logAdjustments) {
+                logger.warn("Spam user suspension batch size {} exceeds safe limit {}. Using cap.", normalized, MAX_BATCH_SIZE);
+            }
+            normalized = MAX_BATCH_SIZE;
+        }
+        return normalized;
     }
 }

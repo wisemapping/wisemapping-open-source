@@ -292,4 +292,16 @@ class SpamDetectionBatchServiceUnitTest {
         // Act & Assert
         assertEquals(1, spamDetectionBatchService.getCurrentSpamDetectionVersion());
     }
+
+    @Test
+    void testBatchSizeClampedToMax() {
+        ReflectionTestUtils.setField(spamDetectionBatchService, "batchSize", 2000);
+        assertEquals(500, spamDetectionBatchService.getBatchSize());
+    }
+
+    @Test
+    void testBatchSizeClampedToMin() {
+        ReflectionTestUtils.setField(spamDetectionBatchService, "batchSize", 0);
+        assertEquals(1, spamDetectionBatchService.getBatchSize());
+    }
 }

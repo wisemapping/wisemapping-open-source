@@ -18,6 +18,8 @@
 
 package com.wisemapping.test.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.rest.model.RestMap;
 import com.wisemapping.rest.model.RestUser;
@@ -49,6 +51,7 @@ public class AdminControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     public void testGetAllUsers_AdminAccess_Success() {
@@ -661,6 +664,26 @@ public class AdminControllerTest {
         // Should be either 401 (unauthorized) or 403 (forbidden)
         assertTrue(response.getStatusCode() == HttpStatus.UNAUTHORIZED || 
                   response.getStatusCode() == HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    public void testGetAllUsers_PageSizeClamped() throws Exception {
+        ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .getForEntity("/api/restful/admin/users?page=0&pageSize=1000", String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        JsonNode root = objectMapper.readTree(response.getBody());
+        assertEquals(200, root.get("pageSize").asInt());
+    }
+
+    @Test
+    public void testGetAllMaps_PageSizeClamped() throws Exception {
+        ResponseEntity<String> response = restTemplate.withBasicAuth(ADMIN_USER, ADMIN_PASSWORD)
+                .getForEntity("/api/restful/admin/maps?page=0&pageSize=5000", String.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        JsonNode root = objectMapper.readTree(response.getBody());
+        assertEquals(200, root.get("pageSize").asInt());
     }
 
     @Test
