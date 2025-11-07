@@ -244,8 +244,11 @@ public class MindmapManagerImpl
         
         // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
         root.fetch("creator", JoinType.LEFT);
+        root.fetch("collaborations", JoinType.LEFT);
+        root.fetch("labels", JoinType.LEFT);
+        root.fetch("spamInfo", JoinType.LEFT);
         
-        cq.select(root).where(cb.equal(root.get("id"), id));
+        cq.select(root).distinct(true).where(cb.equal(root.get("id"), id));
         
         final TypedQuery<Mindmap> query = entityManager.createQuery(cq);
         final List<Mindmap> results = query.getResultList();
@@ -262,8 +265,12 @@ public class MindmapManagerImpl
         
         // JOIN FETCH creator to load Account directly, avoiding proxy narrowing
         root.fetch("creator", JoinType.LEFT);
+        root.fetch("collaborations", JoinType.LEFT);
+        root.fetch("labels", JoinType.LEFT);
+        root.fetch("spamInfo", JoinType.LEFT);
         
         cq.select(root)
+          .distinct(true)
           .where(cb.and(
               cb.equal(root.get("title"), title),
               cb.equal(root.get("creator"), user)
