@@ -20,6 +20,7 @@ package com.wisemapping.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.LazyGroup;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -66,7 +67,9 @@ public class InactiveMindmap implements Serializable {
     private String title;
 
     @Column(name = "xml")
+    @Lob
     @Basic(fetch = FetchType.LAZY)
+    @LazyGroup("xmlContent")
     @JsonIgnore
     private byte[] zippedXml;
 

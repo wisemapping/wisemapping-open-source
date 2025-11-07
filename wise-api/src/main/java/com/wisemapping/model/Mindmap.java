@@ -24,6 +24,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.util.ZipUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyGroup;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.jetbrains.annotations.NotNull;
@@ -92,7 +93,7 @@ public class Mindmap implements Serializable {
     private MindmapSpamInfo spamInfo;
 
     @OneToMany(mappedBy = "mindMap", orphanRemoval = true, cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
+    @Fetch(FetchMode.SUBSELECT)
     @JsonIgnore
     private Set<Collaboration> collaborations = new HashSet<>();
 
@@ -108,7 +109,9 @@ public class Mindmap implements Serializable {
     private String title;
 
     @Column(name = "xml")
+    @Lob
     @Basic(fetch = FetchType.LAZY)
+    @LazyGroup("xmlContent")
     @JsonIgnore
     private byte[] zippedXml;
 

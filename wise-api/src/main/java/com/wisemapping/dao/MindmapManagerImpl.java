@@ -1275,7 +1275,6 @@ public class MindmapManagerImpl
         root.fetch("creator", JoinType.LEFT);
         root.fetch("spamInfo", JoinType.LEFT);
         root.fetch("lastEditor", JoinType.LEFT);
-        root.fetch("collaborations", JoinType.LEFT);
         
         // Apply spam filter if provided - need to join again for WHERE clause
         if (filterSpam != null) {
@@ -1329,8 +1328,7 @@ public class MindmapManagerImpl
         StringBuilder queryString = new StringBuilder(
             "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
             "LEFT JOIN FETCH m.spamInfo s " +
-            "LEFT JOIN FETCH m.lastEditor le " +
-            "LEFT JOIN FETCH m.collaborations col WHERE 1=1");
+            "LEFT JOIN FETCH m.lastEditor le WHERE 1=1");
         
         if (filterPublic != null) {
             if (filterPublic) {
@@ -1439,8 +1437,7 @@ public class MindmapManagerImpl
         StringBuilder queryString = new StringBuilder(
             "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
             "LEFT JOIN FETCH m.spamInfo s " +
-            "LEFT JOIN FETCH m.lastEditor le " +
-            "LEFT JOIN FETCH m.collaborations col ");
+            "LEFT JOIN FETCH m.lastEditor le ");
         
         // Handle special search patterns
         boolean isIdSearch = false;

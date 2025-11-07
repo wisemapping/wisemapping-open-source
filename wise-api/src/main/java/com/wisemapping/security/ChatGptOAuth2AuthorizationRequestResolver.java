@@ -1,6 +1,7 @@
 package com.wisemapping.security;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -8,19 +9,19 @@ import org.springframework.security.oauth2.client.web.DefaultOAuth2Authorization
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 
 /**
  * Custom OAuth2 Authorization Request Resolver for ChatGPT integration.
  * 
- * Detects when ChatGPT parameters are provided and stores them in the
- * OAuth2AuthorizationRequest's additionalParameters. Spring Security
- * automatically persists this to session.
+ * Detects when ChatGPT parameters are provided and stores them in the HTTP session
+ * with a short reference ID in the state parameter. This prevents the state parameter
+ * from exceeding Google OAuth's size limit (~2KB).
  */
 public class ChatGptOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
     
     private static final Logger logger = LogManager.getLogger();
+    private static final String CHATGPT_PARAMS_SESSION_PREFIX = "CHATGPT_PARAMS_";
     private final OAuth2AuthorizationRequestResolver defaultResolver;
     
     public ChatGptOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
@@ -56,18 +57,25 @@ public class ChatGptOAuth2AuthorizationRequestResolver implements OAuth2Authoriz
         if (chatgptParams != null && !chatgptParams.isEmpty()) {
             logger.debug("ChatGPT params detected in OAuth request");
             
-            // Encode ChatGPT params INTO Spring's state parameter
-            // Format: CHATGPT:<chatgpt-params>:<spring-original-state>
-            // This way we don't rely on session persistence!
+            // Generate a short reference ID for the session
+            String referenceId = UUID.randomUUID().toString();
+            
+            // Store ChatGPT params in session with the reference ID
+            HttpSession session = request.getSession(true);
+            String sessionKey = CHATGPT_PARAMS_SESSION_PREFIX + referenceId;
+            session.setAttribute(sessionKey, chatgptParams);
+            logger.debug("Stored ChatGPT params in session with key: {}", sessionKey);
+            
+            // Use a short state format: CHATGPT:<reference-id>:<spring-original-state>
             String originalState = authorizationRequest.getState();
-            String enhancedState = "CHATGPT:" + chatgptParams + ":" + originalState;
+            String enhancedState = "CHATGPT:" + referenceId + ":" + originalState;
             
             authorizationRequest = OAuth2AuthorizationRequest
                 .from(authorizationRequest)
                 .state(enhancedState)
                 .build();
             
-            logger.info("ChatGPT OAuth request - encoded params into state (stateless)");
+            logger.info("ChatGPT OAuth request - stored params in session, state size: {} chars", enhancedState.length());
         }
         
         return authorizationRequest;

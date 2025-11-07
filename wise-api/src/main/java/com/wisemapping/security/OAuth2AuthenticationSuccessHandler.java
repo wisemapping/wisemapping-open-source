@@ -103,8 +103,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             String state = request.getParameter("state");
             String redirectUrl;
             
-            // Extract ChatGPT parameters from enhanced state parameter
-            // Format: CHATGPT:<chatgpt-params>:<spring-original-state>
+            // Extract ChatGPT parameters from session using reference ID in state
+            // Format: CHATGPT:<reference-id>:<spring-original-state>
             String chatgptParams = null;
             if (state != null && state.startsWith("CHATGPT:")) {
                 logger.debug("Detected ChatGPT OAuth flow from state parameter");
@@ -113,11 +113,23 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                     int lastColon = withoutPrefix.lastIndexOf(':');
                     
                     if (lastColon > 0) {
-                        chatgptParams = withoutPrefix.substring(0, lastColon);
-                        logger.debug("Extracted ChatGPT params from enhanced state");
+                        String referenceId = withoutPrefix.substring(0, lastColon);
+                        logger.debug("Extracting ChatGPT params from session using reference ID: {}", referenceId);
+                        
+                        // Retrieve from session
+                        String sessionKey = "CHATGPT_PARAMS_" + referenceId;
+                        chatgptParams = (String) request.getSession().getAttribute(sessionKey);
+                        
+                        if (chatgptParams != null) {
+                            logger.debug("Successfully retrieved ChatGPT params from session");
+                            // Clean up session
+                            request.getSession().removeAttribute(sessionKey);
+                        } else {
+                            logger.warn("ChatGPT params not found in session for reference ID: {}", referenceId);
+                        }
                     }
                 } catch (Exception e) {
-                    logger.error("Error parsing enhanced state: {}", e.getMessage());
+                    logger.error("Error extracting ChatGPT params from session: {}", e.getMessage());
                 }
             }
             
