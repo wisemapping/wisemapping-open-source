@@ -97,9 +97,13 @@ public class InactiveUserService {
         int totalSuspended = 0;
         int offset = 0;
 
-        List<InactiveUserResult> inactiveUsers;
-        do {
-            BatchResult result = processBatch(cutoffDate, creationCutoffDate, offset, batchSize);
+        while (true) {
+            List<InactiveUserResult> inactiveUsers = userManager.findInactiveUsersWithActivity(cutoffDate, creationCutoffDate, offset, batchSize);
+            if (inactiveUsers.isEmpty()) {
+                break;
+            }
+
+            BatchResult result = processBatch(inactiveUsers);
             totalProcessed += result.processed;
             totalSuspended += result.suspended;
 
@@ -108,10 +112,10 @@ public class InactiveUserService {
                 offset += batchSize;
             }
 
-            // Check if there are more users to process using optimized query
-            inactiveUsers = userManager.findInactiveUsersWithActivity(cutoffDate, creationCutoffDate, offset, batchSize);
-
-        } while (inactiveUsers.size() == batchSize);
+            if (inactiveUsers.size() < batchSize) {
+                break;
+            }
+        }
 
         logger.info("Inactive user suspension process completed - Total processed: {}, Total suspended: {}",
                 totalProcessed, totalSuspended);
@@ -122,9 +126,7 @@ public class InactiveUserService {
     }
 
     @Transactional
-    public BatchResult processBatch(Calendar cutoffDate, Calendar creationCutoffDate, int offset, int batchSize) {
-        // Use optimized query that gets all data in one go
-        List<InactiveUserResult> inactiveUsers = userManager.findInactiveUsersWithActivity(cutoffDate, creationCutoffDate, offset, batchSize);
+    public BatchResult processBatch(List<InactiveUserResult> inactiveUsers) {
         int batchProcessed = 0;
         int batchSuspended = 0;
 

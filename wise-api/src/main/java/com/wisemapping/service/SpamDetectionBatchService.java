@@ -38,6 +38,8 @@ import java.util.List;
 public class SpamDetectionBatchService {
 
     private static final Logger logger = LoggerFactory.getLogger(SpamDetectionBatchService.class);
+    private static final int MIN_BATCH_SIZE = 1;
+    private static final int MAX_BATCH_SIZE = 500;
 
     @Autowired
     private MindmapManager mindmapManager;
@@ -72,6 +74,7 @@ public class SpamDetectionBatchService {
             return;
         }
 
+        final int safeBatchSize = resolveBatchSize();
         logger.info("Starting spam detection batch task for public maps created since {} months ago", monthsBack);
 
         try {
@@ -81,7 +84,8 @@ public class SpamDetectionBatchService {
 
             // Get total count for logging
             long totalMaps = getTotalMapsCount(cutoffDate);
-            logger.info("Starting spam detection for {} public maps created since {} in batches of {} (current version: {})", totalMaps, cutoffDate.getTime(), batchSize, currentSpamDetectionVersion);
+            logger.info("Starting spam detection for {} public maps created since {} in batches of {} (current version: {})",
+                    totalMaps, cutoffDate.getTime(), safeBatchSize, currentSpamDetectionVersion);
 
             int processedCount = 0;
             int spamDetectedCount = 0;
@@ -90,7 +94,7 @@ public class SpamDetectionBatchService {
             // Process maps in batches, each batch in its own transaction
             while (offset < totalMaps) {
                 try {
-                    BatchResult result = processBatch(cutoffDate, offset, batchSize);
+                    BatchResult result = processBatch(cutoffDate, offset, safeBatchSize);
                     processedCount += result.processedCount;
                     spamDetectedCount += result.spamDetectedCount;
 
@@ -98,13 +102,13 @@ public class SpamDetectionBatchService {
                         break; // No more maps to process
                     }
 
-                    offset += batchSize;
+                    offset += safeBatchSize;
                     logger.debug("Processed batch: offset={}, batchSize={}, totalProcessed={}",
-                            offset - batchSize, batchSize, processedCount);
+                            offset - safeBatchSize, safeBatchSize, processedCount);
                 } catch (Exception e) {
                     logger.error("Error processing batch at offset {}: {}", offset, e.getMessage(), e);
                     // Continue with next batch instead of failing completely
-                    offset += batchSize;
+                    offset += safeBatchSize;
                 }
             }
 
@@ -224,7 +228,7 @@ public class SpamDetectionBatchService {
      * Get the batch size configuration
      */
     public int getBatchSize() {
-        return batchSize;
+        return clampBatchSize(false);
     }
 
     /**
@@ -232,5 +236,26 @@ public class SpamDetectionBatchService {
      */
     public int getCurrentSpamDetectionVersion() {
         return currentSpamDetectionVersion;
+    }
+
+    private int resolveBatchSize() {
+        return clampBatchSize(true);
+    }
+
+    private int clampBatchSize(boolean logAdjustments) {
+        int normalized = batchSize;
+        if (normalized < MIN_BATCH_SIZE) {
+            if (logAdjustments) {
+                logger.warn("Spam detection batch size {} is too small. Using minimum {}.", normalized, MIN_BATCH_SIZE);
+            }
+            normalized = MIN_BATCH_SIZE;
+        }
+        if (normalized > MAX_BATCH_SIZE) {
+            if (logAdjustments) {
+                logger.warn("Spam detection batch size {} exceeds safe limit {}. Using cap.", normalized, MAX_BATCH_SIZE);
+            }
+            normalized = MAX_BATCH_SIZE;
+        }
+        return normalized;
     }
 }

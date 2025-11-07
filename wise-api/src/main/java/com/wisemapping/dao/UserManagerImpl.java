@@ -61,8 +61,6 @@ public class UserManagerImpl
     private InactiveMindmapMigrationService inactiveMindmapMigrationService;
     @Autowired
     private MetricsService metricsService;
-    @Autowired
-    private MindmapManager mindmapManager;
 
     public UserManagerImpl() {
     }
@@ -470,10 +468,13 @@ public class UserManagerImpl
 
     @Override
     public List<InactiveUserResult> findInactiveUsersWithActivity(Calendar cutoffDate, Calendar creationCutoffDate, int offset, int limit) {
-        // Use a simpler approach that doesn't require complex GROUP BY
-        // First get inactive users, then get their activity in separate queries
-        final TypedQuery<Account> userQuery = entityManager.createQuery(
-            "SELECT a FROM com.wisemapping.model.Account a " +
+        final TypedQuery<InactiveUserResult> query = entityManager.createQuery(
+            "SELECT new com.wisemapping.model.InactiveUserResult(" +
+            "    a," +
+            "    (SELECT MAX(aa.loginDate) FROM com.wisemapping.model.AccessAuditory aa WHERE aa.user.id = a.id)," +
+            "    (SELECT MAX(m.lastModificationTime) FROM com.wisemapping.model.Mindmap m WHERE m.creator.id = a.id)" +
+            ") " +
+            "FROM com.wisemapping.model.Account a " +
             "WHERE a.suspended = false " +
             "  AND a.activationDate IS NOT NULL " +
             "  AND a.creationDate <= :creationCutoffDate " +
@@ -485,24 +486,14 @@ public class UserManagerImpl
             "      SELECT DISTINCT m.creator.id FROM com.wisemapping.model.Mindmap m " +
             "      WHERE m.lastModificationTime >= :cutoffDate" +
             "  ) " +
-            "ORDER BY a.id", 
-            Account.class);
+            "ORDER BY a.id",
+            InactiveUserResult.class);
         
-        userQuery.setParameter("cutoffDate", cutoffDate);
-        userQuery.setParameter("creationCutoffDate", creationCutoffDate);
-        userQuery.setFirstResult(offset);
-        userQuery.setMaxResults(limit);
-        
-        List<Account> inactiveUsers = userQuery.getResultList();
-        
-        // Get activity data for each user
-        return inactiveUsers.stream()
-                .map(user -> {
-                    Calendar lastLogin = findLastLoginDate(user.getId());
-                    Calendar lastActivity = mindmapManager.findLastModificationTimeByCreator(user.getId());
-                    return new InactiveUserResult(user, lastLogin, lastActivity);
-                })
-                .collect(java.util.stream.Collectors.toList());
+        query.setParameter("cutoffDate", cutoffDate);
+        query.setParameter("creationCutoffDate", creationCutoffDate);
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+        return query.getResultList();
     }
 
     @Override

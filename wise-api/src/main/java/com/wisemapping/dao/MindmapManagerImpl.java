@@ -1638,25 +1638,6 @@ public class MindmapManagerImpl
     }
 
     @Override
-    @Nullable
-    public Calendar findLastModificationTimeByCreator(int userId) {
-        try {
-            // Use Criteria API for type-safe query with aggregation
-            final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            final CriteriaQuery<Calendar> cq = cb.createQuery(Calendar.class);
-            final Root<Mindmap> root = cq.from(Mindmap.class);
-            final jakarta.persistence.criteria.Join<Mindmap, Account> creatorJoin = root.join("creator", JoinType.INNER);
-            
-            cq.select(cb.greatest(root.get("lastModificationTime").as(Calendar.class)))
-              .where(cb.equal(creatorJoin.get("id"), userId));
-            
-            return entityManager.createQuery(cq).getSingleResult();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
     @Transactional
     public int removeHistoryByMindmapId(int mindmapId) {
         final Query query = entityManager.createQuery(
