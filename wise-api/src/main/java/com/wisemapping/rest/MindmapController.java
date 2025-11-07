@@ -749,14 +749,6 @@ public class MindmapController {
         // Add new mindmap ...
         mindmapService.addMindmap(mindmap, user);
 
-        // Defensive check: ensure mindmap was properly persisted with a valid ID
-        // This should never happen with IDENTITY strategy, but serves as a safety net
-        if (mindmap.getId() <= 0) {
-            logger.error("Mindmap creation failed: invalid ID {} assigned after persist/flush. User: {}, Title: {}", 
-                    mindmap.getId(), user.getEmail(), mindmap.getTitle());
-            throw new WiseMappingException("Failed to create mindmap: database error occurred. Please try again.");
-        }
-
         // Track mindmap creation
         metricsService.trackMindmapCreation(mindmap, user, "new");
 
