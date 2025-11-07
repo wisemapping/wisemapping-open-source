@@ -164,7 +164,7 @@ docker run -d -p 80:80 \
 
 All configurations support environment-based configuration:
 
-- **JAVA_OPTS**: JVM options (e.g., `-Xmx1024m`)
+- **JAVA_OPTS**: JVM options (defaults to `-XX:InitialRAMPercentage=60 -XX:MaxRAMPercentage=70`; override to customize)
 - **SPRING_CONFIG_ADDITIONAL_FILE_CONTENT**: Spring Boot YAML configuration
 - **NEW_RELIC_OPTS**: New Relic agent options (if enabled at build time)
 - **NEW_RELIC_CONFIG_FILE_CONTENT**: New Relic configuration
