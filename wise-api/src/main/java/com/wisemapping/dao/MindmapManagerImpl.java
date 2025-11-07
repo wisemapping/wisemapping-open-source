@@ -1349,6 +1349,7 @@ public class MindmapManagerImpl
     public List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
             "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN FETCH m.creator creator " +
             "LEFT JOIN FETCH m.spamInfo s " +
             "LEFT JOIN FETCH m.lastEditor le WHERE 1=1");
         
@@ -1458,6 +1459,7 @@ public class MindmapManagerImpl
     public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
             "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
+            "LEFT JOIN FETCH m.creator creator " +
             "LEFT JOIN FETCH m.spamInfo s " +
             "LEFT JOIN FETCH m.lastEditor le ");
         
