@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -185,12 +186,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserCouldNotBeAuthException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ResponseBody
-    public RestErrors handleUserCouldNotBeAuthException(@NotNull UserCouldNotBeAuthException ex) {
+    public ResponseEntity<RestErrors> handleUserCouldNotBeAuthException(@NotNull UserCouldNotBeAuthException ex) {
         logger.debug("Authentication failed: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
-        return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
+        RestErrors error = new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(error);
     }
 
     @ExceptionHandler(AccountDisabledException.class)

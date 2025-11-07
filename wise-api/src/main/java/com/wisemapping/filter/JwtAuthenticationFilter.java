@@ -52,7 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 } catch (UsernameNotFoundException e) {
-                    logger.trace("User " + email.get() + " could not be found");
+                    // User from token doesn't exist - log warning but let Spring Security handle authorization
+                    // This allows @PreAuthorize to properly reject the request
+                    logger.warn("JWT token contains email for non-existent user: {}. Request will be rejected by authorization checks.", email.get());
+                    // Don't set authentication - Spring Security will handle the authorization failure
                 }
             }
         }
