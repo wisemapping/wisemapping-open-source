@@ -172,6 +172,61 @@ public class RestMindmapControllerTest {
                 "Mindmap listing should not rely on Collaboration.findByCollaboratorId per mindmap.");
     }
 
+    @Test
+    public void adminBulkMindmapListingAvoidsCollaborationStorm() {
+        final Account owner = userService.getUserBy(user.getEmail());
+        assertNotNull(owner, "Owner account must exist");
+
+        createBulkMindmaps(owner, BULK_MAP_COUNT, LABELS_PER_MAP);
+
+        final SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+        final Statistics statistics = sessionFactory.getStatistics();
+        statistics.setStatisticsEnabled(true);
+        statistics.clear();
+
+        final int requestedPageSize = 200;
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate adminTemplate = this.restTemplate.withBasicAuth("admin@wisemapping.org", "testAdmin123");
+        final HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
+
+        final ResponseEntity<PaginatedResponse<AdminRestMap>> response = adminTemplate.exchange(
+                "/api/restful/admin/maps?page=0&pageSize=" + requestedPageSize,
+                HttpMethod.GET,
+                requestEntity,
+                new org.springframework.core.ParameterizedTypeReference<PaginatedResponse<AdminRestMap>>() {});
+
+        assertTrue(response.getStatusCode().is2xxSuccessful(), "Admin map listing should succeed");
+        final PaginatedResponse<AdminRestMap> body = response.getBody();
+        assertNotNull(body, "Admin listing response body must not be null");
+
+        final long createdMaps = body.getData()
+                .stream()
+                .filter(m -> m.getTitle() != null && m.getTitle().startsWith(BULK_MAP_TITLE_PREFIX))
+                .count();
+
+        final long expectedPageMatches = Math.min(BULK_MAP_COUNT, requestedPageSize);
+        assertTrue(createdMaps >= expectedPageMatches,
+                "Admin endpoint should retrieve at least " + expectedPageMatches + " generated mindmaps on the first page");
+        assertTrue(body.getTotalElements() >= BULK_MAP_COUNT,
+                "Admin listing should report the generated mindmaps in the total count");
+
+        final long executedStatements = statistics.getPrepareStatementCount();
+        final long entityFetches = statistics.getEntityFetchCount();
+        final long collectionFetches = statistics.getCollectionFetchCount();
+        final long loadCount = statistics.getEntityLoadCount();
+
+        assertTrue(executedStatements <= MAX_EXPECTED_QUERIES_FOR_LISTING,
+                "Admin listing should not trigger excessive SQL statements.\n" +
+                        "Executed: " + executedStatements +
+                        ", entityFetches: " + entityFetches +
+                        ", collectionFetches: " + collectionFetches +
+                        ", entityLoadCount: " + loadCount);
+
+        final long collabQueryExecutions = getNamedQueryExecutionCount(statistics, COLLAB_BY_USER_NAMED_QUERY);
+        assertEquals(0, collabQueryExecutions,
+                "Admin mindmap listing should not rely on Collaboration.findByCollaboratorId per mindmap.");
+    }
+
 
     @Test
     public void changeMapTitle() throws URISyntaxException {
