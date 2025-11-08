@@ -94,7 +94,7 @@ public class MindmapController {
     @Autowired
     private MindmapListingMetricsRecorder mindmapListingMetricsRecorder;
 
-    @Value("${wisemapping.performance.log-mindmap-listing:false}")
+    @Value("${app.monitoring.performance.log-mindmap-listing:false}")
     private boolean logMindmapListingMetrics;
 
     @Autowired

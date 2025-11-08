@@ -154,15 +154,14 @@ logging:
             StandardWrapperValve: OFF
     root: INFO
 
-wisemapping:
-  performance:
-    log-mindmap-listing: true
-
 
 #
 # Application Config related options:
 #
 app:
+  monitoring:
+    performance:
+      log-mindmap-listing: true
   # This information is mainly used by the frontend to connect to the backend. It must match the deployment topology used.
   site:
     ui-base-url: http://localhost:3000
@@ -273,6 +272,10 @@ server:
       remote-ip-header: x-forwarded-for
       protocol-header: x-forwarded-proto
 
+monitoring:
+  performance:
+    log-mindmap-listing: true
+
 # Spring Boot Actuator configuration
 management:
   endpoints:
@@ -295,4 +298,3 @@ management:
         step: 60s
         headers:
           api-key: your-new-relic-license-key-here
-

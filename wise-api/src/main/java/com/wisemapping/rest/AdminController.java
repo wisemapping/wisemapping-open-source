@@ -103,7 +103,7 @@ public class AdminController {
     @Value("${server.port:8080}")
     private String serverPort;
 
-    @Value("${wisemapping.performance.log-mindmap-listing:false}")
+    @Value("${app.monitoring.performance.log-mindmap-listing:false}")
     private boolean logMindmapListingMetrics;
 
     @RequestMapping(method = RequestMethod.GET, value = "/users", produces = {"application/json"})
