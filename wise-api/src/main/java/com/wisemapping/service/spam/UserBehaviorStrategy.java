@@ -21,14 +21,14 @@ package com.wisemapping.service.spam;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SpamStrategyType;
 import com.wisemapping.service.MindmapService;
-import org.springframework.stereotype.Component;
+// import org.springframework.stereotype.Component; // Disabled - strategy not active
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-@Component
+// @Component // Disabled - UserBehavior strategy is disabled
 public class UserBehaviorStrategy implements SpamDetectionStrategy {
 
     private final MindmapService mindmapService;
