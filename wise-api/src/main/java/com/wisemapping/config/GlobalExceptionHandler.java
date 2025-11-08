@@ -21,6 +21,7 @@ import com.wisemapping.exceptions.*;
 import com.wisemapping.rest.JsonHttpMessageNotReadableException;
 import com.wisemapping.rest.model.RestErrors;
 import com.wisemapping.service.RegistrationException;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
@@ -104,6 +105,18 @@ public class GlobalExceptionHandler {
         // Log at INFO level for spam detection tracking
         logger.info("Spam content detected and blocked: {}", ex.getMessage());
         return new RestErrors(ex.getMessage(), ex.getSeverity(), ex.getTechInfo());
+    }
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    @ResponseBody
+    public RestErrors handleRateLimitExceeded(@NotNull RequestNotPermitted ex) {
+        logger.debug("Rate limit exceeded: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null ?
+                messageSource.getMessage("RATE_LIMIT_EXCEEDED", null, "Too many requests. Please try again later.", locale) :
+                "Too many requests. Please try again later.";
+        return new RestErrors(message, Severity.WARNING);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

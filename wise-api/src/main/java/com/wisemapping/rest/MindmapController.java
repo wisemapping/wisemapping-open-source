@@ -53,6 +53,7 @@ import org.springframework.util.StopWatch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import java.io.IOException;
 import java.time.Instant;
 import java.nio.charset.StandardCharsets;
@@ -321,6 +322,7 @@ public class MindmapController {
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}/document", consumes = {
             "application/json" }, produces = { "application/json" })
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @RateLimiter(name = "mindmapUpdateLimiter")
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     public void updateDocument(@RequestBody RestMindmap restMindmap, @PathVariable int id,
             @RequestParam(required = false) boolean minor) throws WiseMappingException, IOException {
@@ -417,6 +419,7 @@ public class MindmapController {
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.PUT, value = { "/{id}/document/xml" }, consumes = { "text/plain" })
+    @RateLimiter(name = "mindmapUpdateLimiter")
     @ResponseBody
     public void updateDocument(@PathVariable int id, @RequestBody String xmlDoc) throws WiseMappingException {
         final Mindmap mindmap = findMindmapById(id);
@@ -868,6 +871,7 @@ public class MindmapController {
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.POST, value = "", consumes = { "application/xml", "application/json" })
     @ResponseStatus(value = HttpStatus.CREATED)
+    @RateLimiter(name = "mindmapCreateLimiter")
     public void createMap(@RequestBody(required = false) String mapXml, @NotNull HttpServletResponse response,
             @RequestParam(required = false) String title, @RequestParam(required = false) String description,
             @RequestParam(required = false) String layout)

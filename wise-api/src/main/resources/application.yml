@@ -154,6 +154,17 @@ logging:
             StandardWrapperValve: OFF
     root: INFO
 
+resilience4j:
+  ratelimiter:
+    instances:
+      mindmapUpdateLimiter:
+        limitForPeriod: 30
+        limitRefreshPeriod: 1s
+        timeoutDuration: 0
+      mindmapCreateLimiter:
+        limitForPeriod: 20
+        limitRefreshPeriod: 1s
+        timeoutDuration: 0
 
 #
 # Application Config related options:
