@@ -27,13 +27,19 @@ import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.SuspensionReason;
+import com.wisemapping.metrics.AccountListingMetricsRecorder;
+import com.wisemapping.metrics.AccountListingMetricsRecorder.QueryStatistics;
+import com.wisemapping.metrics.AccountListingMetricsRecorder.Segment;
 import com.wisemapping.metrics.MindmapListingMetricsRecorder;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.rest.model.PaginatedResponse;
 import com.wisemapping.service.MindmapService;
 import com.wisemapping.service.MetricsService;
 import com.wisemapping.service.UserService;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.SessionFactory;
+import org.hibernate.stat.Statistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +47,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,6 +87,12 @@ public class AdminController {
     @Autowired
     private MindmapListingMetricsRecorder mindmapListingMetricsRecorder;
 
+    @Autowired
+    private AccountListingMetricsRecorder accountListingMetricsRecorder;
+
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
+
     @Value("${app.admin.user:}")
     private String adminUser;
 
@@ -106,6 +121,9 @@ public class AdminController {
     @Value("${app.monitoring.performance.log-mindmap-listing:false}")
     private boolean logMindmapListingMetrics;
 
+    @Value("${app.monitoring.performance.log-account-listing:false}")
+    private boolean logAccountListingMetrics;
+
     @RequestMapping(method = RequestMethod.GET, value = "/users", produces = {"application/json"})
     @ResponseBody
     public PaginatedResponse<com.wisemapping.rest.model.AdminRestUser> getAllUsers(
@@ -118,18 +136,163 @@ public class AdminController {
         
         final int safePage = sanitizePage(page);
         final int safePageSize = sanitizePageSize(pageSize);
+        final String normalizedSearch = (search != null && !search.trim().isEmpty()) ? search.trim() : null;
         
-        // Use optimized query that only adds filter conditions that are actually set
+        final boolean metricsEnabled = logAccountListingMetrics;
+        final StopWatch stopWatch = metricsEnabled ? new StopWatch("accountListing") : null;
+        Statistics statistics = null;
+        boolean statisticsTemporarilyEnabled = false;
+        
+        if (metricsEnabled) {
+            try {
+                final SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+                statistics = sessionFactory.getStatistics();
+                statisticsTemporarilyEnabled = !statistics.isStatisticsEnabled();
+                if (statisticsTemporarilyEnabled) {
+                    statistics.setStatisticsEnabled(true);
+                }
+                statistics.clear();
+            } catch (Exception ex) {
+                logger.warn("Unable to capture Hibernate statistics for account listing metrics", ex);
+                statistics = null;
+            }
+        }
+        
+        if (stopWatch != null) {
+            stopWatch.start("fetchUsers");
+        }
         final List<Account> users = userService.getUsersWithFilters(
-            search, filterActive, filterSuspended, filterAuthType, safePage, safePageSize);
-        final long totalElements = userService.countUsersWithFilters(
-            search, filterActive, filterSuspended, filterAuthType);
+                normalizedSearch, filterActive, filterSuspended, filterAuthType, safePage, safePageSize);
         
+        if (stopWatch != null) {
+            stopWatch.stop();
+            stopWatch.start("countUsers");
+        }
+        final long totalElements = userService.countUsersWithFilters(
+                normalizedSearch, filterActive, filterSuspended, filterAuthType);
+        
+        if (stopWatch != null) {
+            stopWatch.stop();
+            stopWatch.start("mapResponse");
+        }
         final List<com.wisemapping.rest.model.AdminRestUser> restUsers = users.stream()
                 .map(user -> new com.wisemapping.rest.model.AdminRestUser(user, isAdmin(user.getEmail())))
                 .collect(java.util.stream.Collectors.toList());
         
+        if (stopWatch != null) {
+            stopWatch.stop();
+            logAccountListingMetrics(
+                    restUsers.size(),
+                    totalElements,
+                    safePage,
+                    safePageSize,
+                    normalizedSearch,
+                    filterActive,
+                    filterSuspended,
+                    filterAuthType,
+                    stopWatch,
+                    statistics);
+            if (statistics != null) {
+                statistics.clear();
+                if (statisticsTemporarilyEnabled) {
+                    statistics.setStatisticsEnabled(false);
+                }
+            }
+        }
+        
         return new PaginatedResponse<>(restUsers, safePage, safePageSize, totalElements);
+    }
+
+    private void logAccountListingMetrics(
+            final int returnedUsers,
+            final long totalUsers,
+            final int page,
+            final int pageSize,
+            final String search,
+            final Boolean filterActive,
+            final Boolean filterSuspended,
+            final String filterAuthType,
+            final StopWatch stopWatch,
+            final Statistics statistics) {
+
+        long executedStatements = -1;
+        long entityFetches = -1;
+        long collectionFetches = -1;
+        long entityLoads = -1;
+        String topQueries = null;
+        java.util.List<QueryStatistics> queryStatistics = java.util.Collections.emptyList();
+
+        if (statistics != null) {
+            executedStatements = statistics.getPrepareStatementCount();
+            entityFetches = statistics.getEntityFetchCount();
+            collectionFetches = statistics.getCollectionFetchCount();
+            entityLoads = statistics.getEntityLoadCount();
+
+            queryStatistics = Arrays.stream(statistics.getQueries())
+                    .map(query -> {
+                        final org.hibernate.stat.QueryStatistics queryStats = statistics.getQueryStatistics(query);
+                        final long executions = queryStats != null ? queryStats.getExecutionCount() : 0;
+                        final String normalizedSql = query.replaceAll("\\s+", " ").trim();
+                        return new QueryStatistics(normalizedSql, executions);
+                    })
+                    .sorted((left, right) -> Long.compare(right.executions(), left.executions()))
+                    .limit(3)
+                    .toList();
+
+            topQueries = queryStatistics.stream()
+                    .map(entry -> entry.executions() + "x | " + entry.sql())
+                    .collect(Collectors.joining(" || "));
+        }
+
+        final java.util.List<Segment> segments = Arrays.stream(stopWatch.getTaskInfo())
+                .map(task -> {
+                    final long taskMillis = task.getTimeMillis();
+                    final double ratio = stopWatch.getTotalTimeMillis() > 0
+                            ? (double) taskMillis / (double) stopWatch.getTotalTimeMillis()
+                            : 0d;
+                    return new Segment(task.getTaskName(), taskMillis, ratio);
+                })
+                .toList();
+
+        final AccountListingMetricsRecorder.Snapshot snapshot = new AccountListingMetricsRecorder.Snapshot(
+                logAccountListingMetrics,
+                Instant.now(),
+                returnedUsers,
+                totalUsers,
+                page,
+                pageSize,
+                search,
+                filterActive,
+                filterSuspended,
+                filterAuthType,
+                stopWatch.getTotalTimeMillis(),
+                segments,
+                executedStatements >= 0 ? executedStatements : null,
+                entityFetches >= 0 ? entityFetches : null,
+                collectionFetches >= 0 ? collectionFetches : null,
+                entityLoads >= 0 ? entityLoads : null,
+                queryStatistics
+        );
+
+        accountListingMetricsRecorder.record(snapshot);
+
+        logger.info(
+                "Account listing metrics -> users={}, totalUsers={}, page={}, pageSize={}, search={}, filterActive={}, filterSuspended={}, filterAuthType={}, totalTimeMs={}, segments={}, executedStatements={}, entityFetches={}, collectionFetches={}, entityLoads={}, topQueries={}",
+                returnedUsers,
+                totalUsers,
+                page,
+                pageSize,
+                search,
+                filterActive,
+                filterSuspended,
+                filterAuthType,
+                stopWatch.getTotalTimeMillis(),
+                stopWatch.prettyPrint(),
+                executedStatements >= 0 ? executedStatements : null,
+                entityFetches >= 0 ? entityFetches : null,
+                collectionFetches >= 0 ? collectionFetches : null,
+                entityLoads >= 0 ? entityLoads : null,
+                topQueries);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
@@ -599,6 +762,49 @@ public class AdminController {
             stats.put("error", "Failed to retrieve stats: " + e.getMessage());
         }
         systemInfo.put("statistics", stats);
+ 
+        Map<String, Object> accountListingMetrics = new HashMap<>();
+        accountListingMetrics.put("enabled", logAccountListingMetrics);
+        accountListingMetricsRecorder.latest().ifPresent(snapshot -> {
+            accountListingMetrics.put("lastUpdated", snapshot.capturedAt().toEpochMilli());
+            accountListingMetrics.put("returnedUsers", snapshot.returnedUsers());
+            accountListingMetrics.put("totalUsers", snapshot.totalUsers());
+            accountListingMetrics.put("page", snapshot.page());
+            accountListingMetrics.put("pageSize", snapshot.pageSize());
+            accountListingMetrics.put("search", snapshot.search());
+            accountListingMetrics.put("filterActive", snapshot.filterActive());
+            accountListingMetrics.put("filterSuspended", snapshot.filterSuspended());
+            accountListingMetrics.put("filterAuthType", snapshot.filterAuthType());
+            accountListingMetrics.put("totalTimeMs", snapshot.totalTimeMillis());
+            accountListingMetrics.put("executedStatements", snapshot.executedStatements());
+            accountListingMetrics.put("entityFetches", snapshot.entityFetches());
+            accountListingMetrics.put("collectionFetches", snapshot.collectionFetches());
+            accountListingMetrics.put("entityLoads", snapshot.entityLoads());
+
+            List<Map<String, Object>> accountSegmentList = snapshot.segments()
+                    .stream()
+                    .map(segment -> {
+                        Map<String, Object> item = new HashMap<>();
+                        item.put("name", segment.name());
+                        item.put("timeMs", segment.timeMillis());
+                        item.put("ratio", segment.ratio());
+                        return item;
+                    })
+                    .toList();
+            accountListingMetrics.put("segments", accountSegmentList);
+
+            List<Map<String, Object>> accountQueryList = snapshot.topQueries()
+                    .stream()
+                    .map(query -> {
+                        Map<String, Object> item = new HashMap<>();
+                        item.put("sql", query.sql());
+                        item.put("executions", query.executions());
+                        return item;
+                    })
+                    .toList();
+            accountListingMetrics.put("topQueries", accountQueryList);
+        });
+        systemInfo.put("accountListingMetrics", accountListingMetrics);
 
         Map<String, Object> listingMetrics = new HashMap<>();
         listingMetrics.put("enabled", logMindmapListingMetrics);
