@@ -162,6 +162,7 @@ app:
   monitoring:
     performance:
       log-mindmap-listing: true
+      log-account-listing: true
   # This information is mainly used by the frontend to connect to the backend. It must match the deployment topology used.
   site:
     ui-base-url: http://localhost:3000
@@ -244,7 +245,6 @@ app:
       dry-run: false  # Set to true for testing without actual migration
   #  accounts:
   #    exclusion:
-  #      domain:
   # Mindmap content configuration
   mindmap:
     note:
