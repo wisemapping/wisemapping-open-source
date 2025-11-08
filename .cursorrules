@@ -105,6 +105,9 @@ The following files do NOT require copyright headers:
    - Use JavaDoc for public APIs
    - Document complex business logic
    - Keep comments up-to-date with code changes
+5. **Functional Style**:
+   - Prefer functional constructs (Streams, `Optional`, `Collector`, method references) over manual iteration and mutable accumulators when they improve clarity or maintainability
+   - Ensure functional solutions remain readable; fall back to imperative code if the functional variant becomes harder to understand
 
 ## Database
 

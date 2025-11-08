@@ -27,6 +27,7 @@ import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.SuspensionReason;
+import com.wisemapping.metrics.MindmapListingMetricsRecorder;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.rest.model.PaginatedResponse;
 import com.wisemapping.service.MindmapService;
@@ -74,6 +75,9 @@ public class AdminController {
     @Autowired
     private com.wisemapping.service.BuildInfoService buildInfoService;
 
+    @Autowired
+    private MindmapListingMetricsRecorder mindmapListingMetricsRecorder;
+
     @Value("${app.admin.user:}")
     private String adminUser;
 
@@ -98,6 +102,9 @@ public class AdminController {
 
     @Value("${server.port:8080}")
     private String serverPort;
+
+    @Value("${app.monitoring.performance.log-mindmap-listing:false}")
+    private boolean logMindmapListingMetrics;
 
     @RequestMapping(method = RequestMethod.GET, value = "/users", produces = {"application/json"})
     @ResponseBody
@@ -592,6 +599,43 @@ public class AdminController {
             stats.put("error", "Failed to retrieve stats: " + e.getMessage());
         }
         systemInfo.put("statistics", stats);
+
+        Map<String, Object> listingMetrics = new HashMap<>();
+        listingMetrics.put("enabled", logMindmapListingMetrics);
+        mindmapListingMetricsRecorder.latest().ifPresent(snapshot -> {
+            listingMetrics.put("lastUpdated", snapshot.capturedAt().toEpochMilli());
+            listingMetrics.put("mapCount", snapshot.mapCount());
+            listingMetrics.put("collaborationCount", snapshot.collaborationCount());
+            listingMetrics.put("totalTimeMs", snapshot.totalTimeMillis());
+            listingMetrics.put("executedStatements", snapshot.executedStatements());
+            listingMetrics.put("entityFetches", snapshot.entityFetches());
+            listingMetrics.put("collectionFetches", snapshot.collectionFetches());
+            listingMetrics.put("entityLoads", snapshot.entityLoads());
+
+            List<Map<String, Object>> segmentList = snapshot.segments()
+                    .stream()
+                    .map(segment -> {
+                        Map<String, Object> item = new HashMap<>();
+                        item.put("name", segment.name());
+                        item.put("timeMs", segment.timeMillis());
+                        item.put("ratio", segment.ratio());
+                        return item;
+                    })
+                    .toList();
+            listingMetrics.put("segments", segmentList);
+
+            List<Map<String, Object>> queryList = snapshot.topQueries()
+                    .stream()
+                    .map(query -> {
+                        Map<String, Object> item = new HashMap<>();
+                        item.put("sql", query.sql());
+                        item.put("executions", query.executions());
+                        return item;
+                    })
+                    .toList();
+            listingMetrics.put("topQueries", queryList);
+        });
+        systemInfo.put("mindmapListingMetrics", listingMetrics);
         
         return systemInfo;
     }
