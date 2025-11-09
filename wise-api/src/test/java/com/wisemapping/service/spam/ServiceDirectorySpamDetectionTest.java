@@ -6,6 +6,8 @@ import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.mindmap.parser.MindmapParser;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SpamStrategyType;
+import com.wisemapping.service.MetricsService;
+import com.wisemapping.service.SpamDetectionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,13 +15,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,11 +36,13 @@ import static org.mockito.Mockito.*;
  * This test loads JSON files containing real spam map metadata and verifies they are detected.
  */
 @ExtendWith(MockitoExtension.class)
-class ServiceDirectorySpamStrategyTest {
+class ServiceDirectorySpamDetectionTest {
 
-    private ServiceDirectorySpamStrategy strategy;
+    private ServiceDirectorySpamStrategy serviceDirectoryStrategy;
+    private LinkFarmSpamStrategy linkFarmStrategy;
     private SpamContentExtractor contentExtractor;
     private ObjectMapper objectMapper;
+    private SpamDetectionService spamDetectionService;
 
     @Mock
     private Resource spamKeywordsResource;
@@ -54,13 +61,72 @@ class ServiceDirectorySpamStrategyTest {
         contentExtractor.loadSpamKeywords();
         
         // Create strategy with test configuration
-        strategy = new ServiceDirectorySpamStrategy(contentExtractor);
-        ReflectionTestUtils.setField(strategy, "minNodesExemption", 15);
-        ReflectionTestUtils.setField(strategy, "keywordStuffingSeparatorThreshold", 25);
-        ReflectionTestUtils.setField(strategy, "locationVariantsThreshold", 8);
-        ReflectionTestUtils.setField(strategy, "nearMeRepetitionsThreshold", 10);
+        serviceDirectoryStrategy = new ServiceDirectorySpamStrategy(contentExtractor);
+        ReflectionTestUtils.setField(serviceDirectoryStrategy, "minNodesExemption", 15);
+        ReflectionTestUtils.setField(serviceDirectoryStrategy, "keywordStuffingSeparatorThreshold", 25);
+        ReflectionTestUtils.setField(serviceDirectoryStrategy, "locationVariantsThreshold", 8);
+        ReflectionTestUtils.setField(serviceDirectoryStrategy, "nearMeRepetitionsThreshold", 10);
+
+        linkFarmStrategy = new LinkFarmSpamStrategy(contentExtractor);
+        ReflectionTestUtils.setField(linkFarmStrategy, "urlThreshold", 20);
+        ReflectionTestUtils.setField(linkFarmStrategy, "urlThresholdLowStructure", 10);
+        ReflectionTestUtils.setField(linkFarmStrategy, "maxTopicsForLowStructure", 3);
+        String whitelistYaml = loadWhitelistFixture();
+        ReflectionTestUtils.setField(
+                linkFarmStrategy,
+                "popularDomainWhitelistResource",
+                new ByteArrayResource(whitelistYaml.getBytes(StandardCharsets.UTF_8))
+        );
+        ReflectionTestUtils.setField(linkFarmStrategy, "popularDomainWhitelistDomains", null);
+        ReflectionTestUtils.setField(linkFarmStrategy, "popularDomainWhitelistPatterns", null);
+        ReflectionTestUtils.setField(linkFarmStrategy, "popularDomainWhitelistLoaded", false);
         
         objectMapper = new ObjectMapper();
+
+        FewNodesWithContentStrategy fewNodesStrategy = new FewNodesWithContentStrategy(contentExtractor);
+        ReflectionTestUtils.setField(fewNodesStrategy, "minNodesExemption", 15);
+
+        DescriptionLengthStrategy descriptionLengthStrategy = new DescriptionLengthStrategy(contentExtractor);
+        ReflectionTestUtils.setField(descriptionLengthStrategy, "minNodesExemption", 15);
+        ReflectionTestUtils.setField(descriptionLengthStrategy, "maxDescriptionLength", 200);
+
+        spamDetectionService = new SpamDetectionService(
+                List.of(
+                        serviceDirectoryStrategy,
+                        linkFarmStrategy,
+                        fewNodesStrategy,
+                        descriptionLengthStrategy
+                )
+        );
+        MetricsService metricsService = mock(MetricsService.class);
+        ReflectionTestUtils.setField(spamDetectionService, "metricsService", metricsService);
+        ReflectionTestUtils.setField(spamDetectionService, "spamContentExtractor", contentExtractor);
+    }
+
+    private String loadWhitelistFixture() throws Exception {
+        Path whitelistPath = locateWhitelistResource();
+        if (whitelistPath == null) {
+            throw new IllegalStateException("Could not find popular-domain-whitelist.yml for testing.");
+        }
+        return Files.readString(whitelistPath, StandardCharsets.UTF_8);
+    }
+
+    private Path locateWhitelistResource() {
+        Path cwd = Paths.get("").toAbsolutePath();
+        Path[] candidates = new Path[] {
+                cwd.resolve("src/main/resources/spam/popular-domain-whitelist.yml"),
+                cwd.resolve("../src/main/resources/spam/popular-domain-whitelist.yml").normalize(),
+                cwd.resolve("wise-api/src/main/resources/spam/popular-domain-whitelist.yml"),
+                cwd.getParent() != null ? cwd.getParent().resolve("src/main/resources/spam/popular-domain-whitelist.yml") : null,
+                Paths.get("src/main/resources/spam/popular-domain-whitelist.yml").toAbsolutePath()
+        };
+
+        for (Path candidate : candidates) {
+            if (candidate != null && Files.exists(candidate)) {
+                return candidate;
+            }
+        }
+        return null;
     }
 
     /**
@@ -223,7 +289,7 @@ class ServiceDirectorySpamStrategyTest {
         assertTrue(mindmap.getXmlStr().contains("UpDown Desk"), "Should contain business name");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1902545 (UpDown Desk Australia) should be detected as spam. " +
@@ -241,7 +307,7 @@ class ServiceDirectorySpamStrategyTest {
         assertTrue(mindmap.getXmlStr().contains("Adventure Yogi"), "Should contain business name");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1901495 (Adventure Yogi) should be detected as spam. " +
@@ -259,7 +325,7 @@ class ServiceDirectorySpamStrategyTest {
         assertTrue(mindmap.getXmlStr().contains("DoughGirl"), "Should contain business name");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1924052 (DoughGirl) should be detected as spam. " +
@@ -276,7 +342,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1841477 (Welcome Ben) should be detected as spam. " +
@@ -290,7 +356,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1835747 should be detected as spam. " +
@@ -304,7 +370,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1848035 should be detected as spam. " +
@@ -318,7 +384,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1940825 should be detected as spam. " +
@@ -332,7 +398,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1912233 should be detected as spam. " +
@@ -346,7 +412,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1922153 should be detected as spam. " +
@@ -360,7 +426,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1884075 should be detected as spam. " +
@@ -374,7 +440,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1943823 should be detected as spam. " +
@@ -388,7 +454,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1923339 should be detected as spam. " +
@@ -402,7 +468,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1935323 should be detected as spam. " +
@@ -416,7 +482,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1943830 should be detected as spam. " +
@@ -430,7 +496,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1909519 should be detected as spam. " +
@@ -444,7 +510,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1911897 should be detected as spam. " +
@@ -458,7 +524,7 @@ class ServiceDirectorySpamStrategyTest {
         assertNotNull(mindmap.getXmlStr(), "XML should not be null");
         
         var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = serviceDirectoryStrategy.detectSpam(context);
         
         assertTrue(result.isSpam(), 
             "Map 1858501 should be detected as spam. " +
@@ -468,7 +534,7 @@ class ServiceDirectorySpamStrategyTest {
 
     @Test
     void testNullMindmap() {
-        assertFalse(strategy.detectSpam((SpamDetectionContext) null).isSpam());
+        assertFalse(serviceDirectoryStrategy.detectSpam((SpamDetectionContext) null).isSpam());
     }
 
     @Test
@@ -478,7 +544,7 @@ class ServiceDirectorySpamStrategyTest {
         mindmap.setXmlStr(Mindmap.getDefaultMindmapXml("Test"));
         
         var context = createContext(mindmap);
-        assertFalse(strategy.detectSpam(context).isSpam());
+        assertFalse(serviceDirectoryStrategy.detectSpam(context).isSpam());
     }
 
     /**
@@ -546,8 +612,7 @@ class ServiceDirectorySpamStrategyTest {
         
         assertNotNull(mindmap.getXmlStr(), "XML should not be null for " + filename);
         
-        var context = createContext(mindmap);
-        var result = strategy.detectSpam(context);
+        var result = spamDetectionService.detectSpam(mindmap, "service-directory-fixture");
         
         assertTrue(result.isSpam(), 
             "Map " + filename + " should be detected as spam. " +
