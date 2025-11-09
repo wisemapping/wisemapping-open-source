@@ -172,7 +172,7 @@ resilience4j:
 app:
   monitoring:
     performance:
-      log-mindmap-listing: true
+      log-mindmap-listing: false
       log-account-listing: true
   # This information is mainly used by the frontend to connect to the backend. It must match the deployment topology used.
   site:
@@ -216,7 +216,7 @@ app:
       batch-size: 100  # Number of mindmaps to process in each batch
       min-nodes-exemption: 15  # Mindmaps with more than this many nodes are automatically considered not spam
       max-description-length: 200  # Maximum description length before considering as potential spam
-      startup-enabled: true  # Enable spam detection on application startup (async)
+      startup-enabled: false  # Disable spam detection on application startup (async)
       months-back: 48  # Only process mindmaps created in the last 48 months
       version: 5  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
       service-directory:
@@ -293,7 +293,7 @@ server:
 
 monitoring:
   performance:
-    log-mindmap-listing: true
+    log-mindmap-listing: false
 
 # Spring Boot Actuator configuration
 management:
