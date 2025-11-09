@@ -86,6 +86,9 @@ public class GlobalExceptionHandler {
         final Locale locale = LocaleContextHolder.getLocale();
         String message = messageSource != null ? ex.getMessage(messageSource, locale) : ex.getMessage();
         RestErrors error = new RestErrors(message, ex.getSeverity(), ex.getTechInfo());
+        if ("SUSPENDED_USER_MAP_NOT_AVAILABLE".equals(ex.getMessageKey())) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+        }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
