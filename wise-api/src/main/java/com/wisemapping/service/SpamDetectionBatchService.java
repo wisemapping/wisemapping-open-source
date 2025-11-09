@@ -54,7 +54,7 @@ public class SpamDetectionBatchService {
     @Value("${app.batch.spam-detection.enabled:true}")
     private boolean enabled;
 
-    @Value("${app.batch.spam-detection.batch-size:100}")
+    @Value("${app.batch.spam-detection.batch-size:50}")
     private int batchSize;
 
     @Value("${app.batch.spam-detection.months-back:48}")
