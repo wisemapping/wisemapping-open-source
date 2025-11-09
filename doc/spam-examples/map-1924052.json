@@ -1,0 +1,14 @@
+{
+  "jsonProps": "{\"zoom\":0.8}",
+  "title": "DoughGirl",
+  "isLockedBy": null,
+  "creatorFullName": "Stuart Colclough",
+  "role": "none",
+  "description": null,
+  "createdBy": "doughgirluk@gmail.com",
+  "creationTime": "2025-07-03T12:11:52Z",
+  "lastModificationBy": "Stuart Colclough",
+  "lastModificationTime": "2025-07-03T12:12:44Z",
+  "xml": "<map name=\"1924052\" theme=\"prism\" version=\"tango\"><topic central=\"true\" text=\"DoughGirl\" id=\"1\"><topic position=\"281,0\" order=\"0\" id=\"2\"><text><![CDATA[Unit 1, A52 Business Park Croft Skegness Lincolnshire PE24 4AW\n\nUnited Kingdom\n\n01754 768120\n\nhttps://doughgirl.co.uk/]]></text></topic><topic position=\"-304,0\" order=\"1\" id=\"3\"><text><![CDATA[At DoughGirl, we believe that cookies should be more than just a treat –\nthey should be an experience! Founded with a passion for handcrafted,\ngourmet cookies, our bakery is dedicated to creating thick, gooey, and\nutterly irresistible sweet treats.\n\nWhether you're indulging in our signature cookie pies, classic chewy\ncookies, or trying our latest limited-edition flavours, every bite is\nmade with premium ingredients and a whole lot of love.]]></text></topic></topic></map>",
+  "public": true
+}

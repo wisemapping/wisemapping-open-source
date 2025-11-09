@@ -18,7 +18,7 @@
 
 package com.wisemapping.service.spam;
 
-import com.wisemapping.model.Mindmap;
+import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
 // import org.springframework.stereotype.Component; // Disabled - strategy not active
@@ -80,23 +80,25 @@ public class KeywordPatternStrategy implements SpamDetectionStrategy {
     }
 
     @Override
-    public SpamDetectionResult detectSpam(Mindmap mindmap) {
-        final String content = contentExtractor.extractTextContent(mindmap);
+    public SpamDetectionResult detectSpam(SpamDetectionContext context) {
+        if (context == null || context.getMindmap() == null || context.getMapModel() == null) {
+            return SpamDetectionResult.notSpam();
+        }
+
+        MapModel mapModel = context.getMapModel();
+        
+        // Extract content from the parsed model
+        final String content = contentExtractor.extractTextContent(mapModel, 
+                                                                     context.getTitle(), 
+                                                                     context.getDescription());
         if (content.trim().isEmpty()) {
             return SpamDetectionResult.notSpam();
         }
         
         // Check node count first - any mindmap with more than the configured threshold is considered legitimate content (not spam)
-        try {
-            String xml = mindmap.getXmlStr();
-            if (xml != null && !xml.trim().isEmpty()) {
-                int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
-                if (topicCount > minNodesExemption) {
-                    return SpamDetectionResult.notSpam();
-                }
-            }
-        } catch (Exception e) {
-            // If we can't count nodes, continue with other spam detection
+        int topicCount = mapModel.getTotalTopicCount();
+        if (topicCount > minNodesExemption) {
+            return SpamDetectionResult.notSpam();
         }
         
         final String lowerContent = content.toLowerCase();

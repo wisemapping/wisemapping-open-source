@@ -1,6 +1,11 @@
 package com.wisemapping.service;
 
+import com.wisemapping.mindmap.model.MapModel;
+import com.wisemapping.mindmap.parser.MindmapParser;
+import com.wisemapping.mindmap.utils.MindmapValidationException;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.service.spam.SpamContentExtractor;
+import com.wisemapping.service.spam.SpamDetectionContext;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.service.spam.SpamDetectionStrategy;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +25,9 @@ public class SpamDetectionService {
     @Autowired
     private MetricsService metricsService;
 
+    @Autowired
+    private SpamContentExtractor spamContentExtractor;
+
     public SpamDetectionService(@NotNull List<SpamDetectionStrategy> strategies) {
         this.strategies = strategies;
     }
@@ -33,9 +41,48 @@ public class SpamDetectionService {
             return SpamDetectionResult.notSpam();
         }
         
+        // Exempt maps if the creator's email belongs to an educational institution
+        // Educational institutions are trusted and owners with these email domains are very unlikely to be spammers
+        // Supports international educational domains (.edu, .edu.xx, .ac.xx, .sch.xx, .university, .school)
+        if (spamContentExtractor.hasEduOrOrgEmail(mindmap)) {
+            logger.debug("Mindmap {} exempted from spam detection - creator email belongs to educational institution", mindmap.getId());
+            return SpamDetectionResult.notSpam();
+        }
+        
+        // Parse the mindmap XML once into a MapModel
+        MapModel mapModel;
+        try {
+            String xmlContent = mindmap.getXmlStr();
+            if (xmlContent == null || xmlContent.trim().isEmpty()) {
+                logger.debug("Mindmap {} has no XML content, skipping spam detection", mindmap.getId());
+                return SpamDetectionResult.notSpam();
+            }
+            
+            mapModel = MindmapParser.parseXml(xmlContent);
+            
+            // Set title and description from entity if not in model
+            if (mapModel.getTitle() == null && mindmap.getTitle() != null) {
+                mapModel.setTitle(mindmap.getTitle());
+            }
+            if (mapModel.getDescription() == null && mindmap.getDescription() != null) {
+                mapModel.setDescription(mindmap.getDescription());
+            }
+        } catch (MindmapValidationException e) {
+            logger.warn("Failed to parse mindmap XML for spam detection. Mindmap ID: {}, Error: {}", 
+                       mindmap.getId(), e.getMessage());
+            return SpamDetectionResult.notSpam();
+        } catch (Exception e) {
+            logger.warn("Unexpected error parsing mindmap XML for spam detection. Mindmap ID: {}, Error: {}", 
+                       mindmap.getId(), e.getMessage());
+            return SpamDetectionResult.notSpam();
+        }
+        
+        // Create context with parsed model
+        SpamDetectionContext detectionContext = new SpamDetectionContext(mindmap, mapModel);
+        
         // Apply all spam detection strategies
         for (SpamDetectionStrategy strategy : strategies) {
-            final SpamDetectionResult result = strategy.detectSpam(mindmap);
+            final SpamDetectionResult result = strategy.detectSpam(detectionContext);
             if (result.isSpam()) {
                 logger.info("Spam detected by strategy '{}' in mindmap '{}' - Title: '{}', Description: '{}', " +
                            "Reason: '{}', Details: '{}'",

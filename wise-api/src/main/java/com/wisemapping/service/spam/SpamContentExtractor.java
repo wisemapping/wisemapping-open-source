@@ -18,10 +18,12 @@
 
 package com.wisemapping.service.spam;
 
-import com.wisemapping.model.Mindmap;
+import com.wisemapping.mindmap.model.MapModel;
+import com.wisemapping.mindmap.model.Topic;
 import com.wisemapping.mindmap.parser.MindmapParser;
 import com.wisemapping.mindmap.utils.MindmapUtils;
 import com.wisemapping.mindmap.utils.MindmapUtils.NoteValidationResult;
+import com.wisemapping.model.Mindmap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,7 +67,48 @@ public class SpamContentExtractor {
     }
 
     /**
+     * Extracts text content from a mindmap model for spam analysis.
+     * This method works with the parsed MapModel instead of parsing XML.
+     * 
+     * @param mapModel The parsed mindmap model
+     * @param title Optional title from the mindmap entity
+     * @param description Optional description from the mindmap entity
+     * @return Extracted text content
+     */
+    public String extractTextContent(MapModel mapModel, String title, String description) {
+        StringBuilder content = new StringBuilder();
+
+        // Add title (from entity or model)
+        String effectiveTitle = title != null ? title : mapModel.getTitle();
+        if (effectiveTitle != null && !effectiveTitle.trim().isEmpty()) {
+            content.append(effectiveTitle).append(" ");
+        }
+
+        // Add description (from entity or model)
+        String effectiveDescription = description != null ? description : mapModel.getDescription();
+        if (effectiveDescription != null && !effectiveDescription.trim().isEmpty()) {
+            content.append(effectiveDescription).append(" ");
+        }
+
+        // Extract text from all topics
+        for (Topic topic : mapModel.getAllTopics()) {
+            if (topic.getText() != null && !topic.getText().trim().isEmpty()) {
+                content.append(topic.getText()).append(" ");
+            }
+            if (topic.getNote() != null && !topic.getNote().trim().isEmpty()) {
+                // Extract plain text from note (handles HTML)
+                String noteText = MindmapParser.extractPlainTextContent(topic.getNote());
+                content.append(noteText).append(" ");
+            }
+        }
+
+        return content.toString();
+    }
+    
+    /**
      * Extracts text content from a mindmap for spam analysis.
+     * This is a convenience method that parses XML if needed (for backward compatibility).
+     * Prefer using extractTextContent(MapModel, String, String) when you already have a parsed model.
      * 
      * @param mindmap The mindmap to analyze
      * @return Extracted text content
@@ -95,8 +138,31 @@ public class SpamContentExtractor {
     }
     
     /**
-     * Checks if the mindmap contains HTML content in notes.
+     * Checks if the mindmap model contains HTML content in notes.
      * This is important for spam detection as HTML content can be used to hide spam text.
+     * 
+     * @param mapModel The parsed mindmap model
+     * @return true if HTML content is found in notes, false otherwise
+     */
+    public boolean hasHtmlContent(MapModel mapModel) {
+        if (mapModel == null) {
+            return false;
+        }
+
+        // Check all topics for HTML content in notes
+        for (Topic topic : mapModel.getAllTopics()) {
+            if (topic.getNote() != null && isHtmlContent(topic.getNote())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    /**
+     * Checks if the mindmap contains HTML content in notes.
+     * This is a convenience method for backward compatibility.
+     * Prefer using hasHtmlContent(MapModel) when you already have a parsed model.
      * 
      * @param mindmap The mindmap to check
      * @return true if HTML content is found in notes, false otherwise
@@ -249,6 +315,95 @@ public class SpamContentExtractor {
         return count;
     }
     
+    /**
+     * Checks if the mindmap creator's email address belongs to an educational institution.
+     * This includes educational domains from all countries, such as:
+     * - .edu (US)
+     * - .edu.xx (many countries: .edu.au, .edu.br, .edu.uk, etc.)
+     * - .ac.xx (academic domains: .ac.uk, .ac.jp, .ac.za, etc.)
+     * - .sch.xx (school domains: .sch.uk, .sch.za, etc.)
+     * - .university (generic TLD)
+     * - .school (generic TLD)
+     * 
+     * Educational institutions are trusted and owners with these email domains are very unlikely to be spammers.
+     * 
+     * @param mindmap The mindmap to check
+     * @return true if the creator's email belongs to an educational institution, false otherwise
+     */
+    public boolean hasEduOrOrgEmail(Mindmap mindmap) {
+        if (mindmap == null) {
+            return false;
+        }
+        
+        try {
+            com.wisemapping.model.Account creator = mindmap.getCreator();
+            if (creator == null) {
+                return false;
+            }
+            
+            String creatorEmail = creator.getEmail();
+            if (creatorEmail == null || creatorEmail.trim().isEmpty()) {
+                return false;
+            }
+            
+            // Extract domain from creator's email (everything after @)
+            String emailLower = creatorEmail.toLowerCase().trim();
+            int atIndex = emailLower.indexOf('@');
+            if (atIndex > 0 && atIndex < emailLower.length() - 1) {
+                String domain = emailLower.substring(atIndex + 1);
+                return isEducationalDomain(domain);
+            }
+            
+            return false;
+        } catch (Exception e) {
+            logger.debug("Error checking creator's email domain for educational institution in mindmap {}: {}", mindmap.getId(), e.getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * Checks if a domain belongs to an educational institution.
+     * Supports international educational domain patterns from various countries.
+     * 
+     * @param domain The domain to check (e.g., "university.edu.au", "example.ac.uk")
+     * @return true if the domain appears to be from an educational institution, false otherwise
+     */
+    private boolean isEducationalDomain(String domain) {
+        if (domain == null || domain.isEmpty()) {
+            return false;
+        }
+        
+        String domainLower = domain.toLowerCase();
+        
+        // Check for generic educational TLDs
+        if (domainLower.endsWith(".university") || domainLower.endsWith(".school")) {
+            return true;
+        }
+        
+        // Check for .edu (US) or .edu.xx (international educational domains)
+        // Examples: .edu, .edu.au, .edu.br, .edu.uk, .edu.mx, etc.
+        if (domainLower.contains(".edu")) {
+            // Match .edu at the end or .edu. followed by country code
+            if (domainLower.endsWith(".edu") || domainLower.matches(".*\\.edu\\.[a-z]{2,3}(\\.[a-z]{2})?$")) {
+                return true;
+            }
+        }
+        
+        // Check for .ac.xx (academic domains used in many countries)
+        // Examples: .ac.uk, .ac.jp, .ac.za, .ac.nz, .ac.in, etc.
+        if (domainLower.matches(".*\\.ac\\.[a-z]{2,3}(\\.[a-z]{2})?$")) {
+            return true;
+        }
+        
+        // Check for .sch.xx (school domains used in some countries)
+        // Examples: .sch.uk, .sch.za, etc.
+        if (domainLower.matches(".*\\.sch\\.[a-z]{2,3}(\\.[a-z]{2})?$")) {
+            return true;
+        }
+        
+        return false;
+    }
+
     /**
      * Counts the number of characters in a note, handling both HTML and plain text.
      * 

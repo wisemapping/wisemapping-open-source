@@ -30,14 +30,41 @@ public class MapAccessPermissionEvaluation implements PermissionEvaluator {
             @NotNull Authentication auth, @NotNull Object targetDomainObject, @NotNull Object permission) {
 
         logger.log(Level.DEBUG, "auth: " + auth + ",targetDomainObject:" + targetDomainObject + ",permission:" + permission);
-        if ((auth == null) || (targetDomainObject == null) || !(permission instanceof String)) {
+        
+        // Validate parameters (except auth can be null for READ operations)
+        if (targetDomainObject == null || !(permission instanceof String)) {
             logger.debug("Permissions could not be validated, illegal parameters.");
             return false;
         }
 
-        boolean result;
         final Account user = Utils.getUser();
-        final MapAccessPermission perm = MapAccessPermission.valueOf((permission.toString().toUpperCase()));
+        final MapAccessPermission perm;
+        try {
+            perm = MapAccessPermission.valueOf((permission.toString().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            logger.debug("Invalid permission: " + permission);
+            return false;
+        }
+
+        // For WRITE operations, authentication is required
+        if (perm == MapAccessPermission.WRITE && (auth == null || !auth.isAuthenticated())) {
+            logger.debug("Write operations require authentication.");
+            return false;
+        }
+
+        // For Collaborator checks, user must be authenticated
+        if (targetDomainObject instanceof Collaborator collab) {
+            if (auth == null || !auth.isAuthenticated() || user == null) {
+                logger.debug("Collaborator checks require authentication.");
+                return false;
+            }
+            // Read only operations checks ...
+            return user.identityEquality(collab) || readAdvice.getMindmapService().isAdmin(user);
+        }
+
+        // For READ operations, allow null auth (will check if map is public)
+        // For WRITE operations, auth was already validated above
+        boolean result;
         if (targetDomainObject instanceof Integer) {
             // Checking permissions by mapId ...
             final int mapId = (Integer) targetDomainObject;
@@ -45,9 +72,6 @@ public class MapAccessPermissionEvaluation implements PermissionEvaluator {
         } else if (targetDomainObject instanceof Mindmap) {
             final Mindmap map = (Mindmap) targetDomainObject;
             result = hasPrivilege(map, perm);
-        } else if (targetDomainObject instanceof Collaborator collab) {
-            // Read only operations checks ...
-            result = user.identityEquality(collab) || readAdvice.getMindmapService().isAdmin(user);
         } else {
             throw new IllegalArgumentException("Unsupported check control of permissions");
         }

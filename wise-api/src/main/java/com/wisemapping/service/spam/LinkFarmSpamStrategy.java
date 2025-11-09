@@ -14,7 +14,7 @@
 
 package com.wisemapping.service.spam;
 
-import com.wisemapping.model.Mindmap;
+import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -54,32 +54,34 @@ public class LinkFarmSpamStrategy implements SpamDetectionStrategy {
     }
 
     @Override
-    public SpamDetectionResult detectSpam(Mindmap mindmap) {
-        if (mindmap == null) {
+    public SpamDetectionResult detectSpam(SpamDetectionContext context) {
+        if (context == null || context.getMindmap() == null || context.getMapModel() == null) {
             return SpamDetectionResult.notSpam();
         }
 
         try {
-            String xml = mindmap.getXmlStr();
-            if (xml == null || xml.trim().isEmpty()) {
-                return SpamDetectionResult.notSpam();
-            }
-
-            // Count nodes
-            int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
+            MapModel mapModel = context.getMapModel();
             
-            // Extract content
-            String content = contentExtractor.extractTextContent(mindmap);
+            // Count nodes from the parsed model
+            int topicCount = mapModel.getTotalTopicCount();
+            
+            // Extract content from the parsed model
+            String content = contentExtractor.extractTextContent(mapModel, 
+                                                                  context.getTitle(), 
+                                                                  context.getDescription());
             if (content == null || content.trim().isEmpty()) {
                 return SpamDetectionResult.notSpam();
             }
 
-            // Count URLs in content
+            // Count URLs in content and also check links in topics
             Matcher urlMatcher = URL_PATTERN.matcher(content);
             long urlCount = 0;
             while (urlMatcher.find()) {
                 urlCount++;
             }
+            
+            // Also count links from topic linkUrl fields
+            urlCount += mapModel.getAllLinkUrls().size();
 
             // Rule 1: Extreme link stuffing - 20+ URLs regardless of structure
             if (urlCount >= urlThreshold) {

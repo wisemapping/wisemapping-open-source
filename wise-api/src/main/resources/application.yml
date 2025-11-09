@@ -217,8 +217,8 @@ app:
       min-nodes-exemption: 15  # Mindmaps with more than this many nodes are automatically considered not spam
       max-description-length: 200  # Maximum description length before considering as potential spam
       startup-enabled: true  # Enable spam detection on application startup (async)
-      months-back: 24  # Only process mindmaps created in the last 24 months
-      version: 4  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
+      months-back: 48  # Only process mindmaps created in the last 48 months
+      version: 5  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
       service-directory:
         keyword-stuffing-separators: 25  # Number of separator characters (pipes, commas) indicating keyword stuffing
         location-variants: 8  # Number of distinct location variants (cities, neighborhoods) indicating keyword stuffing

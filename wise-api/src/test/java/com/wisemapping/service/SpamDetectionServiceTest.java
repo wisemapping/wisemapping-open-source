@@ -65,8 +65,9 @@ class SpamDetectionServiceTest {
         // Create service with strategies (excluding UserBehaviorStrategy for unit tests)
         spamDetectionService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
         
-        // Inject the mocked MetricsService
+        // Inject the mocked MetricsService and SpamContentExtractor
         ReflectionTestUtils.setField(spamDetectionService, "metricsService", metricsService);
+        ReflectionTestUtils.setField(spamDetectionService, "spamContentExtractor", contentExtractor);
     }
 
     @Test
@@ -302,6 +303,7 @@ class SpamDetectionServiceTest {
         
         SpamDetectionService testService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
         ReflectionTestUtils.setField(testService, "metricsService", metricsService);
+        ReflectionTestUtils.setField(testService, "spamContentExtractor", contentExtractor);
         
         // Create a mindmap with spam keywords but high node count
         Mindmap mindmap = createMindmap("Business Plan", "CEO opportunity make money fast", xml);
@@ -332,6 +334,7 @@ class SpamDetectionServiceTest {
         
         SpamDetectionService testService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
         ReflectionTestUtils.setField(testService, "metricsService", metricsService);
+        ReflectionTestUtils.setField(testService, "spamContentExtractor", contentExtractor);
         
         // Create a mindmap with spam keywords and low node count
         Mindmap mindmap = createMindmap("Opportunity", "CEO make money fast investment", xml);
@@ -364,6 +367,7 @@ class SpamDetectionServiceTest {
         
         SpamDetectionService testService = new SpamDetectionService(Arrays.asList(fewNodesStrategy, keywordPatternStrategy));
         ReflectionTestUtils.setField(testService, "metricsService", metricsService);
+        ReflectionTestUtils.setField(testService, "spamContentExtractor", contentExtractor);
         
         // Create a mindmap with spam keywords and exactly threshold node count
         Mindmap mindmap = createMindmap("Business", "CEO investment make money fast", xml);

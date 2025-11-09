@@ -57,10 +57,10 @@ public class SpamDetectionBatchService {
     @Value("${app.batch.spam-detection.batch-size:100}")
     private int batchSize;
 
-    @Value("${app.batch.spam-detection.months-back:45}")
+    @Value("${app.batch.spam-detection.months-back:48}")
     private int monthsBack;
 
-    @Value("${app.batch.spam-detection.version:1}")
+    @Value("${app.batch.spam-detection.version:5}")
     private int currentSpamDetectionVersion;
 
     /**

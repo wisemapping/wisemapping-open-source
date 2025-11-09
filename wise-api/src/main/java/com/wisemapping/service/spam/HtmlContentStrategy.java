@@ -18,6 +18,8 @@
 
 package com.wisemapping.service.spam;
 
+import com.wisemapping.mindmap.model.MapModel;
+import com.wisemapping.mindmap.model.Topic;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SpamStrategyType;
 import org.apache.logging.log4j.LogManager;
@@ -79,24 +81,21 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     }
     
     @Override
-    public SpamDetectionResult detectSpam(Mindmap mindmap) {
-        if (mindmap == null) {
+    public SpamDetectionResult detectSpam(SpamDetectionContext context) {
+        if (context == null || context.getMindmap() == null || context.getMapModel() == null) {
             return SpamDetectionResult.notSpam();
         }
         
+        MapModel mapModel = context.getMapModel();
+        
         // Check if mindmap contains HTML content
-        if (!contentExtractor.hasHtmlContent(mindmap)) {
+        if (!contentExtractor.hasHtmlContent(mapModel)) {
             return SpamDetectionResult.notSpam();
         }
         
         try {
-            String xml = mindmap.getXmlStr();
-            if (xml == null || xml.trim().isEmpty()) {
-                return SpamDetectionResult.notSpam();
-            }
-            
-            // Extract all HTML content from notes
-            String htmlContent = extractAllHtmlContent(xml);
+            // Extract all HTML content from notes using the parsed model
+            String htmlContent = extractAllHtmlContent(mapModel);
             if (htmlContent.trim().isEmpty()) {
                 return SpamDetectionResult.notSpam();
             }
@@ -108,7 +107,7 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
             }
             
             // Check HTML element count
-            SpamDetectionResult elementCountResult = checkHtmlElementCount(mindmap);
+            SpamDetectionResult elementCountResult = checkHtmlElementCount(mapModel);
             if (elementCountResult.isSpam()) {
                 return elementCountResult;
             }
@@ -122,7 +121,7 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
             // Note: Security-related tag checking is handled by HtmlContentValidator at save time
             
             // Check note content length limits
-            SpamDetectionResult noteLengthResult = checkNoteContentLength(mindmap);
+            SpamDetectionResult noteLengthResult = checkNoteContentLength(context.getMindmap());
             if (noteLengthResult.isSpam()) {
                 return noteLengthResult;
             }
@@ -131,7 +130,7 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
             
         } catch (Exception e) {
             logger.warn("Error during HTML content spam detection for mindmap {}: {}", 
-                       mindmap.getId(), e.getMessage());
+                       context.getMindmap().getId(), e.getMessage());
             return SpamDetectionResult.notSpam();
         }
     }
@@ -142,34 +141,16 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     }
     
     /**
-     * Extracts all HTML content from note tags in the XML.
+     * Extracts all HTML content from notes in the parsed model.
      */
-    private String extractAllHtmlContent(String xml) {
+    private String extractAllHtmlContent(MapModel mapModel) {
         StringBuilder htmlContent = new StringBuilder();
         
-        // Extract content from CDATA sections
-        java.util.regex.Pattern notePattern = java.util.regex.Pattern.compile(
-            "<note[^>]*>\\s*<!\\[CDATA\\[([^\\]]*?)\\]\\]>\\s*</note>", 
-            java.util.regex.Pattern.CASE_INSENSITIVE | java.util.regex.Pattern.DOTALL
-        );
-        java.util.regex.Matcher matcher = notePattern.matcher(xml);
-        while (matcher.find()) {
-            String noteContent = matcher.group(1);
-            if (contentExtractor.isHtmlContent(noteContent)) {
-                htmlContent.append(noteContent).append(" ");
-            }
-        }
-        
-        // Extract content from direct HTML in note tags
-        java.util.regex.Pattern noteDirectPattern = java.util.regex.Pattern.compile(
-            "<note[^>]*>([^<]*(?:<[^/][^>]*>[^<]*)*)</note>", 
-            java.util.regex.Pattern.CASE_INSENSITIVE | java.util.regex.Pattern.DOTALL
-        );
-        matcher = noteDirectPattern.matcher(xml);
-        while (matcher.find()) {
-            String noteContent = matcher.group(1);
-            if (contentExtractor.isHtmlContent(noteContent)) {
-                htmlContent.append(noteContent).append(" ");
+        // Extract HTML content from all topics' notes
+        for (Topic topic : mapModel.getAllTopics()) {
+            String note = topic.getNote();
+            if (note != null && !note.trim().isEmpty() && contentExtractor.isHtmlContent(note)) {
+                htmlContent.append(note).append(" ");
             }
         }
         
@@ -204,8 +185,8 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     /**
      * Checks if the HTML element count exceeds the threshold.
      */
-    private SpamDetectionResult checkHtmlElementCount(Mindmap mindmap) {
-        long htmlElementCount = countHtmlElements(mindmap);
+    private SpamDetectionResult checkHtmlElementCount(MapModel mapModel) {
+        long htmlElementCount = countHtmlElements(mapModel);
         
         if (htmlElementCount > maxHtmlElements) {
             return new SpamDetectionResult(true, 
@@ -218,34 +199,21 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     }
     
     /**
-     * Counts HTML elements in the mindmap.
+     * Counts HTML elements in the mindmap model.
      */
-    private long countHtmlElements(Mindmap mindmap) {
-        try {
-            String xml = mindmap.getXmlStr();
-            if (xml == null) return 0;
-            
-            long count = 0;
-            
-            // Extract content from note tags and count HTML elements
-            java.util.regex.Pattern notePattern = java.util.regex.Pattern.compile(
-                "<note[^>]*>\\s*<!\\[CDATA\\[([^\\]]*?)\\]\\]>\\s*</note>", 
-                java.util.regex.Pattern.CASE_INSENSITIVE | java.util.regex.Pattern.DOTALL
-            );
-            java.util.regex.Matcher matcher = notePattern.matcher(xml);
-            while (matcher.find()) {
-                String noteContent = matcher.group(1);
-                if (contentExtractor.isHtmlContent(noteContent)) {
-                    // Count HTML tags in the content
-                    count += contentExtractor.countOccurrences(noteContent, "<");
-                }
+    private long countHtmlElements(MapModel mapModel) {
+        long count = 0;
+        
+        // Count HTML tags in all notes
+        for (Topic topic : mapModel.getAllTopics()) {
+            String note = topic.getNote();
+            if (note != null && !note.trim().isEmpty() && contentExtractor.isHtmlContent(note)) {
+                // Count HTML tags in the content
+                count += contentExtractor.countOccurrences(note, "<");
             }
-            
-            return count;
-        } catch (Exception e) {
-            logger.warn("Error counting HTML elements for mindmap {}: {}", mindmap.getId(), e.getMessage());
-            return 0;
         }
+        
+        return count;
     }
     
     /**

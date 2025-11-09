@@ -1,1 +1,14 @@
-{"jsonProps":"{\"zoom\":0.8}","title":"Doctors Implants","isLockedBy":null,"creatorFullName":"Doctors  Implants","role":"none","description":null,"createdBy":"doctorsimplantsdallas@hyperdrivemail.com","creationTime":"2025-06-26T12:09:45Z","lastModificationBy":"Doctors  Implants","lastModificationTime":"2025-06-26T12:10:17Z","xml":"<map name=\"1921918\" theme=\"prism\" version=\"tango\"><topic central=\"true\" text=\"Doctors Implants\" id=\"1\"><topic position=\"267,-16\" order=\"0\" id=\"2\"><text><![CDATA[8215 Westchester Dr #112\nDallas\nTX\n75225\nUnited States\n\n469-663-8921\n\nhttps://doctorsimplants.com/locations/texas/dallas]]></text></topic><topic position=\"2117,68\" order=\"2\" id=\"3\"><text><![CDATA[Doctor’s Implants in Dallas is a leading dental implant center specializing in full-mouth restorations and same-day dental implant solutions. With a focus on personalized care, cutting-edge technology, and top-tier clinical expertise, our Dallas location provides patients with a streamlined, all-in-one approach to dental implant treatment. From your initial consultation to final smile transformation, our experienced team ensures comfort, confidence, and outstanding results every step of the way. Whether you're looking to restore function, improve your smile, or regain confidence, Doctor’s Implants Dallas is your trusted partner in life-changing dental care.\n\r]]></text></topic></topic></map>","public":true}
+{
+  "jsonProps": "{\"zoom\":0.8}",
+  "title": "Doctors Implants",
+  "isLockedBy": null,
+  "creatorFullName": "Doctors  Implants",
+  "role": "none",
+  "description": null,
+  "createdBy": "doctorsimplantsdallas@hyperdrivemail.com",
+  "creationTime": "2025-06-26T12:09:45Z",
+  "lastModificationBy": "Doctors  Implants",
+  "lastModificationTime": "2025-06-26T12:10:17Z",
+  "xml": "<map name=\"1921918\" theme=\"prism\" version=\"tango\"><topic central=\"true\" text=\"Doctors Implants\" id=\"1\"><topic position=\"267,-16\" order=\"0\" id=\"2\"><text><![CDATA[8215 Westchester Dr #112\nDallas\nTX\n75225\nUnited States\n\n469-663-8921\n\nhttps://doctorsimplants.com/locations/texas/dallas]]></text></topic><topic position=\"2117,68\" order=\"2\" id=\"3\"><text><![CDATA[Doctor’s Implants in Dallas is a leading dental implant center specializing in full-mouth restorations and same-day dental implant solutions. With a focus on personalized care, cutting-edge technology, and top-tier clinical expertise, our Dallas location provides patients with a streamlined, all-in-one approach to dental implant treatment. From your initial consultation to final smile transformation, our experienced team ensures comfort, confidence, and outstanding results every step of the way. Whether you're looking to restore function, improve your smile, or regain confidence, Doctor’s Implants Dallas is your trusted partner in life-changing dental care.\n\r]]></text></topic></topic></map>",
+  "public": true
+}

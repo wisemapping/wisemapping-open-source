@@ -1,1 +1,14 @@
-{"jsonProps":"{\"zoom\":0.8}","title":"IroSteel Metal Fabrication","isLockedBy":null,"creatorFullName":"Jon Peters","role":"none","description":null,"createdBy":"irosteel@hyperdrivemail.com","creationTime":"2025-02-08T15:54:41Z","lastModificationBy":"Jon Peters","lastModificationTime":"2025-02-08T15:55:03Z","xml":"<map name=\"1858501\" theme=\"prism\" version=\"tango\"><topic central=\"true\" text=\"IroSteel Metal Fabrication\" id=\"1\"/><topic position=\"9,119\" order=\"0\" id=\"2\"><text><![CDATA[855 Roblin Blvd E Winkler MB R6W 0N2 Canada\n2043315170\nhttps://www.irosteel.com/\njp.irosteel@gmail.com\n\nIroSteel Metal Fabrication is a leading steel supplier, serving industries across Canada with a comprehensive range of\nhigh-quality steel products. IroSteel specializes in the distribution of structural steel, pipes, tubes, sheets, and custom metal fabrications,\ncatering to both large-scale industrial projects and smaller construction needs. With a focus on reliability, competitive pricing, and\nexceptional customer service, IroSteel has established itself as a trusted partner in the steel industry. Committed to sustainability and\ninnovation, the company ensures that all products meet stringent quality standards while offering efficient solutions to meet the unique demands of each client.\n]]></text></topic></map>","public":true}
+{
+  "jsonProps": "{\"zoom\":0.8}",
+  "title": "IroSteel Metal Fabrication",
+  "isLockedBy": null,
+  "creatorFullName": "Jon Peters",
+  "role": "none",
+  "description": null,
+  "createdBy": "irosteel@hyperdrivemail.com",
+  "creationTime": "2025-02-08T15:54:41Z",
+  "lastModificationBy": "Jon Peters",
+  "lastModificationTime": "2025-02-08T15:55:03Z",
+  "xml": "<map name=\"1858501\" theme=\"prism\" version=\"tango\"><topic central=\"true\" text=\"IroSteel Metal Fabrication\" id=\"1\"/><topic position=\"9,119\" order=\"0\" id=\"2\"><text><![CDATA[855 Roblin Blvd E Winkler MB R6W 0N2 Canada\n2043315170\nhttps://www.irosteel.com/\njp.irosteel@gmail.com\n\nIroSteel Metal Fabrication is a leading steel supplier, serving industries across Canada with a comprehensive range of\nhigh-quality steel products. IroSteel specializes in the distribution of structural steel, pipes, tubes, sheets, and custom metal fabrications,\ncatering to both large-scale industrial projects and smaller construction needs. With a focus on reliability, competitive pricing, and\nexceptional customer service, IroSteel has established itself as a trusted partner in the steel industry. Committed to sustainability and\ninnovation, the company ensures that all products meet stringent quality standards while offering efficient solutions to meet the unique demands of each client.\n]]></text></topic></map>",
+  "public": true
+}

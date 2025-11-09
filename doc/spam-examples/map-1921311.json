@@ -1,1 +1,14 @@
-{"jsonProps":"{\"zoom\":0.8}","title":"Heroes Lawn Care","isLockedBy":null,"creatorFullName":"Micah  Burgess","role":"none","description":null,"createdBy":"heroeslawncarehutto@gmail.com","creationTime":"2025-06-25T05:23:13Z","lastModificationBy":"Micah  Burgess","lastModificationTime":"2025-06-25T05:25:05Z","xml":"<map name=\"1921311\" theme=\"prism\" version=\"tango\"><topic central=\"true\" text=\"Heroes Lawn Care\" id=\"1\"><topic position=\"282,-59\" order=\"0\" id=\"2\"><text><![CDATA[2535 Farm to Market 685 #650\nHutto\nTexas\n78634\nUnited States\n\n512-957-3172\n\nhttps://www.heroeslawncare.com/northeast-austin-tx/\n\nhelp@heroeslawncare.com]]></text></topic><topic position=\"457,80\" order=\"2\" id=\"3\"><text><![CDATA[With almost 100 locations nationwide, Heroes Lawn Care integrates the most effective of regional \nexpertise with the strength of a national brand. Our regional providers comprehend the demands \nof each area they serve, bringing personalized care and understandings to every lawn. No matter \nwhat you need, our goal is to furnish your exterior area with the verdant beauty it deserves.\n\nOur lawn care company is synonymous with promptness, hard work, and stability, characteristics we take \ninto consideration important in our line of work. We ensure our providers happily uphold a high degree \nof service, leveraging high-grade modern technology and eco-friendly solutions to cater to your lawn's demands.\n]]></text></topic></topic></map>","public":true}
+{
+  "jsonProps": "{\"zoom\":0.8}",
+  "title": "Heroes Lawn Care",
+  "isLockedBy": null,
+  "creatorFullName": "Micah  Burgess",
+  "role": "none",
+  "description": null,
+  "createdBy": "heroeslawncarehutto@gmail.com",
+  "creationTime": "2025-06-25T05:23:13Z",
+  "lastModificationBy": "Micah  Burgess",
+  "lastModificationTime": "2025-06-25T05:25:05Z",
+  "xml": "<map name=\"1921311\" theme=\"prism\" version=\"tango\"><topic central=\"true\" text=\"Heroes Lawn Care\" id=\"1\"><topic position=\"282,-59\" order=\"0\" id=\"2\"><text><![CDATA[2535 Farm to Market 685 #650\nHutto\nTexas\n78634\nUnited States\n\n512-957-3172\n\nhttps://www.heroeslawncare.com/northeast-austin-tx/\n\nhelp@heroeslawncare.com]]></text></topic><topic position=\"457,80\" order=\"2\" id=\"3\"><text><![CDATA[With almost 100 locations nationwide, Heroes Lawn Care integrates the most effective of regional \nexpertise with the strength of a national brand. Our regional providers comprehend the demands \nof each area they serve, bringing personalized care and understandings to every lawn. No matter \nwhat you need, our goal is to furnish your exterior area with the verdant beauty it deserves.\n\nOur lawn care company is synonymous with promptness, hard work, and stability, characteristics we take \ninto consideration important in our line of work. We ensure our providers happily uphold a high degree \nof service, leveraging high-grade modern technology and eco-friendly solutions to cater to your lawn's demands.\n]]></text></topic></topic></map>",
+  "public": true
+}
