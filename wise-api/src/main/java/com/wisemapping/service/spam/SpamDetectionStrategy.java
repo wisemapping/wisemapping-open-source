@@ -18,10 +18,16 @@
 
 package com.wisemapping.service.spam;
 
-import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SpamStrategyType;
 
 public interface SpamDetectionStrategy {
-    SpamDetectionResult detectSpam(Mindmap mindmap);
+    /**
+     * Detects spam in a mindmap using the provided context.
+     * The context contains both the Mindmap entity (for metadata) and the parsed MapModel (for content).
+     * 
+     * @param context The spam detection context containing mindmap entity and parsed model
+     * @return Spam detection result
+     */
+    SpamDetectionResult detectSpam(SpamDetectionContext context);
     SpamStrategyType getType();
 }

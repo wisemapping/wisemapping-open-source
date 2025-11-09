@@ -1,7 +1,9 @@
 package com.wisemapping.service;
 
+import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Mindmap;
+import com.wisemapping.service.spam.SpamDetectionContext;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.service.spam.UserBehaviorStrategy;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,10 +38,23 @@ class UserBehaviorStrategyTest {
     void setUp() {
         strategy = new UserBehaviorStrategy(mindmapService);
     }
+    
+    /**
+     * Creates a SpamDetectionContext from a Mindmap.
+     * Since UserBehaviorStrategy only uses metadata (not XML content), we create a minimal MapModel.
+     */
+    private SpamDetectionContext createContext(Mindmap mindmap) {
+        if (mindmap == null) {
+            return null;
+        }
+        // Create a minimal MapModel since UserBehaviorStrategy doesn't use XML content
+        MapModel mapModel = new MapModel();
+        return new SpamDetectionContext(mindmap, mapModel);
+    }
 
     @Test
     void testNullMindmap() {
-        SpamDetectionResult result = strategy.detectSpam(null);
+        SpamDetectionResult result = strategy.detectSpam((SpamDetectionContext) null);
         assertFalse(result.isSpam());
     }
 
@@ -52,7 +67,8 @@ class UserBehaviorStrategyTest {
         when(mindmap.getCreationTime()).thenReturn(oldTime);
         when(mindmap.getLastModificationTime()).thenReturn(null);
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertFalse(result.isSpam());
     }
 
@@ -66,7 +82,8 @@ class UserBehaviorStrategyTest {
         when(mindmap.getCreationTime()).thenReturn(recentTime);
         lenient().when(user.getEmail()).thenReturn("user@test.com");
 
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertTrue(result.isSpam());
         assertEquals("Map created within 5 minutes", result.getReason());
     }
@@ -94,7 +111,8 @@ class UserBehaviorStrategyTest {
         when(user.getEmail()).thenReturn("bot@test.com");
         when(mindmapService.findMindmapsByUser(user)).thenReturn(Arrays.asList(mindmap, mostRecentMap));
 
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertTrue(result.isSpam());
         assertEquals("Bot behavior detected - map modified within 5 minutes of recent map creation", result.getReason());
     }
@@ -110,7 +128,8 @@ class UserBehaviorStrategyTest {
         lenient().when(mindmap.getLastModificationTime()).thenReturn(oldTime);
         lenient().when(mindmapService.findMindmapsByUser(user)).thenReturn(Collections.singletonList(mindmap));
 
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertFalse(result.isSpam());
     }
 
@@ -126,7 +145,8 @@ class UserBehaviorStrategyTest {
         lenient().when(mindmap.getLastModificationTime()).thenReturn(oldTime);
         lenient().when(mindmapService.findMindmapsByUser(user)).thenReturn(Collections.singletonList(mindmap));
 
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertFalse(result.isSpam());
     }
 
@@ -140,7 +160,8 @@ class UserBehaviorStrategyTest {
         when(mindmap.getLastModificationTime()).thenReturn(oldTime);
         when(mindmapService.findMindmapsByUser(user)).thenThrow(new RuntimeException("Service error"));
 
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertFalse(result.isSpam());
     }
 
@@ -154,7 +175,8 @@ class UserBehaviorStrategyTest {
         when(mindmap.getCreator()).thenReturn(user);
         when(mindmap.getCreationTime()).thenReturn(recentTime);
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertTrue(result.isSpam());
         assertEquals("Map created within 5 minutes", result.getReason());
     }
@@ -167,7 +189,8 @@ class UserBehaviorStrategyTest {
         when(mindmap.getCreator()).thenReturn(user);
         when(mindmap.getCreationTime()).thenReturn(exactTime);
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertTrue(result.isSpam());
         assertEquals("Map created within 5 minutes", result.getReason());
     }
@@ -182,7 +205,8 @@ class UserBehaviorStrategyTest {
         lenient().when(mindmap.getLastModificationTime()).thenReturn(oldTime);
         lenient().when(mindmapService.findMindmapsByUser(user)).thenReturn(Collections.singletonList(mindmap));
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertFalse(result.isSpam());
     }
 
@@ -211,7 +235,8 @@ class UserBehaviorStrategyTest {
         when(user.getEmail()).thenReturn("bot@example.com");
         when(mindmapService.findMindmapsByUser(user)).thenReturn(Arrays.asList(mindmap, recentMap));
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertTrue(result.isSpam());
         assertEquals("Bot behavior detected - map modified within 5 minutes of recent map creation", result.getReason());
     }
@@ -237,7 +262,8 @@ class UserBehaviorStrategyTest {
         when(user.getEmail()).thenReturn("bot@example.com");
         when(mindmapService.findMindmapsByUser(user)).thenReturn(Arrays.asList(mindmap, recentMap));
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertTrue(result.isSpam());
         assertEquals("Bot behavior detected - map modified within 5 minutes of recent map creation", result.getReason());
     }
@@ -262,7 +288,8 @@ class UserBehaviorStrategyTest {
         when(mindmap.getLastModificationTime()).thenReturn(modificationTime);
         when(mindmapService.findMindmapsByUser(user)).thenReturn(Arrays.asList(mindmap, recentMap));
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertFalse(result.isSpam());
     }
     
@@ -287,7 +314,8 @@ class UserBehaviorStrategyTest {
         when(user.getEmail()).thenReturn("bot@example.com");
         when(mindmapService.findMindmapsByUser(user)).thenReturn(Arrays.asList(mindmap, recentMap));
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertTrue(result.isSpam());
         assertEquals("Bot behavior detected - map modified within 5 minutes of recent map creation", result.getReason());
     }
@@ -307,7 +335,8 @@ class UserBehaviorStrategyTest {
         when(mindmap.getCreationTime()).thenReturn(recentCreationTime);
         lenient().when(mindmap.getLastModificationTime()).thenReturn(modificationTime);
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertTrue(result.isSpam());
         assertEquals("Map created within 5 minutes", result.getReason());
     }
@@ -321,7 +350,8 @@ class UserBehaviorStrategyTest {
         when(mindmap.getCreationTime()).thenReturn(oldCreationTime);
         when(mindmap.getLastModificationTime()).thenReturn(null); // No modification time
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertFalse(result.isSpam());
     }
     
@@ -338,7 +368,8 @@ class UserBehaviorStrategyTest {
         when(mindmap.getLastModificationTime()).thenReturn(modificationTime);
         when(mindmapService.findMindmapsByUser(user)).thenReturn(Collections.singletonList(mindmap));
         
-        SpamDetectionResult result = strategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = strategy.detectSpam(context);
         assertFalse(result.isSpam());
     }
 }

@@ -18,92 +18,60 @@
 
 package com.wisemapping.service.spam;
 
-import com.wisemapping.model.Mindmap;
-import com.wisemapping.model.SpamStrategyType;
-import com.wisemapping.mindmap.parser.MindmapParser;
 import com.wisemapping.mindmap.model.MapModel;
-import com.wisemapping.mindmap.utils.MindmapValidationException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.io.UnsupportedEncodingException;
 
 @Component
 public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
 
-    private final static Logger logger = LogManager.getLogger();
     private final SpamContentExtractor contentExtractor;
     
     @Value("${app.batch.spam-detection.min-nodes-exemption:15}")
     private int minNodesExemption;
+
+    private static final int MARKETING_KEYWORD_THRESHOLD = 3;
 
     public FewNodesWithContentStrategy(SpamContentExtractor contentExtractor) {
         this.contentExtractor = contentExtractor;
     }
 
     @Override
-    public SpamDetectionResult detectSpam(Mindmap mindmap) {
-        SpamDetectionResult result = SpamDetectionResult.notSpam();
+    public SpamDetectionResult detectSpam(SpamDetectionContext context) {
+        if (context == null || context.getMindmap() == null || context.getMapModel() == null) {
+            return SpamDetectionResult.notSpam();
+        }
+
+        MapModel mapModel = context.getMapModel();
         
-        try {
-            String xml = mindmap.getXmlStr();
-            if (!xml.trim().isEmpty()) {
-                // Try to use the new mindmap model first
-                try {
-                    MapModel mapModel = MindmapParser.parseXml(xml);
-                    int topicCount = mapModel.getTotalTopicCount();
-                    
-                    // Any mindmap with more than the configured threshold is considered legitimate content (not spam)
-                    if (topicCount > minNodesExemption) {
-                        return SpamDetectionResult.notSpam();
-                    }
+        // Extract content to check for marketing keywords
+        String content = contentExtractor.extractTextContent(mapModel, 
+                                                              context.getTitle(), 
+                                                              context.getDescription());
+        final boolean marketingHeavy = contentExtractor.countSpamKeywords(content.toLowerCase()) >= MARKETING_KEYWORD_THRESHOLD;
+        
+        int topicCount = mapModel.getTotalTopicCount();
+        
+        // Any mindmap with more than the configured threshold is considered legitimate content (not spam)
+        if (topicCount > minNodesExemption && !marketingHeavy) {
+            return SpamDetectionResult.notSpam();
+        }
 
-                    // For maps with 2-3 nodes, check if they have links or notes
-                    if (topicCount <= 3) {
-                        boolean hasLinks = mapModel.countTopicsWithLinks() > 0;
-                        boolean hasNotes = mapModel.countTopicsWithNotes() > 0;
-                        if (hasLinks || hasNotes) {
-                            String reason = hasLinks && hasNotes ? "Few nodes with links, notes and spam keywords" :
-                                           hasLinks ? "Few nodes with links and spam keywords" :
-                                           "Few nodes with notes and spam keywords";
-                            result = SpamDetectionResult.spam(reason,
-                                    "TopicCount: " + topicCount, getType());
-                        }
-                    }
-                } catch (MindmapValidationException e) {
-                    // Log the parsing error with map content and assume safe content
-                    logger.warn("Failed to parse mindmap XML for spam detection. Mindmap ID: {}, Error: {}", 
-                               mindmap.getId(), e.getMessage());
-                    
-                    // Fallback to XML parsing if model parsing fails
-                    int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
-
-                    // Any mindmap with more than the configured threshold is considered legitimate content (not spam)
-                    if (topicCount > minNodesExemption) {
-                        return SpamDetectionResult.notSpam();
-                    }
-
-                    // For maps with 2-3 nodes, check if central + minimal child nodes with links or notes
-                    if (topicCount <= 3) {
-                        boolean hasLinks = xml.contains("<link") && xml.contains("url=");
-                        boolean hasNotes = xml.contains("<note>");
-                        if (hasLinks || hasNotes) {
-                            String reason = hasLinks && hasNotes ? "Few nodes with links, notes and spam keywords" :
-                                           hasLinks ? "Few nodes with links and spam keywords" :
-                                           "Few nodes with notes and spam keywords";
-                            result = SpamDetectionResult.spam(reason,
-                                    "TopicCount: " + topicCount, getType());
-                        }
-                    }
-                }
+        // For maps with 2-3 nodes, check if they have links or notes
+        if (topicCount <= 3) {
+            boolean hasLinks = mapModel.countTopicsWithLinks() > 0;
+            boolean hasNotes = mapModel.countTopicsWithNotes() > 0;
+            if (hasLinks || hasNotes) {
+                String reason = hasLinks && hasNotes ? "Few nodes with links, notes and spam keywords" :
+                               hasLinks ? "Few nodes with links and spam keywords" :
+                               "Few nodes with notes and spam keywords";
+                return SpamDetectionResult.spam(reason,
+                        "TopicCount: " + topicCount, getType());
             }
-        } catch (UnsupportedEncodingException e) {
-            // Keep default notSpam result
         }
         
-        return result;
+        return SpamDetectionResult.notSpam();
     }
 
     @Override

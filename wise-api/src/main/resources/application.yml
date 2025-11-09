@@ -216,9 +216,17 @@ app:
       batch-size: 100  # Number of mindmaps to process in each batch
       min-nodes-exemption: 15  # Mindmaps with more than this many nodes are automatically considered not spam
       max-description-length: 200  # Maximum description length before considering as potential spam
-      startup-enabled: false  # Enable spam detection on application startup (async)
-      months-back: 45  # Only process mindmaps created since 2022 (approximately 45 months)
-      version: 4  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
+      startup-enabled: true  # Enable spam detection on application startup (async)
+      months-back: 48  # Only process mindmaps created in the last 48 months
+      version: 5  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
+      service-directory:
+        keyword-stuffing-separators: 25  # Number of separator characters (pipes, commas) indicating keyword stuffing
+        location-variants: 8  # Number of distinct location variants (cities, neighborhoods) indicating keyword stuffing
+        near-me-repetitions: 10  # Number of "near me" and similar phrase repetitions indicating keyword stuffing
+      link-farm:
+        url-threshold: 20  # Absolute threshold for URL count (always spam if >= this)
+        url-threshold-low-structure: 10  # URL threshold for maps with <= 3 topics
+        max-topics-for-low-structure: 3  # Maximum topics to consider as "low structure"
     history-cleanup:
       enabled: true
       startup-enabled: false  # Disable startup execution by default (can be heavy)

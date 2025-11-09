@@ -1,5 +1,7 @@
 package com.wisemapping.service.spam;
 
+import com.wisemapping.mindmap.model.MapModel;
+import com.wisemapping.mindmap.parser.MindmapParser;
 import com.wisemapping.model.Mindmap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,19 +47,21 @@ class DescriptionLengthStrategyTest {
 
     @Test
     void testNullMindmap() {
-        assertFalse(descriptionLengthStrategy.detectSpam(null).isSpam());
+        assertFalse(descriptionLengthStrategy.detectSpam((SpamDetectionContext) null).isSpam());
     }
 
     @Test
     void testEmptyDescription() throws Exception {
         Mindmap mindmap = createMindmap("Test Title", "", "<map><topic central=\"true\" text=\"Test\"/></map>");
-        assertFalse(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertFalse(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
     void testNullDescription() throws Exception {
         Mindmap mindmap = createMindmap("Test Title", null, "<map><topic central=\"true\" text=\"Test\"/></map>");
-        assertFalse(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertFalse(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
@@ -72,7 +76,8 @@ class DescriptionLengthStrategyTest {
                 </map>
                 """;
         Mindmap mindmap = createMindmap("My Project", "This is a simple project description", xml);
-        assertFalse(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertFalse(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
@@ -92,7 +97,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap("Test Title", longDescription, xml);
-        assertTrue(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertTrue(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
@@ -113,7 +119,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap(title, longDescription, xml);
-        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(context);
         
         assertTrue(result.isSpam());
         assertTrue(result.getReason().contains("Long description with title duplication detected"));
@@ -134,7 +141,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap(title, description, xml);
-        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(context);
         
         assertTrue(result.isSpam());
         assertTrue(result.getReason().contains("Title text found in description"));
@@ -155,7 +163,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap(title, description, xml);
-        assertTrue(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertTrue(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
@@ -173,7 +182,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap(title, description, xml);
-        assertFalse(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertFalse(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
@@ -209,7 +219,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap("Large Project", longDescription, xml);
-        assertFalse(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertFalse(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
@@ -226,7 +237,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap("Test", description, xml);
-        assertFalse(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertFalse(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
@@ -243,7 +255,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap("Test", description, xml);
-        assertTrue(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertTrue(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
@@ -265,7 +278,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap(title, description, xml);
-        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(context);
         
         assertTrue(result.isSpam());
         assertNotNull(result.getReason());
@@ -293,7 +307,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap("Test", longDescription, xml);
-        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(context);
         
         assertTrue(result.isSpam());
         assertTrue(result.getReason().contains("Description exceeds maximum length"));
@@ -315,7 +330,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap(title, description, xml);
-        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(mindmap);
+        var context = createContext(mindmap);
+        SpamDetectionResult result = descriptionLengthStrategy.detectSpam(context);
         
         assertTrue(result.isSpam());
         assertTrue(result.getReason().contains("Title text found in description"));
@@ -333,7 +349,8 @@ class DescriptionLengthStrategyTest {
                 """;
         
         Mindmap mindmap = createMindmap("Test", "   ", xml);
-        assertFalse(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertFalse(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     @Test
@@ -353,7 +370,8 @@ class DescriptionLengthStrategyTest {
         Mindmap mindmap = createMindmap(title, description, xml);
         // This test checks that we need the full title match (case-insensitive)
         // Since "Project Management System" is not fully contained in the description, it should not detect as spam
-        assertFalse(descriptionLengthStrategy.detectSpam(mindmap).isSpam());
+        var context = createContext(mindmap);
+        assertFalse(descriptionLengthStrategy.detectSpam(context).isSpam());
     }
 
     private Mindmap createMindmap(String title, String description, String xml) throws Exception {
@@ -362,6 +380,32 @@ class DescriptionLengthStrategyTest {
         lenient().when(mindmap.getDescription()).thenReturn(description);
         lenient().when(mindmap.getXmlStr()).thenReturn(xml);
         return mindmap;
+    }
+    
+    /**
+     * Creates a SpamDetectionContext from a Mindmap by parsing its XML.
+     */
+    private SpamDetectionContext createContext(Mindmap mindmap) throws Exception {
+        if (mindmap == null) {
+            return null;
+        }
+        
+        String xmlContent = mindmap.getXmlStr();
+        if (xmlContent == null || xmlContent.trim().isEmpty()) {
+            throw new IllegalArgumentException("Mindmap has no XML content");
+        }
+        
+        MapModel mapModel = MindmapParser.parseXml(xmlContent);
+        
+        // Set title and description from entity if not in model
+        if (mapModel.getTitle() == null && mindmap.getTitle() != null) {
+            mapModel.setTitle(mindmap.getTitle());
+        }
+        if (mapModel.getDescription() == null && mindmap.getDescription() != null) {
+            mapModel.setDescription(mindmap.getDescription());
+        }
+        
+        return new SpamDetectionContext(mindmap, mapModel);
     }
 }
 

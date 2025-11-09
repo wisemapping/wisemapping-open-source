@@ -1,0 +1,14 @@
+{
+  "jsonProps": "{\"zoom\":0.8}",
+  "title": "Fitness Experience",
+  "isLockedBy": null,
+  "creatorFullName": "Nicholas Dunn",
+  "role": "none",
+  "description": null,
+  "createdBy": "fitnessexperiencecalgary@hyperdrivemail.com",
+  "creationTime": "2025-05-29T05:40:46Z",
+  "lastModificationBy": "Nicholas Dunn",
+  "lastModificationTime": "2025-05-29T05:41:46Z",
+  "xml": "<map name=\"1912233\" theme=\"prism\" version=\"tango\"><topic central=\"true\" text=\"Fitness Experience\" id=\"1\"><topic position=\"249,0\" order=\"0\" id=\"2\"><text><![CDATA[7130 Fisher Rd SE #9 Calgary AB T2H 0W3\n\nCanada\n\n4032879894\n\nhttps://fitnessexperience.ca/\n\nhello@fitnessexperience.ca]]></text></topic><topic position=\"-321,0\" order=\"1\" id=\"3\"><text><![CDATA[Fitness Experience is a leading provider of high-quality fitness\nequipment and services in Calgary, catering to both retail and\ncommercial clients. The store offers an extensive selection of\nfitness equipment, including treadmills, ellipticals, spin bikes,\ndumbbells, and weight plates. With a commitment to excellence,\nFitness Experience provides professional in-house maintenance and\nservice for all equipment, ensuring optimal performance and\nlongevity. Their knowledgeable team assists customers in setting\nup new gyms or enhancing home workout environments, tailoring\nsolutions to individual fitness goals. Whether you're a fitness\nenthusiast or a commercial entity seeking top-tier equipment and\nsupport, Fitness Experience is dedicated to helping you achieve\nyour fitness aspirations.]]></text></topic></topic></map>",
+  "public": true
+}

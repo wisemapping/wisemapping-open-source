@@ -1,0 +1,14 @@
+{
+  "jsonProps": "{\"zoom\":0.8}",
+  "title": "Primary Care Doctor",
+  "isLockedBy": null,
+  "creatorFullName": "Primary  Care Doctor",
+  "role": "none",
+  "description": "Primary Care Doctor",
+  "createdBy": "Primarycaredoctor722@gmail.com",
+  "creationTime": "2024-10-21T11:07:32Z",
+  "lastModificationBy": "Primary  Care Doctor",
+  "lastModificationTime": "2024-10-21T11:07:47Z",
+  "xml": "<map name=\"1804233\" theme=\"prism\" version=\"tango\"><topic central=\"true\" id=\"1\"><text><![CDATA[Primary Care Doctor\n\nContact:\nAddress: \n380 88th St suite 201, Brooklyn, NY 11209\nPhone: \n347-428-9696\nWebsite URL\nhttps://www.newyorkentinstitute.com/\n]]></text></topic></map>",
+  "public": true
+}

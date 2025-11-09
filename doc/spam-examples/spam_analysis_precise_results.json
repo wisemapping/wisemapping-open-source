@@ -1,0 +1,260 @@
+[
+  {
+    "map_id": 1841477,
+    "title": "Welcome Ben",
+    "description": "",
+    "would_be_detected": true,
+    "detection_results": [
+      [
+        "LinkFarm",
+        "Not detected",
+        false
+      ],
+      [
+        "ServiceDirectory",
+        "ServiceDirectory Rule 1: Complete contact info (address+phone+website/email) with \u22645 topics (2)",
+        true
+      ],
+      [
+        "FewNodes",
+        "Not detected",
+        false
+      ],
+      [
+        "DescriptionLength",
+        "Not detected",
+        false
+      ]
+    ],
+    "stats": {
+      "topic_count": 2,
+      "separator_count": 5,
+      "near_me_count": 4,
+      "location_variants": 2,
+      "url_count": 1,
+      "contact_patterns": 5,
+      "marketing_keywords": 0,
+      "contact_info": {
+        "has_website": true,
+        "has_phone": true,
+        "has_address": true,
+        "has_email": true
+      }
+    }
+  },
+  {
+    "map_id": 1902545,
+    "title": "UpDown Desk Australia",
+    "description": null,
+    "would_be_detected": false,
+    "detection_results": [
+      [
+        "LinkFarm",
+        "Not detected",
+        false
+      ],
+      [
+        "ServiceDirectory",
+        "Not detected",
+        false
+      ],
+      [
+        "FewNodes",
+        "Not detected",
+        false
+      ],
+      [
+        "DescriptionLength",
+        "Not detected",
+        false
+      ]
+    ],
+    "stats": {
+      "topic_count": 2,
+      "separator_count": 17,
+      "near_me_count": 2,
+      "location_variants": 2,
+      "url_count": 1,
+      "contact_patterns": 3,
+      "marketing_keywords": 0,
+      "contact_info": {
+        "has_website": true,
+        "has_phone": false,
+        "has_address": true,
+        "has_email": true
+      }
+    }
+  },
+  {
+    "map_id": 1936562,
+    "title": "Garden Wildlife\t",
+    "description": null,
+    "would_be_detected": true,
+    "detection_results": [
+      [
+        "LinkFarm",
+        "Not detected",
+        false
+      ],
+      [
+        "ServiceDirectory",
+        "ServiceDirectory Rule 1: Complete contact info (address+phone+website/email) with \u22645 topics (3)",
+        true
+      ],
+      [
+        "FewNodes",
+        "Not detected",
+        false
+      ],
+      [
+        "DescriptionLength",
+        "Not detected",
+        false
+      ]
+    ],
+    "stats": {
+      "topic_count": 3,
+      "separator_count": 10,
+      "near_me_count": 0,
+      "location_variants": 2,
+      "url_count": 1,
+      "contact_patterns": 8,
+      "marketing_keywords": 0,
+      "contact_info": {
+        "has_website": true,
+        "has_phone": true,
+        "has_address": true,
+        "has_email": true
+      }
+    }
+  },
+  {
+    "map_id": 1804233,
+    "title": "Primary Care Doctor",
+    "description": "Primary Care Doctor",
+    "would_be_detected": true,
+    "detection_results": [
+      [
+        "LinkFarm",
+        "Not detected",
+        false
+      ],
+      [
+        "ServiceDirectory",
+        "ServiceDirectory Rule 1: Complete contact info (address+phone+website/email) with \u22645 topics (1)",
+        true
+      ],
+      [
+        "FewNodes",
+        "Not detected",
+        false
+      ],
+      [
+        "DescriptionLength",
+        "Not detected",
+        false
+      ]
+    ],
+    "stats": {
+      "topic_count": 1,
+      "separator_count": 2,
+      "near_me_count": 0,
+      "location_variants": 0,
+      "url_count": 1,
+      "contact_patterns": 6,
+      "marketing_keywords": 0,
+      "contact_info": {
+        "has_website": true,
+        "has_phone": true,
+        "has_address": true,
+        "has_email": false
+      }
+    }
+  },
+  {
+    "map_id": 1901495,
+    "title": "Adventure Yogi",
+    "description": null,
+    "would_be_detected": false,
+    "detection_results": [
+      [
+        "LinkFarm",
+        "Not detected",
+        false
+      ],
+      [
+        "ServiceDirectory",
+        "Not detected",
+        false
+      ],
+      [
+        "FewNodes",
+        "Not detected",
+        false
+      ],
+      [
+        "DescriptionLength",
+        "Not detected",
+        false
+      ]
+    ],
+    "stats": {
+      "topic_count": 2,
+      "separator_count": 9,
+      "near_me_count": 0,
+      "location_variants": 3,
+      "url_count": 1,
+      "contact_patterns": 2,
+      "marketing_keywords": 0,
+      "contact_info": {
+        "has_website": true,
+        "has_phone": false,
+        "has_address": true,
+        "has_email": false
+      }
+    }
+  },
+  {
+    "map_id": 1924052,
+    "title": "DoughGirl",
+    "description": null,
+    "would_be_detected": false,
+    "detection_results": [
+      [
+        "LinkFarm",
+        "Not detected",
+        false
+      ],
+      [
+        "ServiceDirectory",
+        "Not detected",
+        false
+      ],
+      [
+        "FewNodes",
+        "Not detected",
+        false
+      ],
+      [
+        "DescriptionLength",
+        "Not detected",
+        false
+      ]
+    ],
+    "stats": {
+      "topic_count": 3,
+      "separator_count": 9,
+      "near_me_count": 0,
+      "location_variants": 2,
+      "url_count": 1,
+      "contact_patterns": 3,
+      "marketing_keywords": 0,
+      "contact_info": {
+        "has_website": true,
+        "has_phone": false,
+        "has_address": true,
+        "has_email": false
+      }
+    }
+  }
+]

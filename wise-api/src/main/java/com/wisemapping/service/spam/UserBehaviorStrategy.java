@@ -39,8 +39,13 @@ public class UserBehaviorStrategy implements SpamDetectionStrategy {
 
     @Override
     @Transactional(readOnly = true)
-    public SpamDetectionResult detectSpam(Mindmap mindmap) {
-        if (mindmap == null || mindmap.getCreator() == null || mindmap.getCreationTime() == null) {
+    public SpamDetectionResult detectSpam(SpamDetectionContext context) {
+        if (context == null || context.getMindmap() == null) {
+            return SpamDetectionResult.notSpam();
+        }
+        
+        Mindmap mindmap = context.getMindmap();
+        if (mindmap.getCreator() == null || mindmap.getCreationTime() == null) {
             return SpamDetectionResult.notSpam();
         }
 

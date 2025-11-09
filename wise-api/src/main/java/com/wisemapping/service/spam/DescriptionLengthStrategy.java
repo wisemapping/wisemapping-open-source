@@ -18,7 +18,7 @@
 
 package com.wisemapping.service.spam;
 
-import com.wisemapping.model.Mindmap;
+import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,35 +34,36 @@ public class DescriptionLengthStrategy implements SpamDetectionStrategy {
     @Value("${app.batch.spam-detection.max-description-length:200}")
     private int maxDescriptionLength;
 
+    private static final int MARKETING_KEYWORD_THRESHOLD = 3;
+
     public DescriptionLengthStrategy(SpamContentExtractor contentExtractor) {
         this.contentExtractor = contentExtractor;
     }
 
     @Override
-    public SpamDetectionResult detectSpam(Mindmap mindmap) {
-        if (mindmap == null) {
+    public SpamDetectionResult detectSpam(SpamDetectionContext context) {
+        if (context == null || context.getMindmap() == null || context.getMapModel() == null) {
             return SpamDetectionResult.notSpam();
         }
 
-        String description = mindmap.getDescription();
-        String title = mindmap.getTitle();
+        String description = context.getDescription();
+        String title = context.getTitle();
         
         // If there's no description, can't be spam by description criteria
         if (description == null || description.trim().isEmpty()) {
             return SpamDetectionResult.notSpam();
         }
 
-        try {
-            String xml = mindmap.getXmlStr();
-            if (xml != null && !xml.trim().isEmpty()) {
-                // Check node count first - any mindmap with more than the configured threshold is considered legitimate content (not spam)
-                int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
-                if (topicCount > minNodesExemption) {
-                    return SpamDetectionResult.notSpam();
-                }
-            }
-        } catch (Exception e) {
-            // If we can't count nodes, continue with other spam detection
+        MapModel mapModel = context.getMapModel();
+        
+        // Extract content to check for marketing keywords
+        String content = contentExtractor.extractTextContent(mapModel, title, description);
+        final boolean marketingHeavy = contentExtractor.countSpamKeywords(content.toLowerCase()) >= MARKETING_KEYWORD_THRESHOLD;
+
+        // Check node count first - any mindmap with more than the configured threshold is considered legitimate content (not spam)
+        int topicCount = mapModel.getTotalTopicCount();
+        if (topicCount > minNodesExemption && !marketingHeavy) {
+            return SpamDetectionResult.notSpam();
         }
 
         String descriptionTrimmed = description.trim();

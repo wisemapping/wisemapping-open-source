@@ -1,0 +1,14 @@
+{
+  "jsonProps": "{\"zoom\":0.8}",
+  "title": "Welcome Ben",
+  "isLockedBy": null,
+  "creatorFullName": "Ben Garcia",
+  "role": "none",
+  "description": "",
+  "createdBy": "madesplumbingtexas@gmail.com",
+  "creationTime": "2025-01-10T13:11:11Z",
+  "lastModificationBy": "Ben Garcia",
+  "lastModificationTime": "2025-01-10T13:17:28Z",
+  "xml": "<map name=\"1841477\" version=\"tango\"><topic central=\"true\" text=\"Made's Plumbing\" id=\"1\" fontStyle=\";;#eeeeee;;;\" bgColor=\"#0a0a08\"><topic position=\"408,-75\" order=\"0\" shape=\"rectangle\" id=\"75\"><text><![CDATA[846 W Lynn Creek Dr Arlington Texas 76001 United States\n\n\n(817) 962-2257\n\nhttps://madesplumbing.com/\n\nyou@madesplumbing.com\n\nWelcome to Made's Plumbing! We're your friendly area professionals in plumbing, drain cleaning, \nwater pipe repair service, and drain repair service. Our dedicated team is here to guarantee your \npipes are streaming smoothly and your home is comfortable. At Made's Plumbing, we treat every \ncustomer like family and tackle every work with utmost treatment and professionalism and trust. \nAllow us take care of your plumbing demands and experience the cozy, trusted solution you \ndeserve.]]></text></topic></topic></map>",
+  "public": true
+}
