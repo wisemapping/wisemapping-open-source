@@ -42,6 +42,12 @@ public enum SpamStrategyType {
     // Description Length Spam
     DESCRIPTION_LENGTH('D', "DescriptionLength"),
     
+    // Service Directory Spam
+    SERVICE_DIRECTORY('S', "ServiceDirectory"),
+    
+    // Link Farm Spam
+    LINK_FARM('L', "LinkFarm"),
+    
     // Unknown/Generic spam
     UNKNOWN('X', "Unknown");
     

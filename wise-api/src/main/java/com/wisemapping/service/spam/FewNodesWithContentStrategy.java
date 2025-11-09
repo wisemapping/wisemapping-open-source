@@ -39,6 +39,8 @@ public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
     @Value("${app.batch.spam-detection.min-nodes-exemption:15}")
     private int minNodesExemption;
 
+    private static final int MARKETING_KEYWORD_THRESHOLD = 3;
+
     public FewNodesWithContentStrategy(SpamContentExtractor contentExtractor) {
         this.contentExtractor = contentExtractor;
     }
@@ -46,7 +48,8 @@ public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
     @Override
     public SpamDetectionResult detectSpam(Mindmap mindmap) {
         SpamDetectionResult result = SpamDetectionResult.notSpam();
-        
+        final boolean marketingHeavy = contentExtractor.hasMarketingIndicators(mindmap, MARKETING_KEYWORD_THRESHOLD);
+
         try {
             String xml = mindmap.getXmlStr();
             if (!xml.trim().isEmpty()) {
@@ -56,7 +59,7 @@ public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
                     int topicCount = mapModel.getTotalTopicCount();
                     
                     // Any mindmap with more than the configured threshold is considered legitimate content (not spam)
-                    if (topicCount > minNodesExemption) {
+                    if (topicCount > minNodesExemption && !marketingHeavy) {
                         return SpamDetectionResult.notSpam();
                     }
 
@@ -81,7 +84,7 @@ public class FewNodesWithContentStrategy implements SpamDetectionStrategy {
                     int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
 
                     // Any mindmap with more than the configured threshold is considered legitimate content (not spam)
-                    if (topicCount > minNodesExemption) {
+                    if (topicCount > minNodesExemption && !marketingHeavy) {
                         return SpamDetectionResult.notSpam();
                     }
 

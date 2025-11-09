@@ -34,6 +34,8 @@ public class DescriptionLengthStrategy implements SpamDetectionStrategy {
     @Value("${app.batch.spam-detection.max-description-length:200}")
     private int maxDescriptionLength;
 
+    private static final int MARKETING_KEYWORD_THRESHOLD = 3;
+
     public DescriptionLengthStrategy(SpamContentExtractor contentExtractor) {
         this.contentExtractor = contentExtractor;
     }
@@ -52,12 +54,14 @@ public class DescriptionLengthStrategy implements SpamDetectionStrategy {
             return SpamDetectionResult.notSpam();
         }
 
+        final boolean marketingHeavy = contentExtractor.hasMarketingIndicators(mindmap, MARKETING_KEYWORD_THRESHOLD);
+
         try {
             String xml = mindmap.getXmlStr();
             if (xml != null && !xml.trim().isEmpty()) {
                 // Check node count first - any mindmap with more than the configured threshold is considered legitimate content (not spam)
                 int topicCount = (int) contentExtractor.countOccurrences(xml, "<topic");
-                if (topicCount > minNodesExemption) {
+                if (topicCount > minNodesExemption && !marketingHeavy) {
                     return SpamDetectionResult.notSpam();
                 }
             }

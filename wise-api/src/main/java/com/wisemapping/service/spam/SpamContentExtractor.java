@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 
 /**
  * Extracts text content from mindmaps for spam detection purposes.
@@ -158,7 +159,55 @@ public class SpamContentExtractor {
             .filter(keyword -> lowerContent.contains(keyword))
             .count() : 0;
     }
-    
+
+    /**
+     * Counts the number of spam keywords present across the entire mindmap content.
+     *
+     * @param mindmap The mindmap to analyze
+     * @return Number of spam keywords detected
+     */
+    public long countSpamKeywords(Mindmap mindmap) {
+        if (mindmap == null) {
+            return 0;
+        }
+        final String content = extractTextContent(mindmap);
+        if (content == null) {
+            return 0;
+        }
+        return countSpamKeywords(content.toLowerCase());
+    }
+
+    /**
+     * Determines whether the mindmap contains heavy marketing indicators based on keyword matches.
+     *
+     * @param mindmap   Mindmap under analysis
+     * @param threshold Minimum number of keyword matches required
+     * @return true if heavy marketing indicators are present
+     */
+    public boolean hasMarketingIndicators(Mindmap mindmap, int threshold) {
+        return countSpamKeywords(mindmap) >= Math.max(threshold, 1);
+    }
+
+    /**
+     * Normalizes content for regex-based pattern detection by removing bullet prefixes and
+     * collapsing whitespace. This makes it easier for pattern strategies to identify contact
+     * information even when formatted with decorative characters.
+     *
+     * @param content Raw content to normalize
+     * @return Normalized content
+     */
+    public String normalizeForPatternMatching(String content) {
+        if (content == null) {
+            return "";
+        }
+
+        String withoutBullets = Pattern.compile("(?m)^[\\s]*[•◦▪●□■▫▸►➤➔➢➣➧➨\\-*]+\\s*")
+                .matcher(content)
+                .replaceAll("");
+
+        return withoutBullets.replaceAll("\\s+", " ").trim();
+    }
+ 
     /**
      * Checks if the given content contains any spam keywords.
      * 
