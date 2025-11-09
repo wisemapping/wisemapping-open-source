@@ -222,7 +222,7 @@ app:
       max-description-length: 200  # Maximum description length before considering as potential spam
       startup-enabled: true  # Enable spam detection on application startup (async)
       months-back: 60  # Only process mindmaps created in the last 60 months
-      version: 6  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
+      version: 7  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
       service-directory:
         keyword-stuffing-separators: 25  # Number of separator characters (pipes, commas) indicating keyword stuffing
         location-variants: 8  # Number of distinct location variants (cities, neighborhoods) indicating keyword stuffing
@@ -231,7 +231,7 @@ app:
         url-threshold: 20  # Absolute threshold for URL count (always spam if >= this)
         url-threshold-low-structure: 10  # URL threshold for maps with <= 3 topics
         max-topics-for-low-structure: 3  # Maximum topics to consider as "low structure"
-        popular-domain-whitelist: "google.com,youtube.com,wikipedia.org,facebook.com,linkedin.com,github.com,stackoverflow.com,reddit.com,medium.com,apple.com,amazon.com,cnn.com,nytimes.com,bbc.com,docs.google.com,drive.google.com"  # Domains ignored when counting URLs for link farm detection
+        popular-domain-whitelist-resource: classpath:spam/popular-domain-whitelist.yml  # Domains ignored when counting URLs for link farm detection
     history-cleanup:
       enabled: true
       startup-enabled: false  # Disable startup execution by default (can be heavy)

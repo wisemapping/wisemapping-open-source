@@ -17,13 +17,18 @@ package com.wisemapping.service.spam;
 import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,10 +54,12 @@ public class LinkFarmSpamStrategy implements SpamDetectionStrategy {
     @Value("${app.batch.spam-detection.link-farm.max-topics-for-low-structure:3}")
     private int maxTopicsForLowStructure;
 
-    @Value("${app.batch.spam-detection.link-farm.popular-domain-whitelist:google.com,youtube.com,wikipedia.org,facebook.com,linkedin.com,github.com,stackoverflow.com,reddit.com,medium.com,apple.com,amazon.com,cnn.com,nytimes.com,bbc.com,docs.google.com,drive.google.com}")
-    private String popularDomainWhitelistRaw;
+    @Value("${app.batch.spam-detection.link-farm.popular-domain-whitelist-resource:classpath:spam/popular-domain-whitelist.yml}")
+    private Resource popularDomainWhitelistResource;
 
-    private Set<String> popularDomainWhitelist;
+    private Set<String> popularDomainWhitelistDomains;
+    private Set<Pattern> popularDomainWhitelistPatterns;
+    private boolean popularDomainWhitelistLoaded = false;
 
     // Pattern to match URLs
     private static final Pattern URL_PATTERN = Pattern.compile(
@@ -162,18 +169,8 @@ public class LinkFarmSpamStrategy implements SpamDetectionStrategy {
                 host = host.substring(4);
             }
 
-            Set<String> whitelist = getPopularDomainWhitelist();
-            if (whitelist.isEmpty()) {
-                return true;
-            }
-
-            for (String domain : whitelist) {
-                if (domain.isEmpty()) {
-                    continue;
-                }
-                if (host.equals(domain) || host.endsWith("." + domain)) {
-                    return false;
-                }
+            if (isHostWhitelisted(host)) {
+                return false;
             }
 
         } catch (URISyntaxException e) {
@@ -183,25 +180,136 @@ public class LinkFarmSpamStrategy implements SpamDetectionStrategy {
         return true;
     }
 
-    private Set<String> getPopularDomainWhitelist() {
-        if (popularDomainWhitelist != null) {
-            return popularDomainWhitelist;
+    private boolean isHostWhitelisted(String host) {
+        ensurePopularDomainWhitelist();
+        if (popularDomainWhitelistDomains.isEmpty() && popularDomainWhitelistPatterns.isEmpty()) {
+            return false;
         }
 
-        if (popularDomainWhitelistRaw == null || popularDomainWhitelistRaw.trim().isEmpty()) {
-            popularDomainWhitelist = Collections.emptySet();
-            return popularDomainWhitelist;
+        if (popularDomainWhitelistDomains.contains(host)) {
+            return true;
         }
 
-        String[] tokens = popularDomainWhitelistRaw.split(",");
-        Set<String> domains = new HashSet<>();
-        for (String token : tokens) {
-            String domain = token.trim().toLowerCase(Locale.ROOT);
-            if (!domain.isEmpty()) {
-                domains.add(domain);
+        for (String domain : popularDomainWhitelistDomains) {
+            if (!domain.isEmpty() && host.endsWith("." + domain)) {
+                return true;
             }
         }
-        popularDomainWhitelist = Collections.unmodifiableSet(domains);
-        return popularDomainWhitelist;
+
+        for (Pattern pattern : popularDomainWhitelistPatterns) {
+            if (pattern.matcher(host).matches()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void ensurePopularDomainWhitelist() {
+        if (popularDomainWhitelistLoaded) {
+            return;
+        }
+
+        popularDomainWhitelistLoaded = true;
+
+        if (popularDomainWhitelistResource == null) {
+            popularDomainWhitelistDomains = Collections.emptySet();
+            popularDomainWhitelistPatterns = Collections.emptySet();
+            return;
+        }
+
+        Set<String> domains = new HashSet<>();
+        Set<Pattern> patterns = new HashSet<>();
+
+        try (InputStream inputStream = popularDomainWhitelistResource.getInputStream()) {
+            Yaml yaml = new Yaml();
+            Object data = yaml.load(inputStream);
+            extractDomains(data, domains, patterns);
+        } catch (Exception e) {
+            popularDomainWhitelistDomains = Collections.emptySet();
+            popularDomainWhitelistPatterns = Collections.emptySet();
+            return;
+        }
+
+        if (domains.isEmpty()) {
+            popularDomainWhitelistDomains = Collections.emptySet();
+        } else {
+            popularDomainWhitelistDomains = Collections.unmodifiableSet(domains);
+        }
+
+        if (patterns.isEmpty()) {
+            popularDomainWhitelistPatterns = Collections.emptySet();
+        } else {
+            popularDomainWhitelistPatterns = Collections.unmodifiableSet(patterns);
+        }
+    }
+
+    private void extractDomains(Object data, Set<String> domains, Set<Pattern> patterns) {
+        if (data == null) {
+            return;
+        }
+
+        if (data instanceof Collection<?> collection) {
+            for (Object element : collection) {
+                addDomain(element, domains, patterns);
+            }
+        } else if (data instanceof Map<?, ?> map) {
+            Object domainsValue = map.get("domains");
+            if (domainsValue != null) {
+                extractDomains(domainsValue, domains, patterns);
+            }
+        } else {
+            addDomain(data, domains, patterns);
+        }
+    }
+
+    private void addDomain(Object element, Set<String> domains, Set<Pattern> patterns) {
+        if (element == null) {
+            return;
+        }
+
+        String value = element.toString().trim().toLowerCase(Locale.ROOT);
+        if (value.isEmpty()) {
+            return;
+        }
+
+        if (containsWildcard(value)) {
+            Pattern pattern = compileDomainPattern(value);
+            if (pattern != null) {
+                patterns.add(pattern);
+            }
+        } else {
+            domains.add(value);
+        }
+    }
+
+    private boolean containsWildcard(String value) {
+        return value.indexOf('*') >= 0 || value.indexOf('?') >= 0;
+    }
+
+    private Pattern compileDomainPattern(String patternValue) {
+        StringBuilder regexBuilder = new StringBuilder("^");
+        for (char ch : patternValue.toCharArray()) {
+            switch (ch) {
+                case '*':
+                    regexBuilder.append(".*");
+                    break;
+                case '?':
+                    regexBuilder.append('.');
+                    break;
+                case '.':
+                    regexBuilder.append("\\.");
+                    break;
+                default:
+                    regexBuilder.append(Pattern.quote(Character.toString(ch)));
+                    break;
+            }
+        }
+        regexBuilder.append("$");
+        try {
+            return Pattern.compile(regexBuilder.toString(), Pattern.CASE_INSENSITIVE);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

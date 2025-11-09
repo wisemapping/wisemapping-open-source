@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for ServiceDirectorySpamStrategy using real spam examples from doc/spam-examples/
+ * Tests for ServiceDirectorySpamStrategy using real spam examples from doc/spam/
  * 
  * This test loads JSON files containing real spam map metadata and verifies they are detected.
  */
@@ -64,7 +64,7 @@ class ServiceDirectorySpamStrategyTest {
     }
 
     /**
-     * Finds the spam-examples directory by trying multiple possible locations.
+     * Finds the spam fixture directory by trying multiple possible locations.
      * This handles different working directories when running tests from IDE vs Maven.
      */
     private static Path findSpamExamplesDirectory() {
@@ -73,20 +73,25 @@ class ServiceDirectorySpamStrategyTest {
         // Try multiple possible locations
         Path[] possibleDirs = {
             // When running from project root
-            cwd.resolve("doc/spam-examples"),
+            cwd.resolve("doc/spam"),
             // When running from wise-api subdirectory (Maven test execution)
-            cwd.resolve("../doc/spam-examples").normalize(),
+            cwd.resolve("../doc/spam").normalize(),
             // When running from wise-api subdirectory (alternative)
-            cwd.resolve("wise-api/doc/spam-examples"),
+            cwd.resolve("wise-api/doc/spam"),
             // When running from wise-api/target/test-classes
-            cwd.resolve("../../doc/spam-examples").normalize(),
+            cwd.resolve("../../doc/spam").normalize(),
             // When running from wise-api/target/test-classes/com/wisemapping/service/spam
-            cwd.resolve("../../../../../../doc/spam-examples").normalize(),
+            cwd.resolve("../../../../../../doc/spam").normalize(),
             // When running from wise-api directory
-            cwd.getParent() != null ? cwd.getParent().resolve("doc/spam-examples") : null,
+            cwd.getParent() != null ? cwd.getParent().resolve("doc/spam") : null,
             // Absolute paths
-            Paths.get("doc/spam-examples").toAbsolutePath(),
-            Paths.get("wise-api/doc/spam-examples").toAbsolutePath()
+            Paths.get("doc/spam").toAbsolutePath(),
+            Paths.get("wise-api/doc/spam").toAbsolutePath(),
+            // Legacy fallbacks for earlier layouts
+            cwd.resolve("doc/spam-examples"),
+            cwd.resolve("../doc/spam-examples").normalize(),
+            cwd.resolve("wise-api/doc/spam-examples"),
+            cwd.resolve("../../doc/spam-examples").normalize()
         };
         
         for (Path dir : possibleDirs) {
@@ -111,14 +116,14 @@ class ServiceDirectorySpamStrategyTest {
     }
 
     /**
-     * Loads a map JSON file from doc/spam-examples/ and creates a Mindmap object
+     * Loads a map JSON file from doc/spam/ and creates a Mindmap object
      */
     private Mindmap loadMapFromJson(String filename) throws Exception {
         Path spamExamplesDir = findSpamExamplesDirectory();
         
         if (spamExamplesDir == null) {
-            throw new IllegalArgumentException("Could not find spam-examples directory. " +
-                "Please ensure the doc/spam-examples/ directory exists in the project root.");
+            throw new IllegalArgumentException("Could not find spam fixture directory. " +
+                "Please ensure the doc/spam/ directory exists in the project root.");
         }
         
         Path jsonFile = spamExamplesDir.resolve(filename);
@@ -477,7 +482,7 @@ class ServiceDirectorySpamStrategyTest {
     }
 
     /**
-     * Provides a stream of all map JSON filenames from the spam-examples directory.
+     * Provides a stream of all map JSON filenames from the spam fixture directory.
      * This method is used by the parametrized test to load all downloaded maps.
      */
     static Stream<String> provideAllMapFiles() {
@@ -517,7 +522,7 @@ class ServiceDirectorySpamStrategyTest {
     }
 
     /**
-     * Parametrized test that loads ALL maps from the spam-examples directory
+     * Parametrized test that loads ALL maps from the spam fixture directory
      * and verifies they are detected as spam.
      * 
      * This test ensures that all downloaded spam maps are properly detected
@@ -528,13 +533,13 @@ class ServiceDirectorySpamStrategyTest {
     void testAllDownloadedMapsShouldBeDetectedAsSpam(String filename) throws Exception {
         // Handle special placeholder values that indicate directory/file issues
         if (filename.equals("__DIRECTORY_NOT_FOUND__")) {
-            fail("Could not find spam-examples directory. Please ensure doc/spam-examples/ exists in the project root.");
+            fail("Could not find spam fixture directory. Please ensure doc/spam/ exists in the project root.");
         }
         if (filename.equals("__NO_FILES_FOUND__")) {
-            fail("Found spam-examples directory but no map-*.json files. Please ensure map files are present.");
+            fail("Found spam fixture directory but no map-*.json files. Please ensure map files are present.");
         }
         if (filename.equals("__ERROR_LISTING_FILES__")) {
-            fail("Error listing files in spam-examples directory. Check file permissions.");
+            fail("Error listing files in spam directory. Check file permissions.");
         }
         
         Mindmap mindmap = loadMapFromJson(filename);
