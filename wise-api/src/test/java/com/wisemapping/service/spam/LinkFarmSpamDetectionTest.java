@@ -2,10 +2,10 @@ package com.wisemapping.service.spam;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wisemapping.mindmap.model.MapModel;
-import com.wisemapping.mindmap.parser.MindmapParser;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SpamStrategyType;
+import com.wisemapping.service.MetricsService;
+import com.wisemapping.service.SpamDetectionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.mockito.Mockito;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -23,11 +24,13 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LinkFarmSpamStrategyTest {
+class LinkFarmSpamDetectionTest {
 
-    private LinkFarmSpamStrategy strategy;
+    private LinkFarmSpamStrategy linkFarmStrategy;
+    private ServiceDirectorySpamStrategy serviceDirectoryStrategy;
     private SpamContentExtractor contentExtractor;
     private ObjectMapper objectMapper;
+    private SpamDetectionService spamDetectionService;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -35,19 +38,46 @@ class LinkFarmSpamStrategyTest {
         ReflectionTestUtils.setField(contentExtractor, "maxNoteLength", 10000);
         ReflectionTestUtils.setField(contentExtractor, "spamKeywords", List.of("best", "top", "premium", "quality"));
 
-        strategy = new LinkFarmSpamStrategy(contentExtractor);
-        ReflectionTestUtils.setField(strategy, "urlThreshold", 20);
-        ReflectionTestUtils.setField(strategy, "urlThresholdLowStructure", 10);
-        ReflectionTestUtils.setField(strategy, "maxTopicsForLowStructure", 3);
+        linkFarmStrategy = new LinkFarmSpamStrategy(contentExtractor);
+        ReflectionTestUtils.setField(linkFarmStrategy, "urlThreshold", 20);
+        ReflectionTestUtils.setField(linkFarmStrategy, "urlThresholdLowStructure", 10);
+        ReflectionTestUtils.setField(linkFarmStrategy, "maxTopicsForLowStructure", 3);
         String whitelistYaml = loadWhitelistFixture();
         ReflectionTestUtils.setField(
-                strategy,
+                linkFarmStrategy,
                 "popularDomainWhitelistResource",
                 new ByteArrayResource(whitelistYaml.getBytes(StandardCharsets.UTF_8))
         );
-        ReflectionTestUtils.setField(strategy, "popularDomainWhitelist", null);
+        ReflectionTestUtils.setField(linkFarmStrategy, "popularDomainWhitelistDomains", null);
+        ReflectionTestUtils.setField(linkFarmStrategy, "popularDomainWhitelistPatterns", null);
+        ReflectionTestUtils.setField(linkFarmStrategy, "popularDomainWhitelistLoaded", false);
+
+        serviceDirectoryStrategy = new ServiceDirectorySpamStrategy(contentExtractor);
+        ReflectionTestUtils.setField(serviceDirectoryStrategy, "minNodesExemption", 15);
+        ReflectionTestUtils.setField(serviceDirectoryStrategy, "keywordStuffingSeparatorThreshold", 25);
+        ReflectionTestUtils.setField(serviceDirectoryStrategy, "locationVariantsThreshold", 8);
+        ReflectionTestUtils.setField(serviceDirectoryStrategy, "nearMeRepetitionsThreshold", 10);
 
         objectMapper = new ObjectMapper();
+
+        FewNodesWithContentStrategy fewNodesStrategy = new FewNodesWithContentStrategy(contentExtractor);
+        ReflectionTestUtils.setField(fewNodesStrategy, "minNodesExemption", 15);
+
+        DescriptionLengthStrategy descriptionLengthStrategy = new DescriptionLengthStrategy(contentExtractor);
+        ReflectionTestUtils.setField(descriptionLengthStrategy, "minNodesExemption", 15);
+        ReflectionTestUtils.setField(descriptionLengthStrategy, "maxDescriptionLength", 200);
+
+        spamDetectionService = new SpamDetectionService(
+                List.of(
+                        linkFarmStrategy,
+                        serviceDirectoryStrategy,
+                        fewNodesStrategy,
+                        descriptionLengthStrategy
+                )
+        );
+        MetricsService metricsService = Mockito.mock(MetricsService.class);
+        ReflectionTestUtils.setField(spamDetectionService, "metricsService", metricsService);
+        ReflectionTestUtils.setField(spamDetectionService, "spamContentExtractor", contentExtractor);
     }
 
     private String loadWhitelistFixture() throws Exception {
@@ -81,8 +111,7 @@ class LinkFarmSpamStrategyTest {
     void nonSpamMapsShouldBeClean(String fixtureFile, String expectation) throws Exception {
         Mindmap mindmap = loadNonSpamMap(fixtureFile);
 
-        SpamDetectionContext context = createContext(mindmap);
-        SpamDetectionResult result = strategy.detectSpam(context);
+        SpamDetectionResult result = spamDetectionService.detectSpam(mindmap, "non-spam-fixture");
 
         assertFalse(result.isSpam(), expectation);
     }
@@ -109,8 +138,7 @@ class LinkFarmSpamStrategyTest {
         mindmap.setTitle("Campus Resources");
         mindmap.setXmlStr(xml);
 
-        SpamDetectionContext context = createContext(mindmap);
-        SpamDetectionResult result = strategy.detectSpam(context);
+        SpamDetectionResult result = spamDetectionService.detectSpam(mindmap, "wildcard-whitelist");
 
         assertFalse(result.isSpam(), "Wildcard whitelist entries should allow .edu and .gov domains.");
     }
@@ -119,8 +147,7 @@ class LinkFarmSpamStrategyTest {
     void syntheticLinkFarmShouldStillBeDetected() throws Exception {
         Mindmap mindmap = buildSyntheticLinkFarmMindmap(24);
 
-        SpamDetectionContext context = createContext(mindmap);
-        SpamDetectionResult result = strategy.detectSpam(context);
+        SpamDetectionResult result = spamDetectionService.detectSpam(mindmap, "synthetic-link-farm");
 
         assertTrue(result.isSpam(), "Synthetic link farm should be detected as spam.");
         assertEquals(SpamStrategyType.LINK_FARM, result.getStrategyType());
@@ -180,21 +207,6 @@ class LinkFarmSpamStrategyTest {
             }
         }
         return null;
-    }
-
-    private SpamDetectionContext createContext(Mindmap mindmap) throws Exception {
-        if (mindmap == null) {
-            return null;
-        }
-
-        MapModel mapModel = MindmapParser.parseXml(mindmap.getXmlStr());
-        if (mapModel.getTitle() == null && mindmap.getTitle() != null) {
-            mapModel.setTitle(mindmap.getTitle());
-        }
-        if (mapModel.getDescription() == null && mindmap.getDescription() != null) {
-            mapModel.setDescription(mindmap.getDescription());
-        }
-        return new SpamDetectionContext(mindmap, mapModel);
     }
 
     private static Stream<Arguments> nonSpamFixtures() {
