@@ -37,6 +37,10 @@ public class AccessDeniedSecurityException
         this.messageKey = messageKey;
     }
 
+    public String getMessageKey() {
+        return messageKey;
+    }
+
     public AccessDeniedSecurityException(@NotNull long mapId, Collaborator user) {
         super("You do not have enough right access to see this map. This map has been changed to private or deleted.", Severity.FATAL);
         this.messageKey = MSG_KEY;

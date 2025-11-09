@@ -18,18 +18,72 @@
 
 package com.wisemapping.exceptions;
 
+import com.wisemapping.model.Mindmap;
+import com.wisemapping.model.SpamStrategyType;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.util.StringUtils;
 
 public class SpamContentException extends ClientException {
     private static final String SPAM_CONTENT_NOT_ALLOWED = "SPAM_CONTENT_NOT_ALLOWED";
+    private static final String SUPPORT_EMAIL = "support@wisemapping.com";
+
+    private final String strategyName;
+    private final String strategyDetails;
+    private final boolean publicVisibility;
 
     public SpamContentException() {
-        super("Spam content detected in mindmap", Severity.WARNING);
+        this((SpamStrategyType) null, null, false);
+    }
+
+    public SpamContentException(Mindmap mindmap) {
+        this(mindmap != null ? mindmap.getSpamTypeCode() : null,
+                mindmap != null ? mindmap.getSpamDescription() : null,
+                mindmap != null && mindmap.isPublic());
+    }
+
+    public SpamContentException(SpamStrategyType strategyType, String details) {
+        this(strategyType, details, false);
+    }
+
+    private SpamContentException(SpamStrategyType strategyType, String details, boolean publicVisibility) {
+        super(buildDefaultMessage(strategyType, details), Severity.WARNING);
+        this.strategyName = strategyType != null ? strategyType.getStrategyName() : "Unknown strategy";
+        this.strategyDetails = normalizeDetails(details);
+        this.publicVisibility = publicVisibility;
+    }
+
+    private static String buildDefaultMessage(SpamStrategyType strategyType, String details) {
+        String readableStrategy = strategyType != null ? strategyType.getStrategyName() : "Unknown strategy";
+        String detailText = normalizeDetails(details);
+        return String.format(
+                "Spam content detected in mindmap (%s). Details: %s. If you believe this is a mistake, please contact %s.",
+                readableStrategy,
+                detailText,
+                SUPPORT_EMAIL);
+    }
+
+    private static String normalizeDetails(String details) {
+        if (!StringUtils.hasText(details)) {
+            return "No additional diagnostic information was recorded.";
+        }
+        return details.trim();
+    }
+
+    public boolean shouldReturnGone() {
+        return publicVisibility;
     }
 
     @NotNull
     @Override
     protected String getMsgBundleKey() {
         return SPAM_CONTENT_NOT_ALLOWED;
+    }
+
+    @Override
+    protected Object[] getMsgBundleArgs() {
+        return new Object[]{
+                StringUtils.hasText(strategyName) ? strategyName : "Unknown strategy",
+                strategyDetails,
+                SUPPORT_EMAIL};
     }
 }

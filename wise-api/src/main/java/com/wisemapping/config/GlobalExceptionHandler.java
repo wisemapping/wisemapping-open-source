@@ -86,6 +86,9 @@ public class GlobalExceptionHandler {
         final Locale locale = LocaleContextHolder.getLocale();
         String message = messageSource != null ? ex.getMessage(messageSource, locale) : ex.getMessage();
         RestErrors error = new RestErrors(message, ex.getSeverity(), ex.getTechInfo());
+        if ("SUSPENDED_USER_MAP_NOT_AVAILABLE".equals(ex.getMessageKey())) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+        }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
@@ -99,12 +102,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(SpamContentException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public RestErrors handleSpamContentException(SpamContentException ex) {
+    public ResponseEntity<RestErrors> handleSpamContentException(SpamContentException ex) {
         // Log at INFO level for spam detection tracking
         logger.info("Spam content detected and blocked: {}", ex.getMessage());
-        return new RestErrors(ex.getMessage(), ex.getSeverity(), ex.getTechInfo());
+        HttpStatus status = ex.shouldReturnGone() ? HttpStatus.GONE : HttpStatus.UNPROCESSABLE_ENTITY;
+        RestErrors error = new RestErrors(ex.getMessage(), ex.getSeverity(), ex.getTechInfo());
+        return ResponseEntity.status(status).body(error);
     }
 
     @ExceptionHandler(RequestNotPermitted.class)

@@ -126,7 +126,7 @@ public class MindmapController {
 
         // If it's not authenticated and map is spam-detected, block access
         if (user == null && mindmap.isSpamDetected()) {
-            throw new SpamContentException();
+            throw new SpamContentException(mindmap);
         }
 
         // For private maps, check if user has permission to access
@@ -387,7 +387,7 @@ public class MindmapController {
 
         // If it's not authenticated and map is spam-detected, block access
         if (user == null && mindmap.isSpamDetected()) {
-            throw new SpamContentException();
+            throw new SpamContentException(mindmap);
         }
 
         // For public maps, check if the creator is not suspended
@@ -726,7 +726,7 @@ public class MindmapController {
                 // Track spam prevention using MetricsService
                 metricsService.trackSpamPrevention(mindMap, "publish");
 
-                throw new SpamContentException();
+                throw new SpamContentException(mindMap);
             } else {
                 // Making public and no spam detected - clear spam flag and make public
                 mindMap.setSpamDetected(false);
