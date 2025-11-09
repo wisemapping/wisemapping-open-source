@@ -91,20 +91,25 @@ class NewSpamMapsTest {
     }
 
     /**
-     * Finds the spam-examples directory by trying multiple possible locations.
+     * Finds the spam fixture directory by trying multiple possible locations.
      */
     private static Path findSpamExamplesDirectory() {
         Path cwd = Paths.get("").toAbsolutePath();
         
         Path[] possibleDirs = {
+            cwd.resolve("doc/spam"),
+            cwd.resolve("../doc/spam").normalize(),
+            cwd.resolve("wise-api/doc/spam"),
+            cwd.resolve("../../doc/spam").normalize(),
+            cwd.resolve("../../../../../../doc/spam").normalize(),
+            cwd.getParent() != null ? cwd.getParent().resolve("doc/spam") : null,
+            Paths.get("doc/spam").toAbsolutePath(),
+            Paths.get("wise-api/doc/spam").toAbsolutePath(),
+            // Legacy fallbacks
             cwd.resolve("doc/spam-examples"),
             cwd.resolve("../doc/spam-examples").normalize(),
             cwd.resolve("wise-api/doc/spam-examples"),
-            cwd.resolve("../../doc/spam-examples").normalize(),
-            cwd.resolve("../../../../../../doc/spam-examples").normalize(),
-            cwd.getParent() != null ? cwd.getParent().resolve("doc/spam-examples") : null,
-            Paths.get("doc/spam-examples").toAbsolutePath(),
-            Paths.get("wise-api/doc/spam-examples").toAbsolutePath()
+            cwd.resolve("../../doc/spam-examples").normalize()
         };
         
         for (Path dir : possibleDirs) {
@@ -134,7 +139,7 @@ class NewSpamMapsTest {
         Path spamExamplesDir = findSpamExamplesDirectory();
         
         if (spamExamplesDir == null) {
-            throw new IllegalArgumentException("Could not find spam-examples directory.");
+            throw new IllegalArgumentException("Could not find spam fixture directory.");
         }
         
         Path jsonFile = spamExamplesDir.resolve(filename);

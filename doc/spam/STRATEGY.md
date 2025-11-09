@@ -85,7 +85,7 @@ The strategy includes safeguards to prevent false positives:
 
 ## Testing
 
-Test cases should use the examples in `doc/spam-examples/` to verify detection. The strategy should catch:
+Test cases should use the examples in `doc/spam/` to verify detection. The strategy should catch:
 
 - Maps with complete contact info and low node count
 - Maps with keyword stuffing (pipes, "near me" repetitions)

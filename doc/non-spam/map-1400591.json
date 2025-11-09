@@ -1,0 +1,15 @@
+{
+    "jsonProps": "{\"zoom\":1.0}",
+    "title": "Design Sprint Toolkit",
+    "isLockedBy": null,
+    "creatorFullName": "Innovation Lab",
+    "role": "none",
+    "description": "Step-by-step activities for a five-phase design sprint focused on problem discovery, ideation, prototyping, and testing.",
+    "createdBy": "innovation.lab@wisemapping.com",
+    "creationTime": "2024-04-09T10:05:00Z",
+    "lastModificationBy": "Innovation Lab",
+    "lastModificationTime": "2025-01-23T18:41:32Z",
+    "xml": "<map name=\"1400591\" version=\"tango\"><topic central=\"true\" id=\"1\"><text><![CDATA[Design Sprint Toolkit]]></text><topic id=\"2\" text=\"Understand\"><topic id=\"3\" text=\"Stakeholder Interviews\"/><topic id=\"4\" text=\"Customer Journey\"/></topic><topic id=\"5\" text=\"Define\"><topic id=\"6\" text=\"How Might We?\"/><topic id=\"7\" text=\"Problem Statement\"/></topic><topic id=\"8\" text=\"Ideate\"><topic id=\"9\" text=\"Crazy 8s\"/><topic id=\"10\" text=\"Lightning Demos\"/></topic><topic id=\"11\" text=\"Prototype\"><topic id=\"12\" text=\"Storyboard\"/><topic id=\"13\" text=\"Prototype Build\"/></topic><topic id=\"14\" text=\"Test\"><topic id=\"15\" text=\"User Sessions\"/><topic id=\"16\" text=\"Insights\"/></topic></topic></map>",
+    "public": true
+}
+
