@@ -39,7 +39,7 @@ public class SpamDetectionScheduler {
     @Autowired
     private SpamDetectionBatchService spamDetectionBatchService;
 
-    @Value("${app.batch.spam-detection.startup-enabled:false}")
+    @Value("${app.batch.spam-detection.startup-enabled:true}")
     private boolean startupEnabled;
 
     /**
