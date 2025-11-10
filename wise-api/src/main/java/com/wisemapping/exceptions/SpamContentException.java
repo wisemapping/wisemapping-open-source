@@ -29,7 +29,7 @@ public class SpamContentException extends ClientException {
 
     private final String strategyName;
     private final String strategyDetails;
-    private final boolean publicVisibility;
+    private final boolean publicAccessAttempt;
 
     public SpamContentException() {
         this((SpamStrategyType) null, null, false);
@@ -38,7 +38,13 @@ public class SpamContentException extends ClientException {
     public SpamContentException(Mindmap mindmap) {
         this(mindmap != null ? mindmap.getSpamTypeCode() : null,
                 mindmap != null ? mindmap.getSpamDescription() : null,
-                mindmap != null && mindmap.isPublic());
+                false);
+    }
+
+    public SpamContentException(Mindmap mindmap, boolean publicAccessAttempt) {
+        this(mindmap != null ? mindmap.getSpamTypeCode() : null,
+                mindmap != null ? mindmap.getSpamDescription() : null,
+                publicAccessAttempt);
     }
 
     public SpamContentException(SpamStrategyType strategyType, String details) {
@@ -49,7 +55,7 @@ public class SpamContentException extends ClientException {
         super(buildDefaultMessage(strategyType, details), Severity.WARNING);
         this.strategyName = strategyType != null ? strategyType.getStrategyName() : "Unknown strategy";
         this.strategyDetails = normalizeDetails(details);
-        this.publicVisibility = publicVisibility;
+        this.publicAccessAttempt = publicVisibility;
     }
 
     private static String buildDefaultMessage(SpamStrategyType strategyType, String details) {
@@ -70,7 +76,7 @@ public class SpamContentException extends ClientException {
     }
 
     public boolean shouldReturnGone() {
-        return publicVisibility;
+        return publicAccessAttempt;
     }
 
     @NotNull
