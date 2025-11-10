@@ -126,7 +126,7 @@ public class MindmapController {
 
         // If it's not authenticated and map is spam-detected, block access
         if (user == null && mindmap.isSpamDetected()) {
-            throw new SpamContentException(mindmap);
+            throw new SpamContentException(mindmap, true);
         }
 
         // For private maps, check if user has permission to access
@@ -387,7 +387,7 @@ public class MindmapController {
 
         // If it's not authenticated and map is spam-detected, block access
         if (user == null && mindmap.isSpamDetected()) {
-            throw new SpamContentException(mindmap);
+            throw new SpamContentException(mindmap, true);
         }
 
         // For public maps, check if the creator is not suspended
@@ -1032,7 +1032,7 @@ public class MindmapController {
         final LockManager lockManager = mindmapService.getLockManager();
         final Mindmap mindmap = findMindmapById(id);
 
-        ResponseEntity<RestLockInfo> result = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        ResponseEntity<RestLockInfo> result = new ResponseEntity<>(HttpStatus.NO_CONTENT);
         if (Boolean.parseBoolean(value)) {
             final LockInfo lockInfo = lockManager.lock(mindmap, user);
             final RestLockInfo restLockInfo = new RestLockInfo(lockInfo, user);

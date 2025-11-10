@@ -63,8 +63,6 @@ public class SpamDetectionBatchService {
     @Value("${app.batch.spam-detection.version:5}")
     private int currentSpamDetectionVersion;
 
-    private final java.util.concurrent.atomic.AtomicBoolean batchRunning = new java.util.concurrent.atomic.AtomicBoolean(false);
-
     /**
      * Process all public maps and mark them as spam if they match spam detection rules
      * Each batch is processed in its own transaction to avoid long-running transactions
@@ -73,11 +71,6 @@ public class SpamDetectionBatchService {
     public void processPublicMapsSpamDetection() {
         if (!enabled) {
             logger.debug("Spam detection batch task is disabled");
-            return;
-        }
-
-        if (!batchRunning.compareAndSet(false, true)) {
-            logger.info("Spam detection batch task is already running. Skipping concurrent execution request.");
             return;
         }
 
@@ -124,8 +117,6 @@ public class SpamDetectionBatchService {
 
         } catch (Exception e) {
             logger.error("Error during spam detection batch task", e);
-        } finally {
-            batchRunning.set(false);
         }
     }
 
