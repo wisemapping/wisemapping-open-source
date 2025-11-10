@@ -1032,7 +1032,7 @@ public class MindmapController {
         final LockManager lockManager = mindmapService.getLockManager();
         final Mindmap mindmap = findMindmapById(id);
 
-        ResponseEntity<RestLockInfo> result = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        ResponseEntity<RestLockInfo> result = new ResponseEntity<>(HttpStatus.NO_CONTENT);
         if (Boolean.parseBoolean(value)) {
             final LockInfo lockInfo = lockManager.lock(mindmap, user);
             final RestLockInfo restLockInfo = new RestLockInfo(lockInfo, user);

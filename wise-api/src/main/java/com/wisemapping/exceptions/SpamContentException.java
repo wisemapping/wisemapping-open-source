@@ -21,14 +21,11 @@ package com.wisemapping.exceptions;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SpamStrategyType;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.util.StringUtils;
 
 public class SpamContentException extends ClientException {
     private static final String SPAM_CONTENT_NOT_ALLOWED = "SPAM_CONTENT_NOT_ALLOWED";
     private static final String SUPPORT_EMAIL = "support@wisemapping.com";
 
-    private final String strategyName;
-    private final String strategyDetails;
     private final boolean publicAccessAttempt;
 
     public SpamContentException() {
@@ -53,26 +50,13 @@ public class SpamContentException extends ClientException {
 
     private SpamContentException(SpamStrategyType strategyType, String details, boolean publicVisibility) {
         super(buildDefaultMessage(strategyType, details), Severity.WARNING);
-        this.strategyName = strategyType != null ? strategyType.getStrategyName() : "Unknown strategy";
-        this.strategyDetails = normalizeDetails(details);
         this.publicAccessAttempt = publicVisibility;
     }
 
     private static String buildDefaultMessage(SpamStrategyType strategyType, String details) {
-        String readableStrategy = strategyType != null ? strategyType.getStrategyName() : "Unknown strategy";
-        String detailText = normalizeDetails(details);
         return String.format(
-                "Spam content detected in mindmap (%s). Details: %s. If you believe this is a mistake, please contact %s.",
-                readableStrategy,
-                detailText,
+                "This mindmap is not available for public display. This action was blocked by our spam protection. If you need further assistance, contact %s.",
                 SUPPORT_EMAIL);
-    }
-
-    private static String normalizeDetails(String details) {
-        if (!StringUtils.hasText(details)) {
-            return "No additional diagnostic information was recorded.";
-        }
-        return details.trim();
     }
 
     public boolean shouldReturnGone() {
@@ -88,8 +72,6 @@ public class SpamContentException extends ClientException {
     @Override
     protected Object[] getMsgBundleArgs() {
         return new Object[]{
-                StringUtils.hasText(strategyName) ? strategyName : "Unknown strategy",
-                strategyDetails,
                 SUPPORT_EMAIL};
     }
 }
