@@ -726,7 +726,7 @@ public class MindmapController {
                 // Track spam prevention using MetricsService
                 metricsService.trackSpamPrevention(mindMap, "publish");
 
-                throw new SpamContentException(mindMap);
+                throw new SpamContentException(mindMap, true);
             } else {
                 // Making public and no spam detected - clear spam flag and make public
                 mindMap.setSpamDetected(false);
