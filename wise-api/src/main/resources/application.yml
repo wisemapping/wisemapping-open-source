@@ -176,7 +176,7 @@ resilience4j:
 app:
   monitoring:
     performance:
-      log-mindmap-listing: false
+      log-mindmap-listing: true
       log-account-listing: true
   # This information is mainly used by the frontend to connect to the backend. It must match the deployment topology used.
   site:
@@ -298,7 +298,7 @@ server:
 
 monitoring:
   performance:
-    log-mindmap-listing: false
+    log-mindmap-listing: true
 
 # Spring Boot Actuator configuration
 management:

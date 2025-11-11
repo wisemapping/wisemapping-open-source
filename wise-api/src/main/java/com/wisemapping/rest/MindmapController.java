@@ -32,6 +32,7 @@ import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.validator.MapInfoValidator;
 import com.wisemapping.validator.HtmlContentValidator;
 import com.wisemapping.view.MindMapBean;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.persistence.EntityManagerFactory;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -177,7 +178,13 @@ public class MindmapController {
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/", produces = { "application/json" })
-    public RestMindmapList retrieveList(@RequestParam(required = false) String q) {
+    public RestMindmapList retrieveList(@RequestParam(required = false) String q, HttpServletRequest request) {
+        logger.info("retrieveList called - URI: {}, method: {}, query param: {}, user-agent: {}, referer: {}", 
+                request.getRequestURI(), 
+                request.getMethod(),
+                q, 
+                request.getHeader("User-Agent"),
+                request.getHeader("Referer"));
         final Account user = Utils.getUser(true);
 
         final boolean metricsEnabled = logMindmapListingMetrics;
@@ -201,17 +208,14 @@ public class MindmapController {
 
         final MindmapFilter filter = MindmapFilter.parse(q);
         if (stopWatch != null) {
-            stopWatch.start("findCollaborations");
-        }
-        final List<Collaboration> collaborations = mindmapService.findCollaborations(user);
-        final Map<Integer, Collaboration> collaborationsByMap = collaborations.stream()
-                .collect(Collectors.toMap(c -> c.getMindMap().getId(), c -> c, (existing, ignored) -> existing));
-
-        if (stopWatch != null) {
-            stopWatch.stop();
             stopWatch.start("findMindmaps");
         }
         List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
+        if (stopWatch != null) {
+            stopWatch.stop();
+            stopWatch.start("indexCollaborations");
+        }
+        final Map<Integer, Collaboration> collaborationsByMap = buildCollaborationsByMindmap(mindmaps, user);
         if (stopWatch != null) {
             stopWatch.stop();
             stopWatch.start("applyFilter");
@@ -239,6 +243,15 @@ public class MindmapController {
             }
         }
         return response;
+    }
+
+    private Map<Integer, Collaboration> buildCollaborationsByMindmap(@NotNull List<Mindmap> mindmaps,
+            @NotNull Account user) {
+        final Map<Integer, Collaboration> result = new HashMap<>(mindmaps.size());
+        for (Mindmap mindmap : mindmaps) {
+            mindmap.findCollaboration(user).ifPresent(collaboration -> result.put(mindmap.getId(), collaboration));
+        }
+        return result;
     }
     private void logMindmapListingMetrics(int mapCount,
             int collaborationCount,
