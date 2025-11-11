@@ -3,10 +3,8 @@
     xsi:schemaLocation="https://newrelic.com/docs/java/xsd/v1.0 extension.xsd">
     <instrumentation>
         <!-- Instrument REST Controllers - Spring MVC should auto-instrument, but this adds method-level visibility -->
-        <pointcut>
-            <name>REST Controllers</name>
-            <description>Instrument all REST controller methods for deeper visibility</description>
-            <classname>com.wisemapping.rest.*Controller</classname>
+        <pointcut name="REST Controllers">
+            <className>com.wisemapping.rest.*Controller</className>
             <method>
                 <name>*</name>
                 <parameters>*</parameters>
@@ -14,10 +12,8 @@
         </pointcut>
         
         <!-- Instrument Service Layer -->
-        <pointcut>
-            <name>Service Layer</name>
-            <description>Instrument all service methods</description>
-            <classname>com.wisemapping.service.*Service</classname>
+        <pointcut name="Service Layer">
+            <className>com.wisemapping.service.*Service</className>
             <method>
                 <name>*</name>
                 <parameters>*</parameters>
