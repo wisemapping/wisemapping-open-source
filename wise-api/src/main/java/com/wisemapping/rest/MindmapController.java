@@ -179,6 +179,10 @@ public class MindmapController {
         mindmaps = mindmaps
                 .stream()
                 .filter(m -> filter.accept(m, user, collaborationsByMap.get(m.getId()))).toList();
+        if (logger.isTraceEnabled()) {
+            logger.trace("retrieveList: filter.accept completed in {}ms, {} mindmaps after filtering",
+                    System.currentTimeMillis() - stepStart, mindmaps.size());
+        }
 
         stepStart = System.currentTimeMillis();
         final RestMindmapList response = new RestMindmapList(mindmaps, user, collaborationsByMap);
