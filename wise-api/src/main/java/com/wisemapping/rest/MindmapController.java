@@ -18,6 +18,7 @@
 
 package com.wisemapping.rest;
 
+import com.newrelic.api.agent.Trace;
 import com.wisemapping.exceptions.*;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
@@ -161,13 +162,9 @@ public class MindmapController {
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/", produces = { "application/json" })
+    @Trace
     public RestMindmapList retrieveList(@RequestParam(required = false) String q, HttpServletRequest request) {
-        logger.info("retrieveList called - URI: {}, method: {}, query param: {}, user-agent: {}, referer: {}", 
-                request.getRequestURI(), 
-                request.getMethod(),
-                q, 
-                request.getHeader("User-Agent"),
-                request.getHeader("Referer"));
+     
         final Account user = Utils.getUser(true);
 
         final MindmapFilter filter = MindmapFilter.parse(q);
@@ -181,6 +178,7 @@ public class MindmapController {
         return response;
     }
 
+    @Trace
     private Map<Integer, Collaboration> buildCollaborationsByMindmap(@NotNull List<Mindmap> mindmaps,
             @NotNull Account user) {
         final Map<Integer, Collaboration> result = new HashMap<>(mindmaps.size());

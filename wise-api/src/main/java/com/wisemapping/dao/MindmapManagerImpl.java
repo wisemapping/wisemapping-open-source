@@ -858,8 +858,7 @@ public class MindmapManagerImpl
     @Trace
 
     public long countUsersWithHighPublicSpamRatio(double spamRatioThreshold, int monthsBack) {
-        // Count distinct users with high @Trace
- public spam ratio.
+        // Count distinct users with high public spam ratio.
         // Uses outer COUNT over subquery to ensure we always get a result (0 if no matches),
         // avoiding EmptyResultDataAccessException when the database is empty.
         final TypedQuery<Long> query = entityManager.createQuery(
@@ -1151,7 +1150,6 @@ public class MindmapManagerImpl
 
     @Override
     @Trace
-
     public long countUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack) {
         if (spamTypeCodes == null || spamTypeCodes.length == 0) {
             return 0;
