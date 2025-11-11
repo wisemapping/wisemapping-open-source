@@ -222,13 +222,6 @@
             <artifactId>micrometer-registry-otlp</artifactId>
         </dependency>
 
-        <!-- New Relic API for @Trace annotations (provided scope - agent supplies at runtime) -->
-        <dependency>
-            <groupId>com.newrelic.agent.java</groupId>
-            <artifactId>newrelic-api</artifactId>
-            <version>8.24.0</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
