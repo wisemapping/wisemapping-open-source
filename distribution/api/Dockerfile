@@ -13,10 +13,6 @@ COPY --chown=wisemapping:wisemapping distribution/api/env-config.sh /app/config-
 COPY --chown=wisemapping:wisemapping wise-api/target/wisemapping-api.jar /app/wisemapping-api.jar
 RUN chmod +x /app/config-gen.sh
 
-# Create extensions directory and copy custom instrumentation XML
-RUN mkdir -p /app/extensions
-COPY --chown=wisemapping:wisemapping wise-api/src/main/resources/newrelic-extensions.xml /app/extensions/newrelic-extensions.xml
-
 # Create app directory and conditionally download New Relic agent
 RUN mkdir -p /app && \
     if [ "$ENABLE_NEWRELIC" = "true" ]; then \

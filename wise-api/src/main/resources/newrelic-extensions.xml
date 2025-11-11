@@ -10,30 +10,16 @@
             </method>
         </pointcut>
         
-        <pointcut>
-            <className>com.wisemapping.rest.UserController</className>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <pointcut>
-            <className>com.wisemapping.rest.AccountController</className>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <pointcut>
-            <className>com.wisemapping.rest.LabelController</className>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
         <!-- Instrument Service Layer -->
         <pointcut>
             <className>com.wisemapping.service.MindmapService</className>
+            <method>
+                <name>*</name>
+            </method>
+        </pointcut>
+        
+        <pointcut>
+            <className>com.wisemapping.service.MindmapServiceImpl</className>
             <method>
                 <name>*</name>
             </method>
@@ -47,7 +33,36 @@
         </pointcut>
         
         <pointcut>
+            <className>com.wisemapping.service.UserServiceImpl</className>
+            <method>
+                <name>*</name>
+            </method>
+        </pointcut>
+        
+        <pointcut>
             <className>com.wisemapping.service.LabelService</className>
+            <method>
+                <name>*</name>
+            </method>
+        </pointcut>
+        
+        <pointcut>
+            <className>com.wisemapping.service.LabelServiceImpl</className>
+            <method>
+                <name>*</name>
+            </method>
+        </pointcut>
+        
+        <!-- Instrument DAO Layer -->
+        <pointcut>
+            <className>com.wisemapping.dao.MindmapManager</className>
+            <method>
+                <name>*</name>
+            </method>
+        </pointcut>
+        
+        <pointcut>
+            <className>com.wisemapping.dao.MindmapManagerImpl</className>
             <method>
                 <name>*</name>
             </method>

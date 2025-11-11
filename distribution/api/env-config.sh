@@ -44,7 +44,6 @@ fi
 NEW_RELIC_XML_FOUND=false
 if [ -f /app/extensions/newrelic-extensions.xml ]; then
     NEW_RELIC_XML_FOUND=true
-    echo "Custom instrumentation file found at /app/extensions/newrelic-extensions.xml"
 fi
 
 # Automatically set NEW_RELIC_OPTS if newrelic.jar exists and config is present
