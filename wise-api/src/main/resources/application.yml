@@ -220,7 +220,7 @@ app:
       batch-size: 100  # Number of mindmaps to process in each batch
       min-nodes-exemption: 15  # Mindmaps with more than this many nodes are automatically considered not spam
       max-description-length: 200  # Maximum description length before considering as potential spam
-      startup-enabled: true  # Enable spam detection on application startup (async)
+      startup-enabled: false  # Enable spam detection on application startup (async)
       months-back: 60  # Only process mindmaps created in the last 60 months
       version: 7  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
       service-directory:
