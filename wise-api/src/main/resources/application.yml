@@ -157,6 +157,8 @@ logging:
       wisemapping:
         scheduler:
           SpamDetectionScheduler: DEBUG
+        rest:
+          MindmapController: DEBUG
 
 resilience4j:
   ratelimiter:

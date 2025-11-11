@@ -164,17 +164,39 @@ public class MindmapController {
     @RequestMapping(method = RequestMethod.GET, value = "/", produces = { "application/json" })
     @Trace
     public RestMindmapList retrieveList(@RequestParam(required = false) String q, HttpServletRequest request) {
-     
+        long startTime = System.currentTimeMillis();
+        logger.debug("retrieveList: Starting execution");
+        
+        long stepStart = System.currentTimeMillis();
         final Account user = Utils.getUser(true);
-
+        logger.debug("retrieveList: getUser completed in {}ms", System.currentTimeMillis() - stepStart);
+        
+        stepStart = System.currentTimeMillis();
         final MindmapFilter filter = MindmapFilter.parse(q);
+        logger.debug("retrieveList: filter.parse completed in {}ms", System.currentTimeMillis() - stepStart);
+        
+        stepStart = System.currentTimeMillis();
         List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
+        logger.debug("retrieveList: findMindmapsByUser completed in {}ms, found {} mindmaps", 
+                System.currentTimeMillis() - stepStart, mindmaps.size());
+        
+        stepStart = System.currentTimeMillis();
         final Map<Integer, Collaboration> collaborationsByMap = buildCollaborationsByMindmap(mindmaps, user);
+        logger.debug("retrieveList: buildCollaborationsByMindmap completed in {}ms, found {} collaborations", 
+                System.currentTimeMillis() - stepStart, collaborationsByMap.size());
+        
+        stepStart = System.currentTimeMillis();
         mindmaps = mindmaps
                 .stream()
                 .filter(m -> filter.accept(m, user, collaborationsByMap.get(m.getId()))).toList();
-
+        logger.debug("retrieveList: filter.accept completed in {}ms, {} mindmaps after filtering", 
+                System.currentTimeMillis() - stepStart, mindmaps.size());
+        
+        stepStart = System.currentTimeMillis();
         final RestMindmapList response = new RestMindmapList(mindmaps, user, collaborationsByMap);
+        logger.debug("retrieveList: RestMindmapList creation completed in {}ms", System.currentTimeMillis() - stepStart);
+        
+        logger.debug("retrieveList: Total execution time {}ms", System.currentTimeMillis() - startTime);
         return response;
     }
 
