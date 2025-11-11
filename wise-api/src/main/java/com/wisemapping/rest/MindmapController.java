@@ -19,9 +19,6 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.*;
-import com.wisemapping.metrics.MindmapListingMetricsRecorder;
-import com.wisemapping.metrics.MindmapListingMetricsRecorder.QueryStatistics;
-import com.wisemapping.metrics.MindmapListingMetricsRecorder.Segment;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.*;
 import com.wisemapping.security.Utils;
@@ -34,12 +31,9 @@ import com.wisemapping.validator.HtmlContentValidator;
 import com.wisemapping.view.MindMapBean;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.persistence.EntityManagerFactory;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
-import org.hibernate.stat.Statistics;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,17 +44,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.util.StopWatch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import java.io.IOException;
-import java.time.Instant;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/restful/maps")
@@ -90,14 +81,6 @@ public class MindmapController {
     @Autowired
     private SpamContentExtractor spamContentExtractor;
 
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
-    @Autowired
-    private MindmapListingMetricsRecorder mindmapListingMetricsRecorder;
-
-    @Value("${app.monitoring.performance.log-mindmap-listing:false}")
-    private boolean logMindmapListingMetrics;
 
     @Autowired
     private MetricsService metricsService;
@@ -187,61 +170,14 @@ public class MindmapController {
                 request.getHeader("Referer"));
         final Account user = Utils.getUser(true);
 
-        final boolean metricsEnabled = logMindmapListingMetrics;
-        final StopWatch stopWatch = metricsEnabled ? new StopWatch("mindmapListing") : null;
-        Statistics statistics = null;
-        boolean statisticsTemporarilyEnabled = false;
-        if (metricsEnabled) {
-            try {
-                final SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
-                statistics = sessionFactory.getStatistics();
-                statisticsTemporarilyEnabled = !statistics.isStatisticsEnabled();
-                if (statisticsTemporarilyEnabled) {
-                    statistics.setStatisticsEnabled(true);
-                }
-                statistics.clear();
-            } catch (Exception ex) {
-                logger.warn("Unable to capture Hibernate statistics for mindmap listing metrics", ex);
-                statistics = null;
-            }
-        }
-
         final MindmapFilter filter = MindmapFilter.parse(q);
-        if (stopWatch != null) {
-            stopWatch.start("findMindmaps");
-        }
         List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
-        if (stopWatch != null) {
-            stopWatch.stop();
-            stopWatch.start("indexCollaborations");
-        }
         final Map<Integer, Collaboration> collaborationsByMap = buildCollaborationsByMindmap(mindmaps, user);
-        if (stopWatch != null) {
-            stopWatch.stop();
-            stopWatch.start("applyFilter");
-        }
         mindmaps = mindmaps
                 .stream()
                 .filter(m -> filter.accept(m, user, collaborationsByMap.get(m.getId()))).toList();
 
-        if (stopWatch != null) {
-            stopWatch.stop();
-            stopWatch.start("buildResponse");
-        }
         final RestMindmapList response = new RestMindmapList(mindmaps, user, collaborationsByMap);
-        if (stopWatch != null) {
-            stopWatch.stop();
-            logMindmapListingMetrics(mindmaps.size(),
-                    collaborationsByMap.size(),
-                    stopWatch,
-                    statistics);
-            if (statistics != null) {
-                statistics.clear();
-                if (statisticsTemporarilyEnabled) {
-                    statistics.setStatisticsEnabled(false);
-                }
-            }
-        }
         return response;
     }
 
@@ -252,73 +188,6 @@ public class MindmapController {
             mindmap.findCollaboration(user).ifPresent(collaboration -> result.put(mindmap.getId(), collaboration));
         }
         return result;
-    }
-    private void logMindmapListingMetrics(int mapCount,
-            int collaborationCount,
-            StopWatch stopWatch,
-            Statistics statistics) {
-        long executedStatements = -1;
-        long entityFetches = -1;
-        long collectionFetches = -1;
-        long entityLoads = -1;
-        String topQueries = null;
-        List<QueryStatistics> queryStatistics = Collections.emptyList();
-        if (statistics != null) {
-            executedStatements = statistics.getPrepareStatementCount();
-            entityFetches = statistics.getEntityFetchCount();
-            collectionFetches = statistics.getCollectionFetchCount();
-            entityLoads = statistics.getEntityLoadCount();
-            queryStatistics = Arrays.stream(statistics.getQueries())
-                    .map(query -> {
-                        final org.hibernate.stat.QueryStatistics queryStats = statistics.getQueryStatistics(query);
-                        final long executions = queryStats != null ? queryStats.getExecutionCount() : 0;
-                        final String normalizedSql = query.replaceAll("\\s+", " ").trim();
-                        return new QueryStatistics(normalizedSql, executions);
-                    })
-                    .sorted((left, right) -> Long.compare(right.executions(), left.executions()))
-                    .limit(3)
-                    .toList();
-            topQueries = queryStatistics.stream()
-                    .map(entry -> entry.executions() + "x | " + entry.sql())
-                    .collect(Collectors.joining(" || "));
-        }
-
-        final List<Segment> segments = Stream.of(stopWatch.getTaskInfo())
-                .map(task -> {
-                    final long taskMillis = task.getTimeMillis();
-                    final double ratio = stopWatch.getTotalTimeMillis() > 0
-                            ? (double) taskMillis / (double) stopWatch.getTotalTimeMillis()
-                            : 0d;
-                    return new Segment(task.getTaskName(), taskMillis, ratio);
-                })
-                .toList();
-
-        final MindmapListingMetricsRecorder.Snapshot snapshot = new MindmapListingMetricsRecorder.Snapshot(
-                logMindmapListingMetrics,
-                Instant.now(),
-                mapCount,
-                collaborationCount,
-                stopWatch.getTotalTimeMillis(),
-                segments,
-                executedStatements >= 0 ? executedStatements : null,
-                entityFetches >= 0 ? entityFetches : null,
-                collectionFetches >= 0 ? collectionFetches : null,
-                entityLoads >= 0 ? entityLoads : null,
-                queryStatistics
-        );
-        mindmapListingMetricsRecorder.record(snapshot);
-
-        logger.info(
-                "Mindmap listing metrics -> maps={}, collaborations={}, totalTimeMs={}, segments={}, executedStatements={}, entityFetches={}, collectionFetches={}, entityLoads={}, topQueries={}",
-                mapCount,
-                collaborationCount,
-                stopWatch.getTotalTimeMillis(),
-                stopWatch.prettyPrint(),
-                executedStatements,
-                entityFetches,
-                collectionFetches,
-                entityLoads,
-                topQueries);
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
