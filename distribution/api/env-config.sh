@@ -37,3 +37,18 @@ if [ -n "$NEW_RELIC_CONFIG_FILE_CONTENT" ]; then
 else
     echo "NEW_RELIC_CONFIG_FILE_CONTENT is empty, skipping newrelic.yml creation"
 fi
+
+# Automatically set NEW_RELIC_OPTS if newrelic.jar exists and config is present
+# This allows the agent to be loaded without manually setting NEW_RELIC_OPTS
+if [ -f /app/newrelic.jar ] && [ -f /app/newrelic.yml ]; then
+    if [ -z "$NEW_RELIC_OPTS" ]; then
+        export NEW_RELIC_OPTS="-javaagent:/app/newrelic.jar"
+        echo "New Relic agent enabled: NEW_RELIC_OPTS set to -javaagent:/app/newrelic.jar"
+    else
+        echo "New Relic agent options already set: $NEW_RELIC_OPTS"
+    fi
+elif [ -f /app/newrelic.jar ] && [ ! -f /app/newrelic.yml ]; then
+    echo "Warning: newrelic.jar found but newrelic.yml is missing. New Relic agent will not be loaded."
+elif [ ! -f /app/newrelic.jar ] && [ -f /app/newrelic.yml ]; then
+    echo "Warning: newrelic.yml found but newrelic.jar is missing. New Relic agent will not be loaded."
+fi

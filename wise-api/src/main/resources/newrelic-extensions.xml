@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="https://newrelic.com/docs/java/xsd/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <instrumentation>
+        <!-- Instrument REST Controllers -->
+        <pointcut>
+            <name>REST Controllers</name>
+            <description>Instrument all REST controller methods</description>
+            <classname>com.wisemapping.rest.*Controller</classname>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+        
+        <!-- Instrument Service Layer -->
+        <pointcut>
+            <name>Service Layer</name>
+            <description>Instrument all service methods</description>
+            <classname>com.wisemapping.service.*Service</classname>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+        
+        <!-- Instrument MindmapService specifically -->
+        <pointcut>
+            <name>MindmapService</name>
+            <description>Instrument MindmapService methods</description>
+            <classname>com.wisemapping.service.MindmapService</classname>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+        
+        <!-- Instrument UserService specifically -->
+        <pointcut>
+            <name>UserService</name>
+            <description>Instrument UserService methods</description>
+            <classname>com.wisemapping.service.UserService</classname>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+        
+        <!-- Instrument LabelService -->
+        <pointcut>
+            <name>LabelService</name>
+            <description>Instrument LabelService methods</description>
+            <classname>com.wisemapping.service.LabelService</classname>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+    </instrumentation>
+</extension>
+
