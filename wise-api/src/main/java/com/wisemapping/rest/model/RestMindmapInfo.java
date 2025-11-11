@@ -29,6 +29,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -55,6 +57,17 @@ public class RestMindmapInfo {
 
     private final Collaborator collaborator;
 
+    private String cachedCreationTime;
+    private String cachedDescription;
+    private String cachedTitle;
+    private String cachedCreatorName;
+    private String cachedRole;
+    private String cachedLastModifierName;
+    private String cachedLastModificationTime;
+    private Boolean cachedPublic;
+    private Boolean cachedSpamDetected;
+    private Boolean cachedStarred;
+
     public RestMindmapInfo() {
         this(new Mindmap(), null, null);
 
@@ -69,6 +82,8 @@ public class RestMindmapInfo {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
         this.userCollaboration = userCollaboration;
+        this.restLabels = buildLabelsForUser(this.mindmap, this.collaborator);
+        cacheMindmapProperties();
     }
 
     public void setCreationTime(String value) {
@@ -76,38 +91,43 @@ public class RestMindmapInfo {
     }
 
     public String getCreationTime() {
+        if (cachedCreationTime != null) {
+            return cachedCreationTime;
+        }
         final Calendar creationTime = mindmap.getCreationTime();
         return creationTime != null ? TimeUtils.toISO8601(creationTime.getTime()) : null;
     }
 
     public String getDescription() {
+        if (cachedDescription != null) {
+            return cachedDescription;
+        }
         return mindmap.getDescription();
     }
 
     public void setDescription(String description) {
+        this.cachedDescription = description;
         mindmap.setDescription(description);
     }
 
     public String getTitle() {
+        if (cachedTitle != null) {
+            return cachedTitle;
+        }
         return mindmap.getTitle();
     }
 
     public void setTitle(String title) {
+        this.cachedTitle = title;
         mindmap.setTitle(title);
     }
 
     public Set<RestLabel> getLabels() {
-        // Support test deserialization...
-        Set<RestLabel> result = this.restLabels;
-        if (result == null) {
+        if (this.restLabels == null) {
             final Account me = Utils.getUser();
-            result = mindmap.getLabels().
-                    stream()
-                    .filter(l -> l.getCreator().equals(me))
-                    .map(RestLabel::new)
-                    .collect(Collectors.toSet());
+            this.restLabels = buildLabelsForUser(mindmap, me);
         }
-        return result;
+        return this.restLabels;
     }
 
     public void setLabels(Set<RestLabel> restLabels) {
@@ -127,6 +147,9 @@ public class RestMindmapInfo {
     }
 
     public String getCreator() {
+        if (cachedCreatorName != null) {
+            return cachedCreatorName;
+        }
         final Account creator = mindmap.getCreator();
         return creator != null ? creator.getFullName() : null;
     }
@@ -140,12 +163,10 @@ public class RestMindmapInfo {
     }
 
     public String getRole() {
-        Collaboration collaboration = this.userCollaboration;
-        if (collaboration == null) {
-            final Account user = Utils.getUser();
-            collaboration = mindmap.findCollaboration(user).orElse(null);
+        if (cachedRole != null) {
+            return cachedRole;
         }
-        return collaboration != null ? collaboration.getRole().getLabel() : ROLE_NONE;
+        return resolveRole(this.mindmap, Utils.getUser(), null);
     }
 
     public void setRole(String value) {
@@ -153,6 +174,9 @@ public class RestMindmapInfo {
     }
 
     public String getLastModifierUser() {
+        if (cachedLastModifierName != null) {
+            return cachedLastModifierName;
+        }
         final Account user = mindmap.getLastEditor();
         return user != null ? user.getFullName() : "unknown";
     }
@@ -161,6 +185,9 @@ public class RestMindmapInfo {
     }
 
     public String getLastModificationTime() {
+        if (cachedLastModificationTime != null) {
+            return cachedLastModificationTime;
+        }
         final Calendar calendar = mindmap.getLastModificationTime();
         return calendar != null ? TimeUtils.toISO8601(calendar.getTime()) : null;
     }
@@ -169,16 +196,77 @@ public class RestMindmapInfo {
     }
 
     public boolean getPublic() {
+        if (cachedPublic != null) {
+            return cachedPublic;
+        }
         return mindmap.isPublic();
     }
 
     public boolean getSpamDetected() {
+        if (cachedSpamDetected != null) {
+            return cachedSpamDetected;
+        }
         return mindmap.isSpamDetected();
     }
 
     public boolean getStarred() {
+        if (cachedStarred != null) {
+            return cachedStarred;
+        }
+        return resolveStarred(mindmap, collaborator, userCollaboration);
+    }
+
+    public void setStarred(boolean value) {
+        this.cachedStarred = value;
         if (userCollaboration != null && userCollaboration.getCollaborationProperties() != null) {
-            return userCollaboration.getCollaborationProperties().getStarred();
+            userCollaboration.getCollaborationProperties().setStarred(value);
+        }
+    }
+
+    @JsonIgnore
+    public Mindmap getDelegated() {
+        return this.mindmap;
+    }
+
+    private void cacheMindmapProperties() {
+        this.cachedCreationTime = formatCalendar(mindmap.getCreationTime());
+        this.cachedDescription = mindmap.getDescription();
+        this.cachedTitle = mindmap.getTitle();
+        this.cachedCreatorName = formatCollaboratorName(mindmap.getCreator());
+        this.cachedRole = resolveRole(mindmap, collaborator, userCollaboration);
+        this.cachedLastModifierName = formatCollaboratorName(mindmap.getLastEditor());
+        this.cachedLastModificationTime = formatCalendar(mindmap.getLastModificationTime());
+        this.cachedPublic = mindmap.isPublic();
+        this.cachedSpamDetected = mindmap.isSpamDetected();
+        this.cachedStarred = resolveStarred(mindmap, collaborator, userCollaboration);
+    }
+
+    private static String formatCalendar(Calendar calendar) {
+        return calendar != null ? TimeUtils.toISO8601(calendar.getTime()) : null;
+    }
+
+    private static String formatCollaboratorName(Account account) {
+        return account != null ? account.getFullName() : null;
+    }
+
+    private static String resolveRole(@NotNull Mindmap mindmap,
+                                      @Nullable Collaborator collaborator,
+                                      @Nullable Collaboration collaboration) {
+        Collaboration resolved = collaboration;
+        if (resolved == null && collaborator != null) {
+            resolved = mindmap.findCollaboration(collaborator).orElse(null);
+        }
+        if (resolved != null) {
+            return resolved.getRole().getLabel();
+        }
+        return ROLE_NONE;
+    }
+
+    private static boolean resolveStarred(@NotNull Mindmap mindmap,
+                                          @Nullable Collaborator collaborator,
+                                          @Nullable Collaboration collaboration) {
+        if (collaboration != null && collaboration.getCollaborationProperties() != null) {
+            return collaboration.getCollaborationProperties().getStarred();
         }
         if (collaborator != null) {
             return mindmap.isStarred(collaborator);
@@ -186,12 +274,26 @@ public class RestMindmapInfo {
         return false;
     }
 
-    public void setStarred(boolean value) {
-
+    private static Set<RestLabel> buildLabelsForUser(@NotNull Mindmap mindmap,
+                                                     @Nullable Collaborator collaborator) {
+        if (collaborator == null) {
+            return Collections.emptySet();
+        }
+        return mindmap.getLabels()
+                .stream()
+                .filter(label -> collaborator.equals(label.getCreator()))
+                .map(RestMindmapInfo::initializeLabel)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    @JsonIgnore
-    public Mindmap getDelegated() {
-        return this.mindmap;
+    private static RestLabel initializeLabel(@NotNull MindmapLabel label) {
+        // Touch the properties we expose in JSON so Hibernate initializes proxies before serialization
+        label.getTitle();
+        label.getColor();
+        if (label.getParent() != null) {
+            label.getParent().getTitle();
+            label.getParent().getColor();
+        }
+        return new RestLabel(label);
     }
 }
