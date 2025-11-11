@@ -18,6 +18,7 @@
 
 package com.wisemapping.dao;
 
+import com.newrelic.api.agent.Trace;
 import com.wisemapping.model.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -54,6 +55,7 @@ public class MindmapManagerImpl
     private jakarta.persistence.EntityManagerFactory entityManagerFactory;
 
     @Override
+    @Trace
     public Collaborator findCollaborator(@NotNull final String email) {
         // Use Criteria API for type-safe query that handles inheritance properly
         // This ensures we find both Collaborator and Account entities
@@ -74,6 +76,7 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
     public List<MindMapHistory> getHistoryFrom(int mindmapId) {
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
@@ -91,6 +94,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public MindMapHistory getHistory(int historyId) {
         return entityManager.find(MindMapHistory.class, historyId);
     }
@@ -107,6 +114,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     @Nullable
     public Collaboration findCollaboration(int mindmapId, int collaboratorId) {
         // Use JPA Criteria API for type-safe query
@@ -165,6 +176,7 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
     public List<Mindmap> findMindmapByUser(@NotNull Account user) {
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         final CriteriaQuery<Mindmap> cq = cb.createQuery(Mindmap.class);
@@ -194,6 +206,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<Collaboration> findCollaboration(final int collaboratorId) {
         // Use named query for better performance and maintainability
         final TypedQuery<Collaboration> query = entityManager.createNamedQuery("Collaboration.findByCollaboratorId", Collaboration.class);
@@ -223,6 +239,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void removeCollaboration(Collaboration collaboration) {
         // Use a fresh entity manager to avoid optimistic locking issues
@@ -246,6 +266,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     @Nullable
     public Mindmap getMindmapById(int id) {
         // Use Criteria API with JOIN FETCH to explicitly load Account (not Collaborator proxy)
@@ -271,6 +295,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public Mindmap getMindmapByTitle(final String title, final Account user) {
         // Use Criteria API with JOIN FETCH to explicitly load Account creator (not Collaborator proxy)
         // This avoids proxy narrowing warnings for JOINED inheritance
@@ -298,11 +326,19 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public void addMindmap(Account user, Mindmap mindMap) {
         saveMindmap(mindMap);
     }
 
     @Override
+    @Trace
+
+
+
     public void saveMindmap(Mindmap mindMap) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
         entityManager.persist(mindMap);
@@ -455,6 +491,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<SpamUserResult> findUsersWithSpamMindmaps(int spamThreshold) {
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, COUNT(m.id) as spamCount " +
@@ -478,6 +518,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<SpamUserResult> findUsersWithSpamMindaps(int spamThreshold, int monthsBack) {
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, COUNT(m.id) as spamCount " +
@@ -509,6 +553,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<SpamUserResult> findUsersWithSpamMindaps(int spamThreshold, int monthsBack, int offset, int limit) {
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, COUNT(m.id) as spamCount " +
@@ -543,6 +591,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<SpamUserResult> findUsersWithSpamMindapsCursor(int spamThreshold, int monthsBack, Integer lastUserId, int limit) {
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, COUNT(m.id) as spamCount " +
@@ -578,6 +630,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<SpamRatioUserResult> findUsersWithHighSpamRatio(int minSpamCount, double spamRatioThreshold, int monthsBack, int offset, int limit) {
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, " +
@@ -616,6 +672,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countUsersWithHighSpamRatio(int minSpamCount, double spamRatioThreshold, int monthsBack) {
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
@@ -648,6 +708,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countUsersWithSpamMindaps(int spamThreshold, int monthsBack) {
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
@@ -681,6 +745,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<SpamUserResult> findUsersWithMinimumMapsAndSpam(int minTotalMaps, int minSpamCount, int monthsBack, int offset, int limit) {
         final TypedQuery<Object[]> query = entityManager.createQuery(
             "SELECT m.creator, " +
@@ -717,6 +785,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countUsersWithMinimumMapsAndSpam(int minTotalMaps, int minSpamCount, int monthsBack) {
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
@@ -749,6 +821,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<SpamRatioUserResult> findUsersWithHighPublicSpamRatio(double spamRatioThreshold, int monthsBack, int offset, int limit) {
         // Optimized: Select Account ID instead of full Account entity to avoid eager loading of large fields
         // This prevents loading oauthToken (TEXT), password, and other unnecessary data
@@ -815,8 +891,13 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countUsersWithHighPublicSpamRatio(double spamRatioThreshold, int monthsBack) {
-        // Count distinct users with high public spam ratio.
+        // Count distinct users with high @Trace
+ public spam ratio.
         // Uses outer COUNT over subquery to ensure we always get a result (0 if no matches),
         // avoiding EmptyResultDataAccessException when the database is empty.
         final TypedQuery<Long> query = entityManager.createQuery(
@@ -849,6 +930,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<SpamUserResult> findUsersWithAnySpamMaps(int minSpamCount, int monthsBack, int offset, int limit) {
         // Optimized: Select Account ID instead of full Account entity to avoid eager loading of large fields
         // This prevents loading oauthToken (TEXT), password, and other unnecessary data
@@ -911,6 +996,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countUsersWithAnySpamMaps(int minSpamCount, int monthsBack) {
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(DISTINCT m.creator) " +
@@ -939,12 +1028,20 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> findPublicMindmaps() {
         final TypedQuery<Mindmap> query = entityManager.createNamedQuery("Mindmap.findPublicMindmaps", Mindmap.class);
         return query.getResultList();
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> findAllPublicMindmaps(int offset, int limit) {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
             "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true ORDER BY m.id", 
@@ -955,12 +1052,20 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countAllPublicMindmaps() {
         final TypedQuery<Long> query = entityManager.createNamedQuery("Mindmap.countAllPublicMindmaps", Long.class);
         return query.getSingleResult();
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> findAllPublicMindmapsSince(Calendar cutoffDate, int offset, int limit) {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
             "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true AND m.creationTime >= :cutoffDate ORDER BY m.id", 
@@ -972,6 +1077,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countAllPublicMindmapsSince(Calendar cutoffDate) {
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true AND m.creationTime >= :cutoffDate", 
@@ -981,6 +1090,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> findPublicMindmapsNeedingSpamDetection(Calendar cutoffDate, int currentVersion, int offset, int limit) {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
             "SELECT m FROM com.wisemapping.model.Mindmap m " +
@@ -998,6 +1111,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countPublicMindmapsNeedingSpamDetection(Calendar cutoffDate, int currentVersion) {
         final TypedQuery<Long> query = entityManager.createQuery(
             "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m " +
@@ -1012,6 +1129,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<SpamUserResult> findUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack, int offset, int limit) {
         if (spamTypeCodes == null || spamTypeCodes.length == 0) {
             return new ArrayList<>();
@@ -1087,6 +1208,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack) {
         if (spamTypeCodes == null || spamTypeCodes.length == 0) {
             return 0;
@@ -1145,6 +1270,8 @@ public class MindmapManagerImpl
      * @return total number of history entries deleted
      */
     @Override
+    @Trace
+
     public List<Integer> getMindmapIdsWithHistory(int offset, int batchSize) {
         final TypedQuery<Integer> mindmapIdsQuery = entityManager.createQuery(
             "SELECT DISTINCT h.mindmapId FROM com.wisemapping.model.MindMapHistory h", Integer.class);
@@ -1154,6 +1281,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public Calendar getMindmapLastModificationTime(int mindmapId) {
         final TypedQuery<Calendar> lastModQuery = entityManager.createQuery(
             "SELECT m.lastModificationTime FROM com.wisemapping.model.Mindmap m " +
@@ -1171,6 +1302,8 @@ public class MindmapManagerImpl
      * @return number of entries deleted
      */
     @Override
+    @Trace
+
     @Transactional
     public int removeExcessHistoryByMindmapId(int mindmapId, int maxEntries) {
         // First, count total entries
@@ -1206,12 +1339,22 @@ public class MindmapManagerImpl
 
 
     @Override
+    @Trace
+
+
+
+
+
     public List<Mindmap> getAllMindmaps() {
         final TypedQuery<Mindmap> query = entityManager.createNamedQuery("Mindmap.getAllMindmaps", Mindmap.class);
         return query.getResultList();
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> getAllMindmaps(int offset, int limit) {
         final TypedQuery<Mindmap> query = entityManager.createNamedQuery("Mindmap.getAllMindmaps", Mindmap.class);
         query.setFirstResult(offset);
@@ -1220,12 +1363,20 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countAllMindmaps() {
         final TypedQuery<Long> query = entityManager.createNamedQuery("Mindmap.countAllMindmaps", Long.class);
         return query.getSingleResult();
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
             "SELECT m FROM com.wisemapping.model.Mindmap m WHERE 1=1");
@@ -1260,6 +1411,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked) {
         StringBuilder queryString = new StringBuilder(
             "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE 1=1");
@@ -1286,6 +1441,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> getAllMindmaps(Boolean filterSpam, int offset, int limit) {
         // Use Criteria API with JOIN FETCH to explicitly load Account creator (not Collaborator proxy)
         // This avoids proxy narrowing warnings for JOINED inheritance
@@ -1320,6 +1479,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countAllMindmaps(Boolean filterSpam) {
         // Use Criteria API for type-safe count query
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -1346,6 +1509,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
             "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
@@ -1404,6 +1571,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter) {
         StringBuilder queryString = new StringBuilder(
             "SELECT COUNT(DISTINCT m.id) FROM com.wisemapping.model.Mindmap m " +
@@ -1456,6 +1627,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int offset, int limit) {
         StringBuilder queryString = new StringBuilder(
             "SELECT DISTINCT m FROM com.wisemapping.model.Mindmap m " +
@@ -1542,6 +1717,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam) {
         StringBuilder queryString = new StringBuilder(
             "SELECT COUNT(DISTINCT m.id) FROM com.wisemapping.model.Mindmap m " +
@@ -1619,6 +1798,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<Mindmap> findByCreator(int userId) {
         // Use Criteria API with JOIN FETCH to explicitly load Account (not Collaborator proxy)
         // This avoids proxy narrowing warnings for JOINED inheritance
@@ -1637,6 +1820,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     public List<Integer> findMindmapIdsByCreator(int userId, int offset, int limit) {
         // Use Criteria API for type-safe query
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -1655,6 +1842,10 @@ public class MindmapManagerImpl
     }
 
     @Override
+    @Trace
+
+
+
     @Transactional
     public int removeHistoryByMindmapId(int mindmapId) {
         final Query query = entityManager.createQuery(

@@ -18,6 +18,7 @@
 
 package com.wisemapping.service;
 
+import com.newrelic.api.agent.Trace;
 import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
@@ -62,18 +63,21 @@ public class MindmapServiceImpl
     }
 
     @Override
+    @Trace
     public boolean hasPermissions(@Nullable Account user, int mapId, @NotNull CollaborationRole grantedRole) {
         final Mindmap map = mindmapManager.getMindmapById(mapId);
         return hasPermissions(user, map, grantedRole);
     }
 
     @Override
+    @Trace
     public boolean isMindmapPublic(int mapId) {
         final Mindmap map = mindmapManager.getMindmapById(mapId);
         return map != null && map.isPublic();
     }
 
     @Override
+    @Trace
     public boolean hasPermissions(@Nullable Account user, @Nullable Mindmap map, @NotNull CollaborationRole role) {
         boolean result = false;
         if (map != null) {
@@ -101,17 +105,20 @@ public class MindmapServiceImpl
         return result;
     }
 
+    @Trace
     public boolean isAdmin(@Nullable Account user) {
         return user != null && user.getEmail() != null && user.getEmail().trim().endsWith(adminUser);
     }
 
     @Override
+    @Trace
     public List<Mindmap> getAllMindmaps() {
         return mindmapManager.getAllMindmaps();
     }
 
     @Override
     @PreAuthorize("hasPermission(#user, 'READ')")
+    @Trace
     public Mindmap getMindmapByTitle(String title, Account user) {
         return mindmapManager.getMindmapByTitle(title, user);
     }
@@ -119,6 +126,7 @@ public class MindmapServiceImpl
     @Override
     @Nullable
     @PreAuthorize("hasPermission(#mapId, 'READ')")
+    @Trace
     public Mindmap findMindmapById(int mapId) {
         return mindmapManager.getMindmapById(mapId);
     }
@@ -126,18 +134,21 @@ public class MindmapServiceImpl
     @NotNull
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
+    @Trace
     public List<Mindmap> findMindmapsByUser(@NotNull Account user) {
         return mindmapManager.findMindmapByUser(user);
     }
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#user, 'READ')")
+    @Trace
     public List<Collaboration> findCollaborations(@NotNull Account user) {
         return mindmapManager.findCollaboration(user.getId());
     }
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
+    @Trace
     public void updateMindmap(@NotNull Mindmap mindmap, boolean saveHistory) throws WiseMappingException {
         if (mindmap.getTitle() == null || mindmap.getTitle().length() == 0) {
             throw new WiseMappingException("The title can not be empty");
@@ -160,6 +171,7 @@ public class MindmapServiceImpl
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
+    @Trace
     public void removeCollaboration(@NotNull Mindmap mindmap, @NotNull Collaboration collaboration) throws CollaborationException {
         // remove collaborator association
         final Mindmap mindMap = collaboration.getMindMap();
@@ -181,6 +193,7 @@ public class MindmapServiceImpl
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'READ')")
+    @Trace
     public void removeMindmap(@NotNull Mindmap mindmap, @NotNull Account user) throws WiseMappingException {
         if (mindmap.getCreator().identityEquality(user)) {
             mindmapManager.removeMindmap(mindmap);
@@ -194,6 +207,7 @@ public class MindmapServiceImpl
 
     @Override
     @PreAuthorize("hasPermission(#mindmap, 'WRITE')")
+    @Trace
     public void addMindmap(@NotNull Mindmap mindmap, @NotNull Account user) {
 
         final String title = mindmap.getTitle();
@@ -223,6 +237,7 @@ public class MindmapServiceImpl
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
+    @Trace
     public void addCollaboration(@NotNull Mindmap mindmap, @NotNull String email, @NotNull CollaborationRole role, @Nullable String message)
             throws CollaborationException {
 
@@ -275,12 +290,14 @@ public class MindmapServiceImpl
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mapId, 'READ')")
+    @Trace
     public List<MindMapHistory> findMindmapHistory(int mapId) {
         return mindmapManager.getHistoryFrom(mapId);
     }
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mindmap, 'WRITE')")
+    @Trace
     public void revertChange(@NotNull Mindmap mindmap, int historyId)
             throws WiseMappingException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
@@ -290,6 +307,7 @@ public class MindmapServiceImpl
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#mapId, 'READ')")
+    @Trace
     public MindMapHistory findMindmapHistory(int mapId, int hid) throws WiseMappingException {
         final List<MindMapHistory> mindmapHistory = this.findMindmapHistory(mapId);
         MindMapHistory result = null;
@@ -308,6 +326,7 @@ public class MindmapServiceImpl
 
     @Override
     @PreAuthorize("hasAnyRole('USER', 'ADMIN') && hasPermission(#collaborator, 'WRITE')")
+    @Trace
     public void updateCollaboration(@NotNull Collaborator collaborator, @NotNull Collaboration collaboration) throws WiseMappingException {
         if (!collaborator.identityEquality(collaboration.getCollaborator())) {
             throw new WiseMappingException("No enough permissions for this operation.");
@@ -317,84 +336,100 @@ public class MindmapServiceImpl
 
     @Override
     @NotNull
+    @Trace
     public LockManager getLockManager() {
         return this.lockManager;
     }
 
 
 
+    @Trace
     public void setMindmapManager(MindmapManager mindmapManager) {
         this.mindmapManager = mindmapManager;
     }
 
+    @Trace
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    @Trace
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
+    @Trace
     public void setAdminUser(@NotNull String adminUser) {
         this.adminUser = adminUser;
     }
 
     @NotNull
+    @Trace
     public String getAdminUser() {
         return adminUser;
     }
 
     @Override
+    @Trace
     public List<Mindmap> getAllMindmaps(int page, int pageSize) {
         int offset = page * pageSize;
         return mindmapManager.getAllMindmaps(offset, pageSize);
     }
 
     @Override
+    @Trace
     public long countAllMindmaps() {
         return mindmapManager.countAllMindmaps();
     }
 
     @Override
+    @Trace
     public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, int page, int pageSize) {
         int offset = page * pageSize;
         return mindmapManager.searchMindmaps(search, filterPublic, filterLocked, offset, pageSize);
     }
 
     @Override
+    @Trace
     public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked) {
         return mindmapManager.countMindmapsBySearch(search, filterPublic, filterLocked);
     }
 
     @Override
+    @Trace
     public List<Mindmap> getAllMindmaps(Boolean filterSpam, int page, int pageSize) {
         int offset = page * pageSize;
         return mindmapManager.getAllMindmaps(filterSpam, offset, pageSize);
     }
 
     @Override
+    @Trace
     public List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter, int page, int pageSize) {
         int offset = page * pageSize;
         return mindmapManager.getAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter, offset, pageSize);
     }
 
     @Override
+    @Trace
     public long countAllMindmaps(Boolean filterSpam) {
         return mindmapManager.countAllMindmaps(filterSpam);
     }
 
     @Override
+    @Trace
     public long countAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter) {
         return mindmapManager.countAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter);
     }
 
     @Override
+    @Trace
     public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int page, int pageSize) {
         int offset = page * pageSize;
         return mindmapManager.searchMindmaps(search, filterPublic, filterLocked, filterSpam, offset, pageSize);
     }
 
     @Override
+    @Trace
     public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam) {
         return mindmapManager.countMindmapsBySearch(search, filterPublic, filterLocked, filterSpam);
     }
