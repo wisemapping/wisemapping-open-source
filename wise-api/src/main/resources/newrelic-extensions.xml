@@ -1,74 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension name="WiseMapping Custom Instrumentation" version="1.0" enabled="true" xmlns="https://newrelic.com/docs/java/xsd/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<extension name="WiseMapping Custom Instrumentation" version="1.0" enabled="false" xmlns="https://newrelic.com/docs/java/xsd/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://newrelic.com/docs/java/xsd/v1.0 extension.xsd">
     <instrumentation>
-        <!-- Instrument REST Controllers - Spring MVC should auto-instrument, but this adds method-level visibility -->
+        <!-- Instrumentation is handled via @Trace annotations on methods -->
+        <!-- This extension is disabled (enabled="false") to avoid warnings -->
+        <!-- All methods in MindmapServiceImpl, MindmapManagerImpl, and MindmapController -->
+        <!-- are instrumented using @Trace annotations for precise method-level tracking -->
+        
+        <!-- Placeholder pointcut to satisfy XML schema requirement -->
         <pointcut transactionStartPoint="true" excludeFromTransactionTrace="false" ignoreTransaction="false">
             <className>com.wisemapping.rest.MindmapController</className>
             <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <!-- Instrument Service Layer - Interfaces -->
-        <pointcut transactionStartPoint="true" excludeFromTransactionTrace="false" ignoreTransaction="false">
-            <interfaceName>com.wisemapping.service.MindmapService</interfaceName>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <pointcut transactionStartPoint="true" excludeFromTransactionTrace="false" ignoreTransaction="false">
-            <interfaceName>com.wisemapping.service.UserService</interfaceName>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <pointcut transactionStartPoint="true" excludeFromTransactionTrace="false" ignoreTransaction="false">
-            <interfaceName>com.wisemapping.service.LabelService</interfaceName>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <!-- Instrument Service Layer - Implementations -->
-        <pointcut transactionStartPoint="true" excludeFromTransactionTrace="false" ignoreTransaction="false">
-            <className>com.wisemapping.service.MindmapServiceImpl</className>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <pointcut transactionStartPoint="true" excludeFromTransactionTrace="false" ignoreTransaction="false">
-            <className>com.wisemapping.service.UserServiceImpl</className>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <pointcut transactionStartPoint="true" excludeFromTransactionTrace="false" ignoreTransaction="false">
-            <className>com.wisemapping.service.LabelServiceImpl</className>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <!-- Instrument DAO Layer - Interface -->
-        <pointcut transactionStartPoint="true" excludeFromTransactionTrace="false" ignoreTransaction="false">
-            <interfaceName>com.wisemapping.dao.MindmapManager</interfaceName>
-            <method>
-                <name>*</name>
-            </method>
-        </pointcut>
-        
-        <!-- Instrument DAO Layer - Implementation -->
-        <pointcut transactionStartPoint="true" excludeFromTransactionTrace="false" ignoreTransaction="false">
-            <className>com.wisemapping.dao.MindmapManagerImpl</className>
-            <method>
-                <name>*</name>
+                <name>retrieveList</name>
+                <parameters>
+                    <type>java.lang.String</type>
+                    <type>jakarta.servlet.http.HttpServletRequest</type>
+                </parameters>
             </method>
         </pointcut>
     </instrumentation>
 </extension>
-
