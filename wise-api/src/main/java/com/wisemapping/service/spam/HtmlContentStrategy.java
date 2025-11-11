@@ -200,6 +200,7 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     
     /**
      * Counts HTML elements in the mindmap model.
+     * Only counts suspicious/non-formatting HTML elements, excluding common text formatting tags.
      */
     private long countHtmlElements(MapModel mapModel) {
         long count = 0;
@@ -208,8 +209,8 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
         for (Topic topic : mapModel.getAllTopics()) {
             String note = topic.getNote();
             if (note != null && !note.trim().isEmpty() && contentExtractor.isHtmlContent(note)) {
-                // Count HTML tags in the content
-                count += contentExtractor.countOccurrences(note, "<");
+                // Count only suspicious HTML tags (exclude text formatting tags)
+                count += countSuspiciousHtmlElements(note);
             }
         }
         
@@ -217,7 +218,61 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     }
     
     /**
+     * Counts only suspicious HTML elements, excluding common text formatting tags.
+     * Text formatting tags (h1-h6, p, b, strong, i, em, u, ul, ol, li, br, span, div, etc.)
+     * are considered legitimate and are not counted.
+     * 
+     * @param htmlContent The HTML content to analyze
+     * @return Count of suspicious HTML elements
+     */
+    private long countSuspiciousHtmlElements(String htmlContent) {
+        if (htmlContent == null || htmlContent.trim().isEmpty()) {
+            return 0;
+        }
+        
+        // Pattern to match HTML tags, capturing the tag name
+        Pattern tagPattern = Pattern.compile("<(/?)([a-zA-Z][a-zA-Z0-9]*)[^>]*>", Pattern.CASE_INSENSITIVE);
+        java.util.regex.Matcher matcher = tagPattern.matcher(htmlContent);
+        
+        // Set of legitimate text formatting tags that should not be counted
+        java.util.Set<String> formattingTags = java.util.Set.of(
+            "h1", "h2", "h3", "h4", "h5", "h6",  // Headings
+            "p",                                   // Paragraphs
+            "b", "strong",                        // Bold
+            "i", "em",                            // Italic
+            "u",                                  // Underline
+            "ul", "ol", "li",                    // Lists
+            "br",                                 // Line breaks
+            "span",                               // Spans for styling/highlighting
+            "div",                                // Containers for layout
+            "article", "section", "header", "footer", "nav", "main", // Semantic containers
+            "blockquote",                        // Quotes
+            "code", "pre",                       // Code blocks
+            "sub", "sup",                        // Subscript/superscript
+            "mark",                               // Highlighting
+            "small", "big",                      // Size modifiers
+            "del", "ins", "s", "strike",         // Deleted/inserted/strikethrough text
+            "abbr", "dfn", "kbd", "samp", "var", // Text semantics
+            "cite", "q",                         // Citations and quotes
+            "time",                              // Time elements
+            "wbr"                                // Word break opportunities
+        );
+        
+        long suspiciousCount = 0;
+        while (matcher.find()) {
+            String tagName = matcher.group(2).toLowerCase();
+            // Only count tags that are NOT in the formatting tags set
+            if (!formattingTags.contains(tagName)) {
+                suspiciousCount++;
+            }
+        }
+        
+        return suspiciousCount;
+    }
+    
+    /**
      * Checks if the HTML to text ratio is suspiciously high.
+     * Only counts suspicious HTML elements (excludes text formatting tags).
      */
     private SpamDetectionResult checkHtmlToTextRatio(String htmlContent) {
         // Extract plain text from HTML
@@ -231,8 +286,8 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
                 SpamStrategyType.HTML_CONTENT);
         }
         
-        // Calculate ratio of HTML tags to text
-        long htmlTagCount = contentExtractor.countOccurrences(htmlContent, "<");
+        // Calculate ratio of suspicious HTML tags to text (exclude formatting tags)
+        long suspiciousHtmlTagCount = countSuspiciousHtmlElements(htmlContent);
         int textLength = plainText.length();
         
         if (textLength == 0) {
@@ -242,12 +297,13 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
                 SpamStrategyType.HTML_CONTENT);
         }
         
-        double htmlToTextRatio = (double) htmlTagCount / textLength;
+        double htmlToTextRatio = (double) suspiciousHtmlTagCount / textLength;
         
         if (htmlToTextRatio > maxHtmlToTextRatio) {
             return new SpamDetectionResult(true, 
                 "High HTML to text ratio", 
-                String.format("HTML to text ratio: %.2f, threshold: %.2f", htmlToTextRatio, maxHtmlToTextRatio),
+                String.format("Suspicious HTML to text ratio: %.2f, threshold: %.2f (suspicious tags: %d, text length: %d)", 
+                    htmlToTextRatio, maxHtmlToTextRatio, suspiciousHtmlTagCount, textLength),
                 SpamStrategyType.HTML_CONTENT);
         }
         
