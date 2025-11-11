@@ -4,7 +4,31 @@
     <instrumentation>
         <!-- Instrument REST Controllers - Spring MVC should auto-instrument, but this adds method-level visibility -->
         <pointcut name="REST Controllers">
-            <className>com.wisemapping.rest.*Controller</className>
+            <className>com.wisemapping.rest.MindmapController</className>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+        
+        <pointcut name="REST Controllers - User">
+            <className>com.wisemapping.rest.UserController</className>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+        
+        <pointcut name="REST Controllers - Account">
+            <className>com.wisemapping.rest.AccountController</className>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+        
+        <pointcut name="REST Controllers - Label">
+            <className>com.wisemapping.rest.LabelController</className>
             <method>
                 <name>*</name>
                 <parameters>*</parameters>
@@ -12,8 +36,24 @@
         </pointcut>
         
         <!-- Instrument Service Layer -->
-        <pointcut name="Service Layer">
-            <className>com.wisemapping.service.*Service</className>
+        <pointcut name="Service Layer - Mindmap">
+            <className>com.wisemapping.service.MindmapService</className>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+        
+        <pointcut name="Service Layer - User">
+            <className>com.wisemapping.service.UserService</className>
+            <method>
+                <name>*</name>
+                <parameters>*</parameters>
+            </method>
+        </pointcut>
+        
+        <pointcut name="Service Layer - Label">
+            <className>com.wisemapping.service.LabelService</className>
             <method>
                 <name>*</name>
                 <parameters>*</parameters>
