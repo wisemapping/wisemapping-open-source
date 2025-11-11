@@ -38,17 +38,39 @@ else
     echo "NEW_RELIC_CONFIG_FILE_CONTENT is empty, skipping newrelic.yml creation"
 fi
 
+# Check if custom instrumentation XML exists (copied during Docker build)
+# New Relic looks for newrelic-extensions.xml in /app/extensions/ directory
+# If XML config exists, assume New Relic should be enabled
+NEW_RELIC_XML_FOUND=false
+if [ -f /app/extensions/newrelic-extensions.xml ]; then
+    NEW_RELIC_XML_FOUND=true
+    echo "Custom instrumentation file found at /app/extensions/newrelic-extensions.xml"
+fi
+
 # Automatically set NEW_RELIC_OPTS if newrelic.jar exists and config is present
+# If XML config file was found, assume New Relic should be enabled (even if config file is missing)
 # This allows the agent to be loaded without manually setting NEW_RELIC_OPTS
-if [ -f /app/newrelic.jar ] && [ -f /app/newrelic.yml ]; then
-    if [ -z "$NEW_RELIC_OPTS" ]; then
-        export NEW_RELIC_OPTS="-javaagent:/app/newrelic.jar"
-        echo "New Relic agent enabled: NEW_RELIC_OPTS set to -javaagent:/app/newrelic.jar"
+if [ -f /app/newrelic.jar ]; then
+    if [ -f /app/newrelic.yml ]; then
+        # Both jar and config file exist - enable agent
+        if [ -z "$NEW_RELIC_OPTS" ]; then
+            export NEW_RELIC_OPTS="-javaagent:/app/newrelic.jar"
+            echo "New Relic agent enabled: NEW_RELIC_OPTS set to -javaagent:/app/newrelic.jar"
+        else
+            echo "New Relic agent options already set: $NEW_RELIC_OPTS"
+        fi
+    elif [ "$NEW_RELIC_XML_FOUND" = "true" ]; then
+        # XML config found but newrelic.yml missing - enable agent anyway (assume enabled if XML exists)
+        if [ -z "$NEW_RELIC_OPTS" ]; then
+            export NEW_RELIC_OPTS="-javaagent:/app/newrelic.jar"
+            echo "New Relic agent enabled (XML config found): NEW_RELIC_OPTS set to -javaagent:/app/newrelic.jar"
+            echo "Warning: newrelic.yml not found, but custom instrumentation XML exists. Agent will use default config."
+        else
+            echo "New Relic agent options already set: $NEW_RELIC_OPTS"
+        fi
     else
-        echo "New Relic agent options already set: $NEW_RELIC_OPTS"
+        echo "Warning: newrelic.jar found but newrelic.yml is missing and no custom instrumentation XML found."
     fi
-elif [ -f /app/newrelic.jar ] && [ ! -f /app/newrelic.yml ]; then
-    echo "Warning: newrelic.jar found but newrelic.yml is missing. New Relic agent will not be loaded."
-elif [ ! -f /app/newrelic.jar ] && [ -f /app/newrelic.yml ]; then
-    echo "Warning: newrelic.yml found but newrelic.jar is missing. New Relic agent will not be loaded."
+elif [ -f /app/newrelic.yml ] || [ "$NEW_RELIC_XML_FOUND" = "true" ]; then
+    echo "Warning: New Relic configuration found but newrelic.jar is missing. New Relic agent will not be loaded."
 fi

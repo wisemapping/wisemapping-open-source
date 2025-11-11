@@ -14,11 +14,17 @@ COPY --chown=wisemapping:wisemapping wise-api/target/wisemapping-api.jar /app/wi
 RUN chmod +x /app/config-gen.sh
 
 # Create app directory and conditionally download New Relic agent
-RUN mkdir -p /app && \
+# Also copy custom instrumentation XML if it exists in the JAR
+RUN mkdir -p /app/extensions && \
     if [ "$ENABLE_NEWRELIC" = "true" ]; then \
-        apk add --no-cache curl && \
+        apk add --no-cache curl unzip && \
         curl -o /app/newrelic.jar https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar && \
         chown wisemapping:wisemapping /app/newrelic.jar && \
+        # Extract newrelic-extensions.xml from JAR if it exists
+        if unzip -l /app/wisemapping-api.jar 2>/dev/null | grep -q "newrelic-extensions.xml"; then \
+            unzip -q -o /app/wisemapping-api.jar newrelic-extensions.xml -d /app/extensions/ 2>/dev/null && \
+            chown wisemapping:wisemapping /app/extensions/newrelic-extensions.xml 2>/dev/null || true; \
+        fi && \
         apk del curl; \
     fi
 
