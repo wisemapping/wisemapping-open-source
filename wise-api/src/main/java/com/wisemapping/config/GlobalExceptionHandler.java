@@ -104,8 +104,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SpamContentException.class)
     @ResponseBody
     public ResponseEntity<RestErrors> handleSpamContentException(SpamContentException ex) {
-        // Log at INFO level for spam detection tracking
-        logger.info("Spam content detected and blocked: {}", ex.getMessage());
         HttpStatus status = ex.shouldReturnGone() ? HttpStatus.GONE : HttpStatus.UNPROCESSABLE_ENTITY;
         RestErrors error = new RestErrors(ex.getMessage(), ex.getSeverity(), ex.getTechInfo());
         return ResponseEntity.status(status).body(error);
