@@ -50,7 +50,6 @@ public class UserDetailsService
         if (user != null) {
             return new UserDetails(user, isAdmin(email), userService);
         } else {
-            logger.warn("User not found: {}", email);
             throw new UsernameNotFoundException(email);
         }
     }

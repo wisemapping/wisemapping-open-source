@@ -21,9 +21,11 @@ package com.wisemapping.service.spam;
 import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(name = "app.batch.spam-detection.description-length.enabled", havingValue = "true", matchIfMissing = true)
 public class DescriptionLengthStrategy implements SpamDetectionStrategy {
 
     private final SpamContentExtractor contentExtractor;
