@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -37,10 +37,10 @@ import java.util.Locale;
 import java.util.Map;
 
 @Service
-final public class NotificationService {
+public class NotificationService {
     final private static Logger logger = LogManager.getLogger();
     @Autowired
-    private ResourceBundleMessageSource messageSource;
+    private MessageSource messageSource;
 
     @Autowired
     private MailerService mailerService;
@@ -205,10 +205,8 @@ final public class NotificationService {
         this.baseUrl = baseUrl;
     }
 
-    public void setMessageSource(ResourceBundleMessageSource messageSource) {
+    public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
 }
-
-

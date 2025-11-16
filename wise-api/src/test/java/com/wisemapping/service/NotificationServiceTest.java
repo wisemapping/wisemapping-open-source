@@ -29,7 +29,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.MessageSource;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Locale;
@@ -45,7 +45,7 @@ class NotificationServiceTest {
     private NotificationService notificationService;
 
     @Mock
-    private ResourceBundleMessageSource messageSource;
+    private MessageSource messageSource;
 
     @Mock
     private MailerService mailerService;
@@ -280,4 +280,3 @@ class NotificationServiceTest {
         return collaboration;
     }
 }
-

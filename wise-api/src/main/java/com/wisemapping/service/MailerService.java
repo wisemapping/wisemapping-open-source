@@ -34,7 +34,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Service
-public final class MailerService {
+public class MailerService {
 
     //~ Instance fields ......................................................................................
 

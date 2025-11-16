@@ -37,13 +37,18 @@ create TABLE IF NOT EXISTS MINDMAP (
   id             SERIAL       NOT NULL PRIMARY KEY,
   title          VARCHAR(255) NOT NULL,
   description    VARCHAR(255),
-  xml            BYTEA        NOT NULL,
   public         BOOL         NOT NULL DEFAULT FALSE,
   creation_date  TIMESTAMP,
   edition_date   TIMESTAMP,
   creator_id     INTEGER      NOT NULL,
   last_editor_id INTEGER      NOT NULL --,
 --FOREIGN KEY(creator_id) REFERENCES "USER"(collaborator_id) ON DELETE CASCADE ON UPDATE NO ACTION
+);
+
+CREATE TABLE IF NOT EXISTS MINDMAP_XML (
+  mindmap_id INTEGER NOT NULL PRIMARY KEY,
+  xml        BYTEA   NOT NULL,
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id) ON delete CASCADE ON update NO ACTION
 );
 
 CREATE TABLE IF NOT EXISTS MINDMAP_SPAM_INFO (
