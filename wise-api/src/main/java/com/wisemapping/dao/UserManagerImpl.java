@@ -345,7 +345,7 @@ public class UserManagerImpl
         }
         
         if (filterAuthType != null && !filterAuthType.trim().isEmpty()) {
-            jpql.append("AND u.authenticationType = :authType ");
+            jpql.append("AND u.authenticationTypeCode = :authType ");
         }
         
         jpql.append("ORDER BY u.id DESC");
@@ -363,7 +363,8 @@ public class UserManagerImpl
         
         if (filterAuthType != null && !filterAuthType.trim().isEmpty()) {
             try {
-                query.setParameter("authType", AuthenticationType.valueOf(filterAuthType));
+                AuthenticationType authType = AuthenticationType.valueOf(filterAuthType);
+                query.setParameter("authType", authType.getCode());
             } catch (IllegalArgumentException e) {
                 // Invalid auth type, return empty result
                 return new java.util.ArrayList<>();
@@ -407,7 +408,7 @@ public class UserManagerImpl
         }
         
         if (filterAuthType != null && !filterAuthType.trim().isEmpty()) {
-            jpql.append("AND u.authenticationType = :authType ");
+            jpql.append("AND u.authenticationTypeCode = :authType ");
         }
         
         TypedQuery<Long> query = entityManager.createQuery(jpql.toString(), Long.class);
@@ -423,7 +424,8 @@ public class UserManagerImpl
         
         if (filterAuthType != null && !filterAuthType.trim().isEmpty()) {
             try {
-                query.setParameter("authType", AuthenticationType.valueOf(filterAuthType));
+                AuthenticationType authType = AuthenticationType.valueOf(filterAuthType);
+                query.setParameter("authType", authType.getCode());
             } catch (IllegalArgumentException e) {
                 // Invalid auth type, return 0
                 return 0L;
