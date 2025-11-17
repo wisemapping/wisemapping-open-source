@@ -11,11 +11,13 @@ spring:
   mvc:
     log-resolved-exception: false
   # Async task executor configuration
+  # Note: Custom TaskExecutor bean in AppConfig overrides these settings
+  # to limit to single-threaded execution (core-size: 1, max-size: 1)
   task:
     execution:
       pool:
-        core-size: 2
-        max-size: 5
+        core-size: 1  # Limited to 1 for sequential execution
+        max-size: 1   # Limited to 1 for sequential execution
         queue-capacity: 100
         keep-alive: 60s
         thread-name-prefix: "AsyncTask-"

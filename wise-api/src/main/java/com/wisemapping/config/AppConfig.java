@@ -32,6 +32,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -188,7 +190,7 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addCorsMappings(@NotNull CorsRegistry registry) {
+    public void addCorsMappings(CorsRegistry registry) {
         if (!corsAllowedOrigins.isEmpty()) {
             // Split comma-separated origins and trim whitespace
             String[] origins = corsAllowedOrigins.split(",");
@@ -205,13 +207,32 @@ public class AppConfig implements WebMvcConfigurer {
         }
     }
 
+    @Bean(name = "taskExecutor")
+    @Primary
+    public TaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        // Limit to single thread to prevent parallel execution and reduce memory pressure
+        executor.setCorePoolSize(1);
+        executor.setMaxPoolSize(1);
+        executor.setQueueCapacity(100);
+        executor.setKeepAliveSeconds(60);
+        executor.setThreadNamePrefix("AsyncTask-");
+        executor.setAllowCoreThreadTimeOut(true);
+        // Use CallerRunsPolicy to prevent task rejection and provide backpressure
+        // This will cause the calling thread to execute the task if queue is full
+        executor.setRejectedExecutionHandler(new java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(30);
+        executor.initialize();
+        return executor;
+    }
+
     @Bean
     @Primary
     public LocaleResolver customLocaleResolver() {
         return new AcceptHeaderLocaleResolver() {
             @Override
-            @NotNull
-            public Locale resolveLocale(@NotNull HttpServletRequest request) {
+            public @NotNull Locale resolveLocale(@NotNull HttpServletRequest request) {
                 final Account user = Utils.getUser();
                 Locale result;
                 if (user != null && user.getLocale() != null) {
