@@ -26,7 +26,6 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.LazyGroup;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.jetbrains.annotations.NotNull;
@@ -112,7 +111,6 @@ public class Mindmap implements Serializable {
     private String title;
 
     @OneToOne(mappedBy = "mindmap", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @LazyGroup("xmlContent")
     @JsonIgnore
     private MindmapXml mindmapXml;
 
