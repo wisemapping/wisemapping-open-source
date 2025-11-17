@@ -46,21 +46,15 @@ public class ZipUtils {
     }
 
     public static byte[] bytesToZip(@NotNull final byte[] content) throws IOException {
-        ZipOutputStream zip = null;
         final ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-        try {
-            zip = new ZipOutputStream(byteArray);
+        try (ZipOutputStream zip = new ZipOutputStream(byteArray)) {
             ZipEntry zEntry = new ZipEntry("content");
             zip.putNextEntry(zEntry);
             IOUtils.write(content, zip);
             zip.closeEntry();
-        } finally {
-            if (zip != null) {
-                zip.flush();
-                zip.close();
-            }
         }
-
+        // Note: ByteArrayOutputStream doesn't need to be closed, but ZipOutputStream must be closed
+        // to finalize the zip structure before calling toByteArray()
         return byteArray.toByteArray();
     }
 }
