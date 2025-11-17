@@ -32,19 +32,17 @@ import java.util.zip.ZipOutputStream;
 public class ZipUtils {
 
     public static byte[] zipToBytes(byte[] zip) throws IOException {
-
-        byte[] result = null;
-        if (zip != null) {
-            final ByteArrayInputStream in = new ByteArrayInputStream(zip);
-            final ZipInputStream zipIn = new ZipInputStream(in);
-            zipIn.getNextEntry();
-            result = IOUtils.toByteArray(zipIn);
-
-            zipIn.closeEntry();
-            zipIn.close();
+        if (zip == null) {
+            return null;
         }
-
-        return result;
+        
+        try (ByteArrayInputStream in = new ByteArrayInputStream(zip);
+             ZipInputStream zipIn = new ZipInputStream(in)) {
+            zipIn.getNextEntry();
+            byte[] result = IOUtils.toByteArray(zipIn);
+            zipIn.closeEntry();
+            return result;
+        }
     }
 
     public static byte[] bytesToZip(@NotNull final byte[] content) throws IOException {

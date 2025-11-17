@@ -274,6 +274,8 @@ app:
   mindmap:
     note:
       max-length: 10000  # Maximum allowed characters in mindmap notes
+    list:
+      max-size: 500  # Maximum number of mindmaps to load in retrieveList() to prevent memory issues
   # Account registration options dialog
   registration:
     enabled: true

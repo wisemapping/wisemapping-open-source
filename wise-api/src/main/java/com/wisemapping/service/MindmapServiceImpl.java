@@ -29,6 +29,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import jakarta.annotation.PreDestroy;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.List;
@@ -266,6 +267,17 @@ public class MindmapServiceImpl
     @NotNull
     public LockManager getLockManager() {
         return this.lockManager;
+    }
+    
+    /**
+     * Cleanup method to properly shutdown the LockManager's scheduler when the service is destroyed.
+     * This prevents memory leaks from the scheduler thread.
+     */
+    @PreDestroy
+    public void destroy() {
+        if (lockManager instanceof LockManagerImpl) {
+            ((LockManagerImpl) lockManager).shutdown();
+        }
     }
     public void setMindmapManager(MindmapManager mindmapManager) {
         this.mindmapManager = mindmapManager;

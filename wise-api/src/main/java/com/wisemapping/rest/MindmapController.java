@@ -90,6 +90,9 @@ public class MindmapController {
 
     @Value("${app.mindmap.note.max-length:10000}")
     private int maxNoteLength;
+    
+    @Value("${app.mindmap.list.max-size:500}")
+    private int maxMindmapListSize;
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
     @RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = { "application/json" })
@@ -172,6 +175,17 @@ public class MindmapController {
         final MindmapFilter filter = MindmapFilter.parse(q);
         
         List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
+        
+        // Safety check: Limit the number of mindmaps loaded to prevent memory issues
+        int originalSize = mindmaps.size();
+        if (originalSize > maxMindmapListSize) {
+            logger.warn("User {} has {} mindmaps, limiting to {} to prevent memory issues. " +
+                       "Consider implementing pagination for better performance.",
+                       user.getEmail(), originalSize, maxMindmapListSize);
+            mindmaps = mindmaps.stream()
+                    .limit(maxMindmapListSize)
+                    .collect(java.util.stream.Collectors.toList());
+        }
         
         final Map<Integer, Collaboration> collaborationsByMap = buildCollaborationsByMindmap(mindmaps, user);
         
