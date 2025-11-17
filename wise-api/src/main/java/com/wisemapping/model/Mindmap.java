@@ -111,12 +111,10 @@ public class Mindmap implements Serializable {
 
     private String title;
 
-    @Column(name = "xml")
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "mindmap", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @LazyGroup("xmlContent")
     @JsonIgnore
-    private byte[] zippedXml;
+    private MindmapXml mindmapXml;
 
     @Formula("(select count(distinct c.id) from COLLABORATION c where c.mindmap_id = id)")
     private int collaboratorCount;
@@ -142,9 +140,9 @@ public class Mindmap implements Serializable {
     @NotNull
     public byte[] getUnzipXml() {
         byte[] result = new byte[]{};
-        if (zippedXml != null) {
+        final byte[] zip = this.getZippedXml();
+        if (zip.length > 0) {
             try {
-                final byte[] zip = this.getZippedXml();
                 result = ZipUtils.zipToBytes(zip);
             } catch (IOException e) {
                 throw new IllegalStateException(e);
@@ -160,11 +158,33 @@ public class Mindmap implements Serializable {
 
     @NotNull
     public byte[] getZippedXml() {
-        return zippedXml;
+        if (mindmapXml == null) {
+            return new byte[]{};
+        }
+        return mindmapXml.getZippedXml();
     }
 
     public void setZippedXml(@NotNull byte[] value) {
-        this.zippedXml = value;
+        ensureXmlContainer().setZippedXml(value);
+    }
+
+    @JsonIgnore
+    public MindmapXml getMindmapXml() {
+        return mindmapXml;
+    }
+
+    public void setMindmapXml(MindmapXml mindmapXml) {
+        this.mindmapXml = mindmapXml;
+        if (mindmapXml != null && mindmapXml.getMindmap() != this) {
+            mindmapXml.setMindmap(this);
+        }
+    }
+
+    private MindmapXml ensureXmlContainer() {
+        if (mindmapXml == null) {
+            mindmapXml = new MindmapXml(this);
+        }
+        return mindmapXml;
     }
 
     public Set<Collaboration> getCollaborations() {

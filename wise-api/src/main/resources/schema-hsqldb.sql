@@ -28,13 +28,20 @@ CREATE TABLE IF NOT EXISTS MINDMAP (
   id             INTEGER       NOT NULL IDENTITY,
   title          VARCHAR(255)  NOT NULL,
   description    VARCHAR(255),
-  xml            LONGVARBINARY NOT NULL,
   public         BOOLEAN       NOT NULL,
   creation_date  DATETIME,
   edition_date   DATETIME,
   creator_id     INTEGER       NOT NULL,
   last_editor_id INTEGER       NOT NULL
 --FOREIGN KEY(creator_id) REFERENCES ACCOUNT(collaborator_id)
+);
+
+CREATE TABLE IF NOT EXISTS MINDMAP_XML (
+  mindmap_id INTEGER       NOT NULL PRIMARY KEY,
+  xml        LONGVARBINARY NOT NULL,
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 );
 
 CREATE TABLE IF NOT EXISTS MINDMAP_SPAM_INFO (

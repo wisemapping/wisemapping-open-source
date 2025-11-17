@@ -35,13 +35,21 @@ CREATE TABLE IF NOT EXISTS MINDMAP (
                  CHARACTER SET UTF8MB4 NOT NULL,
   description    VARCHAR(255)
                  CHARACTER SET utf8,
-  xml            MEDIUMBLOB         NOT NULL,
   public         BOOL               NOT NULL DEFAULT 0,
   creation_date  DATETIME,
   edition_date   DATETIME,
   creator_id     INTEGER            NOT NULL,
   last_editor_id INTEGER            NOT NULL,
   FOREIGN KEY (creator_id) REFERENCES ACCOUNT (collaborator_id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+)
+  CHARACTER SET UTF8MB4;
+
+CREATE TABLE IF NOT EXISTS MINDMAP_XML (
+  mindmap_id INTEGER    NOT NULL PRIMARY KEY,
+  xml        MEDIUMBLOB NOT NULL,
+  FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id)
     ON DELETE CASCADE
     ON UPDATE NO ACTION
 )

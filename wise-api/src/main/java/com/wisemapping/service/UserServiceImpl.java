@@ -183,6 +183,60 @@ public class UserServiceImpl
         return user;
     }
 
+    @Override
+    public Account confirmAccountSync(@NotNull String email,
+                                      @NotNull String code,
+                                      @Nullable String provider) throws WiseMappingException {
+        final Account existingUser = userManager.getUserBy(email);
+
+        if (existingUser == null) {
+            logger.warn("OAuth account sync confirmation failed: user not found for email {}", email);
+            throw new WiseMappingException("User not found / incorrect code");
+        }
+
+        final String userSyncCode = existingUser.getSyncCode();
+        if (userSyncCode == null) {
+            logger.warn("OAuth account sync confirmation failed: no sync code set for user {}", email);
+            throw new WiseMappingException("User not found / incorrect code");
+        }
+
+        if (!code.equals(userSyncCode)) {
+            logger.warn("OAuth account sync confirmation failed: invalid code for user {}", email);
+            throw new WiseMappingException("User not found / incorrect code");
+        }
+
+        final AuthenticationType targetAuthType = resolveAuthenticationTypeForSync(existingUser, provider);
+
+        existingUser.setOauthSync(true);
+        existingUser.setSyncCode(null);
+        existingUser.setAuthenticationType(targetAuthType);
+        existingUser.setPassword("");
+        userManager.updateUser(existingUser);
+
+        logger.info("OAuth account sync confirmed for user {} using provider {}", email, targetAuthType);
+        return existingUser;
+    }
+
+    private AuthenticationType resolveAuthenticationTypeForSync(@NotNull Account existingUser,
+                                                                @Nullable String provider) {
+        if (provider != null && !provider.isEmpty()) {
+            final String normalized = provider.toLowerCase(Locale.ROOT);
+            if ("facebook".equals(normalized)) {
+                return AuthenticationType.FACEBOOK_OAUTH2;
+            }
+            if ("google".equals(normalized)) {
+                return AuthenticationType.GOOGLE_OAUTH2;
+            }
+            logger.warn("Unknown provider {} received during account sync confirmation. Defaulting to GOOGLE.", provider);
+        }
+
+        if (existingUser.getAuthenticationType() != AuthenticationType.DATABASE) {
+            return existingUser.getAuthenticationType();
+        }
+
+        return AuthenticationType.GOOGLE_OAUTH2;
+    }
+
     public Mindmap buildTutorialMindmap(@NotNull String firstName) throws InvalidMindmapException {
         //To change body of created methods use File | Settings | File Templates.
         final Locale locale = LocaleContextHolder.getLocale();
