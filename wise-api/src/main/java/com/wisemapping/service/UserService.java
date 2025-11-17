@@ -81,6 +81,17 @@ public interface UserService {
     long countUsersBySearch(String search);
 
     /**
+     * Confirm linking between an existing DATABASE account and an OAuth provider.
+     * @param email account email
+     * @param code sync confirmation code issued during OAuth login
+     * @param provider provider identifier (google, facebook, etc.)
+     * @return updated account
+     */
+    Account confirmAccountSync(@NotNull String email,
+            @NotNull String code,
+            @org.jetbrains.annotations.Nullable String provider) throws WiseMappingException;
+
+    /**
      * Unsuspend a user and restore their mindmaps if they were suspended for inactivity
      * @param user the user to unsuspend
      * @return number of mindmaps restored, or 0 if none were restored
