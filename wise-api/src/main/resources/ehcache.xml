@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE ehcache>
-<ehcache>
-    <diskStore path="java.io.tmpdir"/>
+<config xmlns="http://www.ehcache.org/v3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core.xsd">
+
     <!-- 
         NOTE: Mindmap-related entities (MindmapSpamInfo, MindmapLabel) are NOT cached
         to prevent inconsistencies. Mindmap data changes frequently and must always
@@ -20,59 +21,51 @@
         Entity Cache Regions - Second Level Cache for JPA Entities
         These caches store entity instances across sessions.
     -->
-    <cache name="com.wisemapping.model.Collaborator"
-           maxElementsInMemory="2000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="3600" overflowToDisk="false"/>
+    <cache alias="com.wisemapping.model.Collaborator">
+        <key-type>java.lang.Object</key-type>
+        <value-type>java.lang.Object</value-type>
+        <expiry>
+            <tti unit="seconds">600</tti>
+            <ttl unit="seconds">3600</ttl>
+        </expiry>
+        <resources>
+            <heap unit="entries">2000</heap>
+        </resources>
+    </cache>
+
     <!-- 
         Account cache: Reduced TTL (60s idle, 300s total) to minimize staleness when
         loaded by non-cached Mindmap entities.
-        
-        LONG-TERM EVALUATION CONSIDERATIONS:
-        Account caching provides performance benefits but creates consistency risks:
-        
-        PROS of caching Account:
-        - Reduces database queries for frequently accessed user data
-        - Improves performance for user lookups, authentication checks
-        - Account data changes infrequently (relative to Mindmap)
-        
-        CONS of caching Account:
-        - Consistency risk: Suspended/activated accounts may appear stale in cache
-        - Dependency risk: Non-cached Mindmap depends on cached Account
-        - Complexity: Requires explicit cache eviction on critical updates
-        - Memory: Uses 2000 entries × ~1KB per Account = ~2MB cache
-        
-        RECOMMENDATION FOR LONG-TERM:
-        - Monitor cache hit rates and performance impact
-        - Consider disabling Account cache if:
-          * Cache hit rate is low (<50%)
-          * Consistency issues are reported
-          * Performance impact is negligible
-        - Alternative: Use application-level caching (Caffeine/Guava) with shorter TTL
-          instead of Hibernate second-level cache for better control
-        
-        Current mitigation strategies:
-        - LAZY fetch for Mindmap.creator reduces eager cache hits
-        - Reduced TTL (300s) limits staleness window
-        - Explicit eviction on suspension/activation changes
-        - Best-effort eviction (non-blocking, logs warnings on failure)
     -->
-    <cache name="com.wisemapping.model.Account"
-           maxElementsInMemory="2000" eternal="false" timeToIdleSeconds="60"
-           timeToLiveSeconds="300" overflowToDisk="false"/>
+    <cache alias="com.wisemapping.model.Account">
+        <key-type>java.lang.Object</key-type>
+        <value-type>java.lang.Object</value-type>
+        <expiry>
+            <tti unit="seconds">60</tti>
+            <ttl unit="seconds">300</ttl>
+        </expiry>
+        <resources>
+            <heap unit="entries">500</heap>
+        </resources>
+    </cache>
     
-    <!-- 
-        Hibernate Query Cache Regions
-        Required when hibernate.cache.use_query_cache=true
-    -->
     <!-- 
         default-query-results-region: Stores query results (IDs and values)
         Limit: 2000 entries
         TTL: 3600 seconds (1 hour) - queries can become stale, so we limit lifetime
         TTI: 600 seconds (10 minutes) - evict unused queries after 10 minutes
     -->
-    <cache name="default-query-results-region"
-           maxElementsInMemory="2000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="3600" overflowToDisk="false"/>
+    <cache alias="default-query-results-region">
+        <key-type>java.lang.Object</key-type>
+        <value-type>java.lang.Object</value-type>
+        <expiry>
+            <tti unit="seconds">600</tti>
+            <ttl unit="seconds">3600</ttl>
+        </expiry>
+        <resources>
+            <heap unit="entries">2000</heap>
+        </resources>
+    </cache>
     
     <!-- 
         default-update-timestamps-region: Tracks when database tables were last updated
@@ -81,7 +74,15 @@
         TTL: 3600 seconds (1 hour) 
         TTI: 600 seconds (10 minutes)
     -->
-    <cache name="default-update-timestamps-region"
-           maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600"
-           timeToLiveSeconds="3600" overflowToDisk="false"/>
-</ehcache>
+    <cache alias="default-update-timestamps-region">
+        <key-type>java.lang.Object</key-type>
+        <value-type>java.lang.Object</value-type>
+        <expiry>
+            <tti unit="seconds">600</tti>
+            <ttl unit="seconds">3600</ttl>
+        </expiry>
+        <resources>
+            <heap unit="entries">1000</heap>
+        </resources>
+    </cache>
+</config>
