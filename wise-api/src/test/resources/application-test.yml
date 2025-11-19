@@ -87,6 +87,9 @@ app:
     user: admin@wisemapping.org  # Admin user email suffix for role checking
   api:
     http-basic-enabled: true
+  mindmap:
+    list:
+      max-size: 1000
   registration:
     enabled: true
     email-confirmation-enabled: false
