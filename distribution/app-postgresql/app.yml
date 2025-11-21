@@ -19,4 +19,8 @@ spring:
   sql:
     init:
       platform: postgresql
+      mode: always
+      schema-locations: classpath:schema-postgresql.sql
+      data-locations: classpath:data-postgresql.sql
+      continue-on-error: false
 
