@@ -107,7 +107,6 @@ For example, this [example](https://github.com/wisemapping/wisemapping-open-sour
 
 ## Past Individual Contributors
 
-   * Ignacio Manzano  
    * Ezequiel Bergamaschi <ezequielbergamaschi@gmail.com>
    
 ## License
