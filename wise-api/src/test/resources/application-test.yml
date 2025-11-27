@@ -89,7 +89,7 @@ app:
     http-basic-enabled: true
   mindmap:
     list:
-      max-size: 1000
+      max-size: 2000
   registration:
     enabled: true
     email-confirmation-enabled: false
