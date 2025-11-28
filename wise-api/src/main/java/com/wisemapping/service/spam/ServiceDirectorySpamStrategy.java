@@ -69,15 +69,22 @@ public class ServiceDirectorySpamStrategy implements SpamDetectionStrategy {
         Pattern.compile("[0-9]{3}[-.\\s]?[0-9]{3}[-.\\s]?[0-9]{4}", Pattern.CASE_INSENSITIVE), // US format without parentheses
         Pattern.compile("0\\d{2,4}[-.\\s]?\\d{3,4}[-.\\s]?\\d{3,4}", Pattern.CASE_INSENSITIVE), // UK format (starts with 0, e.g., 01273 782 734, 01754 768120)
         Pattern.compile("\\+44[-.\\s]?\\d{2,4}[-.\\s]?\\d{3,4}[-.\\s]?\\d{3,4}", Pattern.CASE_INSENSITIVE), // UK international format (+44)
+        // Swiss phone format: +41 44 499 00 75 or 044 499 00 75 (supports 2-digit groups)
+        Pattern.compile("\\+41[-.\\s]?\\d{2}[-.\\s]?\\d{3}[-.\\s]?\\d{2}[-.\\s]?\\d{2}", Pattern.CASE_INSENSITIVE), // Swiss international format (+41)
+        Pattern.compile("0\\d{2}[-.\\s]?\\d{3}[-.\\s]?\\d{2}[-.\\s]?\\d{2}", Pattern.CASE_INSENSITIVE), // Swiss landline format (starts with 0)
+        // More flexible international format supporting 2-4 digit groups
+        Pattern.compile("\\+[1-9]\\d{1,3}[-.\\s]?\\d{2,4}(?:[-.\\s]?\\d{2,4}){2,3}", Pattern.CASE_INSENSITIVE), // Flexible international format
         
         // Address patterns (street addresses, postal codes, city/state/country combinations)
         Pattern.compile("\\d+\\s+[a-zA-Z0-9\\s,.-]+\\s+(?:street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|court|ct|place|pl|way|blvd)\\b", Pattern.CASE_INSENSITIVE),
         Pattern.compile("\\d{5}(?:-\\d{4})?", Pattern.CASE_INSENSITIVE), // US ZIP codes
         Pattern.compile("[a-zA-Z]\\d[a-zA-Z]\\s?\\d[a-zA-Z]\\d", Pattern.CASE_INSENSITIVE), // Canadian postal codes
         Pattern.compile("\\b\\d{4}\\s?[a-zA-Z]{2}\\b", Pattern.CASE_INSENSITIVE), // Dutch postal codes
+        // Swiss postal codes: 4 digits followed by city name (e.g., "8001 Zürich")
+        Pattern.compile("\\b\\d{4}\\s+[A-ZÄÖÜ][a-zäöüß]+(?:\\s+[A-ZÄÖÜ][a-zäöüß]+)*\\b", Pattern.CASE_INSENSITIVE), // Swiss postal codes
         Pattern.compile("\\b[a-zA-Z]+\\s+(?:road|rd|street|st|avenue|ave|boulevard|blvd|lane|ln|drive|dr)\\b", Pattern.CASE_INSENSITIVE), // Road names without numbers (e.g., "Spintex Road")
-        Pattern.compile("\\b(?:[A-Z][a-z]+\\s+){1,3}(?:[A-Z][a-z]+\\s+)*(?:Canada|USA|United States|Ghana|UK|United Kingdom|Australia|New Zealand|South Africa|India|Brazil|Mexico|Germany|France|Italy|Spain|Netherlands|Belgium|Switzerland|Austria|Sweden|Norway|Denmark|Finland|Poland|Portugal|Greece|Ireland|Japan|China|South Korea|Singapore|Malaysia|Thailand|Philippines|Indonesia|Vietnam|Taiwan|Hong Kong|UAE|Saudi Arabia|Israel|Turkey|Egypt|Kenya|Nigeria|Argentina|Chile|Colombia|Peru|Venezuela|Ecuador|Uruguay|Paraguay|Bolivia)\\b", Pattern.CASE_INSENSITIVE), // City/State/Country combinations (e.g., "Winnipeg Manitoba Canada", "Accra Greater Accra Region Ghana")
-        Pattern.compile("\\b(?:Canada|USA|United States|Ghana|UK|United Kingdom|Australia|New Zealand|South Africa|India|Brazil|Mexico|Germany|France|Italy|Spain|Netherlands|Belgium|Switzerland|Austria|Sweden|Norway|Denmark|Finland|Poland|Portugal|Greece|Ireland|Japan|China|South Korea|Singapore|Malaysia|Thailand|Philippines|Indonesia|Vietnam|Taiwan|Hong Kong|UAE|Saudi Arabia|Israel|Turkey|Egypt|Kenya|Nigeria|Argentina|Chile|Colombia|Peru|Venezuela|Ecuador|Uruguay|Paraguay|Bolivia)\\b", Pattern.CASE_INSENSITIVE), // Country names alone (e.g., "Canada and US")
+        Pattern.compile("\\b(?:[A-Z][a-z]+\\s+){1,3}(?:[A-Z][a-z]+\\s+)*(?:Canada|USA|United States|Ghana|UK|United Kingdom|Australia|New Zealand|South Africa|India|Brazil|Mexico|Germany|France|Italy|Spain|Netherlands|Belgium|Switzerland|Schweiz|Suisse|Svizzera|Austria|Sweden|Norway|Denmark|Finland|Poland|Portugal|Greece|Ireland|Japan|China|South Korea|Singapore|Malaysia|Thailand|Philippines|Indonesia|Vietnam|Taiwan|Hong Kong|UAE|Saudi Arabia|Israel|Turkey|Egypt|Kenya|Nigeria|Argentina|Chile|Colombia|Peru|Venezuela|Ecuador|Uruguay|Paraguay|Bolivia)\\b", Pattern.CASE_INSENSITIVE), // City/State/Country combinations (e.g., "Winnipeg Manitoba Canada", "Accra Greater Accra Region Ghana", "Zürich Schweiz")
+        Pattern.compile("\\b(?:Canada|USA|United States|Ghana|UK|United Kingdom|Australia|New Zealand|South Africa|India|Brazil|Mexico|Germany|France|Italy|Spain|Netherlands|Belgium|Switzerland|Schweiz|Suisse|Svizzera|Austria|Sweden|Norway|Denmark|Finland|Poland|Portugal|Greece|Ireland|Japan|China|South Korea|Singapore|Malaysia|Thailand|Philippines|Indonesia|Vietnam|Taiwan|Hong Kong|UAE|Saudi Arabia|Israel|Turkey|Egypt|Kenya|Nigeria|Argentina|Chile|Colombia|Peru|Venezuela|Ecuador|Uruguay|Paraguay|Bolivia)\\b", Pattern.CASE_INSENSITIVE), // Country names alone (e.g., "Canada and US", "Schweiz")
         
         // Email patterns
         Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", Pattern.CASE_INSENSITIVE)
@@ -128,25 +135,32 @@ public class ServiceDirectorySpamStrategy implements SpamDetectionStrategy {
             }
 
             // Detect contact information early
+            // Website patterns: indices 0-1
             boolean hasWebsite = CONTACT_PATTERNS.get(0).matcher(normalizedContent).find() || 
                                CONTACT_PATTERNS.get(1).matcher(normalizedContent).find();
             
+            // Phone patterns: indices 2-10 (9 patterns including Swiss and flexible international)
             boolean hasPhone = CONTACT_PATTERNS.get(2).matcher(normalizedContent).find() ||
                               CONTACT_PATTERNS.get(3).matcher(normalizedContent).find() ||
                               CONTACT_PATTERNS.get(4).matcher(normalizedContent).find() ||
                               CONTACT_PATTERNS.get(5).matcher(normalizedContent).find() ||
                               CONTACT_PATTERNS.get(6).matcher(normalizedContent).find() ||
-                              CONTACT_PATTERNS.get(7).matcher(normalizedContent).find();
+                              CONTACT_PATTERNS.get(7).matcher(normalizedContent).find() ||
+                              CONTACT_PATTERNS.get(8).matcher(normalizedContent).find() ||
+                              CONTACT_PATTERNS.get(9).matcher(normalizedContent).find() ||
+                              CONTACT_PATTERNS.get(10).matcher(normalizedContent).find();
             
-            boolean hasAddress = CONTACT_PATTERNS.get(8).matcher(normalizedContent).find() ||
-                                CONTACT_PATTERNS.get(9).matcher(normalizedContent).find() ||
-                                CONTACT_PATTERNS.get(10).matcher(normalizedContent).find() ||
-                                CONTACT_PATTERNS.get(11).matcher(normalizedContent).find() ||
+            // Address patterns: indices 11-17 (7 patterns including Swiss postal codes)
+            boolean hasAddress = CONTACT_PATTERNS.get(11).matcher(normalizedContent).find() ||
                                 CONTACT_PATTERNS.get(12).matcher(normalizedContent).find() ||
                                 CONTACT_PATTERNS.get(13).matcher(normalizedContent).find() ||
-                                CONTACT_PATTERNS.get(14).matcher(normalizedContent).find();
+                                CONTACT_PATTERNS.get(14).matcher(normalizedContent).find() ||
+                                CONTACT_PATTERNS.get(15).matcher(normalizedContent).find() ||
+                                CONTACT_PATTERNS.get(16).matcher(normalizedContent).find() ||
+                                CONTACT_PATTERNS.get(17).matcher(normalizedContent).find();
             
-            boolean hasEmail = CONTACT_PATTERNS.get(15).matcher(normalizedContent).find();
+            // Email patterns: index 18
+            boolean hasEmail = CONTACT_PATTERNS.get(18).matcher(normalizedContent).find();
             
             // If map has complete contact info (address + phone + website/email), it's likely spam
             // even with higher node counts, unless it's a very large legitimate map (> 30 topics)
