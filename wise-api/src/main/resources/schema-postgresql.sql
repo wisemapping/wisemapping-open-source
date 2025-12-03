@@ -100,7 +100,7 @@ create TABLE IF NOT EXISTS COLLABORATION (
 
 create TABLE IF NOT EXISTS ACCESS_AUDITORY (
   id         SERIAL  NOT NULL PRIMARY KEY,
-  login_date DATE,
+  login_date TIMESTAMP,
   user_id    INTEGER NOT NULL,
   FOREIGN KEY (user_id) REFERENCES ACCOUNT (collaborator_id) ON delete CASCADE ON update NO ACTION
 );
