@@ -427,3 +427,49 @@
 - "*.go.*"
 - "*.gouv.*"
 
+# French University Libraries and Academic Gateways
+- univ-rennes.fr
+- univ-rennes1.fr
+
+# French Academic/Research Institutions
+- abes.fr
+- cnrs.fr
+- ccsd.cnrs.fr
+- istex.fr
+- brgm.fr
+- mnhn.fr
+
+# Academic Search Engines and Databases
+- base-search.net
+- proquest.com
+- espacenet.com
+- wipo.int
+
+# AI/Research Tools
+- chatgpt.com
+- mistral.ai
+- consensus.app
+- elicit.com
+
+# Search Engines
+- duckduckgo.com
+- bing.com
+- "*.google.com"
+
+# Image Resources
+- pixabay.com
+- unsplash.com
+- thenounproject.com
+
+# Academic Content Platforms
+- figshare.com
+- mendeley.com
+- netmath.ca
+- dictionnaires.com
+- cours-informatique-gratuit.fr
+- cnrsm.fr
+
+# French Public Services
+- naturefrance.fr
+- meteofrance.fr
+
