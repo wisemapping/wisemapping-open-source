@@ -25,6 +25,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Fetch;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
+import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -33,10 +34,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+
 @Repository("mindmapManager")
 public class MindmapManagerImpl
         implements MindmapManager {
@@ -271,14 +275,24 @@ public class MindmapManagerImpl
     @Override
     public void updateMindmap(@NotNull Mindmap mindMap, boolean saveHistory) {
         assert mindMap != null : "Save Mindmap: Mindmap is required!";
+
+        // Merge first to ensure we have a managed entity with a valid ID
+        Mindmap managedMindmap = entityManager.merge(mindMap);
+        // Flush to ensure the mindmap is persisted and has an ID (critical for HSQLDB)
+        entityManager.flush();
+
         // Handle spam info separately using native SQL to prevent duplicate key violations
-        MindmapSpamInfo spamInfo = mindMap.getSpamInfo();
+        MindmapSpamInfo spamInfo = managedMindmap.getSpamInfo();
         if (spamInfo != null) {
+            // Ensure the spam info has the correct mindmap ID
+            if (spamInfo.getMindmapId() == null || spamInfo.getMindmapId() == 0) {
+                spamInfo.setMindmapId(managedMindmap.getId());
+            }
             updateMindmapSpamInfo(spamInfo);
         }
-        entityManager.merge(mindMap);
+
         if (saveHistory) {
-            saveHistory(mindMap);
+            saveHistory(managedMindmap);
         }
     }
     @Override
@@ -286,44 +300,111 @@ public class MindmapManagerImpl
     public void updateMindmapSpamInfo(@NotNull com.wisemapping.model.MindmapSpamInfo spamInfo) {
         assert spamInfo != null : "Update MindmapSpamInfo: SpamInfo is required!";
         // Validate that we have a valid mindmap ID
-        if (spamInfo.getMindmapId() == null || spamInfo.getMindmapId() <= 0) {
+        if (spamInfo.getMindmapId() == null || spamInfo.getMindmapId() < 0) {
             throw new IllegalArgumentException("Invalid mindmap ID for spam info: " + spamInfo.getMindmapId());
         }
+
         // "Last Win" strategy: Use native SQL to force update regardless of conflicts
         // This ensures the latest data always wins, even in high concurrency scenarios
         try {
             // Use Java Calendar for consistent timestamp handling across all databases
             Calendar now = Calendar.getInstance();
-            // Use native SQL for guaranteed "last win" behavior
-            String sql = """
-                INSERT INTO MINDMAP_SPAM_INFO (mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-                ON DUPLICATE KEY UPDATE
-                    spam_detected = VALUES(spam_detected),
-                    spam_detection_version = VALUES(spam_detection_version),
-                    spam_type_code = VALUES(spam_type_code),
-                    spam_description = VALUES(spam_description),
-                    updated_at = ?
-                """;
+
             // Convert SpamStrategyType enum to Character for native SQL
-            Character spamTypeCode = spamInfo.getSpamTypeCode() != null ? 
-                spamInfo.getSpamTypeCode().getCode() : null;
-            entityManager.createNativeQuery(sql)
-                .setParameter(1, spamInfo.getMindmapId())
-                .setParameter(2, spamInfo.isSpamDetected())
-                .setParameter(3, spamInfo.getSpamDetectionVersion())
-                .setParameter(4, spamTypeCode) // Convert enum to char
-                .setParameter(5, spamInfo.getSpamDescription())
-                .setParameter(6, now) // created_at
-                .setParameter(7, now) // updated_at
-                .setParameter(8, now) // updated_at for UPDATE clause
-                .executeUpdate();
+            Character spamTypeCode = spamInfo.getSpamTypeCode() != null ?
+                    spamInfo.getSpamTypeCode().getCode() : null;
+
+            String dbProductName = getDatabaseProductName();
+            String sql;
+            Query query;
+
+            if (dbProductName.toLowerCase().contains("postgresql")) {
+                sql = """
+                        INSERT INTO MINDMAP_SPAM_INFO (mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        ON CONFLICT (mindmap_id) DO UPDATE SET
+                            spam_detected = EXCLUDED.spam_detected,
+                            spam_detection_version = EXCLUDED.spam_detection_version,
+                            spam_type_code = EXCLUDED.spam_type_code,
+                            spam_description = EXCLUDED.spam_description,
+                            updated_at = ?
+                        """;
+                query = entityManager.createNativeQuery(sql)
+                        .setParameter(1, spamInfo.getMindmapId())
+                        .setParameter(2, spamInfo.isSpamDetected())
+                        .setParameter(3, spamInfo.getSpamDetectionVersion())
+                        .setParameter(4, spamTypeCode)
+                        .setParameter(5, spamInfo.getSpamDescription())
+                        .setParameter(6, now)
+                        .setParameter(7, now)
+                        .setParameter(8, now);
+            } else if (dbProductName.toLowerCase().contains("hsql")) {
+                sql = """
+                        MERGE INTO MINDMAP_SPAM_INFO AS target
+                        USING (VALUES(?, ?, ?, ?, ?, ?, ?)) AS source(mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
+                        ON (target.mindmap_id = source.mindmap_id)
+                        WHEN MATCHED THEN
+                            UPDATE SET
+                                spam_detected = source.spam_detected,
+                                spam_detection_version = source.spam_detection_version,
+                                spam_type_code = source.spam_type_code,
+                                spam_description = source.spam_description,
+                                updated_at = source.updated_at
+                        WHEN NOT MATCHED THEN
+                            INSERT (mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
+                            VALUES (source.mindmap_id, source.spam_detected, source.spam_detection_version, source.spam_type_code, source.spam_description, source.created_at, source.updated_at)
+                        """;
+                query = entityManager.createNativeQuery(sql)
+                        .setParameter(1, spamInfo.getMindmapId())
+                        .setParameter(2, spamInfo.isSpamDetected())
+                        .setParameter(3, spamInfo.getSpamDetectionVersion())
+                        .setParameter(4, spamTypeCode)
+                        .setParameter(5, spamInfo.getSpamDescription())
+                        .setParameter(6, now)
+                        .setParameter(7, now);
+            } else {
+                // Default to MySQL syntax
+                sql = """
+                        INSERT INTO MINDMAP_SPAM_INFO (mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        ON DUPLICATE KEY UPDATE
+                            spam_detected = VALUES(spam_detected),
+                            spam_detection_version = VALUES(spam_detection_version),
+                            spam_type_code = VALUES(spam_type_code),
+                            spam_description = VALUES(spam_description),
+                            updated_at = ?
+                        """;
+                query = entityManager.createNativeQuery(sql)
+                        .setParameter(1, spamInfo.getMindmapId())
+                        .setParameter(2, spamInfo.isSpamDetected())
+                        .setParameter(3, spamInfo.getSpamDetectionVersion())
+                        .setParameter(4, spamTypeCode)
+                        .setParameter(5, spamInfo.getSpamDescription())
+                        .setParameter(6, now)
+                        .setParameter(7, now)
+                        .setParameter(8, now);
+            }
+
+            query.executeUpdate();
         } catch (Exception e) {
             // If native SQL fails, log the error and throw a runtime exception
             // This ensures we don't fall back to JPA merge which causes optimistic locking issues
-            throw new RuntimeException("Failed to update MindmapSpamInfo for mindmap ID: " + 
-                spamInfo.getMindmapId() + " (native SQL failed)", e);
+            throw new RuntimeException("Failed to update MindmapSpamInfo for mindmap ID: " +
+                    spamInfo.getMindmapId() + " (native SQL failed)", e);
         }
+    }
+
+    private String getDatabaseProductName() {
+        final AtomicReference<String> productName = new AtomicReference<>("");
+        Session session = entityManager.unwrap(Session.class);
+        session.doWork(connection -> {
+            try {
+                productName.set(connection.getMetaData().getDatabaseProductName());
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to get database product name", e);
+            }
+        });
+        return productName.get();
     }
     /**
      * Evicts Collaborator entities from Hibernate second-level cache.
@@ -394,7 +475,7 @@ public class MindmapManagerImpl
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
             "GROUP BY m.creator " +
-            "HAVING COUNT(m.id) >= :spamThreshold", 
+            "HAVING COUNT(m.id) >= :spamThreshold",
             Object[].class);
         query.setParameter("spamThreshold", spamThreshold);
         // Convert Object[] results to SpamUserResult objects
@@ -417,7 +498,7 @@ public class MindmapManagerImpl
             "  AND m.isPublic = true " +
             "AND c.creationDate >= :cutoffDate " +
             "GROUP BY m.creator " +
-            "HAVING COUNT(m.id) >= :spamThreshold", 
+            "HAVING COUNT(m.id) >= :spamThreshold",
             Object[].class);
         // Calculate cutoff date (monthsBack months ago)
         Calendar cutoffDate = Calendar.getInstance();
@@ -445,7 +526,7 @@ public class MindmapManagerImpl
             "AND c.creationDate >= :cutoffDate " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold " +
-            "ORDER BY c.id", 
+            "ORDER BY c.id",
             Object[].class);
         // Calculate cutoff date (monthsBack months ago)
         Calendar cutoffDate = Calendar.getInstance();
@@ -476,7 +557,7 @@ public class MindmapManagerImpl
             "AND (:lastUserId IS NULL OR c.id > :lastUserId) " +
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) >= :spamThreshold " +
-            "ORDER BY c.id", 
+            "ORDER BY c.id",
             Object[].class);
         // Calculate cutoff date (monthsBack months ago)
         Calendar cutoffDate = Calendar.getInstance();
@@ -508,7 +589,7 @@ public class MindmapManagerImpl
             "GROUP BY m.creator " +
             "HAVING COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
             "   AND (COUNT(CASE WHEN s.spamDetected = true THEN 1 END) * 1.0 / COUNT(m.id)) >= :spamRatioThreshold " +
-            "ORDER BY c.id", 
+            "ORDER BY c.id",
             Object[].class);
         // Calculate cutoff date (monthsBack months ago)
         Calendar cutoffDate = Calendar.getInstance();
@@ -598,7 +679,7 @@ public class MindmapManagerImpl
             "GROUP BY m.creator " +
             "HAVING COUNT(m.id) > :minTotalMaps " +
             "   AND COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
-            "ORDER BY c.id", 
+            "ORDER BY c.id",
             Object[].class);
         // Calculate cutoff date (monthsBack months ago)
         Calendar cutoffDate = Calendar.getInstance();
@@ -661,7 +742,7 @@ public class MindmapManagerImpl
             "GROUP BY c.id " +
             "HAVING COUNT(m.id) > 0 " +
             "   AND (COUNT(CASE WHEN s.spamDetected = true THEN 1 END) * 1.0 / COUNT(m.id)) >= :spamRatioThreshold " +
-            "ORDER BY c.id", 
+            "ORDER BY c.id",
             Object[].class);
         // Calculate cutoff date (monthsBack months ago)
         Calendar cutoffDate = Calendar.getInstance();
@@ -746,7 +827,7 @@ public class MindmapManagerImpl
             "WHERE c.creationDate >= :cutoffDate " +
             "GROUP BY c.id " +
             "HAVING COUNT(CASE WHEN s.spamDetected = true THEN 1 END) >= :minSpamCount " +
-            "ORDER BY c.id", 
+            "ORDER BY c.id",
             Object[].class);
         // Calculate cutoff date (monthsBack months ago)
         Calendar cutoffDate = Calendar.getInstance();
@@ -819,7 +900,7 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> findAllPublicMindmaps(int offset, int limit) {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true ORDER BY m.id", 
+            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true ORDER BY m.id",
             Mindmap.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
@@ -833,7 +914,7 @@ public class MindmapManagerImpl
     @Override
     public List<Mindmap> findAllPublicMindmapsSince(Calendar cutoffDate, int offset, int limit) {
         final TypedQuery<Mindmap> query = entityManager.createQuery(
-            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true AND m.creationTime >= :cutoffDate ORDER BY m.id", 
+            "SELECT m FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true AND m.creationTime >= :cutoffDate ORDER BY m.id",
             Mindmap.class);
         query.setParameter("cutoffDate", cutoffDate);
         query.setFirstResult(offset);
@@ -843,7 +924,7 @@ public class MindmapManagerImpl
     @Override
     public long countAllPublicMindmapsSince(Calendar cutoffDate) {
         final TypedQuery<Long> query = entityManager.createQuery(
-            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true AND m.creationTime >= :cutoffDate", 
+            "SELECT COUNT(m) FROM com.wisemapping.model.Mindmap m WHERE m.isPublic = true AND m.creationTime >= :cutoffDate",
             Long.class);
         query.setParameter("cutoffDate", cutoffDate);
         return query.getSingleResult();
@@ -856,7 +937,7 @@ public class MindmapManagerImpl
             "WHERE m.isPublic = true " +
             "  AND m.creationTime >= :cutoffDate " +
             "  AND (s.spamDetectionVersion < :currentVersion OR s.spamDetectionVersion IS NULL) " +
-            "ORDER BY m.creationTime ASC", 
+            "ORDER BY m.creationTime ASC",
             Mindmap.class);
         query.setParameter("cutoffDate", cutoffDate);
         query.setParameter("currentVersion", currentVersion);
@@ -871,7 +952,7 @@ public class MindmapManagerImpl
             "LEFT JOIN m.spamInfo s " +
             "WHERE m.isPublic = true " +
             "  AND m.creationTime >= :cutoffDate " +
-            "  AND (s.spamDetectionVersion < :currentVersion OR s.spamDetectionVersion IS NULL)", 
+            "  AND (s.spamDetectionVersion < :currentVersion OR s.spamDetectionVersion IS NULL)",
             Long.class);
         query.setParameter("cutoffDate", cutoffDate);
         query.setParameter("currentVersion", currentVersion);
@@ -902,7 +983,7 @@ public class MindmapManagerImpl
             "  AND c.creationDate >= :cutoffDate " +
             "  AND s.spamTypeCode IN (" + inClause.toString() + ") " +
             "GROUP BY c.id " +
-            "ORDER BY c.id", 
+            "ORDER BY c.id",
             Object[].class);
         query.setParameter("cutoffDate", cutoffDate);
         for (int i = 0; i < spamTypeCodes.length; i++) {
@@ -964,7 +1045,7 @@ public class MindmapManagerImpl
             "WHERE s.spamDetected = true " +
             "  AND m.isPublic = true " +
             "  AND c.creationDate >= :cutoffDate " +
-            "  AND s.spamTypeCode IN (" + inClause.toString() + ")", 
+            "  AND s.spamTypeCode IN (" + inClause.toString() + ")",
             Long.class);
         query.setParameter("cutoffDate", cutoffDate);
         for (int i = 0; i < spamTypeCodes.length; i++) {
