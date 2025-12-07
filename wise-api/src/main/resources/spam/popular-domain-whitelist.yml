@@ -22,19 +22,8 @@
 - reddit.com
 - medium.com
 - apple.com
-- developer.apple.com
-- support.apple.com
 - amazon.com
-- aws.amazon.com
 - microsoft.com
-- learn.microsoft.com
-- docs.microsoft.com
-- cloud.google.com
-- drive.google.com
-- docs.google.com
-- mail.google.com
-- news.google.com
-- scholar.google.com
 - bbc.com
 - nytimes.com
 - edition.cnn.com
@@ -262,8 +251,6 @@
 - data.gov
 - usa.gov
 - openai.com
-- chat.openai.com
-- platform.openai.com
 - nationalgeographic.com
 - scientificamerican.com
 - nature.com
@@ -428,13 +415,11 @@
 - "*.gouv.*"
 
 # French University Libraries and Academic Gateways
-- univ-rennes.fr
 - univ-rennes1.fr
 
 # French Academic/Research Institutions
 - abes.fr
 - cnrs.fr
-- ccsd.cnrs.fr
 - istex.fr
 - brgm.fr
 - mnhn.fr
