@@ -66,8 +66,7 @@ public class InactiveMindmap implements Serializable {
 
     private String title;
 
-    @Column(name = "xml")
-    @Lob
+    @Column(name = "xml", columnDefinition = "BYTEA")
     @Basic(fetch = FetchType.LAZY)
     @LazyGroup("xmlContent")
     @JsonIgnore

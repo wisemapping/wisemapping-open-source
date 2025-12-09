@@ -41,8 +41,7 @@ public class MindMapHistory {
     @JoinColumn(name = "editor_id", nullable = true,unique = false)
     private Account editor;
 
-    @Column(name = "xml")
-    @Lob
+    @Column(name = "xml", columnDefinition = "BYTEA")
     @Basic(fetch = FetchType.LAZY)
     @LazyGroup("xmlContent")
     private byte[] zippedXml;
