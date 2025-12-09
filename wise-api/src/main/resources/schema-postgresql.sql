@@ -47,7 +47,7 @@ create TABLE IF NOT EXISTS MINDMAP (
 
 CREATE TABLE IF NOT EXISTS MINDMAP_XML (
   mindmap_id INTEGER NOT NULL PRIMARY KEY,
-  xml        OID   NOT NULL,
+  xml        BYTEA   NOT NULL,
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id) ON delete CASCADE ON update NO ACTION
 );
 
@@ -74,7 +74,7 @@ create TABLE IF NOT EXISTS R_LABEL_MINDMAP (
 
 create TABLE IF NOT EXISTS MINDMAP_HISTORY
 (id            SERIAL  NOT NULL PRIMARY KEY,
- xml           OID   NOT NULL,
+ xml           BYTEA   NOT NULL,
  mindmap_id    INTEGER NOT NULL,
  creation_date TIMESTAMP,
  editor_id     INTEGER NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS mindmap_inactive_user (
   description        VARCHAR(255),
   public             BOOLEAN       NOT NULL,
   title              VARCHAR(255),
-  xml                OID,
+  xml                BYTEA NOT NULL,
   migration_date     TIMESTAMP,
   migration_reason   VARCHAR(255)
 )
