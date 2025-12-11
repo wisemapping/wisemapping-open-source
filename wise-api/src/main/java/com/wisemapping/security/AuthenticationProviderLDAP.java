@@ -1,3 +1,20 @@
+/*
+ *    Copyright [2007-2025] [wisemapping]
+ *
+ *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
+ *   It is basically the Apache License, Version 2.0 (the "License") plus the
+ *   "powered by wisemapping" text requirement on every single page;
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the license at
+ *
+ *       https://github.com/wisemapping/wisemapping-open-source/blob/main/LICENSE.md
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 package com.wisemapping.security;
 
 import com.wisemapping.config.LdapProperties;
@@ -18,14 +35,16 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 import org.springframework.security.ldap.search.FilterBasedLdapUserSearch;
 import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * LDAP Authentication Provider for WiseMapping.
@@ -39,15 +58,6 @@ import java.util.Collections;
  * 3. If successful, retrieves user attributes (email, firstname, lastname) from LDAP
  * 4. Creates or updates the user in WiseMapping database with AuthenticationType.LDAP
  * 5. Returns authenticated token with UserDetails
- *
- * The provider supports two authentication modes:
- * - Bind Authentication (default): Attempts to bind to LDAP as the user
- * - Password Compare: Compares the password against an LDAP attribute
- *
- * User Synchronization:
- * - New users are automatically created in WiseMapping on first login
- * - Existing LDAP users have their profile updated on each login
- * - Users with different authentication types (DATABASE, OAUTH) cannot login via LDAP
  */
 public class AuthenticationProviderLDAP implements AuthenticationProvider {
 
@@ -57,7 +67,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
     private final MetricsService metricsService;
-    private final AuthenticationProviderLDAP delegateProvider;
+    private final LdapAuthenticationProvider delegateProvider;
     private final LdapContextSource contextSource;
 
     /**
@@ -93,39 +103,42 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
      * The context source manages connections to the LDAP server.
      */
     private LdapContextSource createContextSource() {
-        LdapContextSource contextSource = new LdapContextSource();
-        contextSource.setUrl(ldapProperties.getUrl());
-        contextSource.setBase(ldapProperties.getBaseDn());
-        contextSource.setPooled(ldapProperties.isPooled());
+        LdapContextSource source = new LdapContextSource();
+        source.setUrl(ldapProperties.getUrl());
+        source.setBase(ldapProperties.getBaseDn());
+        source.setPooled(ldapProperties.isPooled());
 
         // Set manager credentials if provided (required for non-anonymous binds)
         if (ldapProperties.hasManagerCredentials()) {
-            contextSource.setUserDn(ldapProperties.getManagerDn());
-            contextSource.setPassword(ldapProperties.getManagerPassword());
+            source.setUserDn(ldapProperties.getManagerDn());
+            source.setPassword(ldapProperties.getManagerPassword());
             logger.debug("LDAP configured with manager DN: {}", ldapProperties.getManagerDn());
         } else {
             logger.debug("LDAP configured for anonymous binding");
         }
 
         // Set connection timeouts
-        contextSource.setBaseEnvironmentProperties(
-                java.util.Map.of(
-                        "com.sun.jndi.ldap.connect.timeout", String.valueOf(ldapProperties.getConnectTimeout()),
-                        "com.sun.jndi.ldap.read.timeout", String.valueOf(ldapProperties.getReadTimeout())
-                )
-        );
+        Map<String, Object> envProps = new HashMap<>();
+        envProps.put("com.sun.jndi.ldap.connect.timeout", String.valueOf(ldapProperties.getConnectTimeout()));
+        envProps.put("com.sun.jndi.ldap.read.timeout", String.valueOf(ldapProperties.getReadTimeout()));
+        source.setBaseEnvironmentProperties(envProps);
 
         // Initialize the context source
-        contextSource.afterPropertiesSet();
+        try {
+            source.afterPropertiesSet();
+        } catch (Exception e) {
+            logger.error("Failed to initialize LDAP context source: {}", e.getMessage());
+            throw new RuntimeException("Failed to initialize LDAP context source", e);
+        }
 
-        return contextSource;
+        return source;
     }
 
     /**
      * Creates the delegate Spring Security LDAP authentication provider.
      * This handles the actual LDAP authentication logic.
      */
-    private AuthenticationProviderLDAP createDelegateProvider() {
+    private LdapAuthenticationProvider createDelegateProvider() {
         // Create bind authenticator for LDAP authentication
         BindAuthenticator authenticator = new BindAuthenticator(contextSource);
 
@@ -144,11 +157,20 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
             authenticator.setUserSearch(userSearch);
         }
 
+        // Initialize the authenticator
+        try {
+            authenticator.afterPropertiesSet();
+        } catch (Exception e) {
+            logger.error("Failed to initialize LDAP authenticator: {}", e.getMessage());
+            throw new RuntimeException("Failed to initialize LDAP authenticator", e);
+        }
+
         // Create a simple authorities populator that assigns ROLE_USER to all LDAP users
         LdapAuthoritiesPopulator authoritiesPopulator = (userData, username) ->
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
-        return new AuthenticationProviderLDAP(authenticator, authoritiesPopulator);
+        // Create the Spring Security LDAP provider with our authenticator and authorities populator
+        return new LdapAuthenticationProvider(authenticator, authoritiesPopulator);
     }
 
     @Override
@@ -163,7 +185,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         }
 
         try {
-            // Step 1: Authenticate against LDAP server
+            // Step 1: Authenticate against LDAP server using the delegate provider
             Authentication ldapAuth = delegateProvider.authenticate(authentication);
 
             if (!ldapAuth.isAuthenticated()) {
@@ -225,11 +247,10 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         String email = ldapUser.getStringAttribute(ldapProperties.getEmailAttribute());
         if (email == null || email.isEmpty()) {
             // Fallback: use username as email if mail attribute is not set
-            // This is common when username is already an email address
             if (username.contains("@")) {
                 email = username;
             } else {
-                // Generate email from username - adjust domain as needed
+                // Generate email from username
                 email = username + "@ldap.local";
                 logger.warn("LDAP user {} has no email attribute, using generated email: {}", username, email);
             }
@@ -313,7 +334,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         }
 
         // Update lastname if changed
-        if (!userInfo.lastname.equals(existingUser.getLastname())) {
+        if (userInfo.lastname != null && !userInfo.lastname.equals(existingUser.getLastname())) {
             existingUser.setLastname(userInfo.lastname);
             updated = true;
         }

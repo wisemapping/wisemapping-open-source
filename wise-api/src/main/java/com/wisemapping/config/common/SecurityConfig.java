@@ -25,6 +25,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Security Configuration for WiseMapping.
+ *
+ * This configuration sets up authentication providers for the application.
+ * It supports multiple authentication methods:
+ *
+ * 1. DATABASE Authentication (always enabled)
+ *    - Traditional username/password authentication against WiseMapping's database
+ *    - Users with AuthenticationType.DATABASE
+ *
+ * 2. LDAP Authentication (configurable via app.ldap.enabled)
+ *    - Enterprise LDAP/Active Directory authentication
+ *    - Users with AuthenticationType.LDAP
+ *    - Automatically creates/syncs users from LDAP on first login
+ *
+ * Authentication Flow:
+ * When a user attempts to authenticate, the AuthenticationManager tries each
+ * configured AuthenticationProvider in order until one succeeds or all fail.
+ *
+ * - The DbAuthenticationProvider handles DATABASE users
+ * - The AuthenticationProviderLDAP handles LDAP users (if enabled)
+ * - Each provider checks the user's AuthenticationType to ensure the correct
+ *   authentication method is used
+ *
+ * Configuration:
+ * LDAP authentication is enabled by setting app.ldap.enabled=true in application.yaml
+ * See LdapProperties for all available LDAP configuration options.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(
@@ -70,11 +98,21 @@ public class SecurityConfig {
         return expressionHandler;
     }
 
+    /**
+     * Creates the password encoder for DATABASE authentication.
+     * Uses the delegating encoder which supports multiple encoding algorithms
+     * and automatically upgrades passwords to stronger algorithms.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return DefaultPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    /**
+     * Creates the DATABASE authentication provider.
+     * This provider handles authentication for users stored in WiseMapping's database.
+     * It validates passwords using the configured password encoder.
+     */
     @Bean
     public AuthenticationProvider dbAuthenticationProvider() {
         final com.wisemapping.security.AuthenticationProvider provider =
@@ -83,7 +121,6 @@ public class SecurityConfig {
         provider.setUserDetailsService(userDetailsService);
         provider.setMetricsService(metricsService);
 
-        // Add the logger information
         logger.info("DATABASE authentication provider initialized");
         return provider;
     }
@@ -91,23 +128,23 @@ public class SecurityConfig {
     /**
      * Creates the LDAP authentication provider (conditionally).
      * This bean is only created when app.ldap.enabled=true.
-     * <p>
+     *
      * The LDAP provider authenticates users against an external LDAP server
      * and automatically synchronizes user information with the WiseMapping database.
      */
     @Bean
     @ConditionalOnProperty(name = "app.ldap.enabled", havingValue = "true")
-    public LdapAuthenticationProvider ldapAuthenticationProvider() {
+    public AuthenticationProviderLDAP ldapAuthenticationProvider() {
         logger.info("Initializing LDAP authentication provider with URL: {}", ldapProperties.getUrl());
 
-        LdapAuthenticationProvider provider = new LdapAuthenticationProvider(
+        AuthenticationProviderLDAP provider = new AuthenticationProviderLDAP(
                 ldapProperties,
                 userService,
                 userDetailsService,
                 metricsService
         );
 
-        // test LDAP connection on startup
+        // Test LDAP connection on startup
         if (provider.testConnection()) {
             logger.info("LDAP authentication provider initialized successfully");
         } else {
@@ -119,10 +156,16 @@ public class SecurityConfig {
     }
 
     /**
+     * Creates the AuthenticationManager with all configured providers.
+     *
+     * The AuthenticationManager delegates authentication requests to the
+     * configured AuthenticationProviders in order. The first provider that
+     * can authenticate the request (returns a non-null Authentication) wins.
+     *
      * Provider order:
      * 1. LDAP Provider (if enabled) - Handles LDAP users
      * 2. Database Provider - Handles DATABASE users
-     * <p>
+     *
      * This order ensures that LDAP authentication is attempted first when enabled,
      * allowing organizations to use LDAP as their primary authentication method
      * while still supporting local DATABASE accounts (e.g., for admin users).
@@ -131,26 +174,21 @@ public class SecurityConfig {
     @Primary
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration,
-            @Autowired(required = false) LdapAuthenticationProvider ldapProvider) throws Exception {
+            @Autowired(required = false) AuthenticationProviderLDAP ldapProvider) throws Exception {
 
         List<AuthenticationProvider> providers = new ArrayList<>();
 
-        /**
-         * Add LDAP provider first if enabled
-         * This makes LDAP the preferred authentication method
-         */
+        // Add LDAP provider first if enabled
+        // This makes LDAP the preferred authentication method
         if (ldapProvider != null && ldapProperties.isEnabled()) {
             providers.add(ldapProvider);
             logger.info("LDAP authentication enabled - LDAP will be tried first");
         }
 
-        /**
-         * Always add the database provider
-         * This handles DATABASE users and acts as fallback
-         */
+        // Always add the database provider
+        // This handles DATABASE users and acts as fallback
         providers.add(dbAuthenticationProvider());
 
-        // Add the logger information
         logger.info("AuthenticationManager configured with {} provider(s)", providers.size());
 
         // Create ProviderManager with our custom provider list
