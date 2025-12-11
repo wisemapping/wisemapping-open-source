@@ -57,13 +57,16 @@ public class JwtAuthController {
     private MetricsService metricsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<String> createAuthenticationToken(@RequestBody RestJwtUser user,
-            @NotNull HttpServletResponse response) throws WiseMappingException {
-        // Is a valid user ?
-        authenticate(user.getEmail(), user.getPassword());
-        final String result = jwtTokenUtil.doLogin(response, user.getEmail());
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+        Authentication authentication = authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
-        return ResponseEntity.ok(result);
+        // use email for authentication
+        // for LDAP, authentication.getName() return email
+        // for local user, email by default.
+        final String authenticatedEmail = authentication.getName();
+        final String jwt = jwtTokenUtil.doLogin(authenticatedEmail);
+
+        return ResponseEntity.ok(new JwtResponse(jwt));
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
