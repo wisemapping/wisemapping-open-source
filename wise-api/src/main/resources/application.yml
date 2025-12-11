@@ -292,24 +292,24 @@ app:
     disposable-email:
       blocking:
         enabled: true
-    ldap:
-      enabled: false
-      url: ldap://localhost:389
-      base-dn: dc=example,dc=com
-      user-dn-patterns: uid={0},ou=users
-      user-search-base: ou=users
-      user-search-filter: (uid={0})
-      group-search-base: ou=groups
-      group-search-filter: (member={0})
-      manager-dn: ""
-      manager-password: ""
-      email-attribute: mail
-      firstname-attribute: givenName
-      lastname-attribute: sn
-      password-compare: false
-      pooled: true
-      connect-timeout: 5000
-      read-timeout: 10000
+  ldap:
+    enabled: false
+    url: ldap://localhost:389
+    base-dn: dc=example,dc=com
+    user-dn-patterns: uid={0},ou=users
+    user-search-base: ou=users
+    user-search-filter: (uid={0})
+    group-search-base: ou=groups
+    group-search-filter: (member={0})
+    manager-dn: ""
+    manager-password: ""
+    email-attribute: mail
+    firstname-attribute: givenName
+    lastname-attribute: sn
+    password-compare: false
+    pooled: true
+    connect-timeout: 5000
+    read-timeout: 10000
 
 # Behind reverse proxy configuration
 server:
