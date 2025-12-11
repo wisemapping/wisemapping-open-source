@@ -49,7 +49,7 @@ import java.util.Collections;
  * - Existing LDAP users have their profile updated on each login
  * - Users with different authentication types (DATABASE, OAUTH) cannot login via LDAP
  */
-public class LdapAuthenticationProvider implements AuthenticationProvider {
+public class AuthenticationProviderLDAP implements AuthenticationProvider {
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -57,7 +57,7 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
     private final MetricsService metricsService;
-    private final LdapAuthenticationProvider delegateProvider;
+    private final AuthenticationProviderLDAP delegateProvider;
     private final LdapContextSource contextSource;
 
     /**
@@ -68,7 +68,7 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
      * @param userDetailsService Service for loading user details
      * @param metricsService     Service for tracking authentication metrics
      */
-    public LdapAuthenticationProvider(
+    public AuthenticationProviderLDAP(
             @NotNull LdapProperties ldapProperties,
             @NotNull UserService userService,
             @NotNull UserDetailsService userDetailsService,
@@ -125,7 +125,7 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
      * Creates the delegate Spring Security LDAP authentication provider.
      * This handles the actual LDAP authentication logic.
      */
-    private LdapAuthenticationProvider createDelegateProvider() {
+    private AuthenticationProviderLDAP createDelegateProvider() {
         // Create bind authenticator for LDAP authentication
         BindAuthenticator authenticator = new BindAuthenticator(contextSource);
 
@@ -148,7 +148,7 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
         LdapAuthoritiesPopulator authoritiesPopulator = (userData, username) ->
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
-        return new LdapAuthenticationProvider(authenticator, authoritiesPopulator);
+        return new AuthenticationProviderLDAP(authenticator, authoritiesPopulator);
     }
 
     @Override
