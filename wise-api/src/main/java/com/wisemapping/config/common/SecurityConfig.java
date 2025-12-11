@@ -91,7 +91,7 @@ public class SecurityConfig {
     /**
      * Creates the LDAP authentication provider (conditionally).
      * This bean is only created when app.ldap.enabled=true.
-     *
+     * <p>
      * The LDAP provider authenticates users against an external LDAP server
      * and automatically synchronizes user information with the WiseMapping database.
      */
@@ -122,7 +122,7 @@ public class SecurityConfig {
      * Provider order:
      * 1. LDAP Provider (if enabled) - Handles LDAP users
      * 2. Database Provider - Handles DATABASE users
-     *
+     * <p>
      * This order ensures that LDAP authentication is attempted first when enabled,
      * allowing organizations to use LDAP as their primary authentication method
      * while still supporting local DATABASE accounts (e.g., for admin users).
@@ -138,7 +138,7 @@ public class SecurityConfig {
         /**
          * Add LDAP provider first if enabled
          * This makes LDAP the preferred authentication method
-        */
+         */
         if (ldapProvider != null && ldapProperties.isEnabled()) {
             providers.add(ldapProvider);
             logger.info("LDAP authentication enabled - LDAP will be tried first");
@@ -160,4 +160,5 @@ public class SecurityConfig {
         providerManager.setEraseCredentialsAfterAuthentication(false);
 
         return providerManager;
+    }
 }
