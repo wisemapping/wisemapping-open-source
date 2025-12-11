@@ -61,7 +61,7 @@ public class JwtAuthController {
             @NotNull HttpServletResponse response) throws WiseMappingException {
         // Is a valid user ?
         authenticate(user.getEmail(), user.getPassword());
-        final String jwt = jwtTokenUtil.doLogin(authentication.getName());
+        final String result = jwtTokenUtil.doLogin(response, user.getEmail());
 
         return ResponseEntity.ok(result);
     }
