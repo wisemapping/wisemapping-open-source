@@ -1,5 +1,5 @@
 /*
- *    Copyright [2007-2025] [Wisemapping]
+ *    Copyright [2007-2025] [wisemapping]
  *
  *   Licensed under WiseMapping Public License, Version 1.0 (the "License").
  *   It is basically the Apache License, Version 2.0 (the "License") plus the
@@ -38,19 +38,20 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.ldap.authentication.BindAuthenticator;
 import org.springframework.security.ldap.authentication.LdapAuthenticationProvider;
 import org.springframework.security.ldap.search.FilterBasedLdapUserSearch;
-import org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator;
+import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
-import javax.naming.directory.SearchControls;
 import javax.naming.ldap.LdapContext;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -140,17 +141,21 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
             throw new RuntimeException("Failed to initialize LDAP authenticator", e);
         }
 
-        // Use DefaultLdapAuthoritiesPopulator instead of lambda
-        DefaultLdapAuthoritiesPopulator authoritiesPopulator = new DefaultLdapAuthoritiesPopulator(
-                contextSource,
-                ldapProperties.getGroupSearchBase() != null ? ldapProperties.getGroupSearchBase() : ""
-        );
-        authoritiesPopulator.setSearchSubtree(true);
-        authoritiesPopulator.setIgnorePartialResultException(true);
+        // Use a simple authorities populator that does NOT search LDAP for groups
+        // WiseMapping doesn't use LDAP groups - all authenticated users get ROLE_USER
+        LdapAuthoritiesPopulator simpleAuthoritiesPopulator = new LdapAuthoritiesPopulator() {
+            @Override
+            public Collection<? extends GrantedAuthority> getGrantedAuthorities(
+                    DirContextOperations userData, String username) {
+                // Simply return ROLE_USER for all authenticated LDAP users
+                // No LDAP group search is performed
+                return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+            }
+        };
 
-        LdapAuthenticationProvider provider = new LdapAuthenticationProvider(authenticator, authoritiesPopulator);
+        LdapAuthenticationProvider provider = new LdapAuthenticationProvider(authenticator, simpleAuthoritiesPopulator);
 
-        // Configure user details mapper to include LDAP attributes
+        // Configure user details mapper
         LdapUserDetailsMapper userDetailsMapper = new LdapUserDetailsMapper();
         provider.setUserDetailsContextMapper(userDetailsMapper);
 
@@ -172,7 +177,6 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         // Check if user exists with non-LDAP auth type
         Account existingUser = userService.getUserBy(username);
         if (existingUser != null && existingUser.getAuthenticationType() != AuthenticationType.LDAP) {
-            // Also check by email if username might be different
             logger.debug("User {} exists with auth type {}, skipping LDAP",
                     username, existingUser.getAuthenticationType());
             return null;
@@ -275,10 +279,12 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
             firstname = ctx.getStringAttribute(ldapProperties.getFirstnameAttribute());
             lastname = ctx.getStringAttribute(ldapProperties.getLastnameAttribute());
             dn = ctx.getDn() != null ? ctx.getDn().toString() : null;
+            logger.debug("Extracted attributes from DirContextOperations - DN: {}", dn);
 
         } else if (principal instanceof LdapUserDetails) {
             LdapUserDetails ldapUserDetails = (LdapUserDetails) principal;
             dn = ldapUserDetails.getDn();
+            logger.debug("Principal is LdapUserDetails - DN: {}", dn);
 
             // Need to fetch attributes from LDAP since LdapUserDetails doesn't have them
             try {
@@ -287,6 +293,8 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
                     email = userContext.getStringAttribute(ldapProperties.getEmailAttribute());
                     firstname = userContext.getStringAttribute(ldapProperties.getFirstnameAttribute());
                     lastname = userContext.getStringAttribute(ldapProperties.getLastnameAttribute());
+                    logger.debug("Fetched attributes from LDAP - email: {}, firstname: {}, lastname: {}",
+                            email, firstname, lastname);
                 }
             } catch (Exception e) {
                 logger.warn("Could not fetch LDAP attributes for DN {}: {}", dn, e.getMessage());
@@ -300,7 +308,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
             if (username.contains("@")) {
                 email = username;
             } else {
-                // Try to construct email from AD domain
+                // Construct email from AD domain
                 email = username + "@" + ldapProperties.getBaseDn()
                         .replace("DC=", "")
                         .replace(",", ".")
