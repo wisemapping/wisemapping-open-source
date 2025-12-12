@@ -335,7 +335,21 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         try {
             LdapContext ctx = (LdapContext) contextSource.getReadOnlyContext();
             try {
-                Attributes attrs = ctx.getAttributes(dn, new String[]{
+                // Context already has DN, give relative Dn
+                String baseDn = ldapProperties.getBaseDn();
+                String relativeDn = dn;
+
+                // Break Base Dn
+                String dnLower = dn.toLowerCase();
+                String baseDnLower = "," + baseDn.toLowerCase();
+                int idx = dnLower.lastIndexOf(baseDnLower);
+                if (idx > 0) {
+                    relativeDn = dn.substring(0, idx);
+                }
+
+                logger.debug("Fetching attributes - original DN: {}, relative DN: {}", dn, relativeDn);
+
+                Attributes attrs = ctx.getAttributes(relativeDn, new String[]{
                         ldapProperties.getEmailAttribute(),
                         ldapProperties.getFirstnameAttribute(),
                         ldapProperties.getLastnameAttribute()
