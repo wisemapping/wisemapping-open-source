@@ -35,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,11 +59,12 @@ public class JwtAuthController {
     private MetricsService metricsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<String> createAuthenticationToken(@RequestBody RestJwtUser user,
-            @NotNull HttpServletResponse response) throws WiseMappingException {
-        // Is a valid user ?
-        authenticate(user.getEmail(), user.getPassword());
-        final String result = jwtTokenUtil.doLogin(response, user.getEmail());
+    public ResponseEntity<String> createAuthenticationToken(@RequestBody RestJwtUser user, @NotNull HttpServletResponse response) throws WiseMappingException {
+        // Authentify and get the first answer for ldap
+        final String authenticatedEmail = authenticate(user.getEmail(), user.getPassword());
+
+        // use the authentified email (can change with LDAP)
+        final String result = jwtTokenUtil.doLogin(response, authenticatedEmail);
 
         return ResponseEntity.ok(result);
     }
@@ -96,9 +99,13 @@ public class JwtAuthController {
         return ResponseEntity.ok().build();
     }
 
-    private void authenticate(@NotNull String username, @NotNull String password) throws WiseMappingException {
+    private String authenticate(@NotNull String username, @NotNull String password) throws WiseMappingException {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+            // return authentified email
+            return auth.getName();
         } catch (AccountSuspendedException e) {
             // Account is suspended
             throw UserCouldNotBeAuthException.accountSuspended(e);
@@ -113,6 +120,15 @@ public class JwtAuthController {
             throw UserCouldNotBeAuthException.invalidCredentials(e);
         } catch (BadCredentialsException e) {
             // Wrong username or password
+            throw UserCouldNotBeAuthException.invalidCredentials(e);
+        } catch (org.springframework.security.authentication.InternalAuthenticationServiceException e) {
+            // Catch invalid credentials with LDAP
+            Throwable cause = e.getCause();
+            if (cause instanceof org.springframework.ldap.AuthenticationException) {
+                // LDAP error 49 = invalid credentials
+                throw UserCouldNotBeAuthException.invalidCredentials(e);
+            }
+            // Other errors catcher LDAP
             throw UserCouldNotBeAuthException.invalidCredentials(e);
         }
     }
