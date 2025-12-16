@@ -1,18 +1,18 @@
 create TABLE IF NOT EXISTS COLLABORATOR (
   id            SERIAL       NOT NULL PRIMARY KEY,
   email         VARCHAR(255) NOT NULL UNIQUE,
-  creation_date DATE
+  creation_date TIMESTAMP
 );
 
 create TABLE IF NOT EXISTS ACCOUNT (
-  authentication_type TEXT         NOT NULL,
+  authentication_type CHAR(1)         NOT NULL,
   authenticator_uri   VARCHAR(255),
   collaborator_id      INTEGER      NOT NULL PRIMARY KEY,
   firstname           VARCHAR(255) NOT NULL,
   lastname            VARCHAR(255) NOT NULL,
   password            VARCHAR(255) NOT NULL,
   activation_code     BIGINT       NOT NULL,
-  activation_date     DATE,
+  activation_date     TIMESTAMP,
   allow_send_email    BOOLEAN      NOT NULL DEFAULT FALSE,
   locale              VARCHAR(5),
   oauth_sync          BOOLEAN,
@@ -104,3 +104,18 @@ create TABLE IF NOT EXISTS ACCESS_AUDITORY (
   user_id    INTEGER NOT NULL,
   FOREIGN KEY (user_id) REFERENCES ACCOUNT (collaborator_id) ON delete CASCADE ON update NO ACTION
 );
+
+CREATE TABLE IF NOT EXISTS mindmap_inactive_user (
+  id                 SERIAL        PRIMARY KEY,
+  original_mindmap_id INTEGER      NOT NULL,
+  creation_date      TIMESTAMP,
+  edition_date       TIMESTAMP,
+  creator_id         INTEGER,
+  last_editor_id     INTEGER,
+  description        VARCHAR(255),
+  public             BOOLEAN       NOT NULL,
+  title              VARCHAR(255),
+  xml                BYTEA NOT NULL,
+  migration_date     TIMESTAMP,
+  migration_reason   VARCHAR(255)
+)
