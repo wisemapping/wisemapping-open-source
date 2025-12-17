@@ -1,19 +1,24 @@
 package com.wisemapping.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * LDAP configuration properties combining Spring Boot standard properties
- * with WiseMapping-specific extensions.
+ * LDAP configuration properties for WiseMapping.
  * 
- * Standard Spring Boot properties (spring.ldap.*):
+ * This class combines properties from two sources:
+ * - Connection settings from spring.ldap.* (Spring Boot standard properties)
+ * - Custom WiseMapping settings from app.ldap.* (authentication, user mapping,
+ * etc.)
+ * 
+ * Connection properties (from spring.ldap.*):
  * - urls: LDAP server URL(s)
  * - base: Base DN for LDAP operations
  * - username: Manager/bind DN
  * - password: Manager/bind password
  * 
- * Custom extensions (app.ldap.*):
+ * Custom properties (from app.ldap.*):
  * - enabled: Enable/disable LDAP authentication
  * - User search configuration
  * - Group search configuration
@@ -21,40 +26,44 @@ import org.springframework.context.annotation.Configuration;
  * - Connection settings
  */
 @Configuration
-@ConfigurationProperties(prefix = "spring.ldap")
+@ConfigurationProperties(prefix = "app.ldap")
 public class LdapProperties {
 
-    // ===== Spring Boot Standard Properties (spring.ldap.*) =====
+    // ===== Connection Properties (from spring.ldap.*) =====
 
     /**
      * LDAP server URL(s) including protocol and port.
      * Examples: ldap://localhost:389, ldaps://ldap.example.com:636
-     * Spring Boot standard property: spring.ldap.urls
+     * Bound from: spring.ldap.urls
      */
-    private String[] urls = new String[] { "ldap://localhost:389" };
+    @Value("${spring.ldap.urls:ldap://localhost:389}")
+    private String[] urls;
 
     /**
      * Base Distinguished Name (DN) for LDAP searches.
      * This is the root of your LDAP directory tree.
-     * Spring Boot standard property: spring.ldap.base
+     * Bound from: spring.ldap.base
      */
-    private String base = "dc=example,dc=com";
+    @Value("${spring.ldap.base:dc=example,dc=com}")
+    private String base;
 
     /**
      * DN of the manager/admin account for binding to LDAP.
      * Required if anonymous binds are not allowed.
      * Leave empty for anonymous binding.
-     * Spring Boot standard property: spring.ldap.username
+     * Bound from: spring.ldap.username
      */
-    private String username = "";
+    @Value("${spring.ldap.username:}")
+    private String username;
 
     /**
      * Password for the manager/admin account.
-     * Spring Boot standard property: spring.ldap.password
+     * Bound from: spring.ldap.password
      */
-    private String password = "";
+    @Value("${spring.ldap.password:}")
+    private String password;
 
-    // ===== Custom Extensions (app.ldap.*) =====
+    // ===== Custom Properties (from app.ldap.*) =====
 
     /**
      * Enable or disable LDAP authentication.
@@ -138,7 +147,7 @@ public class LdapProperties {
      */
     private int readTimeout = 10000;
 
-    // --- Getters and Setters for Spring Boot Standard Properties ---
+    // --- Getters and Setters for Connection Properties (from spring.ldap.*) ---
 
     public String[] getUrls() {
         return urls;
@@ -236,7 +245,7 @@ public class LdapProperties {
         this.password = managerPassword;
     }
 
-    // --- Getters and Setters for Custom Extensions ---
+    // --- Getters and Setters for Custom Properties (from app.ldap.*) ---
 
     public boolean isEnabled() {
         return enabled;

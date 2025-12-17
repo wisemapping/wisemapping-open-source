@@ -122,15 +122,14 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         BindAuthenticator authenticator = new BindAuthenticator(contextSource);
 
         if (ldapProperties.getUserDnPatterns() != null && !ldapProperties.getUserDnPatterns().isEmpty()) {
-            authenticator.setUserDnPatterns(new String[]{ldapProperties.getUserDnPatterns()});
+            authenticator.setUserDnPatterns(new String[] { ldapProperties.getUserDnPatterns() });
         }
 
         if (ldapProperties.getUserSearchFilter() != null && !ldapProperties.getUserSearchFilter().isEmpty()) {
             FilterBasedLdapUserSearch userSearch = new FilterBasedLdapUserSearch(
                     ldapProperties.getUserSearchBase() != null ? ldapProperties.getUserSearchBase() : "",
                     ldapProperties.getUserSearchFilter(),
-                    contextSource
-            );
+                    contextSource);
             authenticator.setUserSearch(userSearch);
         }
 
@@ -212,8 +211,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
             return new UsernamePasswordAuthenticationToken(
                     userDetails,
                     password,
-                    userDetails.getAuthorities()
-            );
+                    userDetails.getAuthorities());
 
         } catch (CommunicationException e) {
             logger.warn("LDAP server unreachable ({}), allowing fallback to next provider", e.getMessage());
@@ -308,9 +306,10 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
             if (username.contains("@")) {
                 email = username;
             } else {
-                // Construct email from AD domain
+                // Construct email from LDAP base DN
+                // Handle both uppercase (DC=) and lowercase (dc=) DN components
                 email = username + "@" + ldapProperties.getBaseDn()
-                        .replace("DC=", "")
+                        .replaceAll("(?i)dc=", "") // Case-insensitive replacement
                         .replace(",", ".")
                         .toLowerCase();
                 logger.info("Generated email for LDAP user {}: {}", username, email);
@@ -349,7 +348,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
 
                 logger.debug("Fetching attributes - original DN: {}, relative DN: {}", dn, relativeDn);
 
-                Attributes attrs = ctx.getAttributes(relativeDn, new String[]{
+                Attributes attrs = ctx.getAttributes(relativeDn, new String[] {
                         ldapProperties.getEmailAttribute(),
                         ldapProperties.getFirstnameAttribute(),
                         ldapProperties.getLastnameAttribute()
@@ -367,7 +366,8 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
     }
 
     private boolean isNetworkError(Throwable e) {
-        if (e == null) return false;
+        if (e == null)
+            return false;
 
         if (e instanceof java.net.UnknownHostException ||
                 e instanceof java.net.ConnectException ||
@@ -379,11 +379,10 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         }
 
         String message = e.getMessage();
-        if (message != null && (
-                message.contains("UnknownHostException") ||
-                        message.contains("Connection refused") ||
-                        message.contains("Connection timed out") ||
-                        message.contains("No route to host"))) {
+        if (message != null && (message.contains("UnknownHostException") ||
+                message.contains("Connection refused") ||
+                message.contains("Connection timed out") ||
+                message.contains("No route to host"))) {
             return true;
         }
 
