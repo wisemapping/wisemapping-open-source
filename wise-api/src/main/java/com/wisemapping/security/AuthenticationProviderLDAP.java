@@ -324,7 +324,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
             lastname = "";
         }
 
-        return new LdapUserInfo(email.toLowerCase(), firstname, lastname, username);
+        return new LdapUserInfo(email.toLowerCase(), firstname, lastname);
     }
 
     /**
@@ -460,13 +460,11 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         final String email;
         final String firstname;
         final String lastname;
-        final String username;
 
-        LdapUserInfo(String email, String firstname, String lastname, String username) {
+        LdapUserInfo(String email, String firstname, String lastname) {
             this.email = email;
             this.firstname = firstname;
             this.lastname = lastname;
-            this.username = username;
         }
     }
 
