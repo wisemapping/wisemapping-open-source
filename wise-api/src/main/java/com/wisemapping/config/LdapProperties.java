@@ -2,27 +2,65 @@ package com.wisemapping.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+
+/**
+ * LDAP configuration properties combining Spring Boot standard properties
+ * with WiseMapping-specific extensions.
+ * 
+ * Standard Spring Boot properties (spring.ldap.*):
+ * - urls: LDAP server URL(s)
+ * - base: Base DN for LDAP operations
+ * - username: Manager/bind DN
+ * - password: Manager/bind password
+ * 
+ * Custom extensions (app.ldap.*):
+ * - enabled: Enable/disable LDAP authentication
+ * - User search configuration
+ * - Group search configuration
+ * - Attribute mappings
+ * - Connection settings
+ */
 @Configuration
-@ConfigurationProperties(prefix = "app.ldap")
+@ConfigurationProperties(prefix = "spring.ldap")
 public class LdapProperties {
+
+    // ===== Spring Boot Standard Properties (spring.ldap.*) =====
+
+    /**
+     * LDAP server URL(s) including protocol and port.
+     * Examples: ldap://localhost:389, ldaps://ldap.example.com:636
+     * Spring Boot standard property: spring.ldap.urls
+     */
+    private String[] urls = new String[] { "ldap://localhost:389" };
+
+    /**
+     * Base Distinguished Name (DN) for LDAP searches.
+     * This is the root of your LDAP directory tree.
+     * Spring Boot standard property: spring.ldap.base
+     */
+    private String base = "dc=example,dc=com";
+
+    /**
+     * DN of the manager/admin account for binding to LDAP.
+     * Required if anonymous binds are not allowed.
+     * Leave empty for anonymous binding.
+     * Spring Boot standard property: spring.ldap.username
+     */
+    private String username = "";
+
+    /**
+     * Password for the manager/admin account.
+     * Spring Boot standard property: spring.ldap.password
+     */
+    private String password = "";
+
+    // ===== Custom Extensions (app.ldap.*) =====
 
     /**
      * Enable or disable LDAP authentication.
      * When disabled, only DATABASE authentication is available.
      */
     private boolean enabled = false;
-
-    /**
-     * LDAP server URL including protocol and port.
-     * Examples: ldap://localhost:389, ldaps://ldap.example.com:636
-     */
-    private String url = "ldap://localhost:389";
-
-    /**
-     * Base Distinguished Name (DN) for LDAP searches.
-     * This is the root of your LDAP directory tree.
-     */
-    private String baseDn = "dc=example,dc=com";
 
     /**
      * Pattern for constructing user DN from username.
@@ -54,18 +92,6 @@ public class LdapProperties {
      * {0} is replaced with the user's DN.
      */
     private String groupSearchFilter = "(member={0})";
-
-    /**
-     * DN of the manager/admin account for binding to LDAP.
-     * Required if anonymous binds are not allowed.
-     * Leave empty for anonymous binding.
-     */
-    private String managerDn = "";
-
-    /**
-     * Password for the manager/admin account.
-     */
-    private String managerPassword = "";
 
     /**
      * LDAP attribute containing the user's password.
@@ -112,7 +138,105 @@ public class LdapProperties {
      */
     private int readTimeout = 10000;
 
-    // --- Getters and Setters ---
+    // --- Getters and Setters for Spring Boot Standard Properties ---
+
+    public String[] getUrls() {
+        return urls;
+    }
+
+    public void setUrls(String[] urls) {
+        this.urls = urls;
+    }
+
+    /**
+     * Get the primary LDAP URL.
+     * For backward compatibility with code expecting a single URL.
+     */
+    public String getUrl() {
+        return urls != null && urls.length > 0 ? urls[0] : "ldap://localhost:389";
+    }
+
+    /**
+     * Set a single LDAP URL.
+     * For backward compatibility with code setting a single URL.
+     */
+    public void setUrl(String url) {
+        this.urls = new String[] { url };
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public void setBase(String base) {
+        this.base = base;
+    }
+
+    /**
+     * Get base DN.
+     * Alias for getBase() for backward compatibility.
+     */
+    public String getBaseDn() {
+        return base;
+    }
+
+    /**
+     * Set base DN.
+     * Alias for setBase() for backward compatibility.
+     */
+    public void setBaseDn(String baseDn) {
+        this.base = baseDn;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Get manager DN.
+     * Alias for getUsername() for backward compatibility.
+     */
+    public String getManagerDn() {
+        return username;
+    }
+
+    /**
+     * Set manager DN.
+     * Alias for setUsername() for backward compatibility.
+     */
+    public void setManagerDn(String managerDn) {
+        this.username = managerDn;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Get manager password.
+     * Alias for getPassword() for backward compatibility.
+     */
+    public String getManagerPassword() {
+        return password;
+    }
+
+    /**
+     * Set manager password.
+     * Alias for setPassword() for backward compatibility.
+     */
+    public void setManagerPassword(String managerPassword) {
+        this.password = managerPassword;
+    }
+
+    // --- Getters and Setters for Custom Extensions ---
 
     public boolean isEnabled() {
         return enabled;
@@ -120,22 +244,6 @@ public class LdapProperties {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getBaseDn() {
-        return baseDn;
-    }
-
-    public void setBaseDn(String baseDn) {
-        this.baseDn = baseDn;
     }
 
     public String getUserDnPatterns() {
@@ -176,22 +284,6 @@ public class LdapProperties {
 
     public void setGroupSearchFilter(String groupSearchFilter) {
         this.groupSearchFilter = groupSearchFilter;
-    }
-
-    public String getManagerDn() {
-        return managerDn;
-    }
-
-    public void setManagerDn(String managerDn) {
-        this.managerDn = managerDn;
-    }
-
-    public String getManagerPassword() {
-        return managerPassword;
-    }
-
-    public void setManagerPassword(String managerPassword) {
-        this.managerPassword = managerPassword;
     }
 
     public String getPasswordAttribute() {
@@ -263,28 +355,28 @@ public class LdapProperties {
      * Used by Spring LDAP context source.
      */
     public String getFullUrl() {
-        return url + "/" + baseDn;
+        return getUrl() + "/" + base;
     }
 
     /**
      * Check if manager credentials are configured.
      */
     public boolean hasManagerCredentials() {
-        return managerDn != null && !managerDn.isEmpty()
-                && managerPassword != null && !managerPassword.isEmpty();
+        return username != null && !username.isEmpty()
+                && password != null && !password.isEmpty();
     }
 
     @Override
     public String toString() {
         return "LdapProperties{" +
                 "enabled=" + enabled +
-                ", url='" + url + '\'' +
-                ", baseDn='" + baseDn + '\'' +
+                ", urls=" + java.util.Arrays.toString(urls) +
+                ", base='" + base + '\'' +
                 ", userDnPatterns='" + userDnPatterns + '\'' +
                 ", userSearchBase='" + userSearchBase + '\'' +
                 ", userSearchFilter='" + userSearchFilter + '\'' +
                 ", groupSearchBase='" + groupSearchBase + '\'' +
-                ", managerDn='" + (managerDn != null && !managerDn.isEmpty() ? "[SET]" : "[NOT SET]") + '\'' +
+                ", username='" + (username != null && !username.isEmpty() ? "[SET]" : "[NOT SET]") + '\'' +
                 ", emailAttribute='" + emailAttribute + '\'' +
                 '}';
     }

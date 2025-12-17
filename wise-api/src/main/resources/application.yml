@@ -130,6 +130,18 @@ spring:
             token-uri: https://graph.facebook.com/v18.0/oauth/access_token
             user-info-uri: https://graph.facebook.com/me?fields=id,email,first_name,last_name
             user-name-attribute: id
+  # ============================================================================
+  # Spring LDAP Configuration (Standard Spring Boot Properties)
+  # ============================================================================
+  # Basic LDAP connection settings. For detailed documentation, see:
+  # doc/ldap/README.md
+  # ============================================================================
+  ldap:
+    urls: ldap://localhost:389           # LDAP server URL(s)
+    base: dc=example,dc=com              # Base DN for LDAP directory
+    username: ""                         # Manager/bind DN (empty for anonymous)
+    password: ""                         # Manager/bind password
+
 #
 # OpenTelemetry Resource Attributes
 #
@@ -292,24 +304,35 @@ app:
     disposable-email:
       blocking:
         enabled: true
+  # ============================================================================
+  # LDAP Authentication (WiseMapping Custom Extensions)
+  # ============================================================================
+  # For detailed documentation and examples, see: doc/ldap/README.md
+  # ============================================================================
   ldap:
-    enabled: false
-    url: ldap://localhost:389
-    base-dn: dc=example,dc=com
-    user-dn-patterns: uid={0},ou=users
-    user-search-base: ou=users
-    user-search-filter: (uid={0})
+    enabled: false                       # Enable/disable LDAP authentication
+    
+    # User authentication
+    user-dn-patterns: uid={0},ou=users   # Pattern for user DN ({0} = username)
+    user-search-base: ou=users           # User search base (relative to spring.ldap.base)
+    user-search-filter: (uid={0})        # LDAP filter ({0} = username)
+    
+    # Group search (optional - not currently used for authorization)
     group-search-base: ou=groups
     group-search-filter: (member={0})
-    manager-dn: ""
-    manager-password: ""
-    email-attribute: mail
-    firstname-attribute: givenName
-    lastname-attribute: sn
-    password-compare: false
-    pooled: true
-    connect-timeout: 5000
-    read-timeout: 10000
+    
+    # Attribute mappings (critical for user synchronization)
+    email-attribute: mail                # Email attribute (primary user identifier)
+    firstname-attribute: givenName       # First name attribute
+    lastname-attribute: sn               # Last name attribute (surname)
+    
+    # Advanced settings
+    password-compare: false              # Use bind auth (false) or password comparison (true)
+    pooled: true                         # Enable connection pooling
+    connect-timeout: 5000                # Connection timeout (ms)
+    read-timeout: 10000                  # Read timeout (ms)
+
+
 
 # Behind reverse proxy configuration
 server:

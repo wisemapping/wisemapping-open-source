@@ -39,26 +39,58 @@ Added Spring LDAP dependencies:
 
 ### 2. LDAP Properties Configuration
 
-**File:** `wise-api/src/main/java/com/wisemapping/config/LdapProperties.java`
+**Files:** 
+- `wise-api/src/main/java/com/wisemapping/config/LdapProperties.java`
+- `wise-api/src/main/resources/application.yml`
 
-Spring Boot configuration class that maps `app.ldap.*` properties from the YAML file.
+Spring Boot configuration class that maps LDAP properties from the YAML file.
 
-**Main Properties:**
+**Property Structure:**
+
+WiseMapping uses a two-tier property structure:
+1. **Spring Boot Standard Properties** (`spring.ldap.*`) - Basic LDAP connection settings
+2. **WiseMapping Custom Extensions** (`app.ldap.*`) - Authentication and attribute mapping
+
+#### Spring Boot Standard Properties (`spring.ldap.*`)
+
+| Property | Description | Default Value |
+|----------|-------------|---------------|
+| `urls` | LDAP server URL(s) | `ldap://localhost:389` |
+| `base` | Base DN for searches | `dc=example,dc=com` |
+| `username` | Service account DN (bind account) | `""` (anonymous) |
+| `password` | Service account password | `""` |
+
+#### WiseMapping Custom Extensions (`app.ldap.*`)
 
 | Property | Description | Default Value |
 |----------|-------------|---------------|
 | `enabled` | Enable/disable LDAP authentication | `false` |
-| `url` | LDAP server URL | `ldap://localhost:389` |
-| `base-dn` | Base DN for searches | `dc=example,dc=com` |
-| `user-search-base` | User search base (relative to base-dn) | `ou=users` |
+| `user-dn-patterns` | Pattern for constructing user DN | `uid={0},ou=users` |
+| `user-search-base` | User search base (relative to base) | `ou=users` |
 | `user-search-filter` | LDAP filter for user search | `(uid={0})` |
-| `manager-dn` | Service account DN (bind account) | `""` |
-| `manager-password` | Service account password | `""` |
+| `group-search-base` | Group search base | `ou=groups` |
+| `group-search-filter` | LDAP filter for group search | `(member={0})` |
 | `email-attribute` | LDAP attribute for email | `mail` |
 | `firstname-attribute` | LDAP attribute for first name | `givenName` |
 | `lastname-attribute` | LDAP attribute for last name | `sn` |
+| `password-compare` | Use password comparison | `false` |
+| `pooled` | Enable connection pooling | `true` |
 | `connect-timeout` | Connection timeout (ms) | `5000` |
 | `read-timeout` | Read timeout (ms) | `10000` |
+
+**Attribute Mapping Details:**
+
+The attribute mappings (`email-attribute`, `firstname-attribute`, `lastname-attribute`) are critical for user synchronization:
+
+- **email-attribute**: Used as the primary user identifier in WiseMapping
+  - Common values: `mail` (OpenLDAP), `userPrincipalName` (Active Directory)
+  - If not found, WiseMapping constructs email from username@domain
+  
+- **firstname-attribute**: User's given name
+  - Common values: `givenName` (standard), `firstName`, `gn`
+  
+- **lastname-attribute**: User's surname/family name
+  - Common values: `sn` (standard - "surname"), `surname`, `lastName`, `familyName`
 
 ---
 
@@ -122,16 +154,19 @@ This handles the case where the user logs in with `jsmith` but their WiseMapping
 Added LDAP configuration section:
 
 ```yaml
+spring:
+  ldap:
+    urls: ldap://localhost:389
+    base: dc=example,dc=com
+    username: ""  # Manager DN for binding
+    password: ""  # Manager password
+
 app:
   ldap:
     enabled: false
-    url: ldap://localhost:389
-    base-dn: dc=example,dc=com
     user-dn-patterns: uid={0},ou=users
     user-search-base: ou=users
     user-search-filter: (uid={0})
-    manager-dn: ""
-    manager-password: ""
     email-attribute: mail
     firstname-attribute: givenName
     lastname-attribute: sn
@@ -158,10 +193,10 @@ app:
 ### Step 2: Configure Server Connection
 
 ```yaml
-app:
+spring:
   ldap:
-    url: ldaps://dc-01.example.com:636    # LDAPS for SSL
-    base-dn: DC=example,DC=com
+    urls: ldaps://dc-01.example.com:636    # LDAPS for SSL
+    base: DC=example,DC=com
 ```
 
 ### Step 3: Configure Service Account (Bind Account)
@@ -178,10 +213,10 @@ Get-ADUser -Identity "wisemapping-bind" | Select DistinguishedName
 **Configuration:**
 
 ```yaml
-app:
+spring:
   ldap:
-    manager-dn: CN=wisemapping bind,OU=Service Accounts,DC=example,DC=com
-    manager-password: ${LDAP_BIND_PASSWORD}
+    username: CN=wisemapping bind,OU=Service Accounts,DC=example,DC=com
+    password: ${LDAP_BIND_PASSWORD}
 ```
 
 **Important:** If the password contains special characters (`!`, `$`, etc.), use single quotes when exporting:
@@ -222,6 +257,92 @@ app:
 ```
 
 ---
+
+## Complete Configuration Examples
+
+### Example 1: OpenLDAP with Simple Authentication
+
+```yaml
+spring:
+  ldap:
+    urls: ldap://ldap.example.com:389
+    base: dc=example,dc=com
+    username: cn=admin,dc=example,dc=com
+    password: admin_password
+
+app:
+  ldap:
+    enabled: true
+    user-dn-patterns: uid={0},ou=people
+    user-search-base: ou=people
+    user-search-filter: (uid={0})
+    email-attribute: mail
+    firstname-attribute: givenName
+    lastname-attribute: sn
+```
+
+### Example 2: Active Directory with Service Account
+
+```yaml
+spring:
+  ldap:
+    urls: ldaps://ad.company.com:636
+    base: dc=company,dc=com
+    username: CN=LDAP Service,OU=Service Accounts,DC=company,DC=com
+    password: ${LDAP_BIND_PASSWORD}
+
+app:
+  ldap:
+    enabled: true
+    user-search-base: OU=Employees
+    user-search-filter: (sAMAccountName={0})
+    email-attribute: userPrincipalName
+    firstname-attribute: givenName
+    lastname-attribute: sn
+```
+
+### Example 3: Anonymous Bind with Email Login
+
+```yaml
+spring:
+  ldap:
+    urls: ldap://ldap.example.com:389
+    base: dc=example,dc=com
+    username: ""  # Anonymous bind
+    password: ""
+
+app:
+  ldap:
+    enabled: true
+    user-search-base: ou=users
+    user-search-filter: (mail={0})
+    email-attribute: mail
+    firstname-attribute: givenName
+    lastname-attribute: sn
+```
+
+### Example 4: Multiple LDAP Servers (Failover)
+
+```yaml
+spring:
+  ldap:
+    urls: ldap://dc1.company.com:389,ldap://dc2.company.com:389
+    base: dc=company,dc=com
+    username: CN=wisemapping,OU=Service Accounts,DC=company,DC=com
+    password: ${LDAP_BIND_PASSWORD}
+
+app:
+  ldap:
+    enabled: true
+    user-search-base: OU=Users
+    user-search-filter: (sAMAccountName={0})
+    email-attribute: userPrincipalName
+    firstname-attribute: givenName
+    lastname-attribute: sn
+    connect-timeout: 10000  # Increased for failover scenarios
+```
+
+
 
 # Docker Deployment with LDAP Support
 

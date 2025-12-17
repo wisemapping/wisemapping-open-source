@@ -36,7 +36,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,7 +58,8 @@ public class JwtAuthController {
     private MetricsService metricsService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<String> createAuthenticationToken(@RequestBody RestJwtUser user, @NotNull HttpServletResponse response) throws WiseMappingException {
+    public ResponseEntity<String> createAuthenticationToken(@RequestBody RestJwtUser user,
+            @NotNull HttpServletResponse response) throws WiseMappingException {
         // Authentify and get the first answer for ldap
         final String authenticatedEmail = authenticate(user.getEmail(), user.getPassword());
 
@@ -74,10 +74,10 @@ public class JwtAuthController {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader != null && authHeader.startsWith(JwtTokenUtil.BEARER_TOKEN_PREFIX)) {
             String token = authHeader.substring(JwtTokenUtil.BEARER_TOKEN_PREFIX.length());
-            
+
             try {
                 String email = jwtTokenUtil.extractFromJwtToken(token);
-                
+
                 if (email != null) {
                     try {
                         Account user = userService.getUserBy(email);
@@ -95,17 +95,33 @@ public class JwtAuthController {
                 // Invalid token format or other JWT errors - logout still succeeds
             }
         }
-        
+
         return ResponseEntity.ok().build();
     }
 
     private String authenticate(@NotNull String username, @NotNull String password) throws WiseMappingException {
         try {
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
-            // return authentified email
-            return auth.getName();
+                    new UsernamePasswordAuthenticationToken(username, password));
+
+            // Check if this is an LDAP user - they need special email handling
+            Object principal = auth.getPrincipal();
+            if (principal instanceof com.wisemapping.security.UserDetails) {
+                com.wisemapping.security.UserDetails userDetails = (com.wisemapping.security.UserDetails) principal;
+                com.wisemapping.model.Account account = userDetails.getUser();
+
+                // For LDAP users, use the email from the authenticated user details
+                // (e.g., input "jdoe" becomes "jdoe@company.com" from LDAP attributes)
+                if (account.getAuthenticationType() == com.wisemapping.model.AuthenticationType.LDAP) {
+                    return userDetails.getUsername().toLowerCase();
+                }
+            }
+
+            // For all other authentication types (DATABASE, GOOGLE_OAUTH2,
+            // FACEBOOK_OAUTH2),
+            // use the original input (which should already be an email), normalized to
+            // lowercase
+            return username.toLowerCase();
         } catch (AccountSuspendedException e) {
             // Account is suspended
             throw UserCouldNotBeAuthException.accountSuspended(e);
