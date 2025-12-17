@@ -176,7 +176,9 @@ public class SpamDetectionBatchService {
      */
     protected void updateSpamInfo(Mindmap mindmap, @Nullable SpamStrategyType spamTypeCode, @Nullable String description) {
         try {
-            MindmapSpamInfo spamInfo = new MindmapSpamInfo(mindmap);
+            // Avoid touching the lazy spamInfo association on Mindmap; only pass the ID to the upsert
+            MindmapSpamInfo spamInfo = new MindmapSpamInfo();
+            spamInfo.setMindmapId(mindmap.getId());
 
             // Set spam detection status and version
             boolean isSpamDetected = (spamTypeCode != null);
@@ -187,6 +189,9 @@ public class SpamDetectionBatchService {
             if (isSpamDetected) {
                 spamInfo.setSpamTypeCode(spamTypeCode);
                 spamInfo.setSpamDescription(description);
+            } else {
+                spamInfo.setSpamTypeCode(null);
+                spamInfo.setSpamDescription(null);
             }
 
             mindmapManager.updateMindmapSpamInfo(spamInfo);
