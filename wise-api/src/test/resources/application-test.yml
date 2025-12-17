@@ -4,6 +4,11 @@
 #
 
 spring:
+  # Force English locale for tests to ensure consistent message assertions
+  web:
+    locale: en
+    locale-resolver: fixed
+
   # Database configuration - Use in-memory database for tests
   # Each test context gets a unique database to prevent data pollution between contexts
   datasource:
@@ -17,7 +22,7 @@ spring:
       minimum-idle: 1
       maximum-pool-size: 5
       connection-timeout: 10000
-  
+
   # JPA/Hibernate configuration - DDL creation is DISABLED for tests
   # Schema will be created ONLY from SQL schema files (schema-hsqldb.sql), NOT from JPA entity mappings
   jpa:
@@ -39,7 +44,7 @@ spring:
     show-sql: false
     # Disable automatic schema export/creation - schema comes from SQL files only
     defer-datasource-initialization: false
-  
+
   # SQL initialization - Use schema initialization instead of DDL
   # Schema is created ONLY from SQL files, NOT from JPA entity annotations
   sql:
@@ -50,13 +55,13 @@ spring:
       data-locations: classpath:data-hsqldb.sql
       continue-on-error: false  # Fail if schema initialization fails
       separator: ;  # SQL statement separator
-  
+
   # Mail configuration - Disable in tests
   mail:
     host: localhost
     port: 25
     test-connection: false
-  
+
   # Security - Enable HTTP Basic for tests
   security:
     basic:
@@ -70,11 +75,11 @@ spring:
           facebook:
             client-id: test-client-id
             client-secret: test-client-secret
-  
+
   # Spring Cache - Disable for tests
   cache:
     type: none  # Disable Spring's cache abstraction completely
-  
+
   # Test configuration - Enable context caching to avoid reloading
   test:
     context:
@@ -115,6 +120,9 @@ app:
     history-purge:
       enabled: false
       startup-enabled: false
+  # LDAP disabled for tests by default
+  ldap:
+    enabled: false
 
 # Server configuration - Ensure Cursor sandbox compatibility
 server:
@@ -137,4 +145,3 @@ resilience4j:
         limitForPeriod: 20
         limitRefreshPeriod: 1s
         timeoutDuration: 0
-
