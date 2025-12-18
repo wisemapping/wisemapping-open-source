@@ -29,7 +29,7 @@ RUN mvn clean package -DskipTests \
 ################################################################################
 # Stage 2: Build Frontend (React/TypeScript)
 ################################################################################
-FROM node:18.12.1-alpine AS frontend-builder
+FROM node:22-alpine AS frontend-builder
 
 WORKDIR /build
 
@@ -50,8 +50,9 @@ RUN sed -i 's|"url": "http://localhost:3000/api/restful/app/config"|"url": "/api
 
 # Build the frontend (will use patched config.prod.json)
 WORKDIR /build/wisemapping-frontend
+RUN corepack enable && corepack prepare yarn@1.22.22 --activate
 RUN yarn install --network-timeout 100000
-RUN yarn build
+RUN APP_CONFIG_TYPE=file:prod yarn build
 
 # Ensure proper base tag for nginx sub_filter replacement:
 # 1. Remove any base tag webpack created (with empty, relative, or absolute href)
@@ -107,4 +108,3 @@ WORKDIR /app
 
 # Start Supervisor to manage both Nginx and Spring Boot
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
-
