@@ -142,15 +142,7 @@ spring:
     username: ""                         # Manager/bind DN (empty for anonymous)
     password: ""                         # Manager/bind password
 
-#
-# OpenTelemetry Resource Attributes
-#
-otel:
-  resource:
-    attributes:
-      service:
-        name: wisemapping-api
-        version: 6.0.0
+
 
 #
 # Log Level
@@ -356,6 +348,9 @@ management:
       application: wisemapping-api
     export:
       step: 60s
+  opentelemetry:
+    resource-attributes:
+      service.name: wise-api-prod
   otlp:
     metrics:
       export:
