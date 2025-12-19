@@ -341,9 +341,6 @@ server:
       remote-ip-header: x-forwarded-for
       protocol-header: x-forwarded-proto
 
-monitoring:
-  performance:
-    log-mindmap-listing: true
 
 # Spring Boot Actuator configuration
 management:
