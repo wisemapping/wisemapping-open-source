@@ -345,7 +345,7 @@ management:
       show-details: when-authorized
   metrics:
     tags:
-      application: wisemapping-api
+      application: wise-api-prod
     export:
       step: 60s
   opentelemetry:
