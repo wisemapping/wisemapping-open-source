@@ -354,6 +354,8 @@ management:
   otlp:
     metrics:
       export:
+        read-timeout: 30s
+        connect-timeout: 10s
         enabled: false
         url: https://otlp.nr-data.net/v1/metrics
         step: 60s
