@@ -229,8 +229,6 @@ public class InactiveMindmapMigrationService {
             }
 
             offset += mindmapBatchSize;
-
-            offset += mindmapBatchSize;
         }
 
         return userMigrated;
