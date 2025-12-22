@@ -47,7 +47,7 @@ public class SpamUserSuspensionService {
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private TransactionTemplate transactionTemplate;
 
@@ -74,7 +74,8 @@ public class SpamUserSuspensionService {
      * Suspends users based on two criteria:
      * 1. Users with >= 75% of public maps marked as spam
      * 2. Users with 6+ spam maps (public or private)
-     * Each batch is processed in its own transaction to avoid long-running transactions
+     * Each batch is processed in its own transaction to avoid long-running
+     * transactions
      */
     public void processSpamUserSuspension() {
         if (!enabled) {
@@ -86,34 +87,34 @@ public class SpamUserSuspensionService {
         try {
             long totalUsersPublicSpamRatio = getTotalUsersWithPublicSpamRatio();
             long totalUsersAnySpam = getTotalUsersWithAnySpam();
-            
+
             // Quick summary line for easy log searching
-            logger.info("🚀 SPAM SUSPENSION STARTED: {} users with high public spam ratio, {} users with any spam", 
-                totalUsersPublicSpamRatio, totalUsersAnySpam);
-            
+            logger.info("🚀 SPAM SUSPENSION STARTED: {} users with high public spam ratio, {} users with any spam",
+                    totalUsersPublicSpamRatio, totalUsersAnySpam);
+
             logger.info("\n" +
-                "════════════════════════════════════════════════════════════════\n" +
-                "SPAM USER SUSPENSION TASK STARTED\n" +
-                "════════════════════════════════════════════════════════════════\n" +
-                "START SUMMARY:\n" +
-                "  → Users with High Public Spam Ratio: {}\n" +
-                "  → Users with Any Spam: {}\n" +
-                "  → Accounts Created Since: Last {} months\n" +
-                "\n" +
-                "Suspension Criteria:\n" +
-                "  → Condition 1: >= {}% of public maps are spam\n" +
-                "  → Condition 2: >= {} spam maps (public or private)\n" +
-                "  → Batch Size: {}\n" +
-                "════════════════════════════════════════════════════════════════",
-                totalUsersPublicSpamRatio, totalUsersAnySpam, monthsBack, 
-                (int)(publicSpamRatioThreshold * 100), minAnySpamCount, safeBatchSize);
+                    "════════════════════════════════════════════════════════════════\n" +
+                    "SPAM USER SUSPENSION TASK STARTED\n" +
+                    "════════════════════════════════════════════════════════════════\n" +
+                    "START SUMMARY:\n" +
+                    "  → Users with High Public Spam Ratio: {}\n" +
+                    "  → Users with Any Spam: {}\n" +
+                    "  → Accounts Created Since: Last {} months\n" +
+                    "\n" +
+                    "Suspension Criteria:\n" +
+                    "  → Condition 1: >= {}% of public maps are spam\n" +
+                    "  → Condition 2: >= {} spam maps (public or private)\n" +
+                    "  → Batch Size: {}\n" +
+                    "════════════════════════════════════════════════════════════════",
+                    totalUsersPublicSpamRatio, totalUsersAnySpam, monthsBack,
+                    (int) (publicSpamRatioThreshold * 100), minAnySpamCount, safeBatchSize);
 
             int suspendedCountPublicRatio = 0;
             int suspendedCountAny = 0;
 
             // Process Condition 1: Users with >= 75% public spam ratio
-            logger.info("\n▶ Processing Condition 1: Users with >= {}% public spam ratio", 
-                (int)(publicSpamRatioThreshold * 100));
+            logger.info("\n▶ Processing Condition 1: Users with >= {}% public spam ratio",
+                    (int) (publicSpamRatioThreshold * 100));
             suspendedCountPublicRatio = processPublicSpamRatioCondition(totalUsersPublicSpamRatio, safeBatchSize);
 
             // Process Condition 2: Users with 6+ spam maps (any visibility)
@@ -123,39 +124,40 @@ public class SpamUserSuspensionService {
             int totalSuspended = suspendedCountPublicRatio + suspendedCountAny;
 
             // Quick summary line for easy log searching
-            logger.info("✅ SPAM SUSPENSION COMPLETED: {} total suspended ({} public spam ratio, {} any spam)", 
-                totalSuspended, suspendedCountPublicRatio, suspendedCountAny);
-            
+            logger.info("✅ SPAM SUSPENSION COMPLETED: {} total suspended ({} public spam ratio, {} any spam)",
+                    totalSuspended, suspendedCountPublicRatio, suspendedCountAny);
+
             // Final summary
             logger.info("\n" +
-                "════════════════════════════════════════════════════════════════\n" +
-                "SPAM USER SUSPENSION TASK COMPLETED\n" +
-                "════════════════════════════════════════════════════════════════\n" +
-                "END SUMMARY:\n" +
-                "  ✓ Total Users Suspended: {} users\n" +
-                "    - Condition 1 (public spam ratio): {} users\n" +
-                "    - Condition 2 (any spam): {} users\n" +
-                "\n" +
-                "Applied Criteria:\n" +
-                "  → Condition 1: >= {}% of public maps are spam\n" +
-                "  → Condition 2: >= {} spam maps (any visibility)\n" +
-                "  → Account age: Last {} months\n" +
-                "════════════════════════════════════════════════════════════════",
-                totalSuspended, 
-                suspendedCountPublicRatio,
-                suspendedCountAny,
-                (int)(publicSpamRatioThreshold * 100), 
-                minAnySpamCount, 
-                monthsBack);
+                    "════════════════════════════════════════════════════════════════\n" +
+                    "SPAM USER SUSPENSION TASK COMPLETED\n" +
+                    "════════════════════════════════════════════════════════════════\n" +
+                    "END SUMMARY:\n" +
+                    "  ✓ Total Users Suspended: {} users\n" +
+                    "    - Condition 1 (public spam ratio): {} users\n" +
+                    "    - Condition 2 (any spam): {} users\n" +
+                    "\n" +
+                    "Applied Criteria:\n" +
+                    "  → Condition 1: >= {}% of public maps are spam\n" +
+                    "  → Condition 2: >= {} spam maps (any visibility)\n" +
+                    "  → Account age: Last {} months\n" +
+                    "════════════════════════════════════════════════════════════════",
+                    totalSuspended,
+                    suspendedCountPublicRatio,
+                    suspendedCountAny,
+                    (int) (publicSpamRatioThreshold * 100),
+                    minAnySpamCount,
+                    monthsBack);
 
         } catch (Exception e) {
-            logger.error("Error during spam user suspension batch task", e);
+            logger.debug("Error during spam user suspension batch task", e);
             throw e;
         }
     }
 
     /**
      * Process public spam ratio condition by iterating through batches of users
+     * 
      * @param totalUsers total number of users to process
      * @return number of users suspended
      */
@@ -163,28 +165,31 @@ public class SpamUserSuspensionService {
         int suspendedCount = 0;
         int offset = 0;
         int batchNumber = 0;
-        String conditionName = "Public Spam Ratio >= " + (int)(publicSpamRatioThreshold * 100) + "%";
+        String conditionName = "Public Spam Ratio >= " + (int) (publicSpamRatioThreshold * 100) + "%";
 
         while (offset < totalUsers) {
             try {
                 batchNumber++;
-                logger.info("Processing {} batch #{} (offset: {}, size: {})", conditionName, batchNumber, offset, effectiveBatchSize);
-                
+                logger.info("Processing {} batch #{} (offset: {}, size: {})", conditionName, batchNumber, offset,
+                        effectiveBatchSize);
+
                 List<SpamRatioUserResult> users = mindmapManager.findUsersWithHighPublicSpamRatio(
-                    publicSpamRatioThreshold, monthsBack, offset, effectiveBatchSize);
-                
+                        publicSpamRatioThreshold, monthsBack, offset, effectiveBatchSize);
+
                 int batchSuspendedCount = processRatioBatch(users, conditionName);
                 suspendedCount += batchSuspendedCount;
 
                 if (users.isEmpty()) {
                     break; // No more users to process
                 }
-                
-                // Note: We continue even if batchSuspendedCount == 0 because later batches might have unsuspended users
+
+                // Note: We continue even if batchSuspendedCount == 0 because later batches
+                // might have unsuspended users
 
                 offset += effectiveBatchSize;
             } catch (Exception e) {
-                logger.error("Error processing {} batch #{} at offset {}: {}", conditionName, batchNumber, offset, e.getMessage(), e);
+                logger.debug("Error processing {} batch #{} at offset {}: {}", conditionName, batchNumber, offset,
+                        e.getMessage(), e);
                 // Continue with next batch instead of failing completely
                 offset += effectiveBatchSize;
             }
@@ -196,6 +201,7 @@ public class SpamUserSuspensionService {
 
     /**
      * Process any spam condition by iterating through batches of users
+     * 
      * @param totalUsers total number of users to process
      * @return number of users suspended
      */
@@ -208,23 +214,26 @@ public class SpamUserSuspensionService {
         while (offset < totalUsers) {
             try {
                 batchNumber++;
-                logger.info("Processing {} batch #{} (offset: {}, size: {})", conditionName, batchNumber, offset, effectiveBatchSize);
-                
+                logger.info("Processing {} batch #{} (offset: {}, size: {})", conditionName, batchNumber, offset,
+                        effectiveBatchSize);
+
                 List<SpamUserResult> users = mindmapManager.findUsersWithAnySpamMaps(
-                    minAnySpamCount, monthsBack, offset, effectiveBatchSize);
-                
+                        minAnySpamCount, monthsBack, offset, effectiveBatchSize);
+
                 int batchSuspendedCount = processBatch(users, conditionName);
                 suspendedCount += batchSuspendedCount;
 
                 if (users.isEmpty()) {
                     break; // No more users to process
                 }
-                
-                // Note: We continue even if batchSuspendedCount == 0 because later batches might have unsuspended users
+
+                // Note: We continue even if batchSuspendedCount == 0 because later batches
+                // might have unsuspended users
 
                 offset += effectiveBatchSize;
             } catch (Exception e) {
-                logger.error("Error processing {} batch #{} at offset {}: {}", conditionName, batchNumber, offset, e.getMessage(), e);
+                logger.debug("Error processing {} batch #{} at offset {}: {}", conditionName, batchNumber, offset,
+                        e.getMessage(), e);
                 // Continue with next batch instead of failing completely
                 offset += effectiveBatchSize;
             }
@@ -235,9 +244,11 @@ public class SpamUserSuspensionService {
     }
 
     /**
-     * Process a batch of users with spam ratio and suspend them based on spam criteria
+     * Process a batch of users with spam ratio and suspend them based on spam
+     * criteria
+     * 
      * @param usersWithSpamRatio list of users with spam ratio to process
-     * @param conditionName name of the condition for logging
+     * @param conditionName      name of the condition for logging
      * @return number of users suspended in this batch
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
@@ -248,7 +259,7 @@ public class SpamUserSuspensionService {
 
         int suspendedCount = 0;
         int skippedCount = 0;
-        
+
         // Collect users that need to be suspended
         List<Account> usersToSuspend = new ArrayList<>();
         StringBuilder suspensionSummary = new StringBuilder();
@@ -272,42 +283,40 @@ public class SpamUserSuspensionService {
                 // Suspend the user
                 user.suspend(SuspensionReason.ABUSE);
                 usersToSuspend.add(user);
-                
+
                 // Track user suspension
                 metricsService.trackUserSuspension(user, "ABUSE");
 
                 suspendedCount++;
-                
+
                 // Detailed log for each suspended user
                 String suspensionDetail = String.format(
-                    "SUSPENDED USER #%d:\n" +
-                    "  - User ID: %d\n" +
-                    "  - Email: %s\n" +
-                    "  - Full Name: %s\n" +
-                    "  - Account Created: %s\n" +
-                    "  - Public Spam Maps: %d / %d (%.1f%%)\n" +
-                    "  - Suspension Reason: ABUSE\n" +
-                    "  - Criteria: %s\n",
-                    suspendedCount,
-                    user.getId(),
-                    user.getEmail(),
-                    user.getFullName(),
-                    user.getCreationDate() != null ? user.getCreationDate().getTime() : "Unknown",
-                    spamCount,
-                    totalCount,
-                    spamRatio,
-                    conditionName
-                );
-                
-                logger.info(suspensionDetail);
+                        "SUSPENDED USER #%d:\n" +
+                                "  - User ID: %d\n" +
+                                "  - Email: %s\n" +
+                                "  - Full Name: %s\n" +
+                                "  - Account Created: %s\n" +
+                                "  - Public Spam Maps: %d / %d (%.1f%%)\n" +
+                                "  - Suspension Reason: ABUSE\n" +
+                                "  - Criteria: %s\n",
+                        suspendedCount,
+                        user.getId(),
+                        user.getEmail(),
+                        user.getFullName(),
+                        user.getCreationDate() != null ? user.getCreationDate().getTime() : "Unknown",
+                        spamCount,
+                        totalCount,
+                        spamRatio,
+                        conditionName);
+
                 suspensionSummary.append(suspensionDetail).append("\n");
-                
+
             } catch (Exception e) {
-                logger.error("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
+                logger.debug("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
                 // Continue processing other users in the batch
             }
         }
-        
+
         // Update all users in a single transaction if there are any updates
         if (!usersToSuspend.isEmpty()) {
             updateUsersInTransaction(usersToSuspend);
@@ -320,7 +329,7 @@ public class SpamUserSuspensionService {
         suspensionSummary.append(String.format("  - Users Suspended: %d\n", suspendedCount));
         suspensionSummary.append(String.format("  - Users Skipped (already suspended): %d\n", skippedCount));
         suspensionSummary.append("========================================\n");
-        
+
         logger.info(suspensionSummary.toString());
 
         return suspendedCount;
@@ -328,8 +337,9 @@ public class SpamUserSuspensionService {
 
     /**
      * Process a batch of users and suspend them based on spam criteria
+     * 
      * @param usersWithSpamMaps list of users with spam maps to process
-     * @param conditionName name of the condition for logging
+     * @param conditionName     name of the condition for logging
      * @return number of users suspended in this batch
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
@@ -340,7 +350,7 @@ public class SpamUserSuspensionService {
 
         int suspendedCount = 0;
         int skippedCount = 0;
-        
+
         // Collect users that need to be suspended
         List<Account> usersToSuspend = new ArrayList<>();
         StringBuilder suspensionSummary = new StringBuilder();
@@ -362,40 +372,38 @@ public class SpamUserSuspensionService {
                 // Suspend the user
                 user.suspend(SuspensionReason.ABUSE);
                 usersToSuspend.add(user);
-                
+
                 // Track user suspension
                 metricsService.trackUserSuspension(user, "ABUSE");
 
                 suspendedCount++;
-                
+
                 // Detailed log for each suspended user
                 String suspensionDetail = String.format(
-                    "SUSPENDED USER #%d:\n" +
-                    "  - User ID: %d\n" +
-                    "  - Email: %s\n" +
-                    "  - Full Name: %s\n" +
-                    "  - Account Created: %s\n" +
-                    "  - Spam Maps Count: %d\n" +
-                    "  - Suspension Reason: ABUSE\n" +
-                    "  - Criteria: %s\n",
-                    suspendedCount,
-                    user.getId(),
-                    user.getEmail(),
-                    user.getFullName(),
-                    user.getCreationDate() != null ? user.getCreationDate().getTime() : "Unknown",
-                    spamCount,
-                    conditionName
-                );
-                
-                logger.info(suspensionDetail);
+                        "SUSPENDED USER #%d:\n" +
+                                "  - User ID: %d\n" +
+                                "  - Email: %s\n" +
+                                "  - Full Name: %s\n" +
+                                "  - Account Created: %s\n" +
+                                "  - Spam Maps Count: %d\n" +
+                                "  - Suspension Reason: ABUSE\n" +
+                                "  - Criteria: %s\n",
+                        suspendedCount,
+                        user.getId(),
+                        user.getEmail(),
+                        user.getFullName(),
+                        user.getCreationDate() != null ? user.getCreationDate().getTime() : "Unknown",
+                        spamCount,
+                        conditionName);
+
                 suspensionSummary.append(suspensionDetail).append("\n");
-                
+
             } catch (Exception e) {
-                logger.error("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
+                logger.debug("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
                 // Continue processing other users in the batch
             }
         }
-        
+
         // Update all users in a single transaction if there are any updates
         if (!usersToSuspend.isEmpty()) {
             updateUsersInTransaction(usersToSuspend);
@@ -408,7 +416,7 @@ public class SpamUserSuspensionService {
         suspensionSummary.append(String.format("  - Users Suspended: %d\n", suspendedCount));
         suspensionSummary.append(String.format("  - Users Skipped (already suspended): %d\n", skippedCount));
         suspensionSummary.append("========================================\n");
-        
+
         logger.info(suspensionSummary.toString());
 
         return suspendedCount;
@@ -466,13 +474,17 @@ public class SpamUserSuspensionService {
     }
 
     /**
-     * Suspend users who have public maps marked as spam by specific detection strategies
-     * @param spamTypeCodes array of spam type codes to filter by (e.g., "FewNodesWithContent", "UserBehavior")
-     * @param monthsBack number of months to look back for account creation
+     * Suspend users who have public maps marked as spam by specific detection
+     * strategies
+     * 
+     * @param spamTypeCodes    array of spam type codes to filter by (e.g.,
+     *                         "FewNodesWithContent", "UserBehavior")
+     * @param monthsBack       number of months to look back for account creation
      * @param suspensionReason the reason for suspension
      * @return number of users suspended
      */
-    public int suspendUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack, SuspensionReason suspensionReason) {
+    public int suspendUsersWithPublicSpamMapsByType(String[] spamTypeCodes, int monthsBack,
+            SuspensionReason suspensionReason) {
         if (!enabled) {
             logger.debug("Spam user suspension is disabled");
             return 0;
@@ -483,8 +495,8 @@ public class SpamUserSuspensionService {
             return 0;
         }
 
-        logger.info("Starting suspension of users with public spam maps by type: {} (months back: {})", 
-            String.join(", ", spamTypeCodes), monthsBack);
+        logger.info("Starting suspension of users with public spam maps by type: {} (months back: {})",
+                String.join(", ", spamTypeCodes), monthsBack);
 
         try {
             long totalUsers = mindmapManager.countUsersWithPublicSpamMapsByType(spamTypeCodes, monthsBack);
@@ -500,7 +512,8 @@ public class SpamUserSuspensionService {
 
             while (offset < totalUsers) {
                 try {
-                    int batchSuspendedCount = processSpamTypeBatch(spamTypeCodes, monthsBack, offset, safeBatchSize, suspensionReason);
+                    int batchSuspendedCount = processSpamTypeBatch(spamTypeCodes, monthsBack, offset, safeBatchSize,
+                            suspensionReason);
                     suspendedCount += batchSuspendedCount;
 
                     if (batchSuspendedCount == 0) {
@@ -509,9 +522,9 @@ public class SpamUserSuspensionService {
 
                     offset += safeBatchSize;
                     logger.debug("Processed batch: offset={}, batchSize={}, totalSuspended={}",
-                        offset - safeBatchSize, safeBatchSize, suspendedCount);
+                            offset - safeBatchSize, safeBatchSize, suspendedCount);
                 } catch (Exception e) {
-                    logger.error("Error processing spam type batch at offset {}: {}", offset, e.getMessage(), e);
+                    logger.debug("Error processing spam type batch at offset {}: {}", offset, e.getMessage(), e);
                     // Continue with next batch instead of failing completely
                     offset += safeBatchSize;
                 }
@@ -521,24 +534,27 @@ public class SpamUserSuspensionService {
             return suspendedCount;
 
         } catch (Exception e) {
-            logger.error("Error during spam type-based user suspension", e);
+            logger.debug("Error during spam type-based user suspension", e);
             throw e;
         }
     }
 
     /**
-     * Process a single batch of users for spam type-based suspension in its own transaction
+     * Process a single batch of users for spam type-based suspension in its own
+     * transaction
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-    public int processSpamTypeBatch(String[] spamTypeCodes, int monthsBack, int offset, int batchSize, SuspensionReason suspensionReason) {
-        List<SpamUserResult> usersWithSpamMaps = mindmapManager.findUsersWithPublicSpamMapsByType(spamTypeCodes, monthsBack, offset, batchSize);
+    public int processSpamTypeBatch(String[] spamTypeCodes, int monthsBack, int offset, int batchSize,
+            SuspensionReason suspensionReason) {
+        List<SpamUserResult> usersWithSpamMaps = mindmapManager.findUsersWithPublicSpamMapsByType(spamTypeCodes,
+                monthsBack, offset, batchSize);
 
         if (usersWithSpamMaps.isEmpty()) {
             return 0;
         }
 
         int suspendedCount = 0;
-        
+
         // Collect users that need to be suspended
         List<Account> usersToSuspend = new ArrayList<>();
 
@@ -555,19 +571,19 @@ public class SpamUserSuspensionService {
                 // Suspend the user
                 user.suspend(suspensionReason);
                 usersToSuspend.add(user);
-                
+
                 // Track user suspension
                 metricsService.trackUserSuspension(user, suspensionReason.name());
 
                 suspendedCount++;
                 logger.warn("Suspended user {} (created: {}) due to {} public spam mindmaps of types: {}",
-                    user.getEmail(), user.getCreationDate(), spamCount, String.join(", ", spamTypeCodes));
+                        user.getEmail(), user.getCreationDate(), spamCount, String.join(", ", spamTypeCodes));
             } catch (Exception e) {
-                logger.error("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
+                logger.debug("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
                 // Continue processing other users in the batch
             }
         }
-        
+
         // Update all users in a single transaction if there are any updates
         if (!usersToSuspend.isEmpty()) {
             updateUsersInTransaction(usersToSuspend);
@@ -575,10 +591,12 @@ public class SpamUserSuspensionService {
 
         return suspendedCount;
     }
-    
+
     /**
-     * Update multiple users in a single transaction to ensure proper transaction context
-     * Uses TransactionTemplate to programmatically manage transactions in async context
+     * Update multiple users in a single transaction to ensure proper transaction
+     * context
+     * Uses TransactionTemplate to programmatically manage transactions in async
+     * context
      */
     public void updateUsersInTransaction(List<Account> users) {
         transactionTemplate.execute(status -> {
@@ -589,7 +607,7 @@ public class SpamUserSuspensionService {
                 logger.debug("Successfully updated {} users in transaction", users.size());
                 return null;
             } catch (Exception e) {
-                logger.error("Error updating {} users in transaction: {}", users.size(), e.getMessage(), e);
+                logger.debug("Error updating {} users in transaction: {}", users.size(), e.getMessage(), e);
                 status.setRollbackOnly();
                 throw e;
             }
@@ -604,13 +622,15 @@ public class SpamUserSuspensionService {
         int normalized = batchSize;
         if (normalized < MIN_BATCH_SIZE) {
             if (logAdjustments) {
-                logger.warn("Spam user suspension batch size {} is too small. Using minimum {}.", normalized, MIN_BATCH_SIZE);
+                logger.warn("Spam user suspension batch size {} is too small. Using minimum {}.", normalized,
+                        MIN_BATCH_SIZE);
             }
             normalized = MIN_BATCH_SIZE;
         }
         if (normalized > MAX_BATCH_SIZE) {
             if (logAdjustments) {
-                logger.warn("Spam user suspension batch size {} exceeds safe limit {}. Using cap.", normalized, MAX_BATCH_SIZE);
+                logger.warn("Spam user suspension batch size {} exceeds safe limit {}. Using cap.", normalized,
+                        MAX_BATCH_SIZE);
             }
             normalized = MAX_BATCH_SIZE;
         }
