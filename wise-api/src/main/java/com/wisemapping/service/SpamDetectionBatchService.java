@@ -50,7 +50,6 @@ public class SpamDetectionBatchService {
     @Autowired
     private MetricsService metricsService;
 
-
     @Value("${app.batch.spam-detection.enabled:true}")
     private boolean enabled;
 
@@ -64,8 +63,10 @@ public class SpamDetectionBatchService {
     private int currentSpamDetectionVersion;
 
     /**
-     * Process all public maps and mark them as spam if they match spam detection rules
-     * Each batch is processed in its own transaction to avoid long-running transactions
+     * Process all public maps and mark them as spam if they match spam detection
+     * rules
+     * Each batch is processed in its own transaction to avoid long-running
+     * transactions
      * This method itself is not transactional to avoid connection leaks
      */
     public void processPublicMapsSpamDetection() {
@@ -84,7 +85,8 @@ public class SpamDetectionBatchService {
 
             // Get total count for logging
             long totalMaps = getTotalMapsCount(cutoffDate);
-            logger.info("Starting spam detection for {} public maps created since {} in batches of {} (current version: {})",
+            logger.info(
+                    "Starting spam detection for {} public maps created since {} in batches of {} (current version: {})",
                     totalMaps, cutoffDate.getTime(), safeBatchSize, currentSpamDetectionVersion);
 
             int processedCount = 0;
@@ -106,7 +108,7 @@ public class SpamDetectionBatchService {
                     logger.debug("Processed batch: offset={}, batchSize={}, totalProcessed={}",
                             offset - safeBatchSize, safeBatchSize, processedCount);
                 } catch (Exception e) {
-                    logger.error("Error processing batch at offset {}: {}", offset, e.getMessage(), e);
+                    logger.debug("Error processing batch at offset {}: {}", offset, e.getMessage(), e);
                     // Continue with next batch instead of failing completely
                     offset += safeBatchSize;
                 }
@@ -116,7 +118,7 @@ public class SpamDetectionBatchService {
                     processedCount, spamDetectedCount);
 
         } catch (Exception e) {
-            logger.error("Error during spam detection batch task", e);
+            logger.debug("Error during spam detection batch task", e);
         }
     }
 
@@ -125,7 +127,8 @@ public class SpamDetectionBatchService {
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public BatchResult processBatch(java.util.Calendar cutoffDate, int offset, int batchSize) {
-        List<Mindmap> publicMaps = mindmapManager.findPublicMindmapsNeedingSpamDetection(cutoffDate, currentSpamDetectionVersion, offset, batchSize);
+        List<Mindmap> publicMaps = mindmapManager.findPublicMindmapsNeedingSpamDetection(cutoffDate,
+                currentSpamDetectionVersion, offset, batchSize);
 
         if (publicMaps.isEmpty()) {
             return new BatchResult(0, 0);
@@ -160,7 +163,7 @@ public class SpamDetectionBatchService {
                 updateSpamInfo(mindmap, spamTypeCode, spamDescription);
                 processedCount++;
             } catch (Exception e) {
-                logger.error("Error processing mindmap '{}' (ID: {}): {}",
+                logger.debug("Error processing mindmap '{}' (ID: {}): {}",
                         mindmap.getTitle(), mindmap.getId(), e.getMessage(), e);
                 // Continue processing other mindmaps in the batch
                 processedCount++;
@@ -174,9 +177,11 @@ public class SpamDetectionBatchService {
      * Helper method to update spam info for a mindmap
      * Handles both new and existing MindmapSpamInfo entities
      */
-    protected void updateSpamInfo(Mindmap mindmap, @Nullable SpamStrategyType spamTypeCode, @Nullable String description) {
+    protected void updateSpamInfo(Mindmap mindmap, @Nullable SpamStrategyType spamTypeCode,
+            @Nullable String description) {
         try {
-            // Avoid touching the lazy spamInfo association on Mindmap; only pass the ID to the upsert
+            // Avoid touching the lazy spamInfo association on Mindmap; only pass the ID to
+            // the upsert
             MindmapSpamInfo spamInfo = new MindmapSpamInfo();
             spamInfo.setMindmapId(mindmap.getId());
 
@@ -196,11 +201,10 @@ public class SpamDetectionBatchService {
 
             mindmapManager.updateMindmapSpamInfo(spamInfo);
         } catch (Exception updateException) {
-            logger.error("Failed to update spam info for mindmap '{}' (ID: {}): {}",
+            logger.debug("Failed to update spam info for mindmap '{}' (ID: {}): {}",
                     mindmap.getTitle(), mindmap.getId(), updateException.getMessage(), updateException);
         }
     }
-
 
     /**
      * Result class for batch processing
@@ -257,7 +261,8 @@ public class SpamDetectionBatchService {
         }
         if (normalized > MAX_BATCH_SIZE) {
             if (logAdjustments) {
-                logger.warn("Spam detection batch size {} exceeds safe limit {}. Using cap.", normalized, MAX_BATCH_SIZE);
+                logger.warn("Spam detection batch size {} exceeds safe limit {}. Using cap.", normalized,
+                        MAX_BATCH_SIZE);
             }
             normalized = MAX_BATCH_SIZE;
         }
