@@ -71,6 +71,7 @@ public class InactiveMindmap implements Serializable {
     @Basic(fetch = FetchType.LAZY)
     @LazyGroup("xmlContent")
     @JsonIgnore
+    @org.hibernate.annotations.JdbcTypeCode(java.sql.Types.VARBINARY)
     private byte[] zippedXml;
 
     @Column(name = "migration_date")
@@ -195,8 +196,10 @@ public class InactiveMindmap implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InactiveMindmap)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof InactiveMindmap))
+            return false;
         InactiveMindmap that = (InactiveMindmap) o;
         return id == that.id && originalMindmapId == that.originalMindmapId;
     }

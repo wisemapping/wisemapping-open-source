@@ -49,7 +49,8 @@ public class MindmapXml implements Serializable {
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "xml", nullable = false)
-    private byte[] zippedXml = new byte[]{};
+    @org.hibernate.annotations.JdbcTypeCode(java.sql.Types.VARBINARY)
+    private byte[] zippedXml = new byte[] {};
 
     public MindmapXml() {
     }
@@ -77,7 +78,7 @@ public class MindmapXml implements Serializable {
 
     @NotNull
     public byte[] getZippedXml() {
-        return zippedXml != null ? zippedXml : new byte[]{};
+        return zippedXml != null ? zippedXml : new byte[] {};
     }
 
     public void setZippedXml(@NotNull byte[] zippedXml) {
