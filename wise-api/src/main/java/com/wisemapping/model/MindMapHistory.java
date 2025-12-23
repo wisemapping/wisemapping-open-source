@@ -38,13 +38,14 @@ public class MindMapHistory {
     private Calendar creationTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "editor_id", nullable = true,unique = false)
+    @JoinColumn(name = "editor_id", nullable = true, unique = false)
     private Account editor;
 
     @Column(name = "xml")
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @LazyGroup("xmlContent")
+    @org.hibernate.annotations.JdbcTypeCode(java.sql.Types.VARBINARY)
     private byte[] zippedXml;
 
     @Column(name = "mindmap_id")

@@ -22,7 +22,7 @@ Access at http://localhost (data will be lost when container stops)
 
 ```bash
 # Create configuration file
-cat > app.yml <<EOF
+cat > application.yml <<EOF
 spring:
   datasource:
     url: jdbc:hsqldb:file:/var/lib/wisemapping/db/wisemapping;sql.names=false;sql.regular_names=false;shutdown=true
@@ -37,7 +37,7 @@ EOF
 # Run with persistent storage
 docker run -d --name wisemapping -p 80:80 \
   -v wisemapping-db:/var/lib/wisemapping \
-  -v $(pwd)/app.yml:/app/config/app.yml:ro \
+  -v $(pwd)/application.yml:/app/config/application.yml:ro \
   wisemapping/wisemapping:latest
 ```
 
@@ -79,7 +79,7 @@ docker run -d --name wisemapping -p 80:80 wisemapping/wisemapping:latest
 For persistent HSQLDB storage (testing/small deployments only), mount a volume:
 
 ```yaml
-# app.yml
+# application.yml
 spring:
   datasource:
     url: jdbc:hsqldb:file:/var/lib/wisemapping/db/wisemapping;sql.names=false;sql.regular_names=false;shutdown=true
@@ -94,14 +94,14 @@ spring:
 ```bash
 docker run -d --name wisemapping -p 80:80 \
   -v wisemapping-db:/var/lib/wisemapping \
-  -v $(pwd)/app.yml:/app/config/app.yml:ro \
+  -v $(pwd)/application.yml:/app/config/application.yml:ro \
   wisemapping/wisemapping:latest
 ```
 
 #### PostgreSQL (Production Recommended)
 
 ```yaml
-# app.yml
+# application.yml
 spring:
   datasource:
     url: jdbc:postgresql://your-postgres-host:5432/wisemapping
@@ -121,14 +121,14 @@ spring:
 
 ```bash
 docker run -d --name wisemapping -p 80:80 \
-  -v $(pwd)/app.yml:/app/config/app.yml:ro \
+  -v $(pwd)/application.yml:/app/config/application.yml:ro \
   wisemapping/wisemapping:latest
 ```
 
 #### MySQL/MariaDB
 
 ```yaml
-# app.yml
+# application.yml
 spring:
   datasource:
     url: jdbc:mysql://your-mysql-host:3306/wisemapping?useUnicode=true&characterEncoding=utf8
@@ -158,7 +158,7 @@ docker run -d --name wisemapping -p 80:80 \
 
 ### Container Paths
 
-- **Configuration**: `/app/config/app.yml` (mount your config file here)
+- **Configuration**: `/app/config/application.yml` (mount your config file here)
 - **HSQLDB Database**: `/var/lib/wisemapping/db/` (mount volume here for persistent storage)
 - **Application User**: `wisemapping` (UID 1001)
 
@@ -172,10 +172,10 @@ docker run -d --name wisemapping -p 80:80 \
 
 ### Custom Application Properties
 
-Mount a custom `app.yml` configuration file:
+Mount a custom `application.yml` configuration file:
 
 ```yaml
-# app.yml
+# application.yml
 app:
   admin:
     user: admin@wisemapping.com
@@ -199,7 +199,7 @@ app:
 
 ```bash
 docker run -d --name wisemapping -p 80:80 \
-  -v $(pwd)/app.yml:/app/config/app.yml:ro \
+  -v $(pwd)/application.yml:/app/config/application.yml:ro \
   wisemapping/wisemapping:latest
 ```
 
@@ -236,7 +236,7 @@ sudo chown -R 1001:1001 /path/to/wisemapping-data
 
 **Database connection issues:**
 - Verify external database is running and accessible
-- Check credentials in `app.yml`
+- Check credentials in `application.yml`
 - Ensure network connectivity between containers
 
 ### Backup and Restore
