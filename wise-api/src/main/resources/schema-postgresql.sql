@@ -90,9 +90,9 @@ create TABLE IF NOT EXISTS COLLABORATION_PROPERTIES (
 create TABLE IF NOT EXISTS COLLABORATION (
   id             SERIAL  NOT NULL PRIMARY KEY,
   collaborator_id INTEGER NOT NULL,
-  properties_id  INTEGER NOT NULL,
+  properties_id  INTEGER,
   mindmap_id     INTEGER NOT NULL,
-  role_id        INTEGER NOT NULL,
+  role_id        SMALLINT NOT NULL,
   FOREIGN KEY (collaborator_id) REFERENCES COLLABORATOR (id),
   FOREIGN KEY (mindmap_id) REFERENCES MINDMAP (id) ON delete CASCADE ON update NO ACTION,
   FOREIGN KEY (properties_id) REFERENCES COLLABORATION_PROPERTIES (id) ON delete CASCADE ON update NO ACTION

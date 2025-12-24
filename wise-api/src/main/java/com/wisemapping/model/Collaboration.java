@@ -29,12 +29,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "COLLABORATION")
 @NamedQueries({
-    @NamedQuery(
-        name = "Collaboration.findByCollaboratorId",
-        query = "SELECT c FROM Collaboration c " +
+        @NamedQuery(name = "Collaboration.findByCollaboratorId", query = "SELECT c FROM Collaboration c " +
                 "LEFT JOIN FETCH c.collaborationProperties " +
-                "WHERE c.collaborator.id = :collaboratorId"
-    )
+                "WHERE c.collaborator.id = :collaboratorId")
 })
 public class Collaboration implements Serializable {
 
@@ -42,7 +39,7 @@ public class Collaboration implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "role_id", unique = true)
+    @Column(name = "role_id", nullable = false)
     private CollaborationRole role;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,7 +50,7 @@ public class Collaboration implements Serializable {
     @JoinColumn(name = "collaborator_id", nullable = false)
     private Collaborator collaborator;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "properties_id", nullable = true, unique = true)
     private CollaborationProperties collaborationProperties = new CollaborationProperties();
@@ -61,7 +58,8 @@ public class Collaboration implements Serializable {
     public Collaboration() {
     }
 
-    public Collaboration(@NotNull CollaborationRole role, @NotNull Collaborator collaborator, @NotNull Mindmap mindmap) {
+    public Collaboration(@NotNull CollaborationRole role, @NotNull Collaborator collaborator,
+            @NotNull Mindmap mindmap) {
         this.role = role;
         this.mindMap = mindmap;
         this.collaborator = collaborator;
@@ -112,7 +110,6 @@ public class Collaboration implements Serializable {
         this.collaborator = collaborator;
     }
 
-
     @Nullable
     public CollaborationProperties getCollaborationProperties() {
         return this.collaborationProperties;
@@ -129,23 +126,30 @@ public class Collaboration implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Collaboration that = (Collaboration) o;
 
-        if (id != that.id) return false;
-        // Use collaborator ID instead of full object comparison to avoid lazy initialization issues
+        if (id != that.id)
+            return false;
+        // Use collaborator ID instead of full object comparison to avoid lazy
+        // initialization issues
         if (collaborator != null && that.collaborator != null) {
             // Use getId() method which is safe and doesn't trigger lazy loading
-            if (collaborator.getId() != that.collaborator.getId()) return false;
+            if (collaborator.getId() != that.collaborator.getId())
+                return false;
         } else if (collaborator != that.collaborator) {
             return false;
         }
-        // Use mindMap ID instead of full object comparison to avoid lazy initialization issues
+        // Use mindMap ID instead of full object comparison to avoid lazy initialization
+        // issues
         if (mindMap != null && that.mindMap != null) {
             // Use getId() method which is safe and doesn't trigger lazy loading
-            if (mindMap.getId() != that.mindMap.getId()) return false;
+            if (mindMap.getId() != that.mindMap.getId())
+                return false;
         } else if (mindMap != that.mindMap) {
             return false;
         }
@@ -154,7 +158,7 @@ public class Collaboration implements Serializable {
 
     @Override
     public int hashCode() {
-        //https://thorben-janssen.com/ultimate-guide-to-implementing-equals-and-hashcode-with-hibernate/
+        // https://thorben-janssen.com/ultimate-guide-to-implementing-equals-and-hashcode-with-hibernate/
         return 13;
     }
 }
