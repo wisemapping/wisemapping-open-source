@@ -213,7 +213,7 @@ public class SpamDetectionBatchService {
         public final int processedCount;
         public final int spamDetectedCount;
 
-        BatchResult(int processedCount, int spamDetectedCount) {
+        public BatchResult(int processedCount, int spamDetectedCount) {
             this.processedCount = processedCount;
             this.spamDetectedCount = spamDetectedCount;
         }
