@@ -35,7 +35,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     final private static Logger logger = LogManager.getLogger();
 
     @Override
-    protected void doFilterInternal(@NotNull final HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
+    protected void doFilterInternal(@NotNull final HttpServletRequest request, @NotNull HttpServletResponse response,
+            @NotNull FilterChain filterChain)
             throws ServletException, IOException {
         final Optional<String> token = getJwtTokenFromRequest(request);
 
@@ -47,15 +48,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // Is it an existing user ?
                 try {
                     final UserDetails userDetails = userDetailsService.loadUserByUsername(email.get());
-                    final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                    // Check if user is suspended/disabled
+                    if (userDetails.isEnabled() && userDetails.isAccountNonLocked()) {
+                        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
+                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    } else {
+                        logger.warn("User {} is suspended or disabled. Rejecting authentication.", email.get());
+                        // Do not set authentication - request will be rejected
+                    }
                 } catch (UsernameNotFoundException e) {
-                    // User from token doesn't exist - log warning but let Spring Security handle authorization
+                    // User from token doesn't exist - log warning but let Spring Security handle
+                    // authorization
                     // This allows @PreAuthorize to properly reject the request
-                    logger.warn("JWT token contains email for non-existent user: {}. Request will be rejected by authorization checks.", email.get());
-                    // Don't set authentication - Spring Security will handle the authorization failure
+                    logger.warn(
+                            "JWT token contains email for non-existent user: {}. Request will be rejected by authorization checks.",
+                            email.get());
+                    // Don't set authentication - Spring Security will handle the authorization
+                    // failure
                 }
             }
         }
