@@ -23,53 +23,50 @@ package com.wisemapping.model;
  * These are short codes that map to spam detection strategies.
  */
 public enum SpamStrategyType {
-    
+
     // Contact Information Spam
     CONTACT_INFO('C', "ContactInfo"),
-    
+
     // Few Nodes with Content Spam
     FEW_NODES('F', "FewNodesWithContent"),
-    
+
     // User Behavior Spam
     USER_BEHAVIOR('U', "UserBehavior"),
-    
+
     // Keyword Pattern Spam (currently disabled)
     KEYWORD_PATTERN('K', "KeywordPattern"),
-    
+
     // HTML Content Spam
     HTML_CONTENT('H', "HtmlContent"),
-    
-    // Description Length Spam
-    DESCRIPTION_LENGTH('D', "DescriptionLength"),
-    
+
     // Service Directory Spam
     SERVICE_DIRECTORY('S', "ServiceDirectory"),
-    
+
     // Link Farm Spam
     LINK_FARM('L', "LinkFarm"),
-    
+
     // Unknown/Generic spam
     UNKNOWN('X', "Unknown");
-    
+
     private final char code;
     private final String strategyName;
-    
+
     SpamStrategyType(char code, String strategyName) {
         this.code = code;
         this.strategyName = strategyName;
     }
-    
+
     public char getCode() {
         return code;
     }
-    
+
     public String getStrategyName() {
         return strategyName;
     }
-    
-    
+
     /**
      * Get spam strategy type from code char
+     * 
      * @param code The short code
      * @return The corresponding spam strategy type, or UNKNOWN if not found
      */
@@ -79,12 +76,13 @@ public enum SpamStrategyType {
                 return spamType;
             }
         }
-        
+
         return UNKNOWN;
     }
-    
+
     /**
      * Get spam strategy type from code string (for backward compatibility)
+     * 
      * @param code The short code string
      * @return The corresponding spam strategy type, or UNKNOWN if not found
      */
@@ -92,7 +90,7 @@ public enum SpamStrategyType {
         if (code == null || code.length() != 1) {
             return UNKNOWN;
         }
-        
+
         return fromCode(code.charAt(0));
     }
 }

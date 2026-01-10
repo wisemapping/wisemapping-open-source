@@ -22,6 +22,7 @@ import com.wisemapping.dao.MindmapManager;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindmapSpamInfo;
+
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
