@@ -10,7 +10,19 @@ on:
         required: false
         type: string
         default: "main"
-
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Docker image tag"
+        required: true
+        default: "manual"
+      frontend_branch:
+        description: "Frontend branch"
+        required: false
+        default: "main"
+concurrency:
+  group: wisemapping-docker-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   docker-app-publish:
     runs-on: ubuntu-latest
@@ -29,14 +41,25 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build the Full Stack Docker image
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Increase swap
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 8
+      - name: Build & Push the Full Stack Docker image
         run: |
           docker buildx build \
-            --platform linux/amd64 \
+            --progress=plain \
+            --platform linux/arm64 \
             --build-arg FRONTEND_BRANCH=${{ inputs.frontend_branch }} \
             --build-arg CACHEBUST=$(date +%s) \
-            -t wisemapping/wisemapping:${{ inputs.tag }} \
-            -f distribution/app/Dockerfile .
-
-      - name: Push Image to Docker Hub
-        run: docker push wisemapping/wisemapping:${{ inputs.tag }}
+            -t chaien/wisemapping:${{ inputs.tag }} \
+            -t chaien/wisemapping:latest \
+            -f distribution/app/Dockerfile \
+            --push \
+            .

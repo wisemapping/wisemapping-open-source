@@ -6,7 +6,7 @@
 ################################################################################
 # Stage 1: Build Backend (Spring Boot API)
 ################################################################################
-FROM eclipse-temurin:24-jdk-alpine AS backend-builder
+FROM --platform=$BUILDPLATFORM eclipse-temurin:24-jdk-alpine AS backend-builder
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 WORKDIR /build
@@ -29,14 +29,14 @@ RUN mvn clean package -DskipTests \
 ################################################################################
 # Stage 2: Build Frontend (React/TypeScript)
 ################################################################################
-FROM node:22-alpine AS frontend-builder
+FROM --platform=$BUILDPLATFORM node:22-alpine AS frontend-builder
 
 WORKDIR /build
 
 ARG FRONTEND_BRANCH="develop"
 
 # Install git
-RUN apk add --no-cache git
+RUN apk add --no-cache git bash
 
 # Add cache-busting argument to force fresh git clone
 ARG CACHEBUST=1
@@ -52,7 +52,8 @@ RUN sed -i 's|"url": "http://localhost:3000/api/restful/app/config"|"url": "/api
 WORKDIR /build/wisemapping-frontend
 RUN corepack enable && corepack prepare yarn@1.22.22 --activate
 RUN yarn install --network-timeout 100000
-RUN APP_CONFIG_TYPE=file:prod yarn build
+ENV NODE_OPTIONS="--max-old-space-size=6144"
+RUN APP_CONFIG_TYPE=file:prod GENERATE_SOURCEMAP=false yarn build
 
 # Ensure proper base tag for nginx sub_filter replacement:
 # 1. Remove any base tag webpack created (with empty, relative, or absolute href)

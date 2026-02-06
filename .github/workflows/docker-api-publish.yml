@@ -6,7 +6,6 @@ on:
       tag:
         required: true
         type: string
-
 jobs:
   docker-api-publish:
     runs-on: ubuntu-latest
