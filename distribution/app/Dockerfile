@@ -52,7 +52,7 @@ RUN sed -i 's|"url": "http://localhost:3000/api/restful/app/config"|"url": "/api
 WORKDIR /build/wisemapping-frontend
 RUN corepack enable && corepack prepare yarn@1.22.22 --activate
 RUN yarn install --network-timeout 100000
-RUN APP_CONFIG_TYPE=file:prod yarn build
+RUN APP_CONFIG_TYPE=file:prod yarn build --concurrency 1
 
 # Ensure proper base tag for nginx sub_filter replacement:
 # 1. Remove any base tag webpack created (with empty, relative, or absolute href)
