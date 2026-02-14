@@ -68,10 +68,11 @@ mkdir -p /path/to/your/storage
 
 # Create subdirectories for PostgreSQL and logs
 mkdir -p /path/to/your/storage/logs
+mkdir -p /path/to/your/storage/db
 
 # Set proper ownership
 # PostgreSQL runs as UID 999, WiseMapping app runs as UID 1001
-sudo chown -R 999:999 /path/to/your/storage
+sudo chown -R 999:999 /path/to/your/storage/db
 sudo chown -R 1001:1001 /path/to/your/storage/logs
 
 # Or make it world-writable (simpler but less secure)
@@ -135,7 +136,7 @@ When you run `docker-compose up`, the following resources are created:
 - `wisemapping-app` - WiseMapping application (frontend + backend)
 
 ### Data Storage
-- **PostgreSQL Data**: Stored in `${WISEMAPPING_DATA_DIR}/` (the path you specified)
+- **PostgreSQL Data**: Stored in `${WISEMAPPING_DATA_DIR}/db/` (subdirectory)
   - This is a **bind mount** to your host filesystem
   - Data persists independently of containers
   - Easy to backup and manage

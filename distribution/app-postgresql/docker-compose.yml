@@ -30,7 +30,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-wisemapping}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     volumes:
-      - ${WISEMAPPING_DATA_DIR:?WISEMAPPING_DATA_DIR is required - please set the storage path}:/var/lib/postgresql/data
+      - ${WISEMAPPING_DATA_DIR:?WISEMAPPING_DATA_DIR is required - please set the storage path}/db:/var/lib/postgresql/data
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     healthcheck:
