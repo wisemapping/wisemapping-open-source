@@ -27,10 +27,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-
 /**
  * Spam detection strategy that focuses on HTML content in mindmap notes.
  * This strategy detects spam patterns that use HTML to hide content from users,
@@ -48,28 +44,6 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
 
     @Value("${app.mindmap.note.max-length:5000}")
     private int maxNoteLength;
-
-    // Patterns that indicate HTML-based spam (not security threats)
-    private static final List<Pattern> HTML_SPAM_PATTERNS = Arrays.asList(
-            // Hidden text patterns (commonly used to hide spam from users but not from
-            // search engines)
-            Pattern.compile("style\\s*=\\s*[\"']display\\s*:\\s*none[\"']", Pattern.CASE_INSENSITIVE),
-            Pattern.compile("style\\s*=\\s*[\"']visibility\\s*:\\s*hidden[\"']", Pattern.CASE_INSENSITIVE),
-            Pattern.compile("style\\s*=\\s*[\"']position\\s*:\\s*absolute[^\"']*left\\s*:\\s*-[0-9]+px[\"']",
-                    Pattern.CASE_INSENSITIVE),
-
-            // Suspicious color schemes (white text on white background)
-            Pattern.compile("color\\s*:\\s*white[^;]*background\\s*:\\s*white", Pattern.CASE_INSENSITIVE),
-            Pattern.compile("color\\s*:\\s*#fff[^;]*background\\s*:#fff", Pattern.CASE_INSENSITIVE),
-
-            // Hidden input fields (potential form spam)
-            Pattern.compile("<input[^>]*type\\s*=\\s*[\"']hidden[\"'][^>]*>", Pattern.CASE_INSENSITIVE),
-
-            // Meta refresh redirects (common in spam)
-            Pattern.compile("<meta[^>]*http-equiv\\s*=\\s*[\"']refresh[\"'][^>]*>", Pattern.CASE_INSENSITIVE),
-
-            // Excessive links (more than 10 links in a single note)
-            Pattern.compile("(<a[^>]*href[^>]*>.*?</a>.*?){10,}", Pattern.CASE_INSENSITIVE | Pattern.DOTALL));
 
     public HtmlContentStrategy(SpamContentExtractor contentExtractor) {
         this.contentExtractor = contentExtractor;
@@ -151,7 +125,7 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
      * Checks for suspicious HTML patterns that indicate spam.
      */
     private SpamDetectionResult checkHtmlPatterns(String htmlContent) {
-        long suspiciousPatterns = HTML_SPAM_PATTERNS.stream()
+        long suspiciousPatterns = SpamContentExtractor.HTML_SPAM_PATTERNS.stream()
                 .mapToLong(pattern -> {
                     java.util.regex.Matcher matcher = pattern.matcher(htmlContent);
                     long count = 0;
