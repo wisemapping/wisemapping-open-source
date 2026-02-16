@@ -46,9 +46,6 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     private final static Logger logger = LogManager.getLogger();
     private final SpamContentExtractor contentExtractor;
 
-    @Value("${app.batch.spam-detection.html.max-elements:50}")
-    private int maxHtmlElements;
-
     @Value("${app.batch.spam-detection.html.max-ratio:0.7}")
     private double maxHtmlToTextRatio;
 
