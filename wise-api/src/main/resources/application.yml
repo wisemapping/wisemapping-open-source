@@ -229,7 +229,7 @@ app:
         enabled: false  # Disable DescriptionLengthStrategy (can be re-enabled per environment)
       startup-enabled: false  # Enable spam detection on application startup (async)
       months-back: 60  # Only process mindmaps created in the last 60 months
-      version: 8  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
+      version: 9  # Current spam detection version - increment this to skip processing mindmaps with higher or equal version
       service-directory:
         keyword-stuffing-separators: 25  # Number of separator characters (pipes, commas) indicating keyword stuffing
         location-variants: 8  # Number of distinct location variants (cities, neighborhoods) indicating keyword stuffing
