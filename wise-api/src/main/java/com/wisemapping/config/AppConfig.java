@@ -92,8 +92,8 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public com.wisemapping.security.ChatGptOAuth2AuthorizationRequestResolver chatGptOAuth2AuthorizationRequestResolver() {
         // Use custom OIDC repository if available, otherwise use standard repository
-        ClientRegistrationRepository activeRepository = customOidcClientRegistrationRepository != null
-            ? customOidcClientRegistrationRepository
+        ClientRegistrationRepository activeRepository = customOidcClientRegistrationRepository != null 
+            ? customOidcClientRegistrationRepository 
             : clientRegistrationRepository;
             
         if (activeRepository != null) {
@@ -141,8 +141,8 @@ public class AppConfig implements WebMvcConfigurer {
         
         // Determine which client registration repository to use
         // Prefer custom OIDC repository if available, otherwise use standard repository
-        ClientRegistrationRepository activeRepository = customOidcClientRegistrationRepository != null
-            ? customOidcClientRegistrationRepository
+        ClientRegistrationRepository activeRepository = customOidcClientRegistrationRepository != null 
+            ? customOidcClientRegistrationRepository 
             : clientRegistrationRepository;
         
         // Only configure OAuth2 login if at least one registration is defined
