@@ -115,32 +115,20 @@ public class HtmlContentValidator {
      * @return String describing the dangerous pattern found, or null if none found
      */
     private String getDangerousHtmlPattern(String xml) {
-        // Check for script tags
-        if (xml.contains("<script") || xml.contains("</script>")) {
-            return "script tags (<script> or </script>) - these can execute malicious code";
+        if (xml == null || xml.isEmpty()) {
+            return null;
         }
 
-        // Check for iframe tags
-        if (xml.contains("<iframe") || xml.contains("</iframe>")) {
-            return "iframe tags (<iframe>) - these can embed external content";
-        }
-
-        // Check for object/embed tags
-        if (xml.contains("<object")) {
-            return "object tags (<object>) - these can embed external content";
-        }
-        if (xml.contains("<embed")) {
-            return "embed tags (<embed>) - these can embed external content";
-        }
-
-        // Check for form tags
-        if (xml.contains("<form") || xml.contains("</form>")) {
-            return "form tags (<form>) - these can submit data to external sites";
-        }
-
-        // Check for img tags
-        if (xml.contains("<img")) {
-            return "img tags (<img>) - these are not supported in notes";
+        // Check for forbidden tags defined in SpamContentExtractor
+        for (String tagName : SpamContentExtractor.FORBIDDEN_TAGS) {
+            // Check for opening tag
+            if (xml.contains("<" + tagName)) {
+                return tagName + " tags (<" + tagName + ">) - these are not allowed";
+            }
+            // Check for closing tag (just in case, though opening should catch it)
+            if (xml.contains("</" + tagName + ">")) {
+                return tagName + " tags (</" + tagName + ">) - these are not allowed";
+            }
         }
 
         // Check for javascript: URLs (dangerous)

@@ -40,7 +40,8 @@ import java.util.regex.Pattern;
 
 /**
  * Extracts text content from mindmaps for spam detection purposes.
- * This class focuses solely on spam detection and delegates XML parsing to MindmapParser.
+ * This class focuses solely on spam detection and delegates XML parsing to
+ * MindmapParser.
  */
 @Component
 public class SpamContentExtractor {
@@ -48,19 +49,27 @@ public class SpamContentExtractor {
 
     @Value("classpath:spam-keywords.properties")
     private Resource spamKeywordsResource;
-    
+
     @Value("${app.mindmap.note.max-length:10000}")
     private int maxNoteLength;
 
     private List<String> spamKeywords;
-    
+
+    /**
+     * Set of forbidden HTML tags that serve as a strong indicator of spam or
+     * security risk.
+     * These tags are blocked by validation and flagged by spam detection.
+     */
+    public static final java.util.Set<String> FORBIDDEN_TAGS = java.util.Set.of(
+            "script", "object", "iframe", "embed", "form", "input", "img");
+
     @PostConstruct
     public void loadSpamKeywords() {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(spamKeywordsResource.getInputStream()))) {
             spamKeywords = reader.lines()
-                .map(String::trim)
-                .filter(line -> !line.isEmpty() && !line.startsWith("#"))
-                .collect(Collectors.toList());
+                    .map(String::trim)
+                    .filter(line -> !line.isEmpty() && !line.startsWith("#"))
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             logger.error("File could not be loaded.", e);
         }
@@ -70,8 +79,8 @@ public class SpamContentExtractor {
      * Extracts text content from a mindmap model for spam analysis.
      * This method works with the parsed MapModel instead of parsing XML.
      * 
-     * @param mapModel The parsed mindmap model
-     * @param title Optional title from the mindmap entity
+     * @param mapModel    The parsed mindmap model
+     * @param title       Optional title from the mindmap entity
      * @param description Optional description from the mindmap entity
      * @return Extracted text content
      */
@@ -104,11 +113,13 @@ public class SpamContentExtractor {
 
         return content.toString();
     }
-    
+
     /**
      * Extracts text content from a mindmap for spam analysis.
-     * This is a convenience method that parses XML if needed (for backward compatibility).
-     * Prefer using extractTextContent(MapModel, String, String) when you already have a parsed model.
+     * This is a convenience method that parses XML if needed (for backward
+     * compatibility).
+     * Prefer using extractTextContent(MapModel, String, String) when you already
+     * have a parsed model.
      * 
      * @param mindmap The mindmap to analyze
      * @return Extracted text content
@@ -136,10 +147,11 @@ public class SpamContentExtractor {
 
         return content.toString();
     }
-    
+
     /**
      * Checks if the mindmap model contains HTML content in notes.
-     * This is important for spam detection as HTML content can be used to hide spam text.
+     * This is important for spam detection as HTML content can be used to hide spam
+     * text.
      * 
      * @param mapModel The parsed mindmap model
      * @return true if HTML content is found in notes, false otherwise
@@ -158,7 +170,7 @@ public class SpamContentExtractor {
 
         return false;
     }
-    
+
     /**
      * Checks if the mindmap contains HTML content in notes.
      * This is a convenience method for backward compatibility.
@@ -186,11 +198,11 @@ public class SpamContentExtractor {
             return false;
         }
     }
-    
+
     /**
      * Validates note content length for HTML notes.
      * 
-     * @param mindmap The mindmap to validate
+     * @param mindmap   The mindmap to validate
      * @param maxLength Maximum allowed length for note content
      * @return Validation result with details about any violations
      */
@@ -204,16 +216,16 @@ public class SpamContentExtractor {
             if (xml == null) {
                 return new NoteValidationResult(true, "", 0, 0);
             }
-            
+
             // Use the static mindmap parser
             return MindmapUtils.validateNoteContentLength(xml, maxLength);
-            
+
         } catch (Exception e) {
             logger.warn("Error validating note content length for mindmap {}: {}", mindmap.getId(), e.getMessage());
             return new NoteValidationResult(false, "Error validating content: " + e.getMessage(), 0, 0);
         }
     }
-    
+
     /**
      * Counts the number of spam keywords found in the given content.
      * 
@@ -222,8 +234,8 @@ public class SpamContentExtractor {
      */
     public long countSpamKeywords(String lowerContent) {
         return spamKeywords != null ? spamKeywords.stream()
-            .filter(keyword -> lowerContent.contains(keyword))
-            .count() : 0;
+                .filter(keyword -> lowerContent.contains(keyword))
+                .count() : 0;
     }
 
     /**
@@ -244,7 +256,8 @@ public class SpamContentExtractor {
     }
 
     /**
-     * Determines whether the mindmap contains heavy marketing indicators based on keyword matches.
+     * Determines whether the mindmap contains heavy marketing indicators based on
+     * keyword matches.
      *
      * @param mindmap   Mindmap under analysis
      * @param threshold Minimum number of keyword matches required
@@ -255,8 +268,10 @@ public class SpamContentExtractor {
     }
 
     /**
-     * Normalizes content for regex-based pattern detection by removing bullet prefixes and
-     * collapsing whitespace. This makes it easier for pattern strategies to identify contact
+     * Normalizes content for regex-based pattern detection by removing bullet
+     * prefixes and
+     * collapsing whitespace. This makes it easier for pattern strategies to
+     * identify contact
      * information even when formatted with decorative characters.
      *
      * @param content Raw content to normalize
@@ -273,7 +288,7 @@ public class SpamContentExtractor {
 
         return withoutBullets.replaceAll("\\s+", " ").trim();
     }
- 
+
     /**
      * Checks if the given content contains any spam keywords.
      * 
@@ -282,9 +297,9 @@ public class SpamContentExtractor {
      */
     public boolean hasSpamKeywords(String lowerContent) {
         return spamKeywords != null && spamKeywords.stream()
-            .anyMatch(keyword -> lowerContent.contains(keyword));
+                .anyMatch(keyword -> lowerContent.contains(keyword));
     }
-    
+
     /**
      * Gets the list of spam keywords.
      * 
@@ -293,11 +308,11 @@ public class SpamContentExtractor {
     public List<String> getSpamKeywords() {
         return spamKeywords;
     }
-    
+
     /**
      * Counts the number of occurrences of a substring in the given text.
      * 
-     * @param text The text to search in
+     * @param text      The text to search in
      * @param substring The substring to count
      * @return Number of occurrences
      */
@@ -305,7 +320,7 @@ public class SpamContentExtractor {
         if (text == null || substring == null || text.isEmpty() || substring.isEmpty()) {
             return 0;
         }
-        
+
         int count = 0;
         int index = 0;
         while ((index = text.indexOf(substring, index)) != -1) {
@@ -314,9 +329,10 @@ public class SpamContentExtractor {
         }
         return count;
     }
-    
+
     /**
-     * Checks if the mindmap creator's email address belongs to an educational institution.
+     * Checks if the mindmap creator's email address belongs to an educational
+     * institution.
      * This includes educational domains from all countries, such as:
      * - .edu (US)
      * - .edu.xx (many countries: .edu.au, .edu.br, .edu.uk, etc.)
@@ -325,27 +341,29 @@ public class SpamContentExtractor {
      * - .university (generic TLD)
      * - .school (generic TLD)
      * 
-     * Educational institutions are trusted and owners with these email domains are very unlikely to be spammers.
+     * Educational institutions are trusted and owners with these email domains are
+     * very unlikely to be spammers.
      * 
      * @param mindmap The mindmap to check
-     * @return true if the creator's email belongs to an educational institution, false otherwise
+     * @return true if the creator's email belongs to an educational institution,
+     *         false otherwise
      */
     public boolean hasEduOrOrgEmail(Mindmap mindmap) {
         if (mindmap == null) {
             return false;
         }
-        
+
         try {
             com.wisemapping.model.Account creator = mindmap.getCreator();
             if (creator == null) {
                 return false;
             }
-            
+
             String creatorEmail = creator.getEmail();
             if (creatorEmail == null || creatorEmail.trim().isEmpty()) {
                 return false;
             }
-            
+
             // Extract domain from creator's email (everything after @)
             String emailLower = creatorEmail.toLowerCase().trim();
             int atIndex = emailLower.indexOf('@');
@@ -353,33 +371,36 @@ public class SpamContentExtractor {
                 String domain = emailLower.substring(atIndex + 1);
                 return isEducationalDomain(domain);
             }
-            
+
             return false;
         } catch (Exception e) {
-            logger.debug("Error checking creator's email domain for educational institution in mindmap {}: {}", mindmap.getId(), e.getMessage());
+            logger.debug("Error checking creator's email domain for educational institution in mindmap {}: {}",
+                    mindmap.getId(), e.getMessage());
             return false;
         }
     }
-    
+
     /**
      * Checks if a domain belongs to an educational institution.
      * Supports international educational domain patterns from various countries.
      * 
-     * @param domain The domain to check (e.g., "university.edu.au", "example.ac.uk")
-     * @return true if the domain appears to be from an educational institution, false otherwise
+     * @param domain The domain to check (e.g., "university.edu.au",
+     *               "example.ac.uk")
+     * @return true if the domain appears to be from an educational institution,
+     *         false otherwise
      */
     private boolean isEducationalDomain(String domain) {
         if (domain == null || domain.isEmpty()) {
             return false;
         }
-        
+
         String domainLower = domain.toLowerCase();
-        
+
         // Check for generic educational TLDs
         if (domainLower.endsWith(".university") || domainLower.endsWith(".school")) {
             return true;
         }
-        
+
         // Check for .edu (US) or .edu.xx (international educational domains)
         // Examples: .edu, .edu.au, .edu.br, .edu.uk, .edu.mx, etc.
         if (domainLower.contains(".edu")) {
@@ -388,19 +409,19 @@ public class SpamContentExtractor {
                 return true;
             }
         }
-        
+
         // Check for .ac.xx (academic domains used in many countries)
         // Examples: .ac.uk, .ac.jp, .ac.za, .ac.nz, .ac.in, etc.
         if (domainLower.matches(".*\\.ac\\.[a-z]{2,3}(\\.[a-z]{2})?$")) {
             return true;
         }
-        
+
         // Check for .sch.xx (school domains used in some countries)
         // Examples: .sch.uk, .sch.za, etc.
         if (domainLower.matches(".*\\.sch\\.[a-z]{2,3}(\\.[a-z]{2})?$")) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -414,20 +435,21 @@ public class SpamContentExtractor {
         if (noteContent == null || noteContent.trim().isEmpty()) {
             return new NoteCharacterCount(0, 0, false, maxNoteLength);
         }
-        
+
         boolean isHtml = isHtmlContent(noteContent);
         int rawLength = noteContent.length();
-        
+
         // For HTML content, also count the text content length
         int textLength = rawLength;
         if (isHtml) {
             String plainTextContent = MindmapParser.extractPlainTextContent(noteContent);
             textLength = plainTextContent.length();
         }
-        
-        // Use text content length for remaining chars calculation to align with frontend
+
+        // Use text content length for remaining chars calculation to align with
+        // frontend
         int remainingChars = maxNoteLength - textLength;
-        
+
         return new NoteCharacterCount(rawLength, textLength, isHtml, remainingChars, maxNoteLength);
     }
 
@@ -451,14 +473,14 @@ public class SpamContentExtractor {
         if (content == null || content.trim().isEmpty()) {
             return false;
         }
-        
+
         return content.contains("<") && content.contains(">") &&
-               (content.contains("<p>") || content.contains("<div>") ||
-                content.contains("<span>") || content.contains("<a ") ||
-                content.contains("<script>") || content.contains("<iframe>") ||
-                content.contains("<img") || content.contains("<br") ||
-                content.contains("<strong>") || content.contains("<em>") ||
-                content.matches(".*<[a-zA-Z][a-zA-Z0-9]*[^>]*>.*"));
+                (content.contains("<p>") || content.contains("<div>") ||
+                        content.contains("<span>") || content.contains("<a ") ||
+                        content.contains("<script>") || content.contains("<iframe>") ||
+                        content.contains("<img") || content.contains("<br") ||
+                        content.contains("<strong>") || content.contains("<em>") ||
+                        content.matches(".*<[a-zA-Z][a-zA-Z0-9]*[^>]*>.*"));
     }
 
     /**
@@ -471,7 +493,7 @@ public class SpamContentExtractor {
         if (content == null || content.trim().isEmpty()) {
             return content;
         }
-        
+
         try {
             return MindmapParser.sanitizeHtmlContent(content);
         } catch (Exception e) {
@@ -490,14 +512,13 @@ public class SpamContentExtractor {
         if (content == null || content.trim().isEmpty()) {
             return 0;
         }
-        
+
         String lowerContent = content.toLowerCase();
         return (int) spamKeywords.stream()
                 .filter(keyword -> lowerContent.contains(keyword))
                 .count();
     }
-    
-    
+
     /**
      * Result class for note character counting.
      */
@@ -507,7 +528,7 @@ public class SpamContentExtractor {
         private final boolean isHtml;
         private final int remainingChars;
         private final int maxLength;
-        
+
         public NoteCharacterCount(int rawLength, int textLength, boolean isHtml, int remainingChars, int maxLength) {
             this.rawLength = rawLength;
             this.textLength = textLength;
@@ -515,7 +536,7 @@ public class SpamContentExtractor {
             this.remainingChars = remainingChars;
             this.maxLength = maxLength;
         }
-        
+
         public NoteCharacterCount(int rawLength, int textLength, boolean isHtml, int maxLength) {
             this.rawLength = rawLength;
             this.textLength = textLength;
@@ -523,13 +544,33 @@ public class SpamContentExtractor {
             this.remainingChars = maxLength - rawLength;
             this.maxLength = maxLength;
         }
-        
-        public int getRawLength() { return rawLength; }
-        public int getTextLength() { return textLength; }
-        public boolean isHtml() { return isHtml; }
-        public int getRemainingChars() { return remainingChars; }
-        public int getMaxLength() { return maxLength; }
-        public boolean isOverLimit() { return textLength > maxLength; }
-        public double getUsagePercentage() { return maxLength > 0 ? (textLength / (double)maxLength) * 100.0 : 0.0; }
+
+        public int getRawLength() {
+            return rawLength;
+        }
+
+        public int getTextLength() {
+            return textLength;
+        }
+
+        public boolean isHtml() {
+            return isHtml;
+        }
+
+        public int getRemainingChars() {
+            return remainingChars;
+        }
+
+        public int getMaxLength() {
+            return maxLength;
+        }
+
+        public boolean isOverLimit() {
+            return textLength > maxLength;
+        }
+
+        public double getUsagePercentage() {
+            return maxLength > 0 ? (textLength / (double) maxLength) * 100.0 : 0.0;
+        }
     }
 }
