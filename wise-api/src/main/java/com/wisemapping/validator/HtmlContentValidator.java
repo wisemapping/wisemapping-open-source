@@ -131,6 +131,13 @@ public class HtmlContentValidator {
             }
         }
 
+        // Check for spam patterns defined in SpamContentExtractor
+        for (java.util.regex.Pattern pattern : SpamContentExtractor.HTML_SPAM_PATTERNS) {
+            if (pattern.matcher(xml).find()) {
+                return "Spam pattern detected: " + pattern.toString();
+            }
+        }
+
         // Check for javascript: URLs (dangerous)
         if (xml.toLowerCase().contains("javascript:")) {
             return "javascript: URLs - these can execute malicious code";
