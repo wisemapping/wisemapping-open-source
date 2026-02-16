@@ -107,12 +107,6 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
                 return patternResult;
             }
 
-            // Check HTML element count
-            SpamDetectionResult elementCountResult = checkHtmlElementCount(mapModel);
-            if (elementCountResult.isSpam()) {
-                return elementCountResult;
-            }
-
             // Check HTML to text ratio
             SpamDetectionResult ratioResult = checkHtmlToTextRatio(htmlContent);
             if (ratioResult.isSpam()) {
@@ -185,42 +179,6 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
     }
 
     /**
-     * Checks if the HTML element count exceeds the threshold.
-     */
-    private SpamDetectionResult checkHtmlElementCount(MapModel mapModel) {
-        long htmlElementCount = countHtmlElements(mapModel);
-
-        if (htmlElementCount > maxHtmlElements) {
-            return new SpamDetectionResult(true,
-                    "Excessive HTML elements detected",
-                    String.format("Found %d HTML elements, threshold: %d", htmlElementCount, maxHtmlElements),
-                    SpamStrategyType.HTML_CONTENT);
-        }
-
-        return SpamDetectionResult.notSpam();
-    }
-
-    /**
-     * Counts HTML elements in the mindmap model.
-     * Only counts suspicious/non-formatting HTML elements, excluding common text
-     * formatting tags.
-     */
-    private long countHtmlElements(MapModel mapModel) {
-        long count = 0;
-
-        // Count HTML tags in all notes
-        for (Topic topic : mapModel.getAllTopics()) {
-            String note = topic.getNote();
-            if (note != null && !note.trim().isEmpty() && contentExtractor.isHtmlContent(note)) {
-                // Count only suspicious HTML tags (exclude text formatting tags)
-                count += countSuspiciousHtmlElements(note);
-            }
-        }
-
-        return count;
-    }
-
-    /**
      * Counts only suspicious HTML elements, excluding common text formatting tags.
      * Text formatting tags (h1-h6, p, b, strong, i, em, u, ul, ol, li, br, span,
      * div, etc.)
@@ -260,7 +218,8 @@ public class HtmlContentStrategy implements SpamDetectionStrategy {
                 "cite", "q", // Citations and quotes
                 "time", // Time elements
                 "wbr", // Word break opportunities
-                "img" // Images - handled by HtmlContentValidator, not considered spam here
+                "img", // Images - handled by HtmlContentValidator, not considered spam here
+                "font" // Font styling
         );
 
         long suspiciousCount = 0;
