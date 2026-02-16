@@ -1,0 +1,79 @@
+# Example configuration for custom OIDC provider
+# Copy this to your application.yml or application-{profile}.yml and modify as needed
+
+app:
+  oidc:
+    custom:
+      # Enable custom OIDC provider
+      enabled: true
+      
+      # Display name for the provider (shown in UI)
+      name: "My Company SSO"
+      
+      # OAuth2 client credentials (obtain from your OIDC provider)
+      client-id: "your-client-id-here"
+      client-secret: "your-client-secret-here"
+      
+      # OIDC issuer URI (discovery endpoint)
+      # This should point to your OIDC provider's .well-known/openid_configuration endpoint
+      issuer-uri: "https://auth.company.com/realms/wisemapping"
+      
+      # OAuth2 scopes to request (optional, defaults to "openid,profile,email")
+      scope: "openid,profile,email"
+      
+      # Username attribute from OIDC user info (optional, defaults to "sub")
+      # Common values: "sub", "preferred_username", "email"
+      user-name-attribute: "preferred_username"
+      
+      # Manual endpoint configuration (optional, auto-discovered if not set)
+      # Only set these if your OIDC provider doesn't support discovery
+      # authorization-uri: "https://auth.company.com/realms/wisemapping/protocol/openid-connect/auth"
+      # token-uri: "https://auth.company.com/realms/wisemapping/protocol/openid-connect/token"
+      # user-info-uri: "https://auth.company.com/realms/wisemapping/protocol/openid-connect/userinfo"
+      # jwk-set-uri: "https://auth.company.com/realms/wisemapping/protocol/openid-connect/certs"
+
+# Example configurations for popular OIDC providers:
+
+# Keycloak:
+# app:
+#   oidc:
+#     custom:
+#       enabled: true
+#       name: "Keycloak SSO"
+#       client-id: "wisemapping"
+#       client-secret: "your-secret"
+#       issuer-uri: "https://keycloak.company.com/realms/wisemapping"
+#       user-name-attribute: "preferred_username"
+
+# Auth0:
+# app:
+#   oidc:
+#     custom:
+#       enabled: true
+#       name: "Auth0 SSO"
+#       client-id: "your-auth0-client-id"
+#       client-secret: "your-auth0-client-secret"
+#       issuer-uri: "https://your-domain.auth0.com/"
+#       user-name-attribute: "email"
+
+# Okta:
+# app:
+#   oidc:
+#     custom:
+#       enabled: true
+#       name: "Okta SSO"
+#       client-id: "your-okta-client-id"
+#       client-secret: "your-okta-client-secret"
+#       issuer-uri: "https://your-domain.okta.com/oauth2/default"
+#       user-name-attribute: "email"
+
+# Azure AD:
+# app:
+#   oidc:
+#     custom:
+#       enabled: true
+#       name: "Azure AD SSO"
+#       client-id: "your-azure-client-id"
+#       client-secret: "your-azure-client-secret"
+#       issuer-uri: "https://login.microsoftonline.com/your-tenant-id/v2.0"
+#       user-name-attribute: "email"

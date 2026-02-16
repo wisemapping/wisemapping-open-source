@@ -86,10 +86,18 @@ public class AppConfig implements WebMvcConfigurer {
     @Autowired(required = false)
     private ClientRegistrationRepository clientRegistrationRepository;
     
+    @Autowired(required = false)
+    private ClientRegistrationRepository customOidcClientRegistrationRepository;
+    
     @Bean
     public com.wisemapping.security.ChatGptOAuth2AuthorizationRequestResolver chatGptOAuth2AuthorizationRequestResolver() {
-        if (clientRegistrationRepository != null) {
-            return new com.wisemapping.security.ChatGptOAuth2AuthorizationRequestResolver(clientRegistrationRepository);
+        // Use custom OIDC repository if available, otherwise use standard repository
+        ClientRegistrationRepository activeRepository = customOidcClientRegistrationRepository != null
+            ? customOidcClientRegistrationRepository
+            : clientRegistrationRepository;
+            
+        if (activeRepository != null) {
+            return new com.wisemapping.security.ChatGptOAuth2AuthorizationRequestResolver(activeRepository);
         }
         return null;
     }
@@ -131,12 +139,18 @@ public class AppConfig implements WebMvcConfigurer {
                             }
                         }));
         
+        // Determine which client registration repository to use
+        // Prefer custom OIDC repository if available, otherwise use standard repository
+        ClientRegistrationRepository activeRepository = customOidcClientRegistrationRepository != null
+            ? customOidcClientRegistrationRepository
+            : clientRegistrationRepository;
+        
         // Only configure OAuth2 login if at least one registration is defined
-        boolean isOAuth2Enabled = (oauth2AuthenticationSuccessHandler != null) &&
-                                   (clientRegistrationRepository != null);
+        boolean isOAuth2Enabled = (oauth2AuthenticationSuccessHandler != null) && (activeRepository != null);
         if (isOAuth2Enabled) {
             var chatGptResolver = chatGptOAuth2AuthorizationRequestResolver();
             http.oauth2Login(oauth2 -> oauth2
+                    .clientRegistrationRepository(activeRepository)
                     .authorizationEndpoint(authorization -> {
                         if (chatGptResolver != null) {
                             authorization.authorizationRequestResolver(chatGptResolver);
