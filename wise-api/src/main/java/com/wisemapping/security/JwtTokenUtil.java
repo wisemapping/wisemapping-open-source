@@ -25,7 +25,6 @@ public class JwtTokenUtil implements Serializable {
     final private Logger logger = LogManager.getLogger();
     public final static String BEARER_TOKEN_PREFIX = "Bearer ";
 
-
     @Value("${app.jwt.secret}")
     private String jwtSecret;
 
@@ -38,20 +37,24 @@ public class JwtTokenUtil implements Serializable {
     @Autowired
     private MetricsService metricsService;
 
-
     public String generateJwtToken(@NotNull final UserDetails user) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .subject(user.getUsername())
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtExpirationMin * 1000L * 60))
                 .signWith(key())
                 .compact();
+
+        if (token.length() > 3500) {
+            logger.error("JWT token size ({}) exceeds safe threshold for browser cookies (3500 bytes). User: {}",
+                    token.length(), user.getUsername());
+        }
+        return token;
     }
 
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
-
 
     @Nullable
     public String extractFromJwtToken(String token) {
