@@ -45,6 +45,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import org.springframework.security.core.AuthenticationException;
+
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Locale;
 
@@ -115,9 +117,10 @@ public class GlobalExceptionHandler {
     public RestErrors handleRateLimitExceeded(@NotNull RequestNotPermitted ex) {
         logger.debug("Rate limit exceeded: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ?
-                messageSource.getMessage("RATE_LIMIT_EXCEEDED", null, "Too many requests. Please try again later.", locale) :
-                "Too many requests. Please try again later.";
+        String message = messageSource != null
+                ? messageSource.getMessage("RATE_LIMIT_EXCEEDED", null, "Too many requests. Please try again later.",
+                        locale)
+                : "Too many requests. Please try again later.";
         return new RestErrors(message, Severity.WARNING);
     }
 
@@ -134,9 +137,10 @@ public class GlobalExceptionHandler {
     public RestErrors handleAuthException(@NotNull final AuthenticationCredentialsNotFoundException ex) {
         logger.debug(ex.getMessage(), ex);
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ? 
-            messageSource.getMessage("AUTHENTICATION_SESSION_EXPIRED", null, "Authentication exception. Session must be expired. Try logging again.", locale) :
-            "Authentication exception. Session must be expired. Try logging again.";
+        String message = messageSource != null
+                ? messageSource.getMessage("AUTHENTICATION_SESSION_EXPIRED", null,
+                        "Authentication exception. Session must be expired. Try logging again.", locale)
+                : "Authentication exception. Session must be expired. Try logging again.";
         return new RestErrors(message, Severity.INFO);
     }
 
@@ -146,9 +150,9 @@ public class GlobalExceptionHandler {
     public RestErrors handleAuthorizationDeniedException(@NotNull final AuthorizationDeniedException ex) {
         logger.debug("Authorization denied: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ? 
-            messageSource.getMessage("AUTHORIZATION_ACCESS_DENIED", null, "Access denied. The map may have been deleted or you don't have permission to access it.", locale) :
-            "Access denied. The map may have been deleted or you don't have permission to access it.";
+        String message = messageSource != null ? messageSource.getMessage("AUTHORIZATION_ACCESS_DENIED", null,
+                "Access denied. The map may have been deleted or you don't have permission to access it.", locale)
+                : "Access denied. The map may have been deleted or you don't have permission to access it.";
         return new RestErrors(message, Severity.WARNING);
     }
 
@@ -166,22 +170,25 @@ public class GlobalExceptionHandler {
     public RestErrors handleJSONErrors(@NotNull JsonHttpMessageNotReadableException ex) {
         logger.error(ex.getMessage(), ex);
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ? 
-            messageSource.getMessage("COMMUNICATION_ERROR", null, "Communication error", locale) :
-            "Communication error";
+        String message = messageSource != null
+                ? messageSource.getMessage("COMMUNICATION_ERROR", null, "Communication error", locale)
+                : "Communication error";
         return new RestErrors(message, Severity.SEVERE);
     }
 
     @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public RestErrors handleHttpMessageNotReadableException(@NotNull org.springframework.http.converter.HttpMessageNotReadableException ex) {
-        // Log at DEBUG level since this is usually a client error (missing request body)
+    public RestErrors handleHttpMessageNotReadableException(
+            @NotNull org.springframework.http.converter.HttpMessageNotReadableException ex) {
+        // Log at DEBUG level since this is usually a client error (missing request
+        // body)
         logger.debug("HTTP message not readable: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ? 
-            messageSource.getMessage("INVALID_REQUEST", null, "Invalid request. Required request body is missing or malformed.", locale) :
-            "Invalid request. Required request body is missing or malformed.";
+        String message = messageSource != null
+                ? messageSource.getMessage("INVALID_REQUEST", null,
+                        "Invalid request. Required request body is missing or malformed.", locale)
+                : "Invalid request. Required request body is missing or malformed.";
         return new RestErrors(message, Severity.WARNING);
     }
 
@@ -216,9 +223,9 @@ public class GlobalExceptionHandler {
     public RestErrors handleAccountDisabledException(@NotNull AccountDisabledException ex) {
         logger.debug("Account disabled/not activated: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ? 
-            messageSource.getMessage("ACCOUNT_DISABLED", null, "Your account has not been activated yet. Please check your email for activation instructions.", locale) :
-            "Your account has not been activated yet. Please check your email for activation instructions.";
+        String message = messageSource != null ? messageSource.getMessage("ACCOUNT_DISABLED", null,
+                "Your account has not been activated yet. Please check your email for activation instructions.", locale)
+                : "Your account has not been activated yet. Please check your email for activation instructions.";
         return new RestErrors(message, Severity.WARNING);
     }
 
@@ -228,9 +235,10 @@ public class GlobalExceptionHandler {
     public RestErrors handleAccountSuspendedException(@NotNull AccountSuspendedException ex) {
         logger.debug("Account suspended: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ? 
-            messageSource.getMessage("ACCOUNT_SUSPENDED", null, "Your account has been suspended. Please contact support for assistance.", locale) :
-            "Your account has been suspended. Please contact support for assistance.";
+        String message = messageSource != null
+                ? messageSource.getMessage("ACCOUNT_SUSPENDED", null,
+                        "Your account has been suspended. Please contact support for assistance.", locale)
+                : "Your account has been suspended. Please contact support for assistance.";
         return new RestErrors(message, Severity.WARNING);
     }
 
@@ -240,9 +248,9 @@ public class GlobalExceptionHandler {
     public RestErrors handleLockedException(@NotNull LockedException ex) {
         logger.debug("Account locked/not activated: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ? 
-            messageSource.getMessage("ACCOUNT_NOT_ACTIVATED_YET", null, "Your account has not been activated yet. Please check your email for the activation link.", locale) :
-            "Your account has not been activated yet. Please check your email for the activation link.";
+        String message = messageSource != null ? messageSource.getMessage("ACCOUNT_NOT_ACTIVATED_YET", null,
+                "Your account has not been activated yet. Please check your email for the activation link.", locale)
+                : "Your account has not been activated yet. Please check your email for the activation link.";
         return new RestErrors(message, Severity.WARNING);
     }
 
@@ -252,9 +260,24 @@ public class GlobalExceptionHandler {
     public RestErrors handleBadCredentialsException(@NotNull BadCredentialsException ex) {
         logger.debug("Bad credentials: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
-        String message = messageSource != null ? 
-            messageSource.getMessage("INVALID_CREDENTIALS", null, "Invalid email or password. Please try again.", locale) :
-            "Invalid email or password. Please try again.";
+        String message = messageSource != null
+                ? messageSource.getMessage("INVALID_CREDENTIALS", null, "Invalid email or password. Please try again.",
+                        locale)
+                : "Invalid email or password. Please try again.";
+        return new RestErrors(message, Severity.WARNING);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestErrors handleAuthenticationException(@NotNull AuthenticationException ex) {
+        // Log at DEBUG level to avoid ERROR logs for expected auth failures
+        logger.debug("Authentication failed: {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource != null
+                ? messageSource.getMessage("INVALID_CREDENTIALS", null, "Invalid email or password. Please try again.",
+                        locale)
+                : "Invalid email or password. Please try again.";
         return new RestErrors(message, Severity.WARNING);
     }
 
@@ -264,7 +287,7 @@ public class GlobalExceptionHandler {
     public RestErrors handleWrongAuthenticationTypeException(@NotNull WrongAuthenticationTypeException ex) {
         logger.debug("Wrong authentication type: {}", ex.getMessage());
         final Locale locale = LocaleContextHolder.getLocale();
-        
+
         // Provide specific message based on the authentication type
         String messageKey;
         String defaultMessage;
@@ -286,10 +309,9 @@ public class GlobalExceptionHandler {
                 defaultMessage = "This account uses external authentication. Please use the appropriate sign-in method.";
                 break;
         }
-        
-        String message = messageSource != null ? 
-            messageSource.getMessage(messageKey, null, defaultMessage, locale) :
-            defaultMessage;
+
+        String message = messageSource != null ? messageSource.getMessage(messageKey, null, defaultMessage, locale)
+                : defaultMessage;
         return new RestErrors(message, Severity.WARNING);
     }
 
@@ -307,13 +329,14 @@ public class GlobalExceptionHandler {
     public RestErrors handleUserRegistrationException(@NotNull UserRegistrationException ex) {
         logger.error("User registration failed: {}", ex.getMessage(), ex);
         final Locale locale = LocaleContextHolder.getLocale();
-        
+
         // Use a more specific error message if available, otherwise use generic one
         String message = ex.getMessage();
         if (message == null || message.isEmpty() || message.equals("User registration failed")) {
-            message = messageSource != null ? 
-                messageSource.getMessage("USER_REGISTRATION_ERROR", null, "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.", locale) :
-                "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.";
+            message = messageSource != null ? messageSource.getMessage("USER_REGISTRATION_ERROR", null,
+                    "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.",
+                    locale)
+                    : "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.";
         }
         return new RestErrors(message, Severity.SEVERE, ex.getCause() != null ? ex.getCause().getMessage() : null);
     }
@@ -328,8 +351,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(OAuthAuthenticationException.class)
     public Object handleOAuthErrors(@NotNull OAuthAuthenticationException ex,
-                                    @NotNull HttpServletRequest request,
-                                    @NotNull HttpServletResponse response) {
+            @NotNull HttpServletRequest request,
+            @NotNull HttpServletResponse response) {
         logger.error("OAuth authentication error: {}", ex.getMessage(), ex);
         if (isApiRequest(request)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -343,11 +366,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public Object handleServerErrors(@NotNull Exception ex,
-                                     @NotNull HttpServletRequest request,
-                                     @NotNull HttpServletResponse response) {
+            @NotNull HttpServletRequest request,
+            @NotNull HttpServletResponse response) {
         // Log at DEBUG level for expected exceptions to avoid ERROR logs
-        if (ex instanceof AccessDeniedSecurityException || ex instanceof InvalidEmailException || 
-            ex instanceof ValidationException || ex instanceof ClientException) {
+        if (ex instanceof AccessDeniedSecurityException || ex instanceof InvalidEmailException ||
+                ex instanceof ValidationException || ex instanceof ClientException) {
             logger.debug("Expected exception handled: {}", ex.getMessage());
         } else {
             logger.error(ex.getMessage(), ex);
