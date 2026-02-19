@@ -196,12 +196,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestErrors handleSecurityErrors(@NotNull UndeclaredThrowableException ex) {
-        logger.error(ex.getMessage(), ex);
         final Throwable cause = ex.getCause();
         RestErrors result;
         if (cause instanceof ClientException) {
+            logger.debug("Expected exception handled: {}", cause.getMessage());
             result = handleClientErrors((ClientException) cause);
         } else {
+            logger.error(ex.getMessage(), ex);
             result = new RestErrors(ex.getMessage(), Severity.INFO);
         }
         return result;
