@@ -155,6 +155,10 @@ logging:
         catalina:
           core:
             StandardWrapperValve: OFF
+      springframework:
+        web:
+          servlet:
+            DispatcherServlet: DEBUG
     root: INFO
     com:
       wisemapping:
