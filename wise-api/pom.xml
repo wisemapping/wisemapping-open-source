@@ -9,13 +9,13 @@
 
     <groupId>org.wisemapping</groupId>
     <artifactId>wise-api</artifactId>
-    <version>6.0.1-SNAPSHOT</version>
+    <version>6.0.6-SNAPSHOT</version>
 
     <name>WiseMapping API</name>
     <url>https://www.wisemapping.org</url>
 
     <properties>
-        <com.wisemapping.version>6.0.1-SNAPSHOT</com.wisemapping.version>
+        <com.wisemapping.version>6.0.6-SNAPSHOT</com.wisemapping.version>
         <maven.compiler.source>24</maven.compiler.source>
         <maven.compiler.target>24</maven.compiler.target>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
@@ -236,6 +236,15 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-otlp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-otel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
         </dependency>
 
     </dependencies>
