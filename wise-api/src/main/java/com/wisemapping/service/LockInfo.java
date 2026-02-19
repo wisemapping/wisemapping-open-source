@@ -64,7 +64,7 @@ public class LockInfo {
     public String toString() {
         return "LockInfo{" +
                 "user=" + user +
-                ", timeout=" + timeout +
+                ", timeout=" + (timeout != null ? timeout.toInstant() : null) +
                 ", mapId=" + mapId +
                 '}';
     }
