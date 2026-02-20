@@ -201,6 +201,9 @@ public class GlobalExceptionHandler {
         if (cause instanceof ClientException) {
             logger.debug("Expected exception handled: {}", cause.getMessage());
             result = handleClientErrors((ClientException) cause);
+        } else if (cause instanceof ValidationException) {
+            logger.debug("Expected exception handled: {}", cause.getMessage());
+            result = new RestErrors(((ValidationException) cause).getErrors(), messageSource);
         } else {
             logger.error(ex.getMessage(), ex);
             result = new RestErrors(ex.getMessage(), Severity.INFO);
