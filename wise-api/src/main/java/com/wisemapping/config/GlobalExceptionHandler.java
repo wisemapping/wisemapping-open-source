@@ -192,20 +192,45 @@ public class GlobalExceptionHandler {
         return new RestErrors(message, Severity.WARNING);
     }
 
+    private static final java.util.List<Class<? extends Throwable>> EXPECTED_EXCEPTIONS = java.util.Arrays.asList(
+            AccessDeniedSecurityException.class,
+            InvalidEmailException.class,
+            ValidationException.class,
+            ClientException.class);
+
+    private Throwable getExpectedException(Throwable ex) {
+        if (ex == null) {
+            return null;
+        }
+        for (Class<? extends Throwable> expectedClass : EXPECTED_EXCEPTIONS) {
+            if (expectedClass.isInstance(ex)) {
+                return ex;
+            }
+        }
+        return getExpectedException(ex.getCause());
+    }
+
+    private boolean isExpectedException(Throwable ex) {
+        return getExpectedException(ex) != null;
+    }
+
     @ExceptionHandler(java.lang.reflect.UndeclaredThrowableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestErrors handleSecurityErrors(@NotNull UndeclaredThrowableException ex) {
-        final Throwable cause = ex.getCause();
-        RestErrors result;
-        if (cause instanceof ClientException) {
-            logger.debug("Expected exception handled: {}", cause.getMessage());
-            result = handleClientErrors((ClientException) cause);
-        } else {
-            logger.error(ex.getMessage(), ex);
-            result = new RestErrors(ex.getMessage(), Severity.INFO);
+        final Throwable expected = getExpectedException(ex.getCause());
+        if (expected != null) {
+            logger.debug("Expected nested exception handled: {}", expected.getMessage());
+            if (expected instanceof ClientException) {
+                return handleClientErrors((ClientException) expected);
+            } else if (expected instanceof ValidationException) {
+                return new RestErrors(((ValidationException) expected).getErrors(), messageSource);
+            }
+            return new RestErrors(expected.getMessage(), Severity.INFO);
         }
-        return result;
+
+        logger.error(ex.getMessage(), ex);
+        return new RestErrors(ex.getMessage(), Severity.INFO);
     }
 
     @ExceptionHandler(UserCouldNotBeAuthException.class)
@@ -370,8 +395,7 @@ public class GlobalExceptionHandler {
             @NotNull HttpServletRequest request,
             @NotNull HttpServletResponse response) {
         // Log at DEBUG level for expected exceptions to avoid ERROR logs
-        if (ex instanceof AccessDeniedSecurityException || ex instanceof InvalidEmailException ||
-                ex instanceof ValidationException || ex instanceof ClientException) {
+        if (isExpectedException(ex)) {
             logger.debug("Expected exception handled: {}", ex.getMessage());
         } else {
             logger.error(ex.getMessage(), ex);
