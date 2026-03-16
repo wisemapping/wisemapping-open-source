@@ -159,7 +159,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     @ResponseBody
     public ResponseEntity<RestErrors> handleValidationErrors(@NotNull final ValidationException ex) {
-        logger.debug(ex.getMessage(), ex);
+        logger.debug("Validation error: {}", ex.getMessage());
         RestErrors error = new RestErrors(ex.getErrors(), messageSource);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
@@ -220,8 +220,13 @@ public class GlobalExceptionHandler {
     public RestErrors handleSecurityErrors(@NotNull UndeclaredThrowableException ex) {
         final Throwable expected = getExpectedException(ex.getCause());
         if (expected != null) {
-            logger.debug("Expected nested exception handled: {}", expected.getMessage());
+            if (!(expected instanceof LockException)) {
+                logger.debug("Expected nested exception handled: {}", expected.getMessage());
+            }
             if (expected instanceof ClientException) {
+                if (expected instanceof LockException) {
+                    return handleLockException((LockException) expected);
+                }
                 return handleClientErrors((ClientException) expected);
             } else if (expected instanceof ValidationException) {
                 return new RestErrors(((ValidationException) expected).getErrors(), messageSource);
@@ -339,6 +344,15 @@ public class GlobalExceptionHandler {
         String message = messageSource != null ? messageSource.getMessage(messageKey, null, defaultMessage, locale)
                 : defaultMessage;
         return new RestErrors(message, Severity.WARNING);
+    }
+
+    @ExceptionHandler(LockException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestErrors handleLockException(@NotNull LockException ex) {
+        logger.warn(ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        return new RestErrors(ex.getMessage(messageSource, locale), ex.getSeverity(), ex.getTechInfo());
     }
 
     @ExceptionHandler(ClientException.class)

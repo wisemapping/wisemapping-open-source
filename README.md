@@ -7,7 +7,7 @@ WiseMapping is a free, open-source, web-based mind mapping tool designed for ind
 WiseMapping provides a comprehensive set of features for creating, managing, and sharing mind maps:
 
 - **🎨 Visual Mapping**: Create rich mind maps with icons, colors, fonts, and custom styling
-- **👥 Collaboration**: Share mind maps with team members and collaborate in real-time
+- **👥 Collaboration**: Share mind maps with team members with role-based access control
 - **📱 Multi-platform**: Access your maps from any device with a modern web browser
 - **📊 Export & Import**: Import existing maps from Freeplane, XMind, and Mind Manager. Export mind maps to PDF, SVG, Freeplane, and other formats
 - **🔗 Document Linking**: Integrate external documents and resources into your mind maps
