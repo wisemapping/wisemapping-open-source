@@ -85,7 +85,9 @@ RUN mkdir -p /app \
     /var/log/supervisor \
     /run/nginx \
     /usr/share/nginx/html \
-    /var/lib/nginx
+    /var/lib/nginx && \
+    mkdir -p /var/lib/nginx/tmp/client_body && \
+    chown -R 100:101 /var/lib/nginx/tmp
 
 # Copy backend JAR
 COPY --from=backend-builder --chown=wisemapping:wisemapping /build/wise-api/target/wisemapping-api.jar /app/wisemapping-api.jar
