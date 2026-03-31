@@ -36,6 +36,7 @@ public class RestUserRegistration {
     private String lastname;
     private String password;
     private String recaptcha;
+    private boolean acceptedTerms;
 
     @JsonIgnore
     public Account build() {
@@ -74,5 +75,9 @@ public class RestUserRegistration {
 
     public String getRecaptcha() {
         return recaptcha;
+    }
+
+    public boolean isAcceptedTerms() {
+        return acceptedTerms;
     }
 }

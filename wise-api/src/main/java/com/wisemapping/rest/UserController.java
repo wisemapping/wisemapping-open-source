@@ -91,6 +91,10 @@ public class UserController {
             throw new WiseMappingException("Registration is disabled. You can enable it using app.registration.enabled");
         }
 
+        if (!registration.isAcceptedTerms()) {
+            throw new WiseMappingException("You must accept the Terms of Use and Privacy Policy to register.");
+        }
+
         if (registration.getPassword().length() < Account.MIN_PASSWORD_LENGTH_SIZE) {
             throw new PasswordTooShortException();
         }
