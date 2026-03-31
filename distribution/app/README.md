@@ -178,7 +178,7 @@ Mount a custom `application.yml` configuration file:
 # application.yml
 app:
   admin:
-    user: admin@wisemapping.com
+    user: admin@wisemapping.org
   mail:
     sender-email: noreply@wisemapping.com
     enabled: true

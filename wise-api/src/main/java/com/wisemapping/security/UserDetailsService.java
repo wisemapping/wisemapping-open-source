@@ -55,7 +55,7 @@ public class UserDetailsService
     }
 
     private boolean isAdmin(@Nullable String email) {
-        return email != null && adminUser != null && email.trim().endsWith(adminUser);
+        return email != null && adminUser != null && email.trim().equals(adminUser);
     }
 
     public UserService getUserService() {

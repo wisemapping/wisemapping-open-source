@@ -60,7 +60,7 @@ public class AccountController {
     private String adminUser;
 
     private boolean isAdmin(String email) {
-        return email != null && adminUser != null && email.trim().endsWith(adminUser);
+        return email != null && adminUser != null && email.trim().equals(adminUser);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/password", consumes = {"text/plain"})
