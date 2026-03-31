@@ -286,8 +286,8 @@ public class MindmapController {
     }
 
     @PreAuthorize("permitAll()")
-    @RequestMapping(method = RequestMethod.GET, value = { "/{id}/document/xml", "/{id}/document/xml-pub" }, consumes = {
-            "text/plain" }, produces = { "application/xml; charset=UTF-8" })
+    @RequestMapping(method = RequestMethod.GET, value = { "/{id}/document/xml",
+            "/{id}/document/xml-pub" }, produces = { "application/xml; charset=UTF-8" })
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @NotNull HttpServletResponse response)
             throws WiseMappingException, IOException {
@@ -342,8 +342,8 @@ public class MindmapController {
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
-    @RequestMapping(method = RequestMethod.GET, value = { "/{id}/{hid}/document/xml" }, consumes = {
-            "text/plain" }, produces = { "application/xml; charset=UTF-8" })
+    @RequestMapping(method = RequestMethod.GET, value = { "/{id}/{hid}/document/xml" }, produces = {
+            "application/xml; charset=UTF-8" })
     @ResponseBody
     public byte[] retrieveDocument(@PathVariable int id, @PathVariable int hid, @NotNull HttpServletResponse response)
             throws WiseMappingException, IOException {
