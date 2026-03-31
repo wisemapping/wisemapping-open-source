@@ -64,7 +64,9 @@ public class TestDataManager {
     
     public RestUserRegistration createTestUserRegistration() {
         String email = generateUniqueEmail();
-        RestUserRegistration registration = RestUserRegistration.create(email, "testPassword123", "Test", "User");
+        RestUserRegistration registration = RestUserRegistration.create(
+                email, "testPassword123", "Test", "User", true
+        );
         
         createdUserEmails.add(email);
         return registration;
@@ -97,7 +99,9 @@ public class TestDataManager {
         List<RestUserRegistration> users = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             String email = generateUniqueEmail();
-            RestUserRegistration user = RestUserRegistration.create(email, "testPassword123", "Test" + i, "User" + i);
+            RestUserRegistration user = RestUserRegistration.create(
+                    email, "testPassword123", "Test" + i, "User" + i, true
+            );
             
             users.add(user);
             createdUserEmails.add(email);
@@ -138,7 +142,7 @@ public class TestDataManager {
                 break;
         }
         
-        return RestUserRegistration.create(email, password, firstname, lastname);
+        return RestUserRegistration.create(email, password, firstname, lastname, true);
     }
     
     public void cleanupTestData() {

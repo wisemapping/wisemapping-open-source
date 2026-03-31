@@ -36,6 +36,7 @@ public class RestUserRegistration {
     private String lastname;
     private String password;
     private String recaptcha;
+    private boolean acceptedTerms;
 
     @JsonIgnore
     public Account build() {
@@ -48,11 +49,17 @@ public class RestUserRegistration {
     }
 
     public static RestUserRegistration create(String email, String password, String firstname, String lastname) {
+        return create(email, password, firstname, lastname, false);
+    }
+
+    public static RestUserRegistration create(String email, String password, String firstname, String lastname,
+                                              boolean acceptedTerms) {
         final RestUserRegistration result = new RestUserRegistration();
         result.email = email;
         result.password = password;
         result.firstname = firstname;
         result.lastname = lastname;
+        result.acceptedTerms = acceptedTerms;
         return result;
     }
 
@@ -74,5 +81,9 @@ public class RestUserRegistration {
 
     public String getRecaptcha() {
         return recaptcha;
+    }
+
+    public boolean isAcceptedTerms() {
+        return acceptedTerms;
     }
 }
