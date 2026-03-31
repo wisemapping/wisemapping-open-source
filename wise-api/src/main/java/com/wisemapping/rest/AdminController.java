@@ -100,7 +100,7 @@ public class AdminController {
     private String datasourceUrl;
 
     private boolean isAdmin(String email) {
-        return email != null && adminUser != null && email.trim().endsWith(adminUser);
+        return email != null && adminUser != null && email.trim().equals(adminUser);
     }
 
     @Value("${spring.datasource.driver-class-name:}")
