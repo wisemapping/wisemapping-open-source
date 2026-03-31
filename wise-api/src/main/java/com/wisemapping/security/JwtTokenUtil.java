@@ -16,6 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
+
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
@@ -24,9 +26,22 @@ import java.util.Date;
 public class JwtTokenUtil implements Serializable {
     final private Logger logger = LogManager.getLogger();
     public final static String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String DEFAULT_JWT_SECRET = "dlqxKAg685SaKhsQXIMeM=JWCw3bkl3Ei3Tb7LMlnd19oMd66burPNlJ0Po1qguyjgpakQTk2CN3";
 
     @Value("${app.jwt.secret}")
     private String jwtSecret;
+
+    @PostConstruct
+    public void checkJwtSecret() {
+        if (DEFAULT_JWT_SECRET.equals(jwtSecret)) {
+            logger.warn("######################################################################");
+            logger.warn("# WARNING: Using default JWT secret from source code!                #");
+            logger.warn("# This is insecure — anyone can forge authentication tokens.         #");
+            logger.warn("# Set a unique secret via environment variable APP_JWT_SECRET         #");
+            logger.warn("# or property app.jwt.secret before deploying to production.         #");
+            logger.warn("######################################################################");
+        }
+    }
 
     @Value("${app.jwt.expirationMin}")
     private int jwtExpirationMin;
