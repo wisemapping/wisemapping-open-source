@@ -164,7 +164,7 @@ class RestUserControllerTest {
     @DisplayName("Should reject registration with disposable email")
     void shouldRejectRegistrationWithDisposableEmail() {
         RestUserRegistration userWithDisposableEmail = RestUserRegistration.create(
-            "test@10minutemail.com", "password123", "Test", "User"
+            "test@10minutemail.com", "password123", "Test", "User", true
         );
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -202,7 +202,7 @@ class RestUserControllerTest {
         
         // Then try to create duplicate with same email
         RestUserRegistration duplicateUser = RestUserRegistration.create(
-            firstUser.getEmail(), "password123", "Duplicate", "User"
+            firstUser.getEmail(), "password123", "Duplicate", "User", true
         );
         HttpEntity<RestUserRegistration> request2 = new HttpEntity<>(duplicateUser, headers);
 
@@ -244,7 +244,7 @@ class RestUserControllerTest {
     private static Stream<Arguments> invalidRegistrationData() {
         return Stream.of(
             Arguments.of(
-                RestUserRegistration.create("invalid-email", "password123", "Test", "User"),
+                RestUserRegistration.create("invalid-email", "password123", "Test", "User", true),
                 "Invalid email address"
             )
         );
@@ -295,7 +295,7 @@ class RestUserControllerTest {
     @DisplayName("Should test user registration endpoint exists")
     void registerUserEndpointExists() {
         RestUserRegistration testUser = RestUserRegistration.create(
-            "endpoint.test@example.org", "validpassword123", "Valid", "User"
+            "endpoint.test@example.org", "validpassword123", "Valid", "User", true
         );
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
