@@ -50,7 +50,8 @@ RUN sed -i 's|"url": "http://localhost:3000/api/restful/app/config"|"url": "/api
 
 # Build the frontend (will use patched config.prod.json)
 WORKDIR /build/wisemapping-frontend
-RUN npm install -g yarn@1.22.22
+ENV COREPACK_ENABLE_STRICT=0
+RUN corepack enable && corepack prepare yarn@1.22.22 --activate
 RUN yarn config set network-timeout 300000 && \
     yarn install --network-timeout 300000
 ENV NODE_OPTIONS="--max-old-space-size=4096"
