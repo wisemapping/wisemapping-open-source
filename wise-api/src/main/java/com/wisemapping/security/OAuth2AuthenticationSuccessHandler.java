@@ -84,10 +84,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         String firstName = extractFirstName(oauth2User);
         String lastName = extractLastName(oauth2User);
         String provider = extractProvider(request);
-        
+        String providerId = extractProviderId(oauth2User);
+
         try {
             // Find or create WiseMapping account
-            Account account = findOrCreateOAuthUser(email, firstName, lastName, provider);
+            Account account = findOrCreateOAuthUser(email, firstName, lastName, provider, providerId);
             
             // Generate JWT token using UserDetails
             String jwt = jwtTokenUtil.generateJwtToken(userDetailsService.loadUserByUsername(account.getEmail()));
@@ -203,6 +204,18 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         return lastName;
     }
     
+    private String extractProviderId(OAuth2User oauth2User) {
+        // Facebook and most OAuth2 providers expose the user's unique ID as "id" or "sub"
+        Object id = oauth2User.getAttributes().get("id");
+        if (id != null) {
+            return id.toString();
+        }
+        if (oauth2User instanceof OidcUser) {
+            return ((OidcUser) oauth2User).getSubject();
+        }
+        return null;
+    }
+
     private String extractProvider(HttpServletRequest request) {
         // Extract provider from the callback URL path
         String uri = request.getRequestURI();
@@ -213,35 +226,35 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         return "unknown";
     }
     
-    private Account findOrCreateOAuthUser(String email, String firstName, String lastName, String provider) throws Exception {
+    private Account findOrCreateOAuthUser(String email, String firstName, String lastName, String provider, String providerId) throws Exception {
         AuthenticationType authType = mapProviderToAuthType(provider);
-        
+
         // Check if user exists
         Account existingUser = userService.getUserBy(email);
-        
+
         if (existingUser == null) {
             // Create new OAuth user
-            return createNewOAuthUser(email, firstName, lastName, authType);
+            return createNewOAuthUser(email, firstName, lastName, authType, providerId);
         } else {
-            // Handle existing user
-            return handleExistingUser(existingUser, authType);
+            // Handle existing user — also refresh stored provider ID
+            return handleExistingUser(existingUser, authType, providerId);
         }
     }
-    
-    private Account createNewOAuthUser(String email, String firstName, String lastName, AuthenticationType authType) throws Exception {
+
+    private Account createNewOAuthUser(String email, String firstName, String lastName, AuthenticationType authType, String providerId) throws Exception {
         Account newUser = new Account();
         newUser.setEmail(email);
         newUser.setFirstname(firstName);
         newUser.setLastname(lastName);
         newUser.setAuthenticationType(authType);
-        newUser.setOauthToken("");
+        newUser.setOauthToken(providerId);  // store provider user ID for data deletion lookups
         newUser.setPassword("");
         newUser.setOauthSync(true);
-        
+
         return userService.createUser(newUser, false, true);
     }
-    
-    private Account handleExistingUser(Account existingUser, AuthenticationType authType) throws Exception {
+
+    private Account handleExistingUser(Account existingUser, AuthenticationType authType, String providerId) throws Exception {
         AuthenticationType existingAuthType = existingUser.getAuthenticationType();
         
         if (existingAuthType != AuthenticationType.DATABASE && existingAuthType != authType) {
@@ -252,7 +265,13 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         
         // For existing OAuth users with same auth type, update if needed
         if (existingAuthType == authType) {
-            if (existingUser.getOauthSync() == null || !existingUser.getOauthSync()) {
+            boolean needsUpdate = (existingUser.getOauthSync() == null || !existingUser.getOauthSync());
+            // Refresh provider ID if it was never stored or has changed
+            if (providerId != null && !providerId.equals(existingUser.getOauthToken())) {
+                existingUser.setOauthToken(providerId);
+                needsUpdate = true;
+            }
+            if (needsUpdate) {
                 existingUser.setOauthSync(true);
                 existingUser.setSyncCode(null);
                 userService.updateUser(existingUser);

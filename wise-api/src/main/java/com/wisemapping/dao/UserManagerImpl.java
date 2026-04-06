@@ -241,6 +241,18 @@ public class UserManagerImpl
     }
 
     @Override
+    @Nullable
+    public Account getUserByFacebookId(@NotNull String facebookId) {
+        final TypedQuery<Account> query = entityManager.createQuery(
+                "SELECT a FROM Account a WHERE a.authenticationTypeCode = :authType AND a.oauthToken = :facebookId",
+                Account.class);
+        query.setParameter("authType", AuthenticationType.FACEBOOK_OAUTH2.getCode());
+        query.setParameter("facebookId", facebookId);
+        final List<Account> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    @Override
     public List<Account> getAllUsers(int offset, int limit) {
         final TypedQuery<Account> query = entityManager.createNamedQuery("Account.getAllUsers", Account.class);
         query.setFirstResult(offset);

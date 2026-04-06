@@ -153,6 +153,14 @@ public interface UserManager {
                                       String filterAuthType, int offset, int limit);
 
     /**
+     * Find a Facebook OAuth2 user by their Facebook user ID (stored in oauth_token).
+     * @param facebookId the Facebook user ID from a data deletion request
+     * @return the matching account, or null if not found
+     */
+    @Nullable
+    Account getUserByFacebookId(@NotNull String facebookId);
+
+    /**
      * Count users matching advanced filtering criteria
      * @param search optional search term for email, firstname, or lastname
      * @param filterActive optional filter for active status (true=active, false=inactive, null=all)

@@ -92,6 +92,24 @@ public interface UserService {
             @org.jetbrains.annotations.Nullable String provider) throws WiseMappingException;
 
     /**
+     * Remove the Facebook OAuth2 association from a user account.
+     * Clears stored OAuth token and sync data, reverts authentication type to DATABASE,
+     * and sends a password-reset email so the user can regain access.
+     *
+     * @param user the account whose Facebook association should be removed
+     * @throws WiseMappingException if the account is not a Facebook OAuth2 account
+     */
+    void removeFacebookAccount(@NotNull Account user) throws WiseMappingException;
+
+    /**
+     * Find a Facebook OAuth2 user by the Facebook user ID received in a data deletion request.
+     * @param facebookId the Facebook user ID (as sent by Facebook in the deletion callback)
+     * @return the matching account, or null if not found
+     */
+    @org.jetbrains.annotations.Nullable
+    Account getUserByFacebookId(@NotNull String facebookId);
+
+    /**
      * Unsuspend a user and restore their mindmaps if they were suspended for inactivity
      * @param user the user to unsuspend
      * @return number of mindmaps restored, or 0 if none were restored

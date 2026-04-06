@@ -128,6 +128,38 @@ public class UserServiceImpl
     }
 
     @Override
+    @Nullable
+    public Account getUserByFacebookId(@NotNull String facebookId) {
+        return userManager.getUserByFacebookId(facebookId);
+    }
+
+    @Override
+    public void removeFacebookAccount(@NotNull Account user) throws WiseMappingException {
+        if (user.getAuthenticationType() != AuthenticationType.FACEBOOK_OAUTH2) {
+            throw new WiseMappingException("Account is not a Facebook OAuth2 account");
+        }
+
+        // Reload fresh copy from DB before mutating
+        final Account managed = userManager.getUserBy(user.getEmail());
+
+        // Clear all Facebook-specific OAuth data
+        managed.setOauthToken(null);
+        managed.setOauthSync(false);
+        managed.setSyncCode(null);
+
+        // Revert to DATABASE authentication so the account can be accessed via email/password
+        managed.setAuthenticationType(AuthenticationType.DATABASE);
+
+        // Assign a temporary password and send a reset email so the user can regain access
+        final String tempPassword = randomstring(8, 10);
+        managed.setPassword(tempPassword);
+        userManager.updateUser(managed);
+        notificationService.resetPassword(managed, tempPassword);
+
+        logger.info("Facebook account association removed for user {}", managed.getEmail());
+    }
+
+    @Override
     public void removeUser(@NotNull Account user) {
         // Force object reload before removing....
         final Account userBy = userManager.getUserBy(user.getEmail());
