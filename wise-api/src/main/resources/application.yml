@@ -158,15 +158,15 @@ logging:
                 configuration:
                   # Suppress Spring Security configuration warning. The manual configuration of AuthenticationManager is intentional.
                   InitializeUserDetailsBeanManagerConfigurer: ERROR
+        web:
+          servlet:
+            DispatcherServlet: DEBUG
+
       apache:
         tomcat: INFO
         catalina:
           core:
             StandardWrapperValve: OFF
-      springframework:
-        web:
-          servlet:
-            DispatcherServlet: DEBUG
     root: INFO
     com:
       wisemapping:
