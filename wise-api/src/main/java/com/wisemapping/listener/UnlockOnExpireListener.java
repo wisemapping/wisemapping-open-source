@@ -57,7 +57,7 @@ public class UnlockOnExpireListener implements HttpSessionListener {
                 try {
                     lockManager.unlockAll(user);
                 } catch (LockException | AccessDeniedSecurityException e) {
-                    logger.error(e);
+                    logger.error(e.getMessage(), e);
                 }
             }
         }
