@@ -24,8 +24,8 @@ import com.wisemapping.model.Mindmap;
 import com.wisemapping.service.spam.SpamContentExtractor;
 import com.wisemapping.mindmap.utils.MindmapUtils;
 import com.wisemapping.mindmap.parser.MindmapParser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HtmlContentValidator {
 
-    private final static Logger logger = LogManager.getLogger();
+    private final static Logger logger = LoggerFactory.getLogger(HtmlContentValidator.class);
     private final SpamContentExtractor contentExtractor;
 
     @Value("${app.mindmap.note.max-length:5000}")

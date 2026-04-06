@@ -22,8 +22,8 @@ import com.wisemapping.exceptions.UserRegistrationException;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Collaboration;
 import com.wisemapping.model.Mindmap;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ import java.util.Map;
 
 @Service
 public class NotificationService {
-    final private static Logger logger = LogManager.getLogger();
+    final private static Logger logger = LoggerFactory.getLogger(NotificationService.class);
     @Autowired
     private MessageSource messageSource;
 

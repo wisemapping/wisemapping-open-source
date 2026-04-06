@@ -18,8 +18,8 @@
 
 package com.wisemapping.security;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.Base64;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +30,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 public class LegacyPasswordEncoder implements PasswordEncoder {
-    final private static Logger logger = LogManager.getLogger();
+    final private static Logger logger = LoggerFactory.getLogger(LegacyPasswordEncoder.class);
 
     public static final String ENC_PREFIX = "ENC:";
     private final ShaPasswordEncoder sha1Encoder = new ShaPasswordEncoder();

@@ -17,8 +17,8 @@
  */
 package com.wisemapping.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
@@ -28,7 +28,7 @@ import java.io.Writer;
 import java.util.Map;
 
 public class VelocityEngineUtils {
-    final private static Logger logger = LogManager.getLogger();
+    final private static Logger logger = LoggerFactory.getLogger(VelocityEngineUtils.class);
 
     public static void mergeTemplate(
             VelocityEngine velocityEngine, String templateLocation,

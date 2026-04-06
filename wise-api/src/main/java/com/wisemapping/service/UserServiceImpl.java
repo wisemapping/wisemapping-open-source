@@ -28,8 +28,8 @@ import com.wisemapping.rest.model.RestResetPasswordAction;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class UserServiceImpl
     @Autowired
     private MetricsService metricsService;
 
-    final private static Logger logger = LogManager.getLogger();
+    final private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public void activateAccount(long code)

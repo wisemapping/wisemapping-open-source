@@ -21,8 +21,8 @@ package com.wisemapping.security;
 
 import com.wisemapping.model.Account;
 import com.wisemapping.service.UserService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsService
         implements org.springframework.security.core.userdetails.UserDetailsService {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
     
     @Autowired
     private UserService userService;

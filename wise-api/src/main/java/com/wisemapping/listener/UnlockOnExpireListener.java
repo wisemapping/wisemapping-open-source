@@ -25,8 +25,8 @@ import com.wisemapping.security.Utils;
 import com.wisemapping.service.LockManager;
 import com.wisemapping.service.MindmapService;
 import org.jetbrains.annotations.NotNull;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -36,7 +36,7 @@ import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
 
 public class UnlockOnExpireListener implements HttpSessionListener {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(UnlockOnExpireListener.class);
 
     @Override
     public void sessionCreated(@NotNull HttpSessionEvent event) {

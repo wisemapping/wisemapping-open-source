@@ -24,8 +24,8 @@ import com.wisemapping.model.CollaborationRole;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.Account;
 import org.jetbrains.annotations.NotNull;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.Map;
 import java.util.Set;
@@ -43,7 +43,7 @@ class LockManagerImpl implements LockManager {
     
     private final Map<Integer, LockInfo> lockInfoByMapId;
     private final ScheduledExecutorService expirationScheduler;
-    final private static Logger logger = LogManager.getLogger();
+    final private static Logger logger = LoggerFactory.getLogger(LockManagerImpl.class);
 
     @Override
     public boolean isLocked(@NotNull Mindmap mindmap) {

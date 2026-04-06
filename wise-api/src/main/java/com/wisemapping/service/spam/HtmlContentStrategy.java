@@ -22,8 +22,8 @@ import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.mindmap.model.Topic;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.SpamStrategyType;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HtmlContentStrategy implements SpamDetectionStrategy {
 
-    private final static Logger logger = LogManager.getLogger();
+    private final static Logger logger = LoggerFactory.getLogger(HtmlContentStrategy.class);
     private final SpamContentExtractor contentExtractor;
 
     @Value("${app.mindmap.note.max-length:5000}")

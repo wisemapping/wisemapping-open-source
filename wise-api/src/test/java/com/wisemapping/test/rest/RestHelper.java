@@ -1,8 +1,8 @@
 package com.wisemapping.test.rest;
 
 import com.wisemapping.rest.model.RestUser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestHelper {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(RestHelper.class);
     public static final String BASE_REST_URL = "/api/restful";
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "testAdmin123";
