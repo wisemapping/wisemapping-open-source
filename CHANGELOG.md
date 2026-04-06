@@ -2,6 +2,65 @@
 
 All notable changes to the Wisemapping Frontend project are documented in this file.
 
+## [6.0.7] - April, 2026
+
+### 🚀 CI/CD & Release Management
+
+#### Release Tagging
+- **Automated Git Tagging**: Publishing a Docker App image via `workflow_dispatch` now automatically creates and pushes a git tag on both `wisemapping-open-source` and `wisemapping-frontend` repositories, ensuring every published image is traceable to an exact source snapshot
+- **Cross-Repository Token**: Frontend tagging is performed using a scoped fine-grained PAT (`WISEMAPPING_FRONTEND_TOKEN`) with `contents: write` permission — required even within the same org, as the default `GITHUB_TOKEN` is restricted to the triggering repository
+- **Release Tag in Build**: The `workflow_dispatch` tag input is forwarded to Maven as `-Dbuild.number`, so the release version is baked into the JAR at build time and visible in the Spring Boot startup banner
+
+#### Spring Boot Startup Banner
+- **Version Block**: Replaced the plain-text banner with a boxed format displaying the release tag, build date, Git branch and commit, and Spring Boot version at every startup
+- **Removed POM Version**: The Maven artifact version (`x.y.z-SNAPSHOT`) is no longer shown in the banner — the release tag is the single source of version truth, defaulting to `unknown` when no tag was provided at build time
+
+#### CORS
+- **Eliminated `HandlerMappingIntrospector` Warning**: Spring Security's `.cors(Customizer.withDefaults())` was silently falling back to `HandlerMappingIntrospector` on every request because no `CorsConfigurationSource` bean existed. Added an explicit `CorsConfigurationSource` bean that mirrors the existing MVC CORS mapping, resolving the `WARN` log
+
+### 🔧 Backend (wisemapping-open-source)
+
+#### Bug Fixes
+- **[#62](https://github.com/wisemapping/wisemapping-open-source/issues/62)**: Fixed full-stack Dockerfile missing a required layer, causing container startup failures in certain deployment configurations
+- **[#63](https://github.com/wisemapping/wisemapping-open-source/issues/63)**: Strengthened `GlobalExceptionHandler` with consolidated helper methods for identifying and classifying expected exceptions, reducing noise in error logs
+- **[#64](https://github.com/wisemapping/wisemapping-open-source/issues/64)**: Fixed CORS `HandlerMappingIntrospector` warning and improved the CI/CD release pipeline with automated tagging and build number propagation
+- **[#65](https://github.com/wisemapping/wisemapping-open-source/issues/65)**: Fixed exception thrown during mindmap save caused by an incorrect path configuration in the Dockerfile
+- **Logger Configuration**: Corrected misconfigured logger settings in `application.yml` that were producing errors at startup
+- **Admin Role Check**: Fixed role prefix comparison using `startsWith` across `AccountController`, `AdminController`, `UserDetailsService`, and `MindmapServiceImpl` — previously failing for users with the `ROLE_` prefix
+- **Admin Email**: Corrected admin contact email from `admin@wisemapping.com` to `admin@wisemapping.org` in documentation and README
+- **User Registration Privacy**: Added mandatory privacy policy confirmation field to user registration (`RestUserRegistration`); `UserController` now enforces its presence before account creation
+- **JWT Cookie Overflow**: Added an error-level log warning when a generated JWT token exceeds the maximum safe size for browser cookies, preventing silent authentication failures
+
+#### Security
+- **Hardcoded JWT Secret (Critical)**: The default JWT signing secret was committed to the public repository, allowing anyone to forge valid tokens for any user including admin — a full authentication bypass. `JwtTokenUtil` now detects the default secret at startup and forces operators to provide their own via the `APP_JWT_SECRET` environment variable
+- **Security Filter Chain Separation**: Split the single `SecurityFilterChain` into two dedicated chains — a stateless chain for `/api/**` (JWT-based) and a stateful chain for web/OAuth2 endpoints — enabling independent session and authentication policies per surface
+
+#### Features & Improvements
+- **OpenTelemetry Tracing**: Added OpenTelemetry tracing dependencies to enable distributed tracing in production deployments
+- **Validation Exception Handling**: `GlobalExceptionHandler` now handles `ValidationException` explicitly, returning structured error responses instead of generic 500s
+- **Reduced Log Verbosity**: Lowered Tomcat request logging level to reduce noise in production logs
+- **Dependency Upgrades**: Updated project dependencies to latest stable versions
+
+### 🎨 Frontend (wisemapping-frontend)
+
+#### Bug Fixes
+- **Consent Dialog**: Fixed consent dialog failing to render correctly on initial page load
+
+#### Features
+- **Consent Management**: Replaced direct AdSense script injection with Google Funding Choices CMP integration for GDPR-compliant consent handling; subsequently refactored to a delayed AdSense loader to improve initial page load performance
+- **Privacy Link**: Added privacy policy link to the application footer
+
+#### Dependencies & Tooling
+- **Vite 8**: Upgraded Vite 7 → 8 and `@vitejs/plugin-react` 5 → 6; migrated from `vite-plugin-html` to the native Vite 8 HTML transform API; replaced `vite-tsconfig-paths` with Vite's built-in `resolve.tsconfigPaths`
+- **Storybook 10.3**: Updated Storybook ecosystem from 10.2 to 10.3; fixed build ordering by aliasing workspace packages directly to source
+- **React & ESLint**: Updated React ecosystem packages; aligned ESLint React plugin to version 19.0.0
+- **MUI**: Updated Material UI and styling dependencies including `@mui/lab`
+- **Test Infrastructure**: Updated Cypress and test dependencies; fixed `afterEach` spy assertions that were crashing when spies were uninitialized
+- **Linting & Formatting**: Updated ESLint, Prettier, and related tooling dependencies
+- **Workspace Packages**: Migrated internal workspace cross-references to wildcard versions for easier monorepo maintenance
+
+---
+
 ## September, 2025
 
 ### 🚀 Major Features & Enhancements
