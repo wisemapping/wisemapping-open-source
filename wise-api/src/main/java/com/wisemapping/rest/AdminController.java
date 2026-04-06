@@ -46,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StopWatch;
@@ -550,12 +551,12 @@ public class AdminController {
     @ResponseBody
     public RestUser getUserByFacebookId(@PathVariable String facebookId) {
         if (!isFacebookEnabled()) {
-            throw new IllegalStateException("Facebook OAuth2 is not enabled");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Facebook OAuth2 is not enabled");
         }
 
         final com.wisemapping.model.Account user = userService.getUserByFacebookId(facebookId);
         if (user == null) {
-            throw new IllegalArgumentException("No account found for Facebook ID '" + facebookId + "'");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No account found for Facebook ID '" + facebookId + "'");
         }
         return new RestUser(user);
     }
@@ -564,7 +565,7 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void removeFacebookAccount(@PathVariable int id) throws WiseMappingException {
         if (!isFacebookEnabled()) {
-            throw new IllegalStateException("Facebook OAuth2 is not enabled");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Facebook OAuth2 is not enabled");
         }
 
         final Account user = userService.getUserBy(id);
