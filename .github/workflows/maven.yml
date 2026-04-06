@@ -38,12 +38,13 @@ jobs:
 
       - name: Build with Maven (skip tests on main)
         run: |
+          BUILD_NUMBER="${{ github.event.inputs.tag || 'dev' }}"
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             echo "Building on main branch - skipping tests"
-            mvn -B clean install -DskipTests --file wise-api/pom.xml
+            mvn -B clean install -DskipTests -Dbuild.number=${BUILD_NUMBER} --file wise-api/pom.xml
           else
             echo "Building on ${{ github.ref }} - running tests"
-            mvn -B clean install --file wise-api/pom.xml
+            mvn -B clean install -Dbuild.number=${BUILD_NUMBER} --file wise-api/pom.xml
           fi
 
       - name: Upload build artifacts
@@ -76,6 +77,38 @@ jobs:
       tag: ${{ github.event.inputs.tag || 'latest' }}
       frontend_branch: ${{ github.event.inputs.frontend_branch || 'main' }}
     secrets: inherit
+
+  tag-release:
+    if: github.event_name == 'workflow_dispatch'
+    needs: docker-app-publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag API repository with release version
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ github.event.inputs.tag }}
+          git push origin ${{ github.event.inputs.tag }}
+
+      - name: Checkout frontend repository
+        uses: actions/checkout@v4
+        with:
+          repository: wisemapping/wisemapping-frontend
+          ref: ${{ github.event.inputs.frontend_branch || 'main' }}
+          token: ${{ secrets.WISEMAPPING_FRONTEND_TOKEN }}
+          path: wisemapping-frontend
+
+      - name: Tag frontend repository with release version
+        working-directory: wisemapping-frontend
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ github.event.inputs.tag }}
+          git push origin ${{ github.event.inputs.tag }}
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
