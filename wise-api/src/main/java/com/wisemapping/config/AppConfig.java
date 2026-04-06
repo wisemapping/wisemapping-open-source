@@ -70,42 +70,48 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Value("${app.security.corsAllowedOrigins:}")
     private String corsAllowedOrigins;
-
+    
     @Value("${app.site.ui-base-url:}")
     private String uiBaseUrl;
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-
+    
     @Autowired(required = false)
     private OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
-
+    
     @Autowired
     private AuthenticationProvider dbAuthenticationProvider;
 
     @Autowired(required = false)
     private ClientRegistrationRepository clientRegistrationRepository;
-
+    
+    @Autowired(required = false)
+    private ClientRegistrationRepository customOidcClientRegistrationRepository;
+    
     @Bean
     public com.wisemapping.security.ChatGptOAuth2AuthorizationRequestResolver chatGptOAuth2AuthorizationRequestResolver() {
-        if (clientRegistrationRepository != null) {
-            return new com.wisemapping.security.ChatGptOAuth2AuthorizationRequestResolver(clientRegistrationRepository);
+        // Use custom OIDC repository if available, otherwise use standard repository
+        ClientRegistrationRepository activeRepository = customOidcClientRegistrationRepository != null 
+            ? customOidcClientRegistrationRepository 
+            : clientRegistrationRepository;
+            
+        if (activeRepository != null) {
+            return new com.wisemapping.security.ChatGptOAuth2AuthorizationRequestResolver(activeRepository);
         }
         return null;
     }
 
     @Bean
-    @org.springframework.core.annotation.Order(1)
-    SecurityFilterChain restApiSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
+    SecurityFilterChain apiSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/api/**")
-                .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(Customizer.withDefaults()) // enables WebMvcConfigurer CORS
+                .securityMatcher("/**")
                 .authenticationProvider(dbAuthenticationProvider)
                 .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/restful/authenticate").permitAll()
                         .requestMatchers("/api/restful/users/").permitAll()
                         .requestMatchers("/api/restful/app/config").permitAll()
@@ -114,50 +120,58 @@ public class AppConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/restful/maps/*/document/xml-pub").permitAll()
                         .requestMatchers("/api/restful/users/resetPassword").permitAll()
                         .requestMatchers("/api/restful/users/activation").permitAll()
-                        .requestMatchers("/api/restful/admin/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
-                        .anyRequest().authenticated())
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.setContentType("application/json");
-                            response.getWriter().write("{\"msg\":\"Unauthorized\"}");
-                        }));
-
-        // Http basic is mainly used by automation tests.
-        if (enableHttpBasic) {
-            http.httpBasic(withDefaults());
-        }
-
-        return http.build();
-    }
-
-    @Bean
-    @org.springframework.core.annotation.Order(2)
-    SecurityFilterChain webSecurityFilterChain(@NotNull final HttpSecurity http) throws Exception {
-        http
-                .cors(Customizer.withDefaults())
-                .securityMatcher("/**")
-                .authenticationProvider(dbAuthenticationProvider)
-                .addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/login/oauth2/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers("/api/restful/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
-                            // For non-API endpoints, let OAuth2 handle it or default behavior
-                            // We don't need the API specific 401 JSON response here usually,
-                            // but we can keep the default which might redirect to login page if we had one,
-                            // or 401 if not.
-                            // Given the previous config had a custom entry point that handled "else",
-                            // we can revert to default or simple error.
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                        }))
-                .logout(logout -> logout.permitAll()
+                            // For API endpoints, return 401 instead of redirecting to OAuth login
+                            if (request.getRequestURI().startsWith("/api/")) {
+                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                response.setContentType("application/json");
+                                response.getWriter().write("{\"msg\":\"Unauthorized\"}");
+                            } else {
+                                // For non-API endpoints, let OAuth2 handle it
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                            }
+                        }));
+        
+        // Determine which client registration repository to use
+        // Prefer custom OIDC repository if available, otherwise use standard repository
+        ClientRegistrationRepository activeRepository = customOidcClientRegistrationRepository != null 
+            ? customOidcClientRegistrationRepository 
+            : clientRegistrationRepository;
+        
+        // Only configure OAuth2 login if at least one registration is defined
+        boolean isOAuth2Enabled = (oauth2AuthenticationSuccessHandler != null) && (activeRepository != null);
+        if (isOAuth2Enabled) {
+            var chatGptResolver = chatGptOAuth2AuthorizationRequestResolver();
+            http.oauth2Login(oauth2 -> oauth2
+                    .clientRegistrationRepository(activeRepository)
+                    .authorizationEndpoint(authorization -> {
+                        if (chatGptResolver != null) {
+                            authorization.authorizationRequestResolver(chatGptResolver);
+                        }
+                    })
+                    .successHandler(oauth2AuthenticationSuccessHandler)
+                    .failureHandler((request, response, exception) -> {
+                        // For API endpoints, return 401 instead of redirecting
+                        if (request.getRequestURI().startsWith("/api/")) {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"msg\":\"OAuth authentication failed\"}");
+                        } else {
+                            // Redirect to frontend with error
+                            response.sendRedirect(uiBaseUrl + "/c/login?error=oauth_failed");
+                        }
+                    })
+            );
+        }
+        
+        http.logout(logout -> logout.permitAll()
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);
                         }))
@@ -181,22 +195,9 @@ public class AppConfig implements WebMvcConfigurer {
                         // Custom headers
                         .addHeaderWriter((request, response) -> response.setHeader("Server", "WiseMapping")));
 
-        // Only configure OAuth2 login if at least one registration is defined
-        boolean isOAuth2Enabled = (oauth2AuthenticationSuccessHandler != null) &&
-                (clientRegistrationRepository != null);
-        if (isOAuth2Enabled) {
-            var chatGptResolver = chatGptOAuth2AuthorizationRequestResolver();
-            http.oauth2Login(oauth2 -> oauth2
-                    .authorizationEndpoint(authorization -> {
-                        if (chatGptResolver != null) {
-                            authorization.authorizationRequestResolver(chatGptResolver);
-                        }
-                    })
-                    .successHandler(oauth2AuthenticationSuccessHandler)
-                    .failureHandler((request, response, exception) -> {
-                        // Redirect to frontend with error
-                        response.sendRedirect(uiBaseUrl + "/c/login?error=oauth_failed");
-                    }));
+        // Http basic is mainly used by automation tests.
+        if (enableHttpBasic) {
+            http.httpBasic(withDefaults());
         }
 
         return http.build();
@@ -224,8 +225,7 @@ public class AppConfig implements WebMvcConfigurer {
     @Primary
     public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        // Limit to single thread to prevent parallel execution and reduce memory
-        // pressure
+        // Limit to single thread to prevent parallel execution and reduce memory pressure
         executor.setCorePoolSize(1);
         executor.setMaxPoolSize(1);
         executor.setQueueCapacity(100);

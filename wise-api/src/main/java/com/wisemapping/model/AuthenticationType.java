@@ -24,7 +24,8 @@ public enum AuthenticationType {
     DATABASE('D'),
     LDAP('L'),
     GOOGLE_OAUTH2('G'),
-    FACEBOOK_OAUTH2('F');
+    FACEBOOK_OAUTH2('F'),
+    CUSTOM_OIDC('C');
 	
     private final char schemaCode;
 
