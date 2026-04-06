@@ -18,10 +18,11 @@
 package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
@@ -40,8 +41,14 @@ public class AdminSystemControllerTest {
     private static final String REGULAR_USER = "test@wisemapping.org";
     private static final String REGULAR_PASSWORD = "password";
 
-    @Autowired
     private TestRestTemplate restTemplate;
+    @LocalServerPort
+    private int port;
+
+    @BeforeEach
+    void setUpRestTemplate() {
+        this.restTemplate = new TestRestTemplate("http://localhost:" + port + "/");
+    }
 
     // ===== System Information Endpoint Tests =====
 

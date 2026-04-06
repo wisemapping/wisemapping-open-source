@@ -31,7 +31,7 @@ import java.util.List;
         isGetterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class RestMindmapHistoryList {
 
-    private final List<RestMindmapHistory> changes;
+    private List<RestMindmapHistory> changes;
 
     public RestMindmapHistoryList() {
         changes = new ArrayList<RestMindmapHistory>();
@@ -47,6 +47,10 @@ public class RestMindmapHistoryList {
 
     public List<RestMindmapHistory> getChanges() {
         return changes;
+    }
+
+    public void setChanges(List<RestMindmapHistory> changes) {
+        this.changes = changes != null ? changes : new ArrayList<>();
     }
 
     public void addHistory(@NotNull RestMindmapHistory history) {

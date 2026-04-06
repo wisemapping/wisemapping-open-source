@@ -23,9 +23,9 @@ import com.wisemapping.rest.model.*;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -57,16 +57,13 @@ public class RestMindmapDeletionTest {
     private RestUser collaboratorUser;
     private String userPassword = "testPassword123";
 
-    @Autowired
     private TestRestTemplate restTemplate;
+    @LocalServerPort
+    private int port;
 
     @BeforeEach
     void createUsers() {
-        // Remote debug ...
-        if (restTemplate == null) {
-            this.restTemplate = new TestRestTemplate();
-            this.restTemplate.setUriTemplateHandler(new org.springframework.web.util.DefaultUriBuilderFactory("http://localhost:8081/"));
-        }
+        this.restTemplate = new TestRestTemplate("http://localhost:" + port + "/");
 
         // Create owner user
         this.ownerUser = createTestUser(restTemplate, userPassword);
@@ -449,4 +446,3 @@ public class RestMindmapDeletionTest {
         return response.getBody();
     }
 }
-

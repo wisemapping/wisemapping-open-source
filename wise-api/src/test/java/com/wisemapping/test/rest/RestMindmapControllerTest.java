@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -68,8 +69,9 @@ public class RestMindmapControllerTest {
     private static final int MAX_EXPECTED_QUERIES_FOR_LISTING = 50;
     private static final String BULK_MAP_TITLE_PREFIX = "Bulk Performance Map ";
 
-    @Autowired
     private TestRestTemplate restTemplate;
+    @LocalServerPort
+    private int port;
     @Autowired
     private MindmapService mindmapService;
     @Autowired
@@ -81,11 +83,7 @@ public class RestMindmapControllerTest {
 
     @BeforeEach
     void createUser() {
-        // Remote debug ...
-        if (restTemplate == null) {
-            this.restTemplate = new TestRestTemplate();
-            this.restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:8081/"));
-        }
+        this.restTemplate = new TestRestTemplate("http://localhost:" + port + "/");
 
         // Create a new test user using the helper method
         this.user = createTestUser(restTemplate, userPassword);

@@ -33,6 +33,8 @@ spring:
       hibernate:
         default_batch_fetch_size: 200
         dialect: org.hibernate.dialect.HSQLDialect
+        enhancer:
+          enableLazyInitialization: true
         format_sql: false
         use_sql_comments: false
         # Disable all levels of cache for tests
@@ -133,6 +135,9 @@ server:
 logging:
   level:
     root: INFO
+    org.springframework.web.servlet.DispatcherServlet: WARN
+    # Suppress Spring Security configuration warning. The manual configuration of AuthenticationManager is intentional.
+    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: ERROR
 
 resilience4j:
   ratelimiter:

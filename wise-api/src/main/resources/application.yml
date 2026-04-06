@@ -150,6 +150,14 @@ spring:
 logging:
   level:
     org:
+      springframework:
+        security:
+          config:
+            annotation:
+              authentication:
+                configuration:
+                  # Suppress Spring Security configuration warning. The manual configuration of AuthenticationManager is intentional.
+                  InitializeUserDetailsBeanManagerConfigurer: ERROR
       apache:
         tomcat: INFO
         catalina:

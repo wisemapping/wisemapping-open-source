@@ -40,6 +40,7 @@ public class RestLockInfo {
 
     }
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     public RestLockInfo(@Nullable LockInfo lockInfo, @NotNull Account user) {
         this.email = user.getEmail();
     }
@@ -53,4 +54,3 @@ public class RestLockInfo {
         this.email = email;
     }
 }
-

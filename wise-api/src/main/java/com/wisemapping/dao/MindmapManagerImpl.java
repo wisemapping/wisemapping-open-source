@@ -20,6 +20,7 @@ package com.wisemapping.dao;
 import com.wisemapping.model.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -43,7 +44,7 @@ import java.util.Optional;
 public class MindmapManagerImpl
         implements MindmapManager {
     private static final Logger logger = LoggerFactory.getLogger(MindmapManagerImpl.class);
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
     @Autowired
     private jakarta.persistence.EntityManagerFactory entityManagerFactory;
@@ -309,113 +310,19 @@ public class MindmapManagerImpl
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateMindmapSpamInfo(@NotNull com.wisemapping.model.MindmapSpamInfo spamInfo) {
         assert spamInfo != null : "Update MindmapSpamInfo: SpamInfo is required!";
-        // Validate that we have a valid mindmap ID
         if (spamInfo.getMindmapId() == null || spamInfo.getMindmapId() < 0) {
             throw new IllegalArgumentException("Invalid mindmap ID for spam info: " + spamInfo.getMindmapId());
         }
-        // "Last Win" strategy: Use native SQL to force update regardless of conflicts
-        // This ensures the latest data always wins, even in high concurrency scenarios
-        try {
-            // Use Java Calendar for consistent timestamp handling across all databases
-            Calendar now = Calendar.getInstance();
-            // Get database-specific SQL based on database product name
-            String sql = getUpsertSqlForDatabase();
-            // Convert SpamStrategyType enum to Character for native SQL
-            Character spamTypeCode = spamInfo.getSpamTypeCode() != null ? spamInfo.getSpamTypeCode().getCode() : null;
-            entityManager.createNativeQuery(sql)
-                    .setParameter(1, spamInfo.getMindmapId())
-                    .setParameter(2, spamInfo.isSpamDetected())
-                    .setParameter(3, spamInfo.getSpamDetectionVersion())
-                    .setParameter(4, spamTypeCode) // Convert enum to char
-                    .setParameter(5, spamInfo.getSpamDescription())
-                    .setParameter(6, now) // created_at
-                    .setParameter(7, now) // updated_at
-                    .setParameter(8, now) // updated_at for UPDATE clause
-                    .executeUpdate();
-        } catch (Exception e) {
-            // If native SQL fails, log the error and throw a runtime exception
-            // This ensures we don't fall back to JPA merge which causes optimistic locking
-            // issues
-            throw new RuntimeException("Failed to update MindmapSpamInfo for mindmap ID: " +
-                    spamInfo.getMindmapId() + " (native SQL failed)", e);
+        MindmapSpamInfo managed = entityManager.find(MindmapSpamInfo.class, spamInfo.getMindmapId());
+        if (managed == null) {
+            managed = new MindmapSpamInfo();
+            managed.setMindmapId(spamInfo.getMindmapId());
+            entityManager.persist(managed);
         }
-    }
-
-    /**
-     * Gets the appropriate UPSERT SQL statement based on the database product.
-     * Supports MySQL, PostgreSQL, and HSQLDB.
-     * 
-     * @return Database-specific UPSERT SQL statement
-     */
-    private String getUpsertSqlForDatabase() {
-        try {
-            // Get database dialect name
-            // Use entityManagerFactory which is already autowired, as unwrapping
-            // entityManager to EMF might fail
-            String dialectName = entityManagerFactory
-                    .unwrap(org.hibernate.SessionFactory.class)
-                    .getSessionFactoryOptions()
-                    .getServiceRegistry()
-                    .getService(org.hibernate.engine.jdbc.env.spi.JdbcEnvironment.class)
-                    .getDialect()
-                    .getClass()
-                    .getSimpleName();
-
-            // Determine SQL based on Hibernate dialect class name
-            if (dialectName.contains("PostgreSQL")) {
-                // PostgreSQL uses ON CONFLICT
-                return """
-                        INSERT INTO MINDMAP_SPAM_INFO (mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
-                        ON CONFLICT (mindmap_id) DO UPDATE SET
-                            spam_detected = EXCLUDED.spam_detected,
-                            spam_detection_version = EXCLUDED.spam_detection_version,
-                            spam_type_code = EXCLUDED.spam_type_code,
-                            spam_description = EXCLUDED.spam_description,
-                            updated_at = ?
-                        """;
-            } else if (dialectName.contains("HSQL")) {
-                // HSQLDB uses MERGE
-                return """
-                        MERGE INTO MINDMAP_SPAM_INFO AS t
-                        USING (VALUES(?, ?, ?, ?, ?, ?, ?)) AS s(mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
-                        ON t.mindmap_id = s.mindmap_id
-                        WHEN MATCHED THEN UPDATE SET
-                            spam_detected = s.spam_detected,
-                            spam_detection_version = s.spam_detection_version,
-                            spam_type_code = s.spam_type_code,
-                            spam_description = s.spam_description,
-                            updated_at = ?
-                        WHEN NOT MATCHED THEN INSERT (mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
-                            VALUES (s.mindmap_id, s.spam_detected, s.spam_detection_version, s.spam_type_code, s.spam_description, s.created_at, s.updated_at)
-                        """;
-            } else {
-                // MySQL uses ON DUPLICATE KEY UPDATE
-                return """
-                        INSERT INTO MINDMAP_SPAM_INFO (mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
-                        ON DUPLICATE KEY UPDATE
-                            spam_detected = VALUES(spam_detected),
-                            spam_detection_version = VALUES(spam_detection_version),
-                            spam_type_code = VALUES(spam_type_code),
-                            spam_description = VALUES(spam_description),
-                            updated_at = ?
-                        """;
-            }
-        } catch (Exception e) {
-            // Fallback to MySQL syntax if detection fails
-            logger.warn("Failed to detect database dialect, using MySQL syntax: {}", e.getMessage());
-            return """
-                    INSERT INTO MINDMAP_SPAM_INFO (mindmap_id, spam_detected, spam_detection_version, spam_type_code, spam_description, created_at, updated_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                    ON DUPLICATE KEY UPDATE
-                        spam_detected = VALUES(spam_detected),
-                        spam_detection_version = VALUES(spam_detection_version),
-                        spam_type_code = VALUES(spam_type_code),
-                        spam_description = VALUES(spam_description),
-                        updated_at = ?
-                    """;
-        }
+        managed.setSpamDetected(spamInfo.isSpamDetected());
+        managed.setSpamDetectionVersion(spamInfo.getSpamDetectionVersion());
+        managed.setSpamTypeCode(spamInfo.getSpamTypeCode());
+        managed.setSpamDescription(spamInfo.getSpamDescription());
     }
 
     /**
@@ -1117,7 +1024,7 @@ public class MindmapManagerImpl
         history.setCreationTime(Calendar.getInstance());
         history.setEditor(mindMap.getLastEditor());
         history.setMindmapId(mindMap.getId());
-        entityManager.merge(history);
+        entityManager.persist(history);
     }
 
     /**
