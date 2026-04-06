@@ -22,8 +22,8 @@ import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.mindmap.model.Topic;
 import com.wisemapping.mindmap.model.MapMetadata;
 import com.wisemapping.mindmap.utils.MindmapValidationException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
@@ -50,7 +50,7 @@ import java.util.List;
  */
 public class MindmapParser {
     
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(MindmapParser.class);
     private static final int MAX_SUPPORTED_NODES = 4000;
     
     private static final DocumentBuilder documentBuilder;

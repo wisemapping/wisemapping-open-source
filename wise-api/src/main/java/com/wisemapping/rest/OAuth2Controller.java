@@ -24,8 +24,8 @@ import com.wisemapping.rest.model.RestOath2CallbackResponse;
 import com.wisemapping.security.JwtTokenUtil;
 import com.wisemapping.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class OAuth2Controller {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(OAuth2Controller.class);
 
     @Autowired
     private UserService userService;

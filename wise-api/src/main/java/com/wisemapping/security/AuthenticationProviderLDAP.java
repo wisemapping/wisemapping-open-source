@@ -23,8 +23,8 @@ import com.wisemapping.model.Account;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.service.MetricsService;
 import com.wisemapping.service.UserService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.ldap.CommunicationException;
 import org.springframework.ldap.core.DirContextAdapter;
@@ -64,7 +64,7 @@ import java.util.Map;
  */
 public class AuthenticationProviderLDAP implements AuthenticationProvider {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationProviderLDAP.class);
 
     private final LdapProperties ldapProperties;
     private final UserService userService;

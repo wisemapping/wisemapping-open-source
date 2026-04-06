@@ -2,8 +2,8 @@ package com.wisemapping.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public class ChatGptOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
     
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(ChatGptOAuth2AuthorizationRequestResolver.class);
     private static final String CHATGPT_PARAMS_SESSION_PREFIX = "CHATGPT_PARAMS_";
     private final OAuth2AuthorizationRequestResolver defaultResolver;
     

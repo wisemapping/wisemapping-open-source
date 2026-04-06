@@ -4,9 +4,8 @@ import com.wisemapping.model.Collaborator;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.Account;
 import jakarta.validation.constraints.NotNull;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
@@ -14,7 +13,7 @@ import java.io.Serializable;
 
 
 public class MapAccessPermissionEvaluation implements PermissionEvaluator {
-    final private static Logger logger = LogManager.getLogger();
+    final private static Logger logger = LoggerFactory.getLogger(MapAccessPermissionEvaluation.class);
 
     private MapPermissionsSecurityAdvice readAdvice;
 
@@ -29,7 +28,7 @@ public class MapAccessPermissionEvaluation implements PermissionEvaluator {
     public boolean hasPermission(
             @NotNull Authentication auth, @NotNull Object targetDomainObject, @NotNull Object permission) {
 
-        logger.log(Level.DEBUG, "auth: " + auth + ",targetDomainObject:" + targetDomainObject + ",permission:" + permission);
+        logger.debug("auth: " + auth + ",targetDomainObject:" + targetDomainObject + ",permission:" + permission);
         
         // Validate parameters (except auth can be null for READ operations)
         if (targetDomainObject == null || !(permission instanceof String)) {
@@ -87,7 +86,7 @@ public class MapAccessPermissionEvaluation implements PermissionEvaluator {
     public boolean hasPermission(
             @NotNull Authentication auth, Serializable targetId, @NotNull String targetType, @NotNull Object
             permission) {
-        logger.log(Level.FATAL, "Unsupported privilege: auth: " + auth + ",targetId:" + targetType + ",targetType:" + targetType + ", permission:" + permission);
+        logger.error("Unsupported privilege: auth: " + auth + ",targetId:" + targetType + ",targetType:" + targetType + ", permission:" + permission);
         return false;
     }
 

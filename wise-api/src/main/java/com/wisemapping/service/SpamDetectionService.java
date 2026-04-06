@@ -8,8 +8,8 @@ import com.wisemapping.service.spam.SpamContentExtractor;
 import com.wisemapping.service.spam.SpamDetectionContext;
 import com.wisemapping.service.spam.SpamDetectionResult;
 import com.wisemapping.service.spam.SpamDetectionStrategy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 public class SpamDetectionService {
-    private final static Logger logger = LogManager.getLogger();
+    private final static Logger logger = LoggerFactory.getLogger(SpamDetectionService.class);
     
     private final List<SpamDetectionStrategy> strategies;
 

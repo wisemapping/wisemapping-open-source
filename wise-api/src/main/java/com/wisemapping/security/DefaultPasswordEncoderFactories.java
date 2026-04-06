@@ -38,7 +38,7 @@ public class DefaultPasswordEncoderFactories {
  * - Modern: {bcrypt}$2a$12$... (BCrypt with {bcrypt} prefix)
  */
 class WiseMappingPasswordEncoder implements PasswordEncoder {
-    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DefaultPasswordEncoderFactories.class);
     private final LegacyPasswordEncoder legacyEncoder = new LegacyPasswordEncoder();
     private final BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder(12);
     

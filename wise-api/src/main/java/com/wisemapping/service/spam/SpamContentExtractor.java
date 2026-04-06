@@ -24,8 +24,8 @@ import com.wisemapping.mindmap.parser.MindmapParser;
 import com.wisemapping.mindmap.utils.MindmapUtils;
 import com.wisemapping.mindmap.utils.MindmapUtils.NoteValidationResult;
 import com.wisemapping.model.Mindmap;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -45,7 +45,7 @@ import java.util.regex.Pattern;
  */
 @Component
 public class SpamContentExtractor {
-    private final static Logger logger = LogManager.getLogger();
+    private final static Logger logger = LoggerFactory.getLogger(SpamContentExtractor.class);
 
     @Value("classpath:spam-keywords.properties")
     private Resource spamKeywordsResource;

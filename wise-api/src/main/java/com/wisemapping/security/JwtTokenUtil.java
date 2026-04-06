@@ -6,8 +6,8 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.Date;
 
 @Component
 public class JwtTokenUtil implements Serializable {
-    final private Logger logger = LogManager.getLogger();
+    final private Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
     public final static String BEARER_TOKEN_PREFIX = "Bearer ";
     private static final String DEFAULT_JWT_SECRET = "dlqxKAg685SaKhsQXIMeM=JWCw3bkl3Ei3Tb7LMlnd19oMd66burPNlJ0Po1qguyjgpakQTk2CN3";
 

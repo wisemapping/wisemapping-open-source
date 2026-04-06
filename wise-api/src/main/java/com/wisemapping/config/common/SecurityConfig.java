@@ -4,8 +4,8 @@ import com.wisemapping.config.LdapProperties;
 import com.wisemapping.security.*;
 import com.wisemapping.service.MetricsService;
 import com.wisemapping.service.UserService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -60,7 +60,7 @@ import java.util.List;
         jsr250Enabled = true)
 public class SecurityConfig {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Autowired
     @Lazy
