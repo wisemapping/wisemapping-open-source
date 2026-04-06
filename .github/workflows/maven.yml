@@ -104,9 +104,12 @@ jobs:
 
       - name: Tag frontend repository with release version
         working-directory: wisemapping-frontend
+        env:
+          FRONTEND_TOKEN: ${{ secrets.WISEMAPPING_FRONTEND_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${FRONTEND_TOKEN}@github.com/wisemapping/wisemapping-frontend.git
           git tag ${{ github.event.inputs.tag }}
           git push origin ${{ github.event.inputs.tag }}
 
