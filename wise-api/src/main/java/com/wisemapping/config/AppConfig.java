@@ -46,12 +46,17 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 import com.wisemapping.model.Account;
 import com.wisemapping.security.Utils;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -204,6 +209,23 @@ public class AppConfig implements WebMvcConfigurer {
         }
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        if (!corsAllowedOrigins.isEmpty()) {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedOrigins(Arrays.stream(corsAllowedOrigins.split(","))
+                    .map(String::trim)
+                    .toList());
+            config.setAllowedHeaders(List.of("*"));
+            config.setAllowedMethods(List.of("*"));
+            config.setExposedHeaders(List.of("*"));
+            config.setMaxAge(3600L);
+            source.registerCorsConfiguration("/api/**", config);
+        }
+        return source;
     }
 
     @Override
