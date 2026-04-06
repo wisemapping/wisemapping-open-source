@@ -20,6 +20,7 @@ package com.wisemapping.dao;
 import com.wisemapping.model.MindmapLabel;
 import com.wisemapping.model.Account;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -34,7 +35,7 @@ import java.util.List;
 @Repository("labelManager")
 public class LabelManagerImpl
         implements LabelManager {
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override

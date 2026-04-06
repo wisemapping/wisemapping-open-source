@@ -26,11 +26,12 @@ import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.model.Mindmap;
 import java.util.Map;
 import java.util.HashMap;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -41,7 +42,6 @@ import static org.junit.jupiter.api.Assertions.*;
         classes = {AppConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class AdminControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
@@ -49,9 +49,15 @@ public class AdminControllerTest {
     private static final String REGULAR_USER = "test@wisemapping.org";
     private static final String REGULAR_PASSWORD = "password";
 
-    @Autowired
     private TestRestTemplate restTemplate;
+    @LocalServerPort
+    private int port;
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    void setUpRestTemplate() {
+        this.restTemplate = new TestRestTemplate("http://localhost:" + port + "/");
+    }
 
     @Test
     public void testGetAllUsers_AdminAccess_Success() {

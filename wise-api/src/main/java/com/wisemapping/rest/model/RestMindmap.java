@@ -51,6 +51,7 @@ public class RestMindmap {
         this(new Mindmap(), null);
     }
 
+    @JsonIgnore
     public RestMindmap(@NotNull Mindmap mindmap, @Nullable Collaborator collaborator) throws WiseMappingException {
         this.mindmap = mindmap;
         this.collaborator = collaborator;
@@ -138,7 +139,7 @@ public class RestMindmap {
     }
 
     public void setPublic(boolean value) {
-        // return mindmap.isPublic();
+        mindmap.setPublic(value);
     }
 
     public boolean isSpamDetected() {

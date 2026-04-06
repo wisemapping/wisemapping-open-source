@@ -57,7 +57,11 @@ import java.util.Locale;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @SpringBootApplication(scanBasePackages = "com.wisemapping")
-@Import({ com.wisemapping.config.common.JPAConfig.class, com.wisemapping.config.common.SecurityConfig.class })
+@Import({
+        com.wisemapping.config.common.JPAConfig.class,
+        com.wisemapping.config.common.SecurityConfig.class,
+        com.wisemapping.config.common.Resilience4jConfig.class
+})
 @EnableScheduling
 @EnableAsync
 @EnableWebSecurity
@@ -229,7 +233,7 @@ public class AppConfig implements WebMvcConfigurer {
         executor.setCorePoolSize(1);
         executor.setMaxPoolSize(1);
         executor.setQueueCapacity(100);
-        executor.setKeepAliveSeconds(60);
+        executor.setKeepAliveSeconds(10);
         executor.setThreadNamePrefix("AsyncTask-");
         executor.setAllowCoreThreadTimeOut(true);
         // Use CallerRunsPolicy to prevent task rejection and provide backpressure

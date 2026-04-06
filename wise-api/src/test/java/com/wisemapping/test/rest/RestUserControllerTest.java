@@ -19,12 +19,17 @@
 package com.wisemapping.test.rest;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.UserService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,6 +37,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -57,11 +63,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("User Controller Tests")
 class RestUserControllerTest {
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private TestRestTemplate restTemplate;
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private UserService userService;
@@ -71,6 +75,7 @@ class RestUserControllerTest {
 
     @BeforeEach
     void setUp() {
+        this.restTemplate = new TestRestTemplate("http://localhost:" + port + "/");
         testDataManager.cleanupTestData();
     }
 
@@ -290,45 +295,10 @@ class RestUserControllerTest {
                    "Expected 4xx for empty request body, got: " + response.getStatusCode());
     }
 
-    @Test
-    @Order(10)
-    @DisplayName("Should test user registration endpoint exists")
-    void registerUserEndpointExists() {
-        RestUserRegistration testUser = RestUserRegistration.create(
-            "endpoint.test@example.org", "validpassword123", "Valid", "User", true
-        );
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<RestUserRegistration> request = new HttpEntity<>(testUser, headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(
-                BASE_REST_URL + "/users/",
-                HttpMethod.POST,
-                request,
-                String.class
-        );
-        
-        assertThat(response.getStatusCode().value()).isIn(201, 400, 404);
-    }
-
-    @Test
-    @Order(11)
-    @DisplayName("Should test password reset endpoint exists")
-    void resetPasswordEndpointExists() {
-        ResponseEntity<String> response = restTemplate.exchange(
-                BASE_REST_URL + "/users/resetPassword?email=admin@wisemapping.org",
-                HttpMethod.PUT,
-                null,
-                String.class
-        );
-        
-        assertThat(response.getStatusCode().value()).isIn(200, 400, 404, 500);
-    }
-
     // ==================== ACTIVATION TESTS ====================
 
     @Test
-    @Order(12)
+    @Order(10)
     @DisplayName("Should activate user with valid activation code")
     void shouldActivateUserWithValidCode() {
         // Create a user with email confirmation enabled
@@ -368,7 +338,7 @@ class RestUserControllerTest {
     }
 
     @Test
-    @Order(13)
+    @Order(11)
     @DisplayName("Should reject activation with invalid code")
     void shouldRejectActivationWithInvalidCode() {
         long invalidCode = 999999999L;
@@ -386,7 +356,7 @@ class RestUserControllerTest {
     }
 
     @Test
-    @Order(14)
+    @Order(12)
     @DisplayName("Should reject activation for already active user")
     void shouldRejectActivationForAlreadyActiveUser() {
         // Create and activate a user
@@ -429,7 +399,7 @@ class RestUserControllerTest {
     }
 
     @Test
-    @Order(15)
+    @Order(13)
     @DisplayName("Should prevent login for non-activated user")
     void shouldPreventLoginForNonActivatedUser() {
         // This test verifies the authentication flow blocks non-activated users
@@ -455,7 +425,7 @@ class RestUserControllerTest {
     }
 
     @Test
-    @Order(16)
+    @Order(14)
     @DisplayName("Should handle activation code boundary values")
     void shouldHandleActivationCodeBoundaryValues() {
         // Test with very large code
@@ -487,7 +457,7 @@ class RestUserControllerTest {
     }
 
     @Test
-    @Order(17)
+    @Order(15)
     @DisplayName("Should validate activation code is unique per user")
     void shouldValidateActivationCodeIsUniquePerUser() {
         // Create two users

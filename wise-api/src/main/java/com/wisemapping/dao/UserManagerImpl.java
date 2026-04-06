@@ -25,6 +25,7 @@ import com.wisemapping.service.InactiveMindmapMigrationService;
 import com.wisemapping.service.MetricsService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -50,7 +51,7 @@ public class UserManagerImpl
         implements UserManager {
     private static final Logger logger = LoggerFactory.getLogger(UserManagerImpl.class);
     
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
     @Autowired
     private EntityManagerFactory entityManagerFactory;

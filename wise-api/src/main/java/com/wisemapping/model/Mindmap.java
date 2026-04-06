@@ -89,7 +89,7 @@ public class Mindmap implements Serializable {
     @Column(name = "public")
     private boolean isPublic;
 
-    @OneToOne(mappedBy = "mindmap", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "mindmap", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonIgnore
     private MindmapSpamInfo spamInfo;
 
@@ -308,6 +308,9 @@ public class Mindmap implements Serializable {
 
     public void setSpamInfo(MindmapSpamInfo spamInfo) {
         this.spamInfo = spamInfo;
+        if (spamInfo != null && spamInfo.getMindmap() != this) {
+            spamInfo.setMindmap(this);
+        }
     }
 
     public Calendar getLastModificationTime() {

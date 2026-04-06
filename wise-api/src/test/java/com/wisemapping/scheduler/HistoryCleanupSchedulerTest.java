@@ -18,12 +18,18 @@
 
 package com.wisemapping.scheduler;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.wisemapping.service.HistoryPurgeService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -42,6 +48,34 @@ class HistoryCleanupSchedulerTest {
     @InjectMocks
     private HistoryCleanupScheduler historyCleanupScheduler;
 
+    private ListAppender<ILoggingEvent> logAppender;
+
+    @BeforeEach
+    void setUpLogAppender() {
+        // Create a ListAppender to capture log messages for verification
+        logAppender = new ListAppender<>();
+        logAppender.start();
+
+        ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger)
+                LoggerFactory.getLogger(HistoryCleanupScheduler.class);
+        logger.addAppender(logAppender);
+        
+        // Disable additivity to prevent expected ERROR logs and stack traces from
+        // cluttering the console during test execution.
+        logger.setAdditive(false);
+    }
+
+    @AfterEach
+    void tearDownLogAppender() {
+        ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger)
+                LoggerFactory.getLogger(HistoryCleanupScheduler.class);
+        logger.detachAppender(logAppender);
+        
+        // Restore default logger behavior
+        logger.setAdditive(true);
+        logAppender.stop();
+    }
+
     @Test
     void testCleanupHistory_ShouldCallService() {
         // Arrange
@@ -56,15 +90,20 @@ class HistoryCleanupSchedulerTest {
 
     @Test
     void testCleanupHistory_WhenServiceThrowsException_ShouldLogError() {
-        // Arrange
+        // Arrange: Simulate a database failure in the underlying service
         RuntimeException serviceException = new RuntimeException("Database connection failed");
         when(historyPurgeService.purgeHistory()).thenThrow(serviceException);
 
-        // Act & Assert - should not throw exception, should handle gracefully
+        // Act: The scheduler should catch the exception and handle it gracefully
         assertDoesNotThrow(() -> historyCleanupScheduler.cleanupHistory());
 
-        // Verify service was called
+        // Assert: Verify service was called and an ERROR was logged even though it was suppressed from the console
         verify(historyPurgeService, times(1)).purgeHistory();
+        assertTrue(logAppender.list.stream()
+                .anyMatch(e -> e.getLevel() == Level.ERROR
+                        && e.getThrowableProxy() != null
+                        && e.getThrowableProxy().getMessage().equals("Database connection failed")),
+                "Expected an ERROR log entry with the thrown exception");
     }
 
     @Test

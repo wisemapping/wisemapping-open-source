@@ -63,7 +63,7 @@ public class RestMindmapHistory {
         return this.toISO8601(creation.getTime());
     }
 
-    public void setCreationTime() {
+    public void setCreationTime(String creationTime) {
     }
 
     
@@ -72,6 +72,7 @@ public class RestMindmapHistory {
     }
 
     public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public void setId(int id) {

@@ -24,6 +24,7 @@ import com.wisemapping.dao.UserManager;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.InactiveMindmap;
 import com.wisemapping.model.Mindmap;
+import jakarta.persistence.PersistenceContext;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +61,7 @@ public class InactiveMindmapMigrationService {
     @Autowired
     private TransactionTemplate transactionTemplate;
 
-    @Autowired
+    @PersistenceContext
     private jakarta.persistence.EntityManager entityManager;
 
     @Value("${app.batch.inactive-mindmap-migration.enabled:true}")

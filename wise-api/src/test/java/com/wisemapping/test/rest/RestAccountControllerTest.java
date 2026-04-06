@@ -22,11 +22,12 @@ import com.wisemapping.config.AppConfig;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.security.UserDetailsService;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
@@ -42,14 +43,14 @@ import static org.junit.jupiter.api.Assertions.*;
         classes = {AppConfig.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class RestAccountControllerTest {
     private static final String ADMIN_USER = "admin@wisemapping.org";
     private static final String ADMIN_PASSWORD = "testAdmin123";
 
-    @Autowired
     private TestRestTemplate restTemplate;
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private UserDetailsService service;
@@ -58,6 +59,11 @@ public class RestAccountControllerTest {
         final RestAccountControllerTest result = new RestAccountControllerTest();
         result.restTemplate = restTemplate;
         return result;
+    }
+
+    @BeforeEach
+    void setUpRestTemplate() {
+        this.restTemplate = new TestRestTemplate("http://localhost:" + port + "/");
     }
 
     @Test
@@ -179,7 +185,6 @@ public class RestAccountControllerTest {
         assertTrue(exchange.getStatusCode().is2xxSuccessful(), exchange.toString());
     }
 
-    @Test
     public RestUser createNewUser() {
         // Configure media types ...
         final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);

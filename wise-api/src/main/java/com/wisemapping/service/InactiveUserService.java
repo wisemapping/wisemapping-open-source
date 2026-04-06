@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
 import java.util.Calendar;
@@ -41,7 +42,7 @@ public class InactiveUserService {
 
     private static final Logger logger = LoggerFactory.getLogger(InactiveUserService.class);
 
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
