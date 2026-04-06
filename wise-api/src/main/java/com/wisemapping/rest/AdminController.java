@@ -46,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
@@ -93,6 +94,9 @@ public class AdminController {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
+    @Autowired(required = false)
+    private ClientRegistrationRepository clientRegistrationRepository;
+
     @Value("${app.admin.user:}")
     private String adminUser;
 
@@ -101,6 +105,11 @@ public class AdminController {
 
     private boolean isAdmin(String email) {
         return email != null && adminUser != null && email.trim().equals(adminUser);
+    }
+
+    private boolean isFacebookEnabled() {
+        return clientRegistrationRepository != null
+                && clientRegistrationRepository.findByRegistrationId("facebook") != null;
     }
 
     @Value("${spring.datasource.driver-class-name:}")
@@ -535,6 +544,38 @@ public class AdminController {
             mindmapService.removeMindmap(mindmap, user);
         }
         userService.removeUser(user);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/users/facebook/{facebookId}", produces = {"application/json"})
+    @ResponseBody
+    public RestUser getUserByFacebookId(@PathVariable String facebookId) {
+        if (!isFacebookEnabled()) {
+            throw new IllegalStateException("Facebook OAuth2 is not enabled");
+        }
+
+        final com.wisemapping.model.Account user = userService.getUserByFacebookId(facebookId);
+        if (user == null) {
+            throw new IllegalArgumentException("No account found for Facebook ID '" + facebookId + "'");
+        }
+        return new RestUser(user);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}/facebook")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void removeFacebookAccount(@PathVariable int id) throws WiseMappingException {
+        if (!isFacebookEnabled()) {
+            throw new IllegalStateException("Facebook OAuth2 is not enabled");
+        }
+
+        final Account user = userService.getUserBy(id);
+        if (user == null) {
+            throw new IllegalArgumentException("User '" + id + "' could not be found");
+        }
+        if (user.getAuthenticationType() != com.wisemapping.model.AuthenticationType.FACEBOOK_OAUTH2) {
+            throw new IllegalArgumentException("User '" + id + "' is not a Facebook account");
+        }
+
+        userService.removeFacebookAccount(user);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}/maps", produces = {"application/json"})
