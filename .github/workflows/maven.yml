@@ -79,7 +79,7 @@ jobs:
     secrets: inherit
 
   tag-release:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.tag != 'latest'
     needs: docker-app-publish
     runs-on: ubuntu-latest
     permissions:
