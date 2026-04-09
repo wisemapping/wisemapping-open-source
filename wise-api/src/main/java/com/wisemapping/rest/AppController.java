@@ -18,6 +18,7 @@
 
 package com.wisemapping.rest;
 
+import com.wisemapping.config.CustomOidcProperties;
 import com.wisemapping.rest.model.RestAppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,9 @@ public class AppController {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private CustomOidcProperties customOidcProperties;
 
     @Value("${app.registration.enabled:true}")
     private Boolean isRegistrationEnabled;
@@ -62,6 +66,7 @@ public class AppController {
         // Detect enabled OAuth2 providers based on existing client registrations
         boolean googleEnabled = isRegistrationPresent("google");
         boolean facebookEnabled = isRegistrationPresent("facebook");
+        boolean customOidcEnabled = customOidcProperties.isConfigurationValid();
         
         RestAppConfig.RestAppConfigBuilder builder = new RestAppConfig.RestAppConfigBuilder()
                 .setApiUrl(apiBaseUrl)
@@ -70,6 +75,8 @@ public class AppController {
                 .setCaptchaEnabled(isCaptchaEnabled)
                 .setGoogleOauth2Enabled(googleEnabled)
                 .setFacebookOauth2Enabled(facebookEnabled)
+                .setCustomOidcEnabled(customOidcEnabled)
+                .setCustomOidcName(customOidcProperties.getName())
                 .setAnalyticsAccount(analyticsAccount)
                 .setRegistrationEnabled(isRegistrationEnabled)
                 .setJwtExpirationMin(jwtExpirationMin);
@@ -80,6 +87,9 @@ public class AppController {
         }
         if (facebookEnabled) {
             builder.setFacebookOauth2Url(apiBaseUrl + "/oauth2/authorization/facebook");
+        }
+        if (customOidcEnabled) {
+            builder.setCustomOidcUrl(apiBaseUrl + "/oauth2/authorization/" + customOidcProperties.getRegistrationId());
         }
         
         return builder.build();

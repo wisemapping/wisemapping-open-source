@@ -295,6 +295,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         return switch (provider.toLowerCase()) {
             case "google" -> AuthenticationType.GOOGLE_OAUTH2;
             case "facebook" -> AuthenticationType.FACEBOOK_OAUTH2;
+            case "custom-oidc" -> AuthenticationType.CUSTOM_OIDC;
             default -> throw new IllegalArgumentException("Unsupported OAuth provider: " + provider);
         };
     }
@@ -303,6 +304,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         return switch (provider.toLowerCase()) {
             case "google" -> "google_oauth";
             case "facebook" -> "facebook_oauth";
+            case "custom-oidc" -> "custom_oidc";
             default -> throw new IllegalArgumentException("Unsupported OAuth provider: " + provider);
         };
     }
