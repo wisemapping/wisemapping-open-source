@@ -168,7 +168,7 @@ public class UserServiceImpl
         userManager.updateUser(managed);
         notificationService.resetPassword(managed, tempPassword);
 
-        logger.info("Facebook account association removed for user {}", managed.getEmail());
+        logger.info("Facebook account association removed for user id {}", managed.getId());
     }
 
     @Override
@@ -240,12 +240,12 @@ public class UserServiceImpl
 
         final String userSyncCode = existingUser.getSyncCode();
         if (userSyncCode == null) {
-            logger.warn("OAuth account sync confirmation failed: no sync code set for user {}", email);
+            logger.warn("OAuth account sync confirmation failed: no sync code set for user id {}", existingUser.getId());
             throw new WiseMappingException("User not found / incorrect code");
         }
 
         if (!code.equals(userSyncCode)) {
-            logger.warn("OAuth account sync confirmation failed: invalid code for user {}", email);
+            logger.warn("OAuth account sync confirmation failed: invalid code for user id {}", existingUser.getId());
             throw new WiseMappingException("User not found / incorrect code");
         }
 
@@ -257,7 +257,7 @@ public class UserServiceImpl
         existingUser.setPassword("");
         userManager.updateUser(existingUser);
 
-        logger.info("OAuth account sync confirmed for user {} using provider {}", email, targetAuthType);
+        logger.info("OAuth account sync confirmed for user id {} using provider {}", existingUser.getId(), targetAuthType);
         return existingUser;
     }
 
