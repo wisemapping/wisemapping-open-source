@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     } else {
-                        logger.warn("User {} is suspended or disabled. Rejecting authentication.", email.get());
+                        logger.warn("User ID {} is suspended or disabled. Rejecting authentication.", userDetails.getUser().getId());
                         // Do not set authentication - request will be rejected
                     }
                 } catch (UsernameNotFoundException e) {

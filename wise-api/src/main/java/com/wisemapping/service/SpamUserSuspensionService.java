@@ -275,7 +275,7 @@ public class SpamUserSuspensionService {
                 double spamRatio = totalCount > 0 ? (spamCount * 100.0 / totalCount) : 0.0;
 
                 if (user.isSuspended()) {
-                    logger.debug("User {} is already suspended. Skipping.", user.getEmail());
+                    logger.debug("User ID: {} is already suspended. Skipping.", user.getId());
                     skippedCount++;
                     continue;
                 }
@@ -293,16 +293,12 @@ public class SpamUserSuspensionService {
                 String suspensionDetail = String.format(
                         "SUSPENDED USER #%d:\n" +
                                 "  - User ID: %d\n" +
-                                "  - Email: %s\n" +
-                                "  - Full Name: %s\n" +
                                 "  - Account Created: %s\n" +
                                 "  - Public Spam Maps: %d / %d (%.1f%%)\n" +
                                 "  - Suspension Reason: ABUSE\n" +
                                 "  - Criteria: %s\n",
                         suspendedCount,
                         user.getId(),
-                        user.getEmail(),
-                        user.getFullName(),
                         user.getCreationDate() != null ? user.getCreationDate().getTime() : "Unknown",
                         spamCount,
                         totalCount,
@@ -312,7 +308,7 @@ public class SpamUserSuspensionService {
                 suspensionSummary.append(suspensionDetail).append("\n");
 
             } catch (Exception e) {
-                logger.debug("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
+                logger.debug("Error suspending user ID {}: {}", result.getUser().getId(), e.getMessage(), e);
                 // Continue processing other users in the batch
             }
         }
@@ -364,7 +360,7 @@ public class SpamUserSuspensionService {
                 long spamCount = result.getSpamCount();
 
                 if (user.isSuspended()) {
-                    logger.debug("User {} is already suspended. Skipping.", user.getEmail());
+                    logger.debug("User ID: {} is already suspended. Skipping.", user.getId());
                     skippedCount++;
                     continue;
                 }
@@ -382,16 +378,12 @@ public class SpamUserSuspensionService {
                 String suspensionDetail = String.format(
                         "SUSPENDED USER #%d:\n" +
                                 "  - User ID: %d\n" +
-                                "  - Email: %s\n" +
-                                "  - Full Name: %s\n" +
                                 "  - Account Created: %s\n" +
                                 "  - Spam Maps Count: %d\n" +
                                 "  - Suspension Reason: ABUSE\n" +
                                 "  - Criteria: %s\n",
                         suspendedCount,
                         user.getId(),
-                        user.getEmail(),
-                        user.getFullName(),
                         user.getCreationDate() != null ? user.getCreationDate().getTime() : "Unknown",
                         spamCount,
                         conditionName);
@@ -399,7 +391,7 @@ public class SpamUserSuspensionService {
                 suspensionSummary.append(suspensionDetail).append("\n");
 
             } catch (Exception e) {
-                logger.debug("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
+                logger.debug("Error suspending user ID {}: {}", result.getUser().getId(), e.getMessage(), e);
                 // Continue processing other users in the batch
             }
         }
@@ -564,7 +556,7 @@ public class SpamUserSuspensionService {
                 long spamCount = result.getSpamCount();
 
                 if (user.isSuspended()) {
-                    logger.debug("User {} is already suspended. Skipping.", user.getEmail());
+                    logger.debug("User ID: {} is already suspended. Skipping.", user.getId());
                     continue;
                 }
 
@@ -576,10 +568,10 @@ public class SpamUserSuspensionService {
                 metricsService.trackUserSuspension(user, suspensionReason.name());
 
                 suspendedCount++;
-                logger.warn("Suspended user {} (created: {}) due to {} public spam mindmaps of types: {}",
-                        user.getEmail(), user.getCreationDate(), spamCount, String.join(", ", spamTypeCodes));
+                logger.warn("Suspended user ID {} (created: {}) due to {} public spam mindmaps of types: {}",
+                        user.getId(), user.getCreationDate(), spamCount, String.join(", ", spamTypeCodes));
             } catch (Exception e) {
-                logger.debug("Error suspending user {}: {}", result.getUser().getEmail(), e.getMessage(), e);
+                logger.debug("Error suspending user ID {}: {}", result.getUser().getId(), e.getMessage(), e);
                 // Continue processing other users in the batch
             }
         }

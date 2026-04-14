@@ -264,6 +264,7 @@ public class AdminController {
                 })
                 .toList();
 
+        final String maskedSearch = (search != null && !search.isEmpty()) ? "***" : null;
         final AccountListingMetricsRecorder.Snapshot snapshot = new AccountListingMetricsRecorder.Snapshot(
                 logAccountListingMetrics,
                 Instant.now(),
@@ -271,7 +272,7 @@ public class AdminController {
                 totalUsers,
                 page,
                 pageSize,
-                search,
+                maskedSearch,
                 filterActive,
                 filterSuspended,
                 filterAuthType,
@@ -292,7 +293,7 @@ public class AdminController {
                 totalUsers,
                 page,
                 pageSize,
-                search,
+                maskedSearch,
                 filterActive,
                 filterSuspended,
                 filterAuthType,

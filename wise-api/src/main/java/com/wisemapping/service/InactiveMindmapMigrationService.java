@@ -159,8 +159,8 @@ public class InactiveMindmapMigrationService {
             try {
                 // Check if user has been suspended for at least the configured minimum days
                 if (user.getSuspendedDate() == null || user.getSuspendedDate().after(minimumSuspensionDate)) {
-                    logger.debug("Skipping user {} - suspended for less than {} days (suspended: {})",
-                            user.getEmail(), minimumSuspensionDays, user.getSuspendedDate());
+                    logger.debug("Skipping user ID {} - suspended for less than {} days (suspended: {})",
+                            user.getId(), minimumSuspensionDays, user.getSuspendedDate());
                     continue;
                 }
 
@@ -169,12 +169,12 @@ public class InactiveMindmapMigrationService {
                 int userMigrated = processUserMindmapsByPagination(user);
                 batchMigrated += userMigrated;
 
-                logger.info("Migrated {} mindmaps for inactive user: email={}, id={}, creationDate={}",
-                        userMigrated, user.getEmail(), user.getId(), user.getCreationDate());
+                logger.info("Migrated {} mindmaps for inactive user id: {}, creationDate={}",
+                        userMigrated, user.getId(), user.getCreationDate());
 
             } catch (Exception e) {
-                logger.error("Failed to migrate mindmaps for user: {} (ID: {}) - continuing with batch",
-                        user.getEmail(), user.getId(), e);
+                logger.error("Failed to migrate mindmaps for user ID: {} - continuing with batch",
+                        user.getId(), e);
             }
         }
 
@@ -200,8 +200,8 @@ public class InactiveMindmapMigrationService {
                 break; // No more mindmaps to process
             }
 
-            logger.debug("Processing mindmap batch {}-{} ({} IDs) for user {} (ID: {})",
-                    offset + 1, offset + mindmapIds.size(), mindmapIds.size(), user.getEmail(), user.getId());
+            logger.debug("Processing mindmap batch {}-{} ({} IDs) for user ID: {}",
+                    offset + 1, offset + mindmapIds.size(), mindmapIds.size(), user.getId());
 
             // Load and migrate mindmaps for this batch of IDs
             for (Integer mindmapId : mindmapIds) {
@@ -219,13 +219,13 @@ public class InactiveMindmapMigrationService {
                             userMigrated++;
                         }
                     } else {
-                        logger.debug("DRY RUN: Would migrate mindmap '{}' (ID: {}) for inactive user {}",
-                                mindmap.getTitle(), mindmapId, user.getEmail());
+                        logger.debug("DRY RUN: Would migrate mindmap '{}' (ID: {}) for inactive user ID: {}",
+                                mindmap.getTitle(), mindmapId, user.getId());
                         userMigrated++;
                     }
                 } catch (Exception e) {
-                    logger.error("Failed to migrate mindmap {} for user {} - continuing",
-                            mindmapId, user.getEmail(), e);
+                    logger.error("Failed to migrate mindmap {} for user ID: {} - continuing",
+                            mindmapId, user.getId(), e);
                 }
             }
 
@@ -270,8 +270,8 @@ public class InactiveMindmapMigrationService {
 
         // Only count and log if migration was successful
         if (Boolean.TRUE.equals(migrated)) {
-            logger.debug("Migrated mindmap '{}' (ID: {}) for inactive user {}",
-                    mindmapTitle, mindmapId, user.getEmail());
+            logger.debug("Migrated mindmap '{}' (ID: {}) for inactive user ID: {}",
+                    mindmapTitle, mindmapId, user.getId());
             return true;
         }
 
@@ -291,13 +291,13 @@ public class InactiveMindmapMigrationService {
     public int restoreUserMindmaps(@NotNull Account user) {
         assert user != null : "user is null";
 
-        logger.info("Restoring mindmaps for reactivated user: email={}, id={}", user.getEmail(), user.getId());
+        logger.info("Restoring mindmaps for reactivated user ID: {}", user.getId());
 
         // Find all inactive mindmaps for this user
         List<InactiveMindmap> inactiveMindmaps = inactiveMindmapManager.findByCreator(user);
 
         if (inactiveMindmaps.isEmpty()) {
-            logger.debug("User {} has no inactive mindmaps to restore", user.getEmail());
+            logger.debug("User ID: {} has no inactive mindmaps to restore", user.getId());
             return 0;
         }
 
@@ -316,17 +316,17 @@ public class InactiveMindmapMigrationService {
 
                 restoredCount++;
 
-                logger.debug("Restored mindmap '{}' (original ID: {}) for reactivated user {}",
-                        restoredMindmap.getTitle(), inactiveMindmap.getOriginalMindmapId(), user.getEmail());
+                logger.debug("Restored mindmap '{}' (original ID: {}) for reactivated user ID: {}",
+                        restoredMindmap.getTitle(), inactiveMindmap.getOriginalMindmapId(), user.getId());
 
             } catch (Exception e) {
-                logger.error("Failed to restore mindmap '{}' for user {} - continuing with other mindmaps",
-                        inactiveMindmap.getTitle(), user.getEmail(), e);
+                logger.error("Failed to restore mindmap '{}' for user ID: {} - continuing with other mindmaps",
+                        inactiveMindmap.getTitle(), user.getId(), e);
             }
         }
 
-        logger.info("Restored {} mindmaps for reactivated user: email={}, id={}",
-                restoredCount, user.getEmail(), user.getId());
+        logger.info("Restored {} mindmaps for reactivated user ID: {}",
+                restoredCount, user.getId());
 
         // Track telemetry for restoration
         if (restoredCount > 0) {
