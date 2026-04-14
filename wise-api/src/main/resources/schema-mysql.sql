@@ -21,6 +21,8 @@ CREATE TABLE IF NOT EXISTS ACCOUNT (
   oauth_sync	   BOOL,
   sync_code        VARCHAR(255),
   oauth_token      TEXT,
+  reset_password_token        VARCHAR(64),
+  reset_password_token_expiry DATETIME,
   suspended BOOL NOT NULL DEFAULT 0,
   suspended_date DATETIME,
   suspension_reason CHAR(1),

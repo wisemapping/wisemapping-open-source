@@ -19,11 +19,13 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.EmailNotExistsException;
+import com.wisemapping.exceptions.InvalidResetTokenException;
 import com.wisemapping.exceptions.PasswordTooShortException;
 import com.wisemapping.exceptions.PasswordTooLongException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.model.Account;
+import com.wisemapping.rest.model.RestPasswordResetRequest;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
 import com.wisemapping.rest.model.RestUserRegistration;
 import com.wisemapping.service.*;
@@ -42,6 +44,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 import java.util.Arrays;
 import java.util.List;
@@ -131,6 +134,13 @@ public class UserController {
         } catch (InvalidUserEmailException e) {
             throw new EmailNotExistsException(e);
         }
+    }
+
+    @RateLimiter(name = "passwordResetLimiter")
+    @RequestMapping(method = RequestMethod.POST, value = "/resetPasswordToken", consumes = {"application/json"})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void resetPasswordFromToken(@RequestBody @Valid RestPasswordResetRequest request) throws InvalidResetTokenException {
+        userService.resetPasswordFromToken(request.getToken(), request.getPassword());
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/activation", produces = {"application/json"})

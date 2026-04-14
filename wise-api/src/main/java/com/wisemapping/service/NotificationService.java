@@ -95,12 +95,13 @@ public class NotificationService {
 
     }
 
-    public void resetPassword(@NotNull Account user, @NotNull String temporalPassword) {
+    public void sendPasswordResetLink(@NotNull Account user, @NotNull String rawToken) {
         final Locale locale = LocaleContextHolder.getLocale();
 
-        final String mailSubject = messageSource.getMessage("CHANGE_PASSWORD.EMAIL_SUBJECT", null, locale);
-        final String messageTitle = messageSource.getMessage("CHANGE_PASSWORD.EMAIL_TITLE", null, locale);
-        final String messageBody = messageSource.getMessage("CHANGE_PASSWORD.EMAIL_BODY", new Object[]{temporalPassword, getBaseUrl()}, locale);
+        final String resetUrl = getBaseUrl() + "/c/reset-password?token=" + rawToken;
+        final String mailSubject = messageSource.getMessage("RESET_PASSWORD.EMAIL_SUBJECT", null, locale);
+        final String messageTitle = messageSource.getMessage("RESET_PASSWORD.EMAIL_TITLE", null, locale);
+        final String messageBody = messageSource.getMessage("RESET_PASSWORD.EMAIL_BODY", new Object[]{resetUrl}, locale);
 
         sendTemplateMail(user, mailSubject, messageTitle, messageBody);
     }

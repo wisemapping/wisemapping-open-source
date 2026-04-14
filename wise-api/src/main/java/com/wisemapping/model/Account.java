@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @Entity
@@ -57,6 +58,10 @@ import java.util.Calendar;
     @NamedQuery(
         name = "Account.countUsersBySearch",
         query = "SELECT COUNT(a) FROM Account a WHERE LOWER(a.email) LIKE LOWER(:search) OR LOWER(a.firstname) LIKE LOWER(:search) OR LOWER(a.lastname) LIKE LOWER(:search)"
+    ),
+    @NamedQuery(
+        name = "Account.getUserByResetPasswordToken",
+        query = "SELECT a FROM Account a WHERE a.resetPasswordToken = :resetPasswordToken"
     )
 })
 public class Account
@@ -94,6 +99,12 @@ public class Account
 
     @Column(name = "oauth_token", columnDefinition = "TEXT")
     private String oauthToken;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
+    @Column(name = "reset_password_token_expiry")
+    private LocalDateTime resetPasswordTokenExpiry;
 
     @Column(name = "suspended")
     private boolean suspended = false;
@@ -237,6 +248,24 @@ public class Account
 
     public void setOauthToken(String oauthToken) {
         this.oauthToken = oauthToken;
+    }
+
+    @Nullable
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(@Nullable String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
+    @Nullable
+    public LocalDateTime getResetPasswordTokenExpiry() {
+        return resetPasswordTokenExpiry;
+    }
+
+    public void setResetPasswordTokenExpiry(@Nullable LocalDateTime resetPasswordTokenExpiry) {
+        this.resetPasswordTokenExpiry = resetPasswordTokenExpiry;
     }
 
     public boolean isSuspended() {

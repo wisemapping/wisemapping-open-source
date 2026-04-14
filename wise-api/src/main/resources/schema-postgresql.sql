@@ -18,6 +18,8 @@ create TABLE IF NOT EXISTS ACCOUNT (
   oauth_sync          BOOLEAN,
   sync_code           VARCHAR(255),
   oauth_token         TEXT,
+  reset_password_token        VARCHAR(64),
+  reset_password_token_expiry TIMESTAMP,
   suspended           BOOL         NOT NULL DEFAULT FALSE,
   suspended_date      TIMESTAMP,
   suspension_reason   CHAR(1),

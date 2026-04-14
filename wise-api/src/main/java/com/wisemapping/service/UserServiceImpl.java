@@ -22,6 +22,7 @@ import com.wisemapping.dao.UserManager;
 import com.wisemapping.exceptions.AccountAlreadyActivatedException;
 import com.wisemapping.exceptions.InvalidActivationCodeException;
 import com.wisemapping.exceptions.InvalidMindmapException;
+import com.wisemapping.exceptions.InvalidResetTokenException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.RestResetPasswordAction;
@@ -40,6 +41,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service("userService")
@@ -88,7 +93,7 @@ public class UserServiceImpl
             throws InvalidUserEmailException, InvalidAuthSchemaException {
         final Account user = userManager.getUserBy(email);
         if (user != null) {
-            RestResetPasswordResponse response = new RestResetPasswordResponse();
+            final RestResetPasswordResponse response = new RestResetPasswordResponse();
             if (user.getAuthenticationType().equals(AuthenticationType.GOOGLE_OAUTH2)) {
                 response.setAction(RestResetPasswordAction.OAUTH2_USER);
                 return response;
@@ -98,13 +103,9 @@ public class UserServiceImpl
                 throw new InvalidAuthSchemaException("Could not change password for " + user.getAuthenticationType().getCode());
             }
 
-            // Generate a random password ...
-            final String password = randomstring(8, 10);
-            user.setPassword(password);
-            updateUser(user);
-
-            // Send an email with the new temporal password ...
-            notificationService.resetPassword(user, password);
+            // Generate a secure token and send a reset link — the password is NOT changed here
+            sendPasswordResetLink(user);
+            logger.info("Password reset link sent for user id {}, token expires in 1 hour", user.getId());
 
             response.setAction(RestResetPasswordAction.EMAIL_SENT);
             return response;
@@ -113,21 +114,43 @@ public class UserServiceImpl
         }
     }
 
-    private String randomstring(int lo, int hi) {
-        int n = rand(lo, hi);
-        byte[] b = new byte[n];
-        for (int i = 0; i < n; i++)
-            b[i] = (byte) rand('@', 'Z');
-        return new String(b);
+    @Override
+    public void resetPasswordFromToken(@NotNull String rawToken, @NotNull String newPassword)
+            throws InvalidResetTokenException {
+        final String hashedToken = sha256Hex(rawToken);
+        final Account user = userManager.getUserByResetPasswordToken(hashedToken);
+
+        if (user == null) {
+            throw new InvalidResetTokenException("Token not found or already used.");
+        }
+        if (user.getResetPasswordTokenExpiry() == null || user.getResetPasswordTokenExpiry().isBefore(LocalDateTime.now())) {
+            // Clear expired token
+            user.setResetPasswordToken(null);
+            user.setResetPasswordTokenExpiry(null);
+            userManager.updateUser(user);
+            throw new InvalidResetTokenException("Reset token has expired.");
+        }
+
+        // Set new password and invalidate the token (single-use)
+        user.setPassword(newPassword);
+        user.setResetPasswordToken(null);
+        user.setResetPasswordTokenExpiry(null);
+        userManager.updateUser(user);
+        notificationService.passwordChanged(user);
+        logger.info("Password successfully reset for user id {} via reset token", user.getId());
     }
 
-    private int rand(int lo, int hi) {
-        java.util.Random rn = new java.util.Random();
-        int n = hi - lo + 1;
-        int i = rn.nextInt() % n;
-        if (i < 0)
-            i = -i;
-        return lo + i;
+    /**
+     * Generates a secure reset token, stores its hash on the account, and emails the reset link.
+     * The user's existing password is NOT modified.
+     */
+    private void sendPasswordResetLink(@NotNull Account user) {
+        final String rawToken = UUID.randomUUID().toString().replace("-", "");
+        final String hashedToken = sha256Hex(rawToken);
+        user.setResetPasswordToken(hashedToken);
+        user.setResetPasswordTokenExpiry(LocalDateTime.now().plusHours(1));
+        userManager.updateUser(user);
+        notificationService.sendPasswordResetLink(user, rawToken);
     }
 
     @Override
@@ -162,11 +185,10 @@ public class UserServiceImpl
         // Revert to DATABASE authentication so the account can be accessed via email/password
         managed.setAuthenticationType(AuthenticationType.DATABASE);
 
-        // Assign a temporary password and send a reset email so the user can regain access
-        final String tempPassword = randomstring(8, 10);
-        managed.setPassword(tempPassword);
-        userManager.updateUser(managed);
-        notificationService.resetPassword(managed, tempPassword);
+        // Send a reset link so the user can set a new password.
+        // The existing password field is already empty (set to "" during Facebook OAuth linking),
+        // so no password login is possible until the user completes the reset flow.
+        sendPasswordResetLink(managed);
 
         logger.info("Facebook account association removed for user id {}", managed.getId());
     }
@@ -391,5 +413,19 @@ public class UserServiceImpl
     @Override
     public long countUsersWithFilters(String search, Boolean filterActive, Boolean filterSuspended, String filterAuthType) {
         return userManager.countUsersWithFilters(search, filterActive, filterSuspended, filterAuthType);
+    }
+
+    private static String sha256Hex(@NotNull String input) {
+        try {
+            final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            final byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            final StringBuilder hex = new StringBuilder(hash.length * 2);
+            for (byte b : hash) {
+                hex.append(String.format("%02x", b));
+            }
+            return hex.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 not available", e);
+        }
     }
 }

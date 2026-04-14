@@ -20,6 +20,7 @@ package com.wisemapping.service;
 
 import com.wisemapping.exceptions.AccountAlreadyActivatedException;
 import com.wisemapping.exceptions.InvalidActivationCodeException;
+import com.wisemapping.exceptions.InvalidResetTokenException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
@@ -43,6 +44,8 @@ public interface UserService {
     void updateUser(Account user);
 
     RestResetPasswordResponse resetPassword(@NotNull String email) throws InvalidUserEmailException, InvalidAuthSchemaException;
+
+    void resetPasswordFromToken(@NotNull String rawToken, @NotNull String newPassword) throws InvalidResetTokenException;
 
     void removeUser(@NotNull Account user);
 

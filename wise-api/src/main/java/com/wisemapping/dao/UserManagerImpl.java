@@ -243,6 +243,15 @@ public class UserManagerImpl
 
     @Override
     @Nullable
+    public Account getUserByResetPasswordToken(@NotNull String hashedToken) {
+        final TypedQuery<Account> query = entityManager.createNamedQuery("Account.getUserByResetPasswordToken", Account.class);
+        query.setParameter("resetPasswordToken", hashedToken);
+        final List<Account> users = query.getResultList();
+        return (users != null && !users.isEmpty()) ? users.get(0) : null;
+    }
+
+    @Override
+    @Nullable
     public Account getUserByFacebookId(@NotNull Collection<String> candidateTokens) {
         // Query with IN so both the legacy plaintext value and the new encrypted form
         // ({enc}...) are matched in a single round-trip, preserving backward compatibility.

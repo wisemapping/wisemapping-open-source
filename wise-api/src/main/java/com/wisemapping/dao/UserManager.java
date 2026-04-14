@@ -46,6 +46,9 @@ public interface UserManager {
 
     Account getUserByActivationCode(long code);
 
+    @Nullable
+    Account getUserByResetPasswordToken(@NotNull String hashedToken);
+
     Collaborator getCollaboratorBy(String email);
 
     Account createUser(Account user, Collaborator col);
