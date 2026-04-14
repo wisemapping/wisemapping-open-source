@@ -28,7 +28,12 @@ import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestPasswordResetRequest;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
 import com.wisemapping.rest.model.RestUserRegistration;
-import com.wisemapping.service.*;
+import com.wisemapping.service.DisposableEmailService;
+import com.wisemapping.service.InvalidUserEmailException;
+import com.wisemapping.service.MetricsService;
+import com.wisemapping.service.RecaptchaService;
+import com.wisemapping.service.RegistrationException;
+import com.wisemapping.service.UserService;
 import com.wisemapping.validator.Messages;
 import com.wisemapping.validator.UserValidator;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
@@ -128,7 +133,7 @@ public class UserController {
     @RateLimiter(name = "passwordResetLimiter")
     @RequestMapping(method = RequestMethod.PUT, value = "/resetPassword", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.OK)
-    public RestResetPasswordResponse resetPassword(@RequestParam String email) throws InvalidAuthSchemaException, EmailNotExistsException {
+    public RestResetPasswordResponse resetPassword(@RequestParam String email) throws EmailNotExistsException {
         try {
             return userService.resetPassword(email);
         } catch (InvalidUserEmailException e) {

@@ -90,17 +90,13 @@ public class UserServiceImpl
 
     @Override
     public RestResetPasswordResponse resetPassword(@NotNull String email)
-            throws InvalidUserEmailException, InvalidAuthSchemaException {
+            throws InvalidUserEmailException {
         final Account user = userManager.getUserBy(email);
         if (user != null) {
             final RestResetPasswordResponse response = new RestResetPasswordResponse();
-            if (user.getAuthenticationType().equals(AuthenticationType.GOOGLE_OAUTH2)) {
+            if (user.getAuthenticationType() != AuthenticationType.DATABASE) {
                 response.setAction(RestResetPasswordAction.OAUTH2_USER);
                 return response;
-            }
-
-            if (user.getAuthenticationType() != AuthenticationType.DATABASE) {
-                throw new InvalidAuthSchemaException("Could not change password for " + user.getAuthenticationType().getCode());
             }
 
             // Generate a secure token and send a reset link — the password is NOT changed here

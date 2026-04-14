@@ -43,7 +43,7 @@ public interface UserService {
 
     void updateUser(Account user);
 
-    RestResetPasswordResponse resetPassword(@NotNull String email) throws InvalidUserEmailException, InvalidAuthSchemaException;
+    RestResetPasswordResponse resetPassword(@NotNull String email) throws InvalidUserEmailException;
 
     void resetPasswordFromToken(@NotNull String rawToken, @NotNull String newPassword) throws InvalidResetTokenException;
 
