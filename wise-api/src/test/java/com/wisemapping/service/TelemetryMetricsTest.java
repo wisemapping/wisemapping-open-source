@@ -61,8 +61,13 @@ class TelemetryMetricsTest {
             java.lang.reflect.Field field = MetricsService.class.getDeclaredField("meterRegistry");
             field.setAccessible(true);
             field.set(metricsService, meterRegistry);
+            
+            // Inject telemetryEnabled=true
+            java.lang.reflect.Field telemetryField = MetricsService.class.getDeclaredField("telemetryEnabled");
+            telemetryField.setAccessible(true);
+            telemetryField.set(metricsService, true);
         } catch (Exception e) {
-            fail("Failed to inject meterRegistry: " + e.getMessage());
+            fail("Failed to inject fields: " + e.getMessage());
         }
     }
 
@@ -142,66 +147,47 @@ class TelemetryMetricsTest {
 
     @Test
     void testUserRegistrationMetrics() {
-        // Test Gmail registration
-        Account gmailUser = createTestUser("test@gmail.com", AuthenticationType.DATABASE);
-        metricsService.trackUserRegistration(gmailUser, "gmail");
+        // Test registration
+        Account user1 = createTestUser("test@gmail.com", AuthenticationType.DATABASE);
+        metricsService.trackUserRegistration(user1);
         
         // Test other email registration
-        Account otherUser = createTestUser("test@company.com", AuthenticationType.DATABASE);
-        metricsService.trackUserRegistration(otherUser, "other");
+        Account user2 = createTestUser("test@company.com", AuthenticationType.DATABASE);
+        metricsService.trackUserRegistration(user2);
         
         // Test Google OAuth registration
         Account googleUser = createTestUser("test@gmail.com", AuthenticationType.GOOGLE_OAUTH2);
-        metricsService.trackUserRegistration(googleUser, "gmail");
+        metricsService.trackUserRegistration(googleUser);
         
         // Verify metrics were recorded
-        Double gmailRegistrations = meterRegistry.find("wisemapping.api.user.registrations")
-                .tag("email_provider", "gmail")
-                .tag("auth_type", "D")
-                .counter().count();
-        
-        Double otherRegistrations = meterRegistry.find("wisemapping.api.user.registrations")
-                .tag("email_provider", "other")
+        Double databaseRegistrations = meterRegistry.find("wisemapping.api.user.registrations")
                 .tag("auth_type", "D")
                 .counter().count();
         
         Double googleRegistrations = meterRegistry.find("wisemapping.api.user.registrations")
-                .tag("email_provider", "gmail")
                 .tag("auth_type", "G")
                 .counter().count();
         
-        assertEquals(1.0, gmailRegistrations);
-        assertEquals(1.0, otherRegistrations);
+        assertEquals(2.0, databaseRegistrations);
         assertEquals(1.0, googleRegistrations);
     }
 
     @Test
     void testUserActivationMetrics() {
-        // Test Gmail activation
-        Account gmailUser = createTestUser("test@gmail.com", AuthenticationType.DATABASE);
-        metricsService.trackUserActivation(gmailUser);
+        // Test activation
+        Account user1 = createTestUser("test@gmail.com", AuthenticationType.DATABASE);
+        metricsService.trackUserActivation(user1);
         
         // Test other email activation
-        Account otherUser = createTestUser("test@company.com", AuthenticationType.DATABASE);
-        metricsService.trackUserActivation(otherUser);
-        
-        // Test multiple activations for the same email provider
-        Account anotherGmailUser = createTestUser("another@gmail.com", AuthenticationType.DATABASE);
-        metricsService.trackUserActivation(anotherGmailUser);
+        Account user2 = createTestUser("test@company.com", AuthenticationType.DATABASE);
+        metricsService.trackUserActivation(user2);
         
         // Verify metrics were recorded
-        Double gmailActivations = meterRegistry.find("wisemapping.api.user.activations")
-                .tag("email_provider", "gmail")
+        Double databaseActivations = meterRegistry.find("wisemapping.api.user.activations")
                 .tag("auth_type", "D")
                 .counter().count();
         
-        Double otherActivations = meterRegistry.find("wisemapping.api.user.activations")
-                .tag("email_provider", "other")
-                .tag("auth_type", "D")
-                .counter().count();
-        
-        assertEquals(2.0, gmailActivations);
-        assertEquals(1.0, otherActivations);
+        assertEquals(2.0, databaseActivations);
     }
 
     @Test
@@ -285,19 +271,17 @@ class TelemetryMetricsTest {
         Account sharer = createTestUser("sharer@example.com", AuthenticationType.DATABASE);
         Mindmap mindmap = createTestMindmap();
         
-        // Test sharing with different roles and email providers
-        metricsService.trackMindmapShared(mindmap, "collaborator@gmail.com", "VIEWER", sharer);
-        metricsService.trackMindmapShared(mindmap, "editor@company.com", "EDITOR", sharer);
+        // Test sharing with different roles
+        metricsService.trackMindmapShared(mindmap, "VIEWER", sharer);
+        metricsService.trackMindmapShared(mindmap, "EDITOR", sharer);
         
         // Verify metrics
         Double viewerShares = meterRegistry.find("wisemapping.api.mindmaps.shared")
                 .tag("role", "viewer")
-                .tag("collaborator_email_provider", "gmail")
                 .counter().count();
         
         Double editorShares = meterRegistry.find("wisemapping.api.mindmaps.shared")
                 .tag("role", "editor")
-                .tag("collaborator_email_provider", "other")
                 .counter().count();
         
         assertEquals(1.0, viewerShares);
@@ -370,20 +354,7 @@ class TelemetryMetricsTest {
         assertEquals(1.0, prevention);
     }
 
-    @Test
-    void testEmailProviderExtraction() {
-        // Test various email providers
-        assertEquals("gmail", metricsService.extractEmailProvider("test@gmail.com"));
-        assertEquals("gmail", metricsService.extractEmailProvider("test@googlemail.com"));
-        assertEquals("yahoo", metricsService.extractEmailProvider("test@yahoo.com"));
-        assertEquals("microsoft", metricsService.extractEmailProvider("test@outlook.com"));
-        assertEquals("microsoft", metricsService.extractEmailProvider("test@hotmail.com"));
-        assertEquals("apple", metricsService.extractEmailProvider("test@icloud.com"));
-        assertEquals("education", metricsService.extractEmailProvider("test@university.edu"));
-        assertEquals("government", metricsService.extractEmailProvider("test@agency.gov"));
-        assertEquals("other", metricsService.extractEmailProvider("test@company.com"));
-        assertEquals("other", metricsService.extractEmailProvider("invalid-email"));
-    }
+
 
     private Account createTestUser(String email, AuthenticationType authType) {
         Account user = new Account();
