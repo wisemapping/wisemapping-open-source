@@ -480,8 +480,8 @@ public class MindmapController {
             if (role != CollaborationRole.OWNER) {
                 mindmapService.addCollaboration(mindMap, restCollab.getEmail(), role, restCollabs.getMessage());
 
-                // Track mindmap sharing
-                metricsService.trackMindmapShared(mindMap, restCollab.getEmail(), role.name(), user);
+                 // Track mindmap sharing
+                 metricsService.trackMindmapShared(mindMap, role.name(), user);
             }
         }
 
@@ -558,8 +558,8 @@ public class MindmapController {
                 }
                 mindmapService.addCollaboration(mindMap, collabEmail, newRole, restCollabs.getMessage());
 
-                // Track mindmap sharing (role change is also a sharing event)
-                metricsService.trackMindmapShared(mindMap, collabEmail, newRole.name(), user);
+                 // Track mindmap sharing (role change is also a sharing event)
+                 metricsService.trackMindmapShared(mindMap, newRole.name(), user);
             }
         }
     }

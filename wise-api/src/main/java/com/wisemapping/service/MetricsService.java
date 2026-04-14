@@ -82,11 +82,11 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked login for user {} with auth type {}", user.getId(), authType);
-        } catch (Exception e) {
-            logger.warn("Failed to track login metric for user {}: {}", user.getId(), e.getMessage());
-        }
-    }
+             logger.debug("Tracked login metric");
+         } catch (Exception e) {
+             logger.warn("Failed to track login metric: {}", e.getMessage());
+         }
+     }
 
     /**
      * Track a user logout event
@@ -102,18 +102,17 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked logout for user {} with logout type {}", user.getId(), logoutType);
-        } catch (Exception e) {
-            logger.warn("Failed to track logout metric for user {}: {}", user.getId(), e.getMessage());
-        }
-    }
+             logger.debug("Tracked logout metric");
+         } catch (Exception e) {
+             logger.warn("Failed to track logout metric: {}", e.getMessage());
+         }
+     }
 
-    /**
-     * Track a user registration event
-     * @param user The newly registered user
-     * @param emailProvider The email provider (e.g., "gmail", "yahoo", "other")
-     */
-    public void trackUserRegistration(@NotNull Account user, @NotNull String emailProvider) {
+     /**
+      * Track a user registration event
+      * @param user The newly registered user
+      */
+     public void trackUserRegistration(@NotNull Account user) {
         try {
             String authType = user.getAuthenticationType() != null ? 
                 String.valueOf(user.getAuthenticationType().getCode()) : "unknown";
@@ -125,34 +124,32 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked registration for user {} with email provider {}", user.getId(), emailProvider);
-        } catch (Exception e) {
-            logger.warn("Failed to track registration metric for user {}: {}", user.getId(), e.getMessage());
-        }
-    }
+             logger.debug("Tracked registration metric");
+         } catch (Exception e) {
+             logger.warn("Failed to track registration metric: {}", e.getMessage());
+         }
+     }
 
-    /**
-     * Track a user account activation event
-     * @param user The user whose account was activated
-     */
-    public void trackUserActivation(@NotNull Account user) {
+     /**
+      * Track a user account activation event
+      * @param user The user whose account was activated
+      */
+     public void trackUserActivation(@NotNull Account user) {
         try {
-            String authType = user.getAuthenticationType() != null ? 
-                String.valueOf(user.getAuthenticationType().getCode()) : "unknown";
-            String emailProvider = extractEmailProvider(user.getEmail());
-            
-            Counter.builder(USER_ACTIVATIONS)
-                    .description("Total number of user account activations")
-                    .tag("email_provider", emailProvider)
-                    .tag("auth_type", authType)
-                    .register(meterRegistry)
-                    .increment();
-            
-            logger.debug("Tracked activation for user {} with email provider {}", user.getId(), emailProvider);
-        } catch (Exception e) {
-            logger.warn("Failed to track activation metric for user {}: {}", user.getId(), e.getMessage());
-        }
-    }
+             String authType = user.getAuthenticationType() != null ? 
+                 String.valueOf(user.getAuthenticationType().getCode()) : "unknown";
+             
+             Counter.builder(USER_ACTIVATIONS)
+                     .description("Total number of user account activations")
+                     .tag("auth_type", authType)
+                     .register(meterRegistry)
+                     .increment();
+             
+             logger.debug("Tracked activation metric");
+         } catch (Exception e) {
+             logger.warn("Failed to track activation metric: {}", e.getMessage());
+         }
+     }
 
     /**
      * Track a mindmap creation event
@@ -172,35 +169,30 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked mindmap creation: {} by user {} (type: {}, visibility: {})", 
-                mindmap.getId(), user.getId(), creationType, visibility);
-        } catch (Exception e) {
-            logger.warn("Failed to track mindmap creation metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
-        }
-    }
+             logger.debug("Tracked mindmap creation metric");
+         } catch (Exception e) {
+             logger.warn("Failed to track mindmap creation metric: {}", e.getMessage());
+         }
+     }
 
-    /**
-     * Track when a user is suspended/disabled
-     * @param user The user who was suspended
-     * @param reason The suspension reason
-     */
-    public void trackUserSuspension(@NotNull Account user, @NotNull String reason) {
-        try {
-            String emailProvider = extractEmailProvider(user.getEmail());
-            
-            Counter.builder(USER_SUSPENSIONS)
-                    .description("Total number of users suspended")
-                    .tag("reason", reason.toLowerCase())
-                    .tag("user_type", String.valueOf(user.getAuthenticationType().getCode()))
-                    .tag("email_provider", emailProvider)
-                    .register(meterRegistry)
-                    .increment();
-            
-            logger.debug("Tracked user suspension: {} suspended for reason {}", user.getId(), reason);
-        } catch (Exception e) {
-            logger.warn("Failed to track user suspension metric for user {}: {}", user.getId(), e.getMessage());
-        }
-    }
+     /**
+      * Track when a user is suspended/disabled
+      * @param user The user who was suspended
+      * @param reason The suspension reason
+      */
+     public void trackUserSuspension(@NotNull Account user, @NotNull String reason) {
+             Counter.builder(USER_SUSPENSIONS)
+                     .description("Total number of users suspended")
+                     .tag("reason", reason.toLowerCase())
+                     .tag("user_type", String.valueOf(user.getAuthenticationType().getCode()))
+                     .register(meterRegistry)
+                     .increment();
+             
+             logger.debug("Tracked user suspension metric");
+         } catch (Exception e) {
+             logger.warn("Failed to track user suspension metric: {}", e.getMessage());
+         }
+     }
 
     /**
      * Track when a mindmap is made public
@@ -216,38 +208,33 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked mindmap made public: {} by user {}", mindmap.getId(), user.getId());
-        } catch (Exception e) {
-            logger.warn("Failed to track mindmap made public metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
-        }
-    }
+             logger.debug("Tracked mindmap made public metric");
+         } catch (Exception e) {
+             logger.warn("Failed to track mindmap made public metric: {}", e.getMessage());
+         }
+     }
 
-    /**
-     * Track when a mindmap is shared with a collaborator
-     * @param mindmap The mindmap that was shared
-     * @param collaboratorEmail The email of the collaborator
-     * @param role The collaboration role granted
-     * @param sharedBy The user who shared the mindmap
-     */
-    public void trackMindmapShared(@NotNull Mindmap mindmap, @NotNull String collaboratorEmail, @NotNull String role, @NotNull Account sharedBy) {
-        try {
-            String emailProvider = extractEmailProvider(collaboratorEmail);
-            
-            Counter.builder(MINDMAPS_SHARED)
-                    .description("Total number of mindmaps shared with collaborators")
-                    .tag("role", role.toLowerCase())
-                    .tag("collaborator_email_provider", emailProvider)
-                    .tag("sharer_type", String.valueOf(sharedBy.getAuthenticationType().getCode()))
-                    .tag("mindmap_visibility", mindmap.isPublic() ? "public" : "private")
-                    .register(meterRegistry)
-                    .increment();
-            
-            logger.debug("Tracked mindmap shared: {} shared with {} (role: {}) by user {}", 
-                mindmap.getId(), emailProvider, role, sharedBy.getId());
-        } catch (Exception e) {
-            logger.warn("Failed to track mindmap shared metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
-        }
-    }
+     /**
+      * Track when a mindmap is shared with a collaborator
+      * @param mindmap The mindmap that was shared
+      * @param role The collaboration role granted
+      * @param sharedBy The user who shared the mindmap
+      */
+      public void trackMindmapShared(@NotNull Mindmap mindmap, @NotNull String role, @NotNull Account sharedBy) {
+         try {
+             Counter.builder(MINDMAPS_SHARED)
+                     .description("Total number of mindmaps shared with collaborators")
+                     .tag("role", role.toLowerCase())
+                     .tag("sharer_type", String.valueOf(sharedBy.getAuthenticationType().getCode()))
+                     .tag("mindmap_visibility", mindmap.isPublic() ? "public" : "private")
+                     .register(meterRegistry)
+                     .increment();
+             
+             logger.debug("Tracked mindmap shared metric");
+         } catch (Exception e) {
+             logger.warn("Failed to track mindmap shared metric: {}", e.getMessage());
+         }
+     }
 
     /**
      * Track a spam analysis event - unified metric that captures all spam analysis results
@@ -316,11 +303,11 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked spam prevention: {} action blocked for mindmap {}", action, mindmap.getId());
-        } catch (Exception e) {
-            logger.warn("Failed to track spam prevention metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
-        }
-    }
+             logger.debug("Tracked spam prevention metric");
+         } catch (Exception e) {
+             logger.warn("Failed to track spam prevention metric: {}", e.getMessage());
+         }
+     }
 
     /**
      * Track inactive user processing metrics
@@ -411,48 +398,4 @@ public class MetricsService {
         }
     }
 
-    /**
-     * Extract email provider from email address
-     * @param email The email address
-     * @return The email provider (e.g., "gmail", "yahoo", "hotmail", "other")
-     */
-    @NotNull
-    public String extractEmailProvider(@Nullable String email) {
-        if (email == null || !email.contains("@")) {
-            return "other";
-        }
-        
-        String domain = email.substring(email.lastIndexOf("@") + 1).toLowerCase();
-        
-        // Map common email providers
-        switch (domain) {
-            case "gmail.com":
-            case "googlemail.com":
-                return "gmail";
-            case "yahoo.com":
-            case "yahoo.co.uk":
-            case "yahoo.fr":
-            case "yahoo.de":
-                return "yahoo";
-            case "hotmail.com":
-            case "outlook.com":
-            case "live.com":
-                return "microsoft";
-            case "aol.com":
-                return "aol";
-            case "icloud.com":
-            case "me.com":
-            case "mac.com":
-                return "apple";
-            default:
-                // Check if it's a known business domain
-                if (domain.contains("edu")) {
-                    return "education";
-                } else if (domain.contains("gov")) {
-                    return "government";
-                } else {
-                    return "other";
-                }
-        }
-    }
-}
+ }
