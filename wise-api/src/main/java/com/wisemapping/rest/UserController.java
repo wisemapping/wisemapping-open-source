@@ -40,7 +40,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Arrays;
@@ -80,13 +79,11 @@ public class UserController {
     private String domainBanExclusion;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    private static final String REAL_IP_ADDRESS_HEADER = "X-Real-IP";
-
     @RequestMapping(method = RequestMethod.POST, value = "/", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void registerUser(@RequestBody RestUserRegistration registration, @NotNull HttpServletRequest request,
+    public void registerUser(@RequestBody RestUserRegistration registration,
                              @NotNull HttpServletResponse response) throws WiseMappingException, BindException {
-        logger.debug("Register new user:" + registration.getEmail());
+        logger.debug("Register new user.");
         if (!registrationEnabled) {
             throw new WiseMappingException("Registration is disabled. You can enable it using app.registration.enabled");
         }
@@ -103,13 +100,7 @@ public class UserController {
             throw new PasswordTooLongException();
         }
 
-        // If tomcat is behind a reverse proxy, ip needs to be found in other header.
-        String remoteIp = request.getHeader(REAL_IP_ADDRESS_HEADER);
-        if (remoteIp == null || remoteIp.isEmpty()) {
-            remoteIp = request.getRemoteAddr();
-        }
-        logger.debug("Remote address" + remoteIp);
-        verify(registration, remoteIp);
+        verify(registration);
 
         final Account user = new Account();
         user.setEmail(registration.getEmail().trim());
@@ -150,7 +141,7 @@ public class UserController {
         userService.activateAccount(code);
     }
 
-    private void verify(@NotNull final RestUserRegistration registration, @NotNull String remoteAddress)
+    private void verify(@NotNull final RestUserRegistration registration)
             throws BindException {
 
         final BindException errors = new RegistrationException(registration, "registration");
@@ -163,7 +154,7 @@ public class UserController {
         if (registrationCaptchaEnabled) {
             final String recaptcha = registration.getRecaptcha();
             if (recaptcha != null) {
-                final String reCaptchaResponse = captchaService.verifyRecaptcha(remoteAddress, recaptcha);
+                final String reCaptchaResponse = captchaService.verifyRecaptcha(recaptcha);
                 if (reCaptchaResponse != null && !reCaptchaResponse.isEmpty()) {
                     errors.rejectValue("recaptcha", reCaptchaResponse);
                 }

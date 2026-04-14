@@ -55,16 +55,13 @@ public class RecaptchaService {
     private String recaptchaSecret;
 
     @Nullable
-    public String verifyRecaptcha(@NotNull String ip, @NotNull String recaptcha) {
+    public String verifyRecaptcha(@NotNull String recaptcha) {
         String result = "";
+        // Note: remoteip is intentionally omitted — it is optional in the Google reCAPTCHA API
+        // and sending the user's IP to a third party (Google) without explicit consent would
+        // violate GDPR Article 6 (no lawful basis) and Article 4(1) (IP = personal data).
         final String formBody = "secret=" + URLEncoder.encode(recaptchaSecret, StandardCharsets.UTF_8)
-                + "&response=" + URLEncoder.encode(recaptcha, StandardCharsets.UTF_8)
-                + "&remoteip=" + URLEncoder.encode(ip, StandardCharsets.UTF_8);
-
-        // Add logs ...
-        logger.debug("Response from remoteip: " + ip);
-        logger.debug("Response from recaptchaSecret: " + recaptchaSecret);
-        logger.debug("Response from recaptcha: " + recaptcha);
+                + "&response=" + URLEncoder.encode(recaptcha, StandardCharsets.UTF_8);
 
         try {
             final HttpRequest request = HttpRequest.newBuilder()
