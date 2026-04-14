@@ -57,6 +57,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
     
     @Autowired
     private MetricsService metricsService;
+
+    @Autowired
+    private OAuthTokenEncryptionService oauthTokenEncryptionService;
     
     @Value("${app.site.ui-base-url:}")
     private String uiBaseUrl;
@@ -247,7 +250,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         newUser.setFirstname(firstName);
         newUser.setLastname(lastName);
         newUser.setAuthenticationType(authType);
-        newUser.setOauthToken(providerId);  // store provider user ID for data deletion lookups
+        newUser.setOauthToken(oauthTokenEncryptionService.encrypt(providerId));  // store encrypted provider user ID for data deletion lookups
         newUser.setPassword("");
         newUser.setOauthSync(true);
 
@@ -266,9 +269,12 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         // For existing OAuth users with same auth type, update if needed
         if (existingAuthType == authType) {
             boolean needsUpdate = (existingUser.getOauthSync() == null || !existingUser.getOauthSync());
-            // Refresh provider ID if it was never stored or has changed
-            if (providerId != null && !providerId.equals(existingUser.getOauthToken())) {
-                existingUser.setOauthToken(providerId);
+            // Refresh provider ID if it was never stored or has changed.
+            // Decrypt the stored value first so we compare plain IDs regardless of
+            // whether the row was written before or after encryption was enabled.
+            final String storedProviderId = oauthTokenEncryptionService.decrypt(existingUser.getOauthToken());
+            if (providerId != null && !providerId.equals(storedProviderId)) {
+                existingUser.setOauthToken(oauthTokenEncryptionService.encrypt(providerId));
                 needsUpdate = true;
             }
             if (needsUpdate) {

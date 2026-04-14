@@ -42,6 +42,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -242,12 +243,14 @@ public class UserManagerImpl
 
     @Override
     @Nullable
-    public Account getUserByFacebookId(@NotNull String facebookId) {
+    public Account getUserByFacebookId(@NotNull Collection<String> candidateTokens) {
+        // Query with IN so both the legacy plaintext value and the new encrypted form
+        // ({enc}...) are matched in a single round-trip, preserving backward compatibility.
         final TypedQuery<Account> query = entityManager.createQuery(
-                "SELECT a FROM Account a WHERE a.authenticationTypeCode = :authType AND a.oauthToken = :facebookId",
+                "SELECT a FROM Account a WHERE a.authenticationTypeCode = :authType AND a.oauthToken IN :tokens",
                 Account.class);
         query.setParameter("authType", AuthenticationType.FACEBOOK_OAUTH2.getCode());
-        query.setParameter("facebookId", facebookId);
+        query.setParameter("tokens", candidateTokens);
         final List<Account> results = query.getResultList();
         return results.isEmpty() ? null : results.get(0);
     }

@@ -26,6 +26,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.RestResetPasswordAction;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
+import com.wisemapping.security.OAuthTokenEncryptionService;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,8 @@ public class UserServiceImpl
     private VelocityEngineWrapper velocityEngineWrapper;
     @Autowired
     private MetricsService metricsService;
+    @Autowired
+    private OAuthTokenEncryptionService oauthTokenEncryptionService;
 
     final private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -130,7 +133,16 @@ public class UserServiceImpl
     @Override
     @Nullable
     public Account getUserByFacebookId(@NotNull String facebookId) {
-        return userManager.getUserByFacebookId(facebookId);
+        // Build a candidate list containing both the plaintext and encrypted forms so
+        // that the query matches legacy rows (stored as plain IDs) and new rows (stored
+        // with the {enc} prefix) without requiring a schema migration.
+        final List<String> candidates = new ArrayList<>();
+        candidates.add(facebookId);
+        final String encrypted = oauthTokenEncryptionService.encrypt(facebookId);
+        if (encrypted != null && !encrypted.equals(facebookId)) {
+            candidates.add(encrypted);
+        }
+        return userManager.getUserByFacebookId(candidates);
     }
 
     @Override

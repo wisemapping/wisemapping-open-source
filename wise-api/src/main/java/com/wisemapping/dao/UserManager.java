@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 public interface UserManager {
@@ -154,11 +155,16 @@ public interface UserManager {
 
     /**
      * Find a Facebook OAuth2 user by their Facebook user ID (stored in oauth_token).
-     * @param facebookId the Facebook user ID from a data deletion request
+     * Accepts a collection of candidate token values so that both the legacy plaintext
+     * form and the new encrypted form can be matched in a single query, preserving
+     * backward compatibility during the transition period.
+     *
+     * @param candidateTokens one or more token values to match against oauth_token
+     *                        (typically the raw Facebook ID plus its encrypted form)
      * @return the matching account, or null if not found
      */
     @Nullable
-    Account getUserByFacebookId(@NotNull String facebookId);
+    Account getUserByFacebookId(@NotNull Collection<String> candidateTokens);
 
     /**
      * Count users matching advanced filtering criteria
