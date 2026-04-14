@@ -368,9 +368,8 @@ public class AdminController {
         delegated.setAuthenticationType(AuthenticationType.DATABASE);
         userService.createUser(delegated, false, true);
         
-        // Track user registration
-        String emailProvider = metricsService.extractEmailProvider(delegated.getEmail());
-        metricsService.trackUserRegistration(delegated, emailProvider);
+         // Track user registration
+         metricsService.trackUserRegistration(delegated);
         
         response.setHeader("Location", "/api/restful/admin/users/" + delegated.getId());
     }

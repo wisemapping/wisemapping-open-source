@@ -113,9 +113,8 @@ public class UserController {
         // For OAuth users, this is handled separately and they don't need email confirmation
         userService.createUser(user, emailConfirmationEnabled, !emailConfirmationEnabled);
         
-        // Track user registration
-        String emailProvider = metricsService.extractEmailProvider(user.getEmail());
-        metricsService.trackUserRegistration(user, emailProvider);
+         // Track user registration
+         metricsService.trackUserRegistration(user);
         
         response.setHeader("Location", "/api/restful/users/" + user.getId());
         response.setHeader("ResourceId", Integer.toString(user.getId()));
