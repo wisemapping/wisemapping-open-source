@@ -186,11 +186,17 @@ resilience4j:
         limitForPeriod: 20
         limitRefreshPeriod: 1s
         timeoutDuration: 0
+      passwordResetLimiter:
+        limitForPeriod: 50      # max 50 password reset requests per window
+        limitRefreshPeriod: 1m  # 1-minute sliding window
+        timeoutDuration: 0      # reject immediately (no queuing) when limit exceeded
 
 #
 # Application Config related options:
 #
 app:
+  telemetry:
+    enabled: false
   monitoring:
     performance:
       log-mindmap-listing: true

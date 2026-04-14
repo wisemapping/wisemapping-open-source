@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,6 +49,9 @@ public class MetricsService {
 
     @Autowired
     private MeterRegistry meterRegistry;
+
+    @Value("${app.telemetry.enabled:false}")
+    private boolean telemetryEnabled;
 
     // Metric names as constants to avoid typos
     private static final String USER_LOGINS = "wisemapping.api.user.auth";
@@ -74,6 +78,7 @@ public class MetricsService {
      * @param authType The authentication type used (e.g., "database", "oauth", "google")
      */
     public void trackUserLogin(@NotNull Account user, @NotNull String authType) {
+        if (!telemetryEnabled) return;
         try {
             Counter.builder(USER_LOGINS)
                     .description("Total number of user logins")
@@ -94,6 +99,7 @@ public class MetricsService {
      * @param logoutType The logout type (e.g., "manual", "session_expired", "admin")
      */
     public void trackUserLogout(@NotNull Account user, @NotNull String logoutType) {
+        if (!telemetryEnabled) return;
         try {
             Counter.builder(USER_LOGOUTS)
                     .description("Total number of user logouts")
@@ -113,13 +119,13 @@ public class MetricsService {
       * @param user The newly registered user
       */
      public void trackUserRegistration(@NotNull Account user) {
+        if (!telemetryEnabled) return;
         try {
             String authType = user.getAuthenticationType() != null ? 
                 String.valueOf(user.getAuthenticationType().getCode()) : "unknown";
             
             Counter.builder(USER_REGISTRATIONS)
                     .description("Total number of user registrations")
-                    .tag("email_provider", emailProvider)
                     .tag("auth_type", authType)
                     .register(meterRegistry)
                     .increment();
@@ -135,6 +141,7 @@ public class MetricsService {
       * @param user The user whose account was activated
       */
      public void trackUserActivation(@NotNull Account user) {
+        if (!telemetryEnabled) return;
         try {
              String authType = user.getAuthenticationType() != null ? 
                  String.valueOf(user.getAuthenticationType().getCode()) : "unknown";
@@ -158,6 +165,7 @@ public class MetricsService {
      * @param creationType The type of creation (e.g., "new", "duplicate", "tutorial", "import")
      */
     public void trackMindmapCreation(@NotNull Mindmap mindmap, @NotNull Account user, @NotNull String creationType) {
+        if (!telemetryEnabled) return;
         try {
             String visibility = mindmap.isPublic() ? "public" : "private";
             
@@ -180,19 +188,21 @@ public class MetricsService {
       * @param user The user who was suspended
       * @param reason The suspension reason
       */
-     public void trackUserSuspension(@NotNull Account user, @NotNull String reason) {
-             Counter.builder(USER_SUSPENSIONS)
-                     .description("Total number of users suspended")
-                     .tag("reason", reason.toLowerCase())
-                     .tag("user_type", String.valueOf(user.getAuthenticationType().getCode()))
-                     .register(meterRegistry)
-                     .increment();
-             
-             logger.debug("Tracked user suspension metric");
-         } catch (Exception e) {
-             logger.warn("Failed to track user suspension metric: {}", e.getMessage());
-         }
-     }
+    public void trackUserSuspension(@NotNull Account user, @NotNull String reason) {
+        if (!telemetryEnabled) return;
+        try {
+            Counter.builder(USER_SUSPENSIONS)
+                    .description("Total number of users suspended")
+                    .tag("reason", reason.toLowerCase())
+                    .tag("user_type", String.valueOf(user.getAuthenticationType().getCode()))
+                    .register(meterRegistry)
+                    .increment();
+
+            logger.debug("Tracked user suspension metric");
+        } catch (Exception e) {
+            logger.warn("Failed to track user suspension metric: {}", e.getMessage());
+        }
+    }
 
     /**
      * Track when a mindmap is made public
@@ -200,6 +210,7 @@ public class MetricsService {
      * @param user The user who made it public
      */
     public void trackMindmapMadePublic(@NotNull Mindmap mindmap, @NotNull Account user) {
+        if (!telemetryEnabled) return;
         try {
             Counter.builder(MINDMAPS_MADE_PUBLIC)
                     .description("Total number of mindmaps made public")
@@ -221,6 +232,7 @@ public class MetricsService {
       * @param sharedBy The user who shared the mindmap
       */
       public void trackMindmapShared(@NotNull Mindmap mindmap, @NotNull String role, @NotNull Account sharedBy) {
+         if (!telemetryEnabled) return;
          try {
              Counter.builder(MINDMAPS_SHARED)
                      .description("Total number of mindmaps shared with collaborators")
@@ -243,6 +255,7 @@ public class MetricsService {
      * @param context The context where spam analysis was performed (e.g., "creation", "update", "batch_scan")
      */
     public void trackSpamAnalysis(@NotNull Mindmap mindmap, @NotNull SpamDetectionResult spamResult, @NotNull String context) {
+        if (!telemetryEnabled) return;
         try {
             String isSpam = spamResult.isSpam() ? "yes" : "no";
             String spamType = spamResult.isSpam() && spamResult.getStrategyType() != null ? 
@@ -271,6 +284,7 @@ public class MetricsService {
      * @param context The context where spam was detected (e.g., "creation", "update", "batch_scan")
      */
     public void trackSpamDetection(@NotNull Mindmap mindmap, @NotNull SpamDetectionResult spamResult, @NotNull String context) {
+        if (!telemetryEnabled) return;
         try {
             if (spamResult.isSpam()) {
                 Counter.builder(SPAM_DETECTED)
@@ -295,6 +309,7 @@ public class MetricsService {
      * @param action The action that was prevented (e.g., "publish", "share")
      */
     public void trackSpamPrevention(@NotNull Mindmap mindmap, @NotNull String action) {
+        if (!telemetryEnabled) return;
         try {
             Counter.builder(SPAM_PREVENTED)
                     .description("Total number of actions prevented due to spam detection")
@@ -315,6 +330,7 @@ public class MetricsService {
      * @param suspended Total number of users suspended in the batch
      */
     public void trackInactiveUserProcessing(int processed, int suspended) {
+        if (!telemetryEnabled) return;
         try {
             Counter.builder(INACTIVE_USERS_PROCESSED)
                     .description("Total number of inactive users processed")
@@ -339,6 +355,7 @@ public class MetricsService {
      * @param suspended Number of users suspended in this batch
      */
     public void trackInactiveUserBatchSuspension(int suspended) {
+        if (!telemetryEnabled) return;
         try {
             if (suspended > 0) {
                 Counter.builder(INACTIVE_USERS_BATCH_SUSPENDED)
@@ -358,6 +375,7 @@ public class MetricsService {
      * @param candidates Number of users identified as suspension candidates in dry run
      */
     public void trackInactiveUserDryRunCandidates(int candidates) {
+        if (!telemetryEnabled) return;
         try {
             if (candidates > 0) {
                 Counter.builder(INACTIVE_USERS_DRY_RUN_CANDIDATES)
@@ -378,6 +396,7 @@ public class MetricsService {
      * @param mindmapsMigrated Total number of mindmaps migrated to inactive table
      */
     public void trackInactiveMindmapMigration(int usersProcessed, int mindmapsMigrated) {
+        if (!telemetryEnabled) return;
         try {
             Counter.builder(INACTIVE_MINDMAPS_USERS_PROCESSED)
                     .description("Total number of inactive users processed for mindmap migration")
