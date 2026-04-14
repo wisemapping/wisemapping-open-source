@@ -82,9 +82,9 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked login for user {} with auth type {}", user.getEmail(), authType);
+            logger.debug("Tracked login for user {} with auth type {}", user.getId(), authType);
         } catch (Exception e) {
-            logger.warn("Failed to track login metric for user {}: {}", user.getEmail(), e.getMessage());
+            logger.warn("Failed to track login metric for user {}: {}", user.getId(), e.getMessage());
         }
     }
 
@@ -102,9 +102,9 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked logout for user {} with logout type {}", user.getEmail(), logoutType);
+            logger.debug("Tracked logout for user {} with logout type {}", user.getId(), logoutType);
         } catch (Exception e) {
-            logger.warn("Failed to track logout metric for user {}: {}", user.getEmail(), e.getMessage());
+            logger.warn("Failed to track logout metric for user {}: {}", user.getId(), e.getMessage());
         }
     }
 
@@ -125,9 +125,9 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked registration for user {} with email provider {}", user.getEmail(), emailProvider);
+            logger.debug("Tracked registration for user {} with email provider {}", user.getId(), emailProvider);
         } catch (Exception e) {
-            logger.warn("Failed to track registration metric for user {}: {}", user.getEmail(), e.getMessage());
+            logger.warn("Failed to track registration metric for user {}: {}", user.getId(), e.getMessage());
         }
     }
 
@@ -148,9 +148,9 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked activation for user {} with email provider {}", user.getEmail(), emailProvider);
+            logger.debug("Tracked activation for user {} with email provider {}", user.getId(), emailProvider);
         } catch (Exception e) {
-            logger.warn("Failed to track activation metric for user {}: {}", user.getEmail(), e.getMessage());
+            logger.warn("Failed to track activation metric for user {}: {}", user.getId(), e.getMessage());
         }
     }
 
@@ -173,7 +173,7 @@ public class MetricsService {
                     .increment();
             
             logger.debug("Tracked mindmap creation: {} by user {} (type: {}, visibility: {})", 
-                mindmap.getTitle(), user.getEmail(), creationType, visibility);
+                mindmap.getId(), user.getId(), creationType, visibility);
         } catch (Exception e) {
             logger.warn("Failed to track mindmap creation metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
         }
@@ -196,9 +196,9 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked user suspension: {} suspended for reason {}", user.getEmail(), reason);
+            logger.debug("Tracked user suspension: {} suspended for reason {}", user.getId(), reason);
         } catch (Exception e) {
-            logger.warn("Failed to track user suspension metric for user {}: {}", user.getEmail(), e.getMessage());
+            logger.warn("Failed to track user suspension metric for user {}: {}", user.getId(), e.getMessage());
         }
     }
 
@@ -216,7 +216,7 @@ public class MetricsService {
                     .register(meterRegistry)
                     .increment();
             
-            logger.debug("Tracked mindmap made public: {} by user {}", mindmap.getTitle(), user.getEmail());
+            logger.debug("Tracked mindmap made public: {} by user {}", mindmap.getId(), user.getId());
         } catch (Exception e) {
             logger.warn("Failed to track mindmap made public metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
         }
@@ -243,7 +243,7 @@ public class MetricsService {
                     .increment();
             
             logger.debug("Tracked mindmap shared: {} shared with {} (role: {}) by user {}", 
-                mindmap.getTitle(), collaboratorEmail, role, sharedBy.getEmail());
+                mindmap.getId(), emailProvider, role, sharedBy.getId());
         } catch (Exception e) {
             logger.warn("Failed to track mindmap shared metric for mindmap {}: {}", mindmap.getId(), e.getMessage());
         }
