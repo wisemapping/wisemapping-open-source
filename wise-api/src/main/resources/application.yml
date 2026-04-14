@@ -206,6 +206,13 @@ app:
   jwt:
     secret: dlqxKAg685SaKhsQXIMeM=JWCw3bkl3Ei3Tb7LMlnd19oMd66burPNlJ0Po1qguyjgpakQTk2CN3
     expirationMin: 10080 # One week
+  # OAuth provider-ID encryption. Set a strong random secret (≥ 32 chars) to encrypt
+  # OAuth provider user IDs at rest. Leave empty to keep storing them as plaintext
+  # (legacy behaviour). New values will be prefixed with {enc}; old plaintext rows
+  # continue to work unchanged (backward-compatible).
+  oauth:
+    token:
+      secret: dlqxKAg685SaKhsQXIMeM$JWCw3bkl3Ei3Tb7LMlnd19oMd66xxxPNlJ0Po1qguyjgpakQTk2CN3
   # Admin account with super admin permissions on the API.
   admin:
     user: admin@wisemapping.org
