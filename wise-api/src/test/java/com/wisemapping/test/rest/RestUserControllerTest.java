@@ -42,6 +42,10 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
@@ -454,6 +458,147 @@ class RestUserControllerTest {
                 String.class
         );
         assertEquals(HttpStatus.BAD_REQUEST, response3.getStatusCode());
+    }
+
+    // ==================== RESET PASSWORD TOKEN TESTS ====================
+
+    @Test
+    @Order(16)
+    @DisplayName("POST resetPasswordToken must be accessible without authentication (regression for session-expired bug)")
+    void shouldAllowResetPasswordTokenEndpointWithoutAuthentication() {
+        // Before the fix this returned 401 because the endpoint required authentication.
+        // An unauthenticated request with an invalid token must now return 400, not 401.
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(
+                "{\"token\":\"invalidtoken123\",\"password\":\"newPassword1\"}", headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/resetPasswordToken",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        assertNotEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode(),
+                "resetPasswordToken must be reachable without a session; 401 means the security config is still broken");
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    @Order(17)
+    @DisplayName("Should reset password successfully with a valid token")
+    void shouldResetPasswordWithValidToken() throws Exception {
+        Account user = createActiveTestUser();
+        String rawToken = "validtoken" + System.nanoTime();
+
+        user.setResetPasswordToken(sha256Hex(rawToken));
+        user.setResetPasswordTokenExpiry(LocalDateTime.now().plusHours(1));
+        userService.updateUser(user);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(
+                String.format("{\"token\":\"%s\",\"password\":\"NewPassword1!\"}", rawToken), headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/resetPasswordToken",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertNull(userService.getUserBy(user.getEmail()).getResetPasswordToken(),
+                "Token must be cleared after a successful reset");
+    }
+
+    @Test
+    @Order(18)
+    @DisplayName("Should reject an expired reset token")
+    void shouldRejectExpiredResetToken() throws Exception {
+        Account user = createActiveTestUser();
+        String rawToken = "expiredtoken" + System.nanoTime();
+
+        user.setResetPasswordToken(sha256Hex(rawToken));
+        user.setResetPasswordTokenExpiry(LocalDateTime.now().minusMinutes(1));
+        userService.updateUser(user);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(
+                String.format("{\"token\":\"%s\",\"password\":\"NewPassword1!\"}", rawToken), headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/resetPasswordToken",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    @Order(19)
+    @DisplayName("Should reject an unknown reset token")
+    void shouldRejectUnknownResetToken() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(
+                "{\"token\":\"totallyfaketoken9999\",\"password\":\"NewPassword1!\"}", headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                BASE_REST_URL + "/users/resetPasswordToken",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    // ==================== HELPERS ====================
+
+    private Account createActiveTestUser() {
+        RestUserRegistration registration = testDataManager.createTestUserRegistration();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<RestUserRegistration> request = new HttpEntity<>(registration, headers);
+
+        ResponseEntity<String> createResponse = restTemplate.exchange(
+                BASE_REST_URL + "/users/",
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+        assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
+
+        Account created = userService.getUserBy(registration.getEmail());
+        assertNotNull(created);
+
+        restTemplate.exchange(
+                BASE_REST_URL + "/users/activation?code=" + created.getActivationCode(),
+                HttpMethod.PUT,
+                null,
+                String.class
+        );
+
+        return userService.getUserBy(registration.getEmail());
+    }
+
+    private static String sha256Hex(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hex = new StringBuilder(hash.length * 2);
+            for (byte b : hash) {
+                hex.append(String.format("%02x", b));
+            }
+            return hex.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 not available", e);
+        }
     }
 
     @Test

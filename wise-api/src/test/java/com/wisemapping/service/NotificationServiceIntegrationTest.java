@@ -58,6 +58,8 @@ class NotificationServiceIntegrationTest {
         messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
         messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setFallbackToSystemLocale(false);
+        messageSource.setDefaultLocale(java.util.Locale.ENGLISH);
 
         notificationService = new NotificationService();
         ReflectionTestUtils.setField(notificationService, "messageSource", messageSource);

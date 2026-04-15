@@ -7,6 +7,10 @@
 # SpringBoot Config: WiseMapping Backend is based on SpringBoot. Additional configurations documentation could be found https://docs.spring.io/spring-boot/3.3/reference/features/external-config.html.
 #
 spring:
+  messages:
+    basename: messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
   # Spring MVC configuration to handle exceptions gracefully
   mvc:
     log-resolved-exception: false
