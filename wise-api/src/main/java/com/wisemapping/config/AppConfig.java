@@ -124,6 +124,7 @@ public class AppConfig implements WebMvcConfigurer {
                         .requestMatchers("/api/restful/users/resetPassword").permitAll()
                         .requestMatchers("/api/restful/users/resetPasswordToken").permitAll()
                         .requestMatchers("/api/restful/users/activation").permitAll()
+                        .requestMatchers("/api/restful/logout").permitAll()
                         .requestMatchers("/api/restful/admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated())
