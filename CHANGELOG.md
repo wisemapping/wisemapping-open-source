@@ -2,6 +2,52 @@
 
 All notable changes to the Wisemapping Frontend project are documented in this file.
 
+## [Unreleased]
+
+### 🔧 Backend (wisemapping-open-source)
+
+#### Security & Privacy
+- **OAuth Token Encryption**: Added encryption for OAuth tokens to prevent token leakage
+- **PII Removal from Logs**: Stripped personally identifiable information (email addresses, names) from server logs across the authentication and user management stack
+- **Email → User ID in Logs**: Replaced email addresses in log statements with internal user IDs to prevent PII exposure in log aggregation systems
+- **Metrics PII Cleanup**: Removed PII and unnecessary metadata from all metrics tracking events
+- **Metrics Disabled by Default**: Disabled metrics collection by default; operators must explicitly opt in
+- **Reset Password Endpoint Protection**: Strengthened authorization checks on the reset-password and logout endpoints to prevent unauthenticated access
+- **Login Migration to User ID**: Refactored login session handling to reference internal user IDs rather than email addresses
+
+#### Features
+- **Robust Reset Password**: Replaced the previous reset-password flow with a secure link-based mechanism — a time-limited signed token is emailed to the user; clicking the link opens a dedicated reset form, eliminating the possibility of replay or enumeration attacks
+
+#### Maintenance
+- **Dependency Bump**: Updated backend dependencies to latest stable versions
+- **Dead Code Removal**: Cleaned up unused code paths and legacy tracking utilities
+
+### 🎨 Frontend (wisemapping-frontend)
+
+#### Features
+- **Icon Picker Enhancements**: Added full-text search and a "Frequently Used" section to the icon picker gallery for faster icon discovery
+- **AI Icons**: Added a new set of AI-themed icons to the icon panel
+- **Remember Position**: Added support for remembering the last scroll/zoom position in the editor canvas
+
+#### Bug Fixes
+- **SVG Icon Rendering**: Fixed an issue where SVG icons in the icon gallery were not rendering all paths correctly
+- **CSS Border Conflict**: Fixed a form-fieldset border-reset in `theme/index.ts` (changed `& fieldset` → `& fieldset:not(.MuiOutlinedInput-notchedOutline)`) that collided with MUI's internal notched-outline fieldset, eliminating an injection-order race condition
+- **PII Log Issues**: Fixed several places where user email addresses were leaked into client-side logs
+
+#### Testing
+- **End-to-End Tests**: Extended webapp Cypress test suite with new user-flow scenarios
+- **Reset-Password Flow Test**: Added an end-to-end test covering the full forgot-password → email link → reset form flow
+- **Registration Layout**: Improved the registration page layout and fixed related Cypress tests
+
+#### Translations
+- Added missing i18n keys for consent, registration, and reset-password flows
+
+#### Maintenance
+- Excluded golden test files from Prettier formatting
+- Updated frontend dependencies
+
+---
+
 ## [6.0.7] - April, 2026
 
 ### 🚀 CI/CD & Release Management

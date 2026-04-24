@@ -45,6 +45,10 @@ public enum SpamStrategyType {
     // Link Farm Spam
     LINK_FARM('L', "LinkFarm"),
 
+    // Single Domain Link Hub Spam - central topic with first-level children that all
+    // link to the same external domain (typical SEO backlink map pattern)
+    SINGLE_DOMAIN_LINK_HUB('D', "SingleDomainLinkHub"),
+
     // Unknown/Generic spam
     UNKNOWN('X', "Unknown");
 
