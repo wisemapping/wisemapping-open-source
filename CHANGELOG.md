@@ -17,6 +17,7 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 
 #### Features
 - **Robust Reset Password**: Replaced the previous reset-password flow with a secure link-based mechanism — a time-limited signed token is emailed to the user; clicking the link opens a dedicated reset form, eliminating the possibility of replay or enumeration attacks
+- **Arabic Language Support**: Added Arabic (`ar`) to the supported server-side message bundles, enabling fully localized error messages and email templates for Arabic-speaking users
 
 #### Maintenance
 - **Dependency Bump**: Updated backend dependencies to latest stable versions
@@ -28,23 +29,26 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 - **Icon Picker Enhancements**: Added full-text search and a "Frequently Used" section to the icon picker gallery for faster icon discovery
 - **AI Icons**: Added a new set of AI-themed icons to the icon panel
 - **Remember Position**: Added support for remembering the last scroll/zoom position in the editor canvas
+- **Two-Finger Zoom**: Improved touch-based zoom-in / zoom-out gestures on the editor canvas for a smoother trackpad and touchscreen experience
+- **Login Flow Optimization**: Streamlined the post-login transition with reduced perceived latency and a more reliable handoff to the editor
+- **Footer Refresh**: Updated the footer layout for better readability and consistent placement across pages
 
 #### Bug Fixes
 - **SVG Icon Rendering**: Fixed an issue where SVG icons in the icon gallery were not rendering all paths correctly
 - **CSS Border Conflict**: Fixed a form-fieldset border-reset in `theme/index.ts` (changed `& fieldset` → `& fieldset:not(.MuiOutlinedInput-notchedOutline)`) that collided with MUI's internal notched-outline fieldset, eliminating an injection-order race condition
 - **PII Log Issues**: Fixed several places where user email addresses were leaked into client-side logs
-
-#### Testing
-- **End-to-End Tests**: Extended webapp Cypress test suite with new user-flow scenarios
-- **Reset-Password Flow Test**: Added an end-to-end test covering the full forgot-password → email link → reset form flow
-- **Registration Layout**: Improved the registration page layout and fixed related Cypress tests
+- **Console Page Loader**: Fixed a stuck loading spinner on the console page during route transitions
+- **reCAPTCHA Integration**: Restored reCAPTCHA validation on the affected forms after a regression; surface clearer error logging when the challenge fails
+- **Image Export Background**: Fixed export-to-image so the background renders correctly instead of appearing transparent or clipped
 
 #### Translations
+- Added Arabic (RTL) translations across the editor and webapp UI
 - Added missing i18n keys for consent, registration, and reset-password flows
 
 #### Maintenance
+- **react-query v5 Migration**: Migrated from `react-query` v4 to `@tanstack/react-query` v5, including aligning all query/mutation call sites with the new API
+- **Library Modernization**: Replaced several unmaintained libraries with actively maintained equivalents and upgraded the remaining frontend dependencies
 - Excluded golden test files from Prettier formatting
-- Updated frontend dependencies
 
 ---
 
