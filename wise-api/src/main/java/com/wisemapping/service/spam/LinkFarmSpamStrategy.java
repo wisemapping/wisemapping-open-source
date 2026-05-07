@@ -24,9 +24,12 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -53,6 +56,9 @@ public class LinkFarmSpamStrategy implements SpamDetectionStrategy {
 
     @Value("${app.batch.spam-detection.link-farm.max-topics-for-low-structure:3}")
     private int maxTopicsForLowStructure;
+
+    @Value("${app.batch.spam-detection.link-farm.allowed-links-per-domain:3}")
+    private int allowedLinksPerNonWhitelistedDomain;
 
     @Value("${app.batch.spam-detection.link-farm.popular-domain-whitelist-resource:classpath:spam/popular-domain-whitelist.yml}")
     private Resource popularDomainWhitelistResource;
@@ -91,22 +97,24 @@ public class LinkFarmSpamStrategy implements SpamDetectionStrategy {
                 return SpamDetectionResult.notSpam();
             }
 
-            // Count URLs in content and also check links in topics
+            // Collect all candidate URLs (excluding whitelisted hosts) from content and topic linkUrl fields
+            List<String> candidateUrls = new ArrayList<>();
             Matcher urlMatcher = URL_PATTERN.matcher(content);
-            long urlCount = 0;
             while (urlMatcher.find()) {
                 String url = urlMatcher.group();
                 if (shouldCountUrl(url)) {
-                    urlCount++;
+                    candidateUrls.add(url);
+                }
+            }
+            for (String url : mapModel.getAllLinkUrls()) {
+                if (shouldCountUrl(url)) {
+                    candidateUrls.add(url);
                 }
             }
 
-            // Also count links from topic linkUrl fields
-            for (String url : mapModel.getAllLinkUrls()) {
-                if (shouldCountUrl(url)) {
-                    urlCount++;
-                }
-            }
+            // For non-whitelisted domains, allow up to N links per domain before counting toward spam.
+            // URLs that fail to parse a host are counted individually (no grouping possible).
+            long urlCount = countUrlsWithPerDomainAllowance(candidateUrls);
 
             // Rule 1: Extreme link stuffing - 20+ URLs regardless of structure
             if (urlCount >= urlThreshold) {
@@ -150,6 +158,49 @@ public class LinkFarmSpamStrategy implements SpamDetectionStrategy {
     @Override
     public SpamStrategyType getType() {
         return SpamStrategyType.LINK_FARM;
+    }
+
+    private long countUrlsWithPerDomainAllowance(List<String> urls) {
+        Map<String, Integer> perDomainCounts = new HashMap<>();
+        long unparseableCount = 0;
+
+        for (String url : urls) {
+            String host = extractNormalizedHost(url);
+            if (host == null) {
+                unparseableCount++;
+            } else {
+                perDomainCounts.merge(host, 1, Integer::sum);
+            }
+        }
+
+        long counted = unparseableCount;
+        int allowance = Math.max(0, allowedLinksPerNonWhitelistedDomain);
+        for (int domainCount : perDomainCounts.values()) {
+            if (domainCount > allowance) {
+                counted += (domainCount - allowance);
+            }
+        }
+        return counted;
+    }
+
+    private String extractNormalizedHost(String url) {
+        if (url == null || url.isBlank()) {
+            return null;
+        }
+        try {
+            URI uri = new URI(url.trim());
+            String host = uri.getHost();
+            if (host == null) {
+                return null;
+            }
+            host = host.toLowerCase(Locale.ROOT);
+            if (host.startsWith("www.")) {
+                host = host.substring(4);
+            }
+            return host;
+        } catch (URISyntaxException e) {
+            return null;
+        }
     }
 
     private boolean shouldCountUrl(String url) {
