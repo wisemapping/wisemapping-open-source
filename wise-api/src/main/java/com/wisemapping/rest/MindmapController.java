@@ -669,7 +669,7 @@ public class MindmapController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCollabByEmail(@PathVariable int id, @RequestParam(required = false) String email)
             throws WiseMappingException {
-        logger.debug("Deleting permission for email:" + email);
+        logger.debug("Deleting collaborator permission");
 
         // Is a valid email address ?
         final EmailValidator emailValidator = EmailValidator.getInstance();

@@ -252,7 +252,7 @@ public class UserServiceImpl
         final Account existingUser = userManager.getUserBy(email);
 
         if (existingUser == null) {
-            logger.warn("OAuth account sync confirmation failed: user not found for email {}", email);
+            logger.warn("OAuth account sync confirmation failed: user not found");
             throw new WiseMappingException("User not found / incorrect code");
         }
 

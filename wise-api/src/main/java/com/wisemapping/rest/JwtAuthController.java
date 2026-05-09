@@ -20,6 +20,7 @@ package com.wisemapping.rest;
 
 import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.exceptions.AccountSuspendedException;
+import com.wisemapping.exceptions.AccountSuspendedInactivityException;
 import com.wisemapping.exceptions.UserCouldNotBeAuthException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Account;
@@ -122,6 +123,8 @@ public class JwtAuthController {
             // use the original input (which should already be an email), normalized to
             // lowercase
             return username.toLowerCase();
+        } catch (AccountSuspendedInactivityException e) {
+            throw UserCouldNotBeAuthException.accountSuspendedInactivity(e);
         } catch (AccountSuspendedException e) {
             // Account is suspended
             throw UserCouldNotBeAuthException.accountSuspended(e);

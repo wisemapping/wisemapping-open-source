@@ -166,18 +166,18 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        logger.debug("Attempting LDAP authentication for user: {}", username);
+        logger.debug("Attempting LDAP authentication");
 
         if (password == null || password.isEmpty()) {
-            logger.debug("Empty password, skipping LDAP authentication for user: {}", username);
+            logger.debug("Empty password, skipping LDAP authentication");
             return null;
         }
 
         // Check if user exists with non-LDAP auth type
         Account existingUser = userService.getUserBy(username);
         if (existingUser != null && existingUser.getAuthenticationType() != AuthenticationType.LDAP) {
-            logger.debug("User {} exists with auth type {}, skipping LDAP",
-                    username, existingUser.getAuthenticationType());
+            logger.debug("User (userId={}) exists with auth type {}, skipping LDAP",
+                    existingUser.getId(), existingUser.getAuthenticationType());
             return null;
         }
 
@@ -186,18 +186,17 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
             Authentication ldapAuth = delegateProvider.authenticate(authentication);
 
             if (ldapAuth == null || !ldapAuth.isAuthenticated()) {
-                logger.debug("LDAP authentication returned null/unauthenticated for user: {}", username);
+                logger.debug("LDAP authentication returned null/unauthenticated");
                 return null;
             }
 
-            logger.info("LDAP authentication successful for user: {}", username);
+            logger.info("LDAP authentication successful");
             ldapAvailable = true;
 
             // Extract user info - handle different principal types
             LdapUserInfo userInfo = extractUserInfoFromPrincipal(ldapAuth.getPrincipal(), username);
 
-            logger.debug("Extracted LDAP user info - email: {}, firstname: {}, lastname: {}",
-                    userInfo.email, userInfo.firstname, userInfo.lastname);
+            logger.debug("Extracted LDAP user info");
 
             // Synchronize user with WiseMapping database
             Account account = synchronizeUser(userInfo);
@@ -232,21 +231,25 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
             return null;
 
         } catch (org.springframework.ldap.AuthenticationException e) {
-            logger.debug("LDAP authentication failed for user {}: invalid credentials", username);
+            logger.debug("LDAP authentication failed: invalid credentials");
             if (existingUser != null && existingUser.getAuthenticationType() == AuthenticationType.LDAP) {
                 throw new BadCredentialsException("Invalid LDAP credentials", e);
             }
             return null;
 
         } catch (BadCredentialsException e) {
-            logger.debug("LDAP bad credentials for user {}", username);
+            logger.debug("LDAP bad credentials");
             if (existingUser != null && existingUser.getAuthenticationType() == AuthenticationType.LDAP) {
                 throw e;
             }
             return null;
 
         } catch (AccountSuspendedException e) {
-            logger.warn("Suspended account attempted LDAP login: {}", username);
+            if (existingUser != null) {
+                logger.warn("Suspended account attempted LDAP login (userId={})", existingUser.getId());
+            } else {
+                logger.warn("Suspended account attempted LDAP login");
+            }
             throw new DisabledException("Account is suspended", e);
 
         } catch (Exception e) {
@@ -256,7 +259,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
                 return null;
             }
 
-            logger.error("Unexpected error during LDAP authentication for user {}: {}", username, e.getMessage(), e);
+            logger.error("Unexpected error during LDAP authentication: {}", e.getMessage(), e);
             return null;
         }
     }
@@ -291,8 +294,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
                     email = userContext.getStringAttribute(ldapProperties.getEmailAttribute());
                     firstname = userContext.getStringAttribute(ldapProperties.getFirstnameAttribute());
                     lastname = userContext.getStringAttribute(ldapProperties.getLastnameAttribute());
-                    logger.debug("Fetched attributes from LDAP - email: {}, firstname: {}, lastname: {}",
-                            email, firstname, lastname);
+                    logger.debug("Fetched attributes from LDAP");
                 }
             } catch (Exception e) {
                 logger.warn("Could not fetch LDAP attributes for DN {}: {}", dn, e.getMessage());
@@ -312,7 +314,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
                         .replaceAll("(?i)dc=", "") // Case-insensitive replacement
                         .replace(",", ".")
                         .toLowerCase();
-                logger.info("Generated email for LDAP user {}: {}", username, email);
+                logger.info("Generated email for LDAP user from username");
             }
         }
 
@@ -394,19 +396,22 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         Account existingUser = userService.getUserBy(userInfo.email);
 
         if (existingUser == null) {
-            logger.info("Creating new WiseMapping account for LDAP user: {}", userInfo.email);
+            logger.info("Creating new WiseMapping account for LDAP user");
             return createLdapUser(userInfo);
         } else {
             if (existingUser.getAuthenticationType() != AuthenticationType.LDAP) {
-                logger.warn("User {} exists with authentication type {} but attempted LDAP login",
-                        userInfo.email, existingUser.getAuthenticationType());
+                logger.warn("User (userId={}) exists with authentication type {} but attempted LDAP login",
+                        existingUser.getId(), existingUser.getAuthenticationType());
                 throw new BadCredentialsException(
                         "Account exists with different authentication method. " +
                                 "Please use " + existingUser.getAuthenticationType() + " to login.");
             }
 
             if (existingUser.isSuspended()) {
-                throw new AccountSuspendedException("Account is suspended for user: " + userInfo.email);
+                throw existingUser.getSuspensionReason() == com.wisemapping.model.SuspensionReason.INACTIVITY
+                        ? new com.wisemapping.exceptions.AccountSuspendedInactivityException(
+                                "Account is suspended (inactivity)")
+                        : new AccountSuspendedException("Account is suspended");
             }
 
             return updateLdapUser(existingUser, userInfo);
@@ -423,7 +428,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
         newUser.setActivationDate(Calendar.getInstance());
 
         userService.createUser(newUser, false, false);
-        logger.info("Created new WiseMapping account for LDAP user: {}", userInfo.email);
+        logger.info("Created new WiseMapping account for LDAP user (userId={})", newUser.getId());
 
         return newUser;
     }
@@ -443,7 +448,7 @@ public class AuthenticationProviderLDAP implements AuthenticationProvider {
 
         if (updated) {
             userService.updateUser(existingUser);
-            logger.debug("Updated profile for LDAP user: {}", userInfo.email);
+            logger.debug("Updated profile for LDAP user (userId={})", existingUser.getId());
         }
 
         userService.auditLogin(existingUser);

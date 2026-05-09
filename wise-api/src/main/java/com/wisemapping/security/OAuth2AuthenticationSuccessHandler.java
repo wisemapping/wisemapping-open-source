@@ -77,7 +77,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                                        HttpServletResponse response, 
                                        Authentication authentication) throws IOException {
         
-        logger.debug("OAuth2 authentication successful for user: {}", authentication.getName());
+        logger.debug("OAuth2 authentication successful");
         
         // Get the OAuth2/OIDC user from Spring Security
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
@@ -147,7 +147,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                 redirectUrl = chatgptAiBaseUrl + "/oauth/social-callback" +
                     "?jwtToken=" + URLEncoder.encode(jwt, "UTF-8") +
                     "&state=" + URLEncoder.encode(chatgptParams, "UTF-8");
-                logger.info("OAuth2 ChatGPT flow detected for user: {}, provider: {}", email, provider);
+                logger.info("OAuth2 ChatGPT flow detected (userId={}, provider={})", account.getId(), provider);
                 logger.debug("Redirecting to AI proxy: {}", redirectUrl);
             } else {
                 // Normal OAuth flow - redirect to frontend oauth-callback page
@@ -171,11 +171,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             logger.error("Error encoding OAuth callback URL", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "OAuth callback error");
         } catch (Exception e) {
-            logger.error("Error processing OAuth user: {}", email, e);
+            logger.error("Error processing OAuth user", e);
             response.sendRedirect(uiBaseUrl + "/c/login?error=oauth_failed");
         }
         
-        logger.debug("OAuth2 authentication completed successfully for user: {}", email);
+        logger.debug("OAuth2 authentication completed successfully");
     }
     
     private String extractEmail(OAuth2User oauth2User) {
@@ -261,8 +261,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         AuthenticationType existingAuthType = existingUser.getAuthenticationType();
         
         if (existingAuthType != AuthenticationType.DATABASE && existingAuthType != authType) {
-            logger.warn("User {} attempted to login with {} but account uses {}", 
-                       existingUser.getEmail(), authType, existingAuthType);
+            logger.warn("User (userId={}) attempted to login with {} but account uses {}",
+                       existingUser.getId(), authType, existingAuthType);
             throw new Exception("Account is registered with a different authentication provider");
         }
         

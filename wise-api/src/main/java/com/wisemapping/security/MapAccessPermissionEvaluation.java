@@ -76,7 +76,7 @@ public class MapAccessPermissionEvaluation implements PermissionEvaluator {
         }
 
         if (!result) {
-            logger.debug("User '" + (user != null ? user.getEmail() : "none") + "' not allowed to invoke");
+            logger.debug("User (userId={}) not allowed to invoke", user != null ? user.getId() : "none");
         }
         return result;
     }
