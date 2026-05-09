@@ -273,6 +273,20 @@ public class GlobalExceptionHandler {
         return new RestErrors(message, Severity.WARNING);
     }
 
+    @ExceptionHandler(com.wisemapping.exceptions.AccountSuspendedInactivityException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestErrors handleAccountSuspendedInactivityException(
+            @NotNull com.wisemapping.exceptions.AccountSuspendedInactivityException ex) {
+        logger.debug("Account suspended (inactivity): {}", ex.getMessage());
+        final Locale locale = LocaleContextHolder.getLocale();
+        final String fallback = "Your account has been suspended due to a long period of inactivity. Please contact support for assistance.";
+        String message = messageSource != null
+                ? messageSource.getMessage("ACCOUNT_SUSPENDED_INACTIVITY", null, fallback, locale)
+                : fallback;
+        return new RestErrors(message, Severity.WARNING);
+    }
+
     @ExceptionHandler(LockedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody

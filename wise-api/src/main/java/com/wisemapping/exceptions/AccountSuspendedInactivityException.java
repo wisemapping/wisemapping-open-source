@@ -18,15 +18,9 @@
 
 package com.wisemapping.exceptions;
 
-import org.springframework.security.core.AuthenticationException;
+public class AccountSuspendedInactivityException extends AccountSuspendedException {
 
-public class AccountSuspendedException extends AuthenticationException {
-
-    public AccountSuspendedException(String message) {
+    public AccountSuspendedInactivityException(String message) {
         super(message);
-    }
-
-    public AccountSuspendedException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

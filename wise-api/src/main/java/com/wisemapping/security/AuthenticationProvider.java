@@ -53,7 +53,7 @@ public class AuthenticationProvider implements org.springframework.security.auth
         final String credentials = (String) auth.getCredentials();
         
         if (user == null) {
-            throw new BadCredentialsException("User account is null for " + email);
+            throw new BadCredentialsException("User account is null");
         }
 
         // Check if user is trying to login with wrong authentication method
@@ -65,19 +65,22 @@ public class AuthenticationProvider implements org.springframework.security.auth
         // Validate password
         // encoder.matches(rawPassword, encodedPassword) - credentials is raw, user.getPassword() is encoded
         if (credentials == null || !encoder.matches(credentials, user.getPassword())) {
-            logger.debug("Authentication failed for: {}", email);
-            throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
+            logger.debug("Authentication failed (userId={})", user.getId());
+            throw new BadCredentialsException("Username/Password does not match");
         }
 
         // For DATABASE users, check if account is activated (email confirmed)
         // OAuth users are activated automatically during registration
         if (!user.isActive()) {
-            throw new AccountDisabledException("Account not activated for " + auth.getPrincipal());
+            throw new AccountDisabledException("Account not activated (userId=" + user.getId() + ")");
         }
 
         // Check if account is suspended
         if (user.isSuspended()) {
-            throw new AccountSuspendedException("Account suspended for " + auth.getPrincipal());
+            throw user.getSuspensionReason() == com.wisemapping.model.SuspensionReason.INACTIVITY
+                    ? new com.wisemapping.exceptions.AccountSuspendedInactivityException(
+                            "Account suspended (inactivity)")
+                    : new AccountSuspendedException("Account suspended");
         }
 
         userDetailsService.getUserService().auditLogin(user);

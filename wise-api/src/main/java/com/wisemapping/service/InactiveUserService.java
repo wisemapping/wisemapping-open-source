@@ -195,7 +195,7 @@ public class InactiveUserService {
         user.setSuspensionReason(SuspensionReason.INACTIVITY);
         userManager.updateUser(user);
 
-        logger.debug("User {} suspended due to inactivity", user.getEmail());
+        logger.debug("User (userId={}) suspended due to inactivity", user.getId());
     }
 
     public void previewInactiveUsers() {

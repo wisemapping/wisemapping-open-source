@@ -56,9 +56,10 @@ public class OAuth2Controller {
                                                         @NotNull @RequestParam String code,
                                                         @Nullable @RequestParam(required = false) String provider,
                                                         @NotNull HttpServletResponse response) throws WiseMappingException {
-        logger.info("Confirming OAuth account sync. Email: {}, Provider: {}", email, provider);
+        logger.info("Confirming OAuth account sync (provider={})", provider);
 
         final Account user = userService.confirmAccountSync(email, code, provider);
+        logger.debug("OAuth account sync confirmed (userId={})", user.getId());
         final String jwtToken = jwtTokenUtil.doLogin(response, email);
 
         return new RestOath2CallbackResponse(user, jwtToken);

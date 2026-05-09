@@ -187,10 +187,10 @@ public class NotificationService {
             // Get the subject from messages
             final String subject = messageSource.getMessage("CONFIRMATION.EMAIL_SUBJECT", null, locale);
             
-            logger.debug("Sending activation email to: " + user.getEmail() + " with URL: " + activationUrl);
+            logger.debug("Sending activation email (userId={}) with URL: {}", user.getId(), activationUrl);
             mailerService.sendEmail(mailerService.getServerSenderEmail(), user.getEmail(), subject, model, "confirmationMail.vm");
         } catch (Exception e) {
-            logger.error("Error sending registration email to: " + user.getEmail(), e);
+            logger.error("Error sending registration email (userId={})", user.getId(), e);
             throw new UserRegistrationException(
                 "An unexpected error occurred during registration. Please try again. If the problem persists, contact support.",
                 e

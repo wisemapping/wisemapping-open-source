@@ -61,8 +61,8 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
 
         if (token.length() > 3500) {
-            logger.error("JWT token size ({}) exceeds safe threshold for browser cookies (3500 bytes). User: {}",
-                    token.length(), user.getUsername());
+            logger.error("JWT token size ({}) exceeds safe threshold for browser cookies (3500 bytes)",
+                    token.length());
         }
         return token;
     }
@@ -98,8 +98,11 @@ public class JwtTokenUtil implements Serializable {
 
     @NotNull
     public String doLogin(@NotNull HttpServletResponse response, @NotNull String email) {
-        logger.debug("Performing login:" + email);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        if (userDetails instanceof com.wisemapping.security.UserDetails) {
+            logger.debug("Performing login (userId={})",
+                    ((com.wisemapping.security.UserDetails) userDetails).getUser().getId());
+        }
 
         // Track login telemetry
         if (userDetails instanceof Account) {
