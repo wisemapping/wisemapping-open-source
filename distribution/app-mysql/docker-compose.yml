@@ -1,0 +1,64 @@
+# =============================================================================
+# WiseMapping with MySQL - Docker Compose Configuration
+# =============================================================================
+#
+# BEFORE STARTING:
+# 1. Set WISEMAPPING_DATA_DIR environment variable (REQUIRED)
+# 2. Set MYSQL_ROOT_PASSWORD environment variable (REQUIRED)
+# 3. Create the data directory: mkdir -p ${WISEMAPPING_DATA_DIR}/logs
+#
+# QUICK START:
+#   docker-compose up -d
+#
+# ACCESS:
+#   Application: http://localhost (or http://localhost:${WISEMAPPING_PORT})
+#   Default login: test@wisemapping.org / password
+#   Admin login:   admin@wisemapping.org / testAdmin123
+#
+# LOGS:
+#   Location: ${WISEMAPPING_DATA_DIR}/logs/
+#   View: tail -f ${WISEMAPPING_DATA_DIR}/logs/spring-boot-stdout*.log
+#
+# =============================================================================
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: wisemapping-mysql
+    command: --lower_case_table_names=1 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-wisemapping}
+      MYSQL_USER: ${MYSQL_USER:-wisemapping}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}
+    volumes:
+      - ${WISEMAPPING_DATA_DIR:?WISEMAPPING_DATA_DIR is required - please set the storage path}/db:/var/lib/mysql
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - wisemapping-network
+
+  wisemapping:
+    image: wisemapping/wisemapping:latest
+    container_name: wisemapping-app
+    ports:
+      - "${WISEMAPPING_PORT:-80}:80"
+    volumes:
+      - ./app.yml:/app/config/application.yml:ro
+      - ${WISEMAPPING_DATA_DIR:?WISEMAPPING_DATA_DIR is required - please set the storage path}/logs:/var/log/supervisor:rw
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS:--Xmx2048m -Xms1024m}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - wisemapping-network
+    restart: unless-stopped
+
+networks:
+  wisemapping-network:
+    driver: bridge
