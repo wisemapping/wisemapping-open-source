@@ -114,7 +114,7 @@ public class Mindmap implements Serializable {
     @JsonIgnore
     private MindmapXml mindmapXml;
 
-    @Formula("(select count(distinct c.id) from COLLABORATION c where c.mindmap_id = id)")
+    @Formula("(select count(distinct c.id) from collaboration c where c.mindmap_id = id)")
     private int collaboratorCount;
 
     public Mindmap() {
