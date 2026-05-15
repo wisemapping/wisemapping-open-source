@@ -107,6 +107,24 @@ Patterns observed across the existing code — match them when adding new files.
 
 **SQL & schema** — schema lives in `schema-{hsqldb,mysql,postgresql}.sql` and seed data in `data-*.sql`. A schema change must be applied to **all three** dialect files; CI runs against HSQLDB but production is PostgreSQL.
 
+### Database Standards & Type Mappings
+To ensure cross-platform consistency and resolve encoding/case-sensitivity issues (ref: Issue #69), follow these standards:
+
+1.  **Naming Convention**: All table and column names must be **lowercase**. (Linux environments are case-sensitive; lowercase ensures compatibility with Hibernate's default naming strategy).
+2.  **MySQL Encoding**: Always use `CHARACTER SET UTF8MB4` for MySQL tables and string columns to support emojis and international characters.
+3.  **Data Type Mapping Table**:
+
+| Logical Type | MySQL | PostgreSQL | HSQLDB | Typical Usage |
+| :--- | :--- | :--- | :--- | :--- |
+| **Primary Key (Auto)** | `INTEGER ... AUTO_INCREMENT` | `SERIAL` | `INTEGER ... IDENTITY` | Database IDs (Collaborator, Mindmap, etc.) |
+| **Dates & Times** | `DATETIME` | `TIMESTAMP` | `DATETIME` | Creation, modification, and activation dates |
+| **Booleans** | `BOOL` (TinyInt) | `BOOL` | `BOOLEAN` | Flags (isPublic, suspended, allowSendEmail) |
+| **Large Text** | `MEDIUMTEXT` | `TEXT` | `LONGVARCHAR` | JSON settings, OAuth tokens, long descriptions |
+| **Large Binary** | `MEDIUMBLOB` | `BYTEA` | `LONGVARBINARY` | Compressed Mindmap XML and history snapshots |
+| **Standard String** | `VARCHAR(255)` | `VARCHAR(255)` | `VARCHAR(255)` | Titles, emails, names, and identifiers |
+
+*Note: `MEDIUMTEXT`/`MEDIUMBLOB` (16MB) is preferred over `TEXT`/`BLOB` (64KB) for MySQL to prevent truncation of large mindmaps or user settings.*
+
 **Spam allowlist** — trusted source domains live in `resources/spam/popular-domain-whitelist.yml`. Bare entries match the exact host; use `"*.example.com"` for subdomain wildcards (existing pattern). Group additions under a comment header by region/category.
 
 **Tests** — JUnit 5 (`junit-vintage-engine` is excluded; don't import JUnit 4). Spring Boot test slices preferred over full-context tests when possible. Test class naming mirrors the SUT: `FooService` → `FooServiceTest`.

@@ -264,6 +264,7 @@ app:
         location-variants: 8  # Number of distinct location variants (cities, neighborhoods) indicating keyword stuffing
         near-me-repetitions: 10  # Number of "near me" and similar phrase repetitions indicating keyword stuffing
       link-farm:
+        enabled: false  # Disable LinkFarmSpamStrategy (can be re-enabled per environment)
         url-threshold: 20  # Absolute threshold for URL count (always spam if >= this)
         url-threshold-low-structure: 10  # URL threshold for maps with <= 3 topics
         max-topics-for-low-structure: 3  # Maximum topics to consider as "low structure"

@@ -17,6 +17,7 @@ package com.wisemapping.service.spam;
 import com.wisemapping.mindmap.model.MapModel;
 import com.wisemapping.model.SpamStrategyType;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
@@ -44,6 +45,7 @@ import java.util.regex.Pattern;
  * Common patterns include gambling sites, adult content, or SEO link building campaigns.
  */
 @Component
+@ConditionalOnProperty(value = "app.batch.spam-detection.link-farm.enabled", havingValue = "true", matchIfMissing = false)
 public class LinkFarmSpamStrategy implements SpamDetectionStrategy {
 
     private final SpamContentExtractor contentExtractor;
