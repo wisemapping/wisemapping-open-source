@@ -18,9 +18,14 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 #### Features
 - **Robust Reset Password**: Replaced the previous reset-password flow with a secure link-based mechanism — a time-limited signed token is emailed to the user; clicking the link opens a dedicated reset form, eliminating the possibility of replay or enumeration attacks
 - **Arabic Language Support**: Added Arabic (`ar`) to the supported server-side message bundles, enabling fully localized error messages and email templates for Arabic-speaking users
+- **MariaDB Native Support**: Added first-class MariaDB support with the native JDBC driver and dialect, dedicated `schema-mariadb.sql` / `data-mariadb.sql` seed files, and a ready-to-run `distribution/app-mariadb/` Docker Compose overlay
+
+#### Bug Fixes
+- **[#69](https://github.com/wisemapping/wisemapping-open-source/issues/69)**: Normalized database identifiers and data types across MySQL, MariaDB, PostgreSQL and HSQLDB; all JPA entity table names and the schema files are now lowercase so deployments on case-sensitive Linux filesystems behave identically to macOS/Windows
+- **[#70](https://github.com/wisemapping/wisemapping-open-source/issues/70)**: Fixed the 6.0.8 Docker image failing at startup with `ModuleNotFoundError: No module named 'xmlrpclib'`; the container now uses `tini` as PID 1 with a small shell launcher instead of the broken Alpine supervisor + Python combination, removing Python from the runtime image entirely
 
 #### Maintenance
-- **Dependency Bump**: Updated backend dependencies to latest stable versions
+- **Dependency Bump**: Updated backend dependencies to latest stable versions (PostgreSQL JDBC, HSQLDB, Jackson, EHCache, OpenTelemetry exporter, commons-io)
 - **Dead Code Removal**: Cleaned up unused code paths and legacy tracking utilities
 
 ### 🎨 Frontend (wisemapping-frontend)
@@ -32,6 +37,8 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 - **Two-Finger Zoom**: Improved touch-based zoom-in / zoom-out gestures on the editor canvas for a smoother trackpad and touchscreen experience
 - **Login Flow Optimization**: Streamlined the post-login transition with reduced perceived latency and a more reliable handoff to the editor
 - **Footer Refresh**: Updated the footer layout for better readability and consistent placement across pages
+- **Registration Layout**: Refreshed the registration page layout for a cleaner first-time signup experience
+- **SEO & Social Sharing Metadata**: Added `robots`, Open Graph and Twitter Card meta tags so shared WiseMapping links render rich previews on social platforms
 
 #### Bug Fixes
 - **SVG Icon Rendering**: Fixed an issue where SVG icons in the icon gallery were not rendering all paths correctly
