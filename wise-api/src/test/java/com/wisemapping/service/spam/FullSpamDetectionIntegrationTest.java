@@ -42,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(properties = {
         "app.mindmap.note.max-length=10000",
         "app.batch.spam-detection.min-nodes-exemption=15",
+        "app.batch.spam-detection.link-farm.enabled=true",
         "app.batch.spam-detection.link-farm.url-threshold=20",
         "app.batch.spam-detection.link-farm.url-threshold-low-structure=10",
         "app.batch.spam-detection.link-farm.max-topics-for-low-structure=3",
