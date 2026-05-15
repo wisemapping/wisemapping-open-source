@@ -41,7 +41,7 @@ Default seed credentials in dev: `test@wisemapping.org` / `test`.
 `wise-api/src/main/resources/application.yml` holds defaults for every feature. Don't edit it for environment-specific values — override via Spring's external config (`--spring.config.additional-location=...`) or environment variables. Example overlays live in `config/database/` (e.g. `app-postgresql.yaml`).
 
 Key namespaces (read `application.yml` before changing behavior):
-- `spring.datasource` — defaults to embedded HSQLDB. Switch to `postgresql`/`mysql` by overriding driver/url/username/password; the matching `schema-*.sql` and `data-*.sql` under `src/main/resources/` are auto-applied.
+- `spring.datasource` — defaults to embedded HSQLDB. Switch to `postgresql`/`mysql`/`mariadb` by overriding driver/url/username/password; the matching `schema-*.sql` and `data-*.sql` under `src/main/resources/` are auto-applied. Reference overlays live under `distribution/app-{postgresql,mysql,mariadb}/app.yml`.
 - `spring.security.oauth2.client` — Google/Facebook OAuth2; client IDs/secrets are expected to be supplied via overlay.
 - `spring.ldap` + `app.security.ldap` — LDAP auth (see `doc/ldap/README.md`). Disabled by default.
 - `app.jwt` — JWT signing key + expiration (used by `JwtTokenUtil`, `JwtAuthController`).
@@ -105,7 +105,7 @@ Patterns observed across the existing code — match them when adding new files.
 
 **Validation** — input validation belongs in `validator/` (`@Component`-based validators like `MapInfoValidator`, `HtmlContentValidator`). Throw `ValidationException` / `HtmlContentValidationException` with a `MSG_KEY` rather than returning error strings.
 
-**SQL & schema** — schema lives in `schema-{hsqldb,mysql,postgresql}.sql` and seed data in `data-*.sql`. A schema change must be applied to **all three** dialect files; CI runs against HSQLDB but production is PostgreSQL.
+**SQL & schema** — schema lives in `schema-{hsqldb,mysql,mariadb,postgresql}.sql` and seed data in `data-*.sql`. A schema change must be applied to **all four** dialect files; CI runs against HSQLDB but production is PostgreSQL. `schema-mariadb.sql` / `data-mariadb.sql` should normally be kept in lockstep with the MySQL variants.
 
 ### Database Standards & Type Mappings
 To ensure cross-platform consistency and resolve encoding/case-sensitivity issues (ref: Issue #69), follow these standards:

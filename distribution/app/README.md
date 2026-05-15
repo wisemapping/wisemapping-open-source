@@ -66,7 +66,7 @@ The application automatically detects the port from requests and adjusts URLs ac
 
 ### Database Configuration
 
-> **⚠️ Production Warning**: HSQLDB is **NOT recommended for production**. Use PostgreSQL or MySQL/MariaDB for production deployments.
+> **⚠️ Production Warning**: HSQLDB is **NOT recommended for production**. Use PostgreSQL, MySQL, or MariaDB for production deployments.
 
 #### HSQLDB (Default - Testing Only)
 
@@ -125,13 +125,13 @@ docker run -d --name wisemapping -p 80:80 \
   wisemapping/wisemapping:latest
 ```
 
-#### MySQL/MariaDB
+#### MySQL
 
 ```yaml
 # application.yml
 spring:
   datasource:
-    url: jdbc:mysql://your-mysql-host:3306/wisemapping?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://your-mysql-host:3306/wisemapping?useUnicode=true&characterEncoding=utf8mb4
     username: wisemapping
     password: your_password
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -144,6 +144,27 @@ spring:
   sql:
     init:
       platform: mysql
+```
+
+#### MariaDB
+
+```yaml
+# application.yml
+spring:
+  datasource:
+    url: jdbc:mariadb://your-mariadb-host:3306/wisemapping?useUnicode=true&characterEncoding=utf8mb4
+    username: wisemapping
+    password: your_password
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+  sql:
+    init:
+      platform: mariadb
 ```
 
 ### Environment Variables
@@ -215,10 +236,7 @@ Place WiseMapping behind a reverse proxy (Traefik, Nginx, etc.) for SSL/HTTPS te
 # All logs
 docker logs -f wisemapping
 
-# Backend logs only
-docker exec wisemapping tail -f /var/log/supervisor/spring-boot-stdout---supervisor-*.log
-
-# Nginx logs
+# Nginx access logs
 docker exec wisemapping tail -f /var/log/nginx/access.log
 ```
 
@@ -261,7 +279,7 @@ docker run --rm \
 
 > **⚠️ Important**: Do **NOT** use HSQLDB for production deployments.
 
-1. **Use an external database** (PostgreSQL recommended, MySQL/MariaDB also supported)
+1. **Use an external database** (PostgreSQL recommended; MySQL and MariaDB also supported)
 2. **Set up regular backups**
 3. **Configure resource limits**
 4. **Use HTTPS** with reverse proxy
