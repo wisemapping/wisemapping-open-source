@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://mariadb:3306/wisemapping?useUnicode=true&characterEncoding=utf8mb4
+    username: wisemapping
+    password: password
+    driver-class-name: org.mariadb.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+  sql:
+    init:
+      platform: mariadb
+      mode: always
+      schema-locations: classpath:schema-mariadb.sql
+      data-locations: classpath:data-mariadb.sql
+      continue-on-error: false
