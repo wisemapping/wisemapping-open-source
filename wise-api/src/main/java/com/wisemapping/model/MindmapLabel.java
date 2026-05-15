@@ -30,7 +30,7 @@ import java.util.Objects;
  * Labels are frequently associated with mindmaps which must always reflect the latest state.
  */
 @Entity
-@Table(name = "MINDMAP_LABEL")
+@Table(name = "mindmap_label")
 public class MindmapLabel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

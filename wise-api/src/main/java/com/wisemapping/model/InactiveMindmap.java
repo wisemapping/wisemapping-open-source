@@ -32,7 +32,7 @@ import java.util.Calendar;
  * These mindmaps are no longer accessible through normal application flows.
  */
 @Entity
-@Table(name = "MINDMAP_INACTIVE_USER")
+@Table(name = "mindmap_inactive_user")
 public class InactiveMindmap implements Serializable {
 
     @Id

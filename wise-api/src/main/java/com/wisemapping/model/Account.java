@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @Entity
-@Table(name = "ACCOUNT")
+@Table(name = "account")
 @PrimaryKeyJoinColumn(name = "collaborator_id")
 @NamedQueries({
     @NamedQuery(

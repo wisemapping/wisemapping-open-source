@@ -33,7 +33,7 @@ import java.io.Serializable;
 import org.jetbrains.annotations.NotNull;
 
 @Entity
-@Table(name = "MINDMAP_XML")
+@Table(name = "mindmap_xml")
 public class MindmapXml implements Serializable {
 
     @Id

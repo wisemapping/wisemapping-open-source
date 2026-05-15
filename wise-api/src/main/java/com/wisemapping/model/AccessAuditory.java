@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 @Entity
-@Table(name = "ACCESS_AUDITORY")
+@Table(name = "access_auditory")
 @NamedQueries({
     @NamedQuery(
         name = "AccessAuditory.findLastLoginDate",
@@ -39,7 +39,7 @@ public class AccessAuditory
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "login_Date")
+    @Column(name = "login_date")
     private Calendar loginDate = null;
 
     @ManyToOne(fetch = FetchType.LAZY)

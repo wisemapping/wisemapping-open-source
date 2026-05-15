@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 @Entity
-@Table(name = "MINDMAP_HISTORY")
+@Table(name = "mindmap_history")
 public class MindMapHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

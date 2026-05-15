@@ -25,7 +25,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "COLLABORATION_PROPERTIES")
+@Table(name = "collaboration_properties")
 public class CollaborationProperties implements Serializable {
     public static final String DEFAULT_JSON_PROPERTIES = "{\"zoom\":0.8}";
     @Id
