@@ -27,7 +27,7 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "COLLABORATION")
+@Table(name = "collaboration")
 @NamedQueries({
         @NamedQuery(name = "Collaboration.findByCollaboratorId", query = "SELECT c FROM Collaboration c " +
                 "LEFT JOIN FETCH c.collaborationProperties " +

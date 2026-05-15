@@ -30,7 +30,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "COLLABORATOR")
+@Table(name = "collaborator")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

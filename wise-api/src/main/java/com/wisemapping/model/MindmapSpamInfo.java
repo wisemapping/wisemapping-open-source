@@ -32,7 +32,7 @@ import java.util.Calendar;
  * Mindmap data changes frequently and must always reflect the latest state.
  */
 @Entity
-@Table(name = "MINDMAP_SPAM_INFO")
+@Table(name = "mindmap_spam_info")
 public class MindmapSpamInfo {
     
     @Id

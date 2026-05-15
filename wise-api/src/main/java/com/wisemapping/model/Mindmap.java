@@ -41,7 +41,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Entity
-@Table(name = "MINDMAP")
+@Table(name = "mindmap")
 @NamedQueries({
     @NamedQuery(
         name = "Mindmap.findPublicMindmaps",
@@ -102,7 +102,7 @@ public class Mindmap implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 50)
     @JoinTable(
-            name = "R_LABEL_MINDMAP",
+            name = "r_label_mindmap",
             joinColumns = @JoinColumn(name = "mindmap_id"),
             inverseJoinColumns = @JoinColumn(name = "label_id"))
     @JsonIgnore
