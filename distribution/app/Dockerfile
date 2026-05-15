@@ -68,8 +68,10 @@ RUN sed -i 's|<base[^>]*>||g' /build/wisemapping-frontend/packages/webapp/dist/i
 FROM eclipse-temurin:24-jre-alpine
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
-# Install Nginx and required packages
-RUN apk add --no-cache nginx supervisor
+# Install Nginx, tini (PID 1 init) and su-exec (privilege drop).
+# Supervisor is intentionally NOT installed: its Python dependency on
+# Alpine breaks at runtime due to a libexpat/python skew (see issue #70).
+RUN apk add --no-cache nginx tini su-exec
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S wisemapping && \
@@ -78,14 +80,12 @@ RUN addgroup -g 1001 -S wisemapping && \
 # Create necessary directories
 RUN mkdir -p /app \
     /var/log/nginx \
-    /var/log/supervisor \
     /run/nginx \
     /usr/share/nginx/html \
     /var/lib/nginx/tmp/client_body \
     /var/lib/nginx/tmp/proxy && \
     chown -R wisemapping:wisemapping /app \
     /var/log/nginx \
-    /var/log/supervisor \
     /run/nginx \
     /usr/share/nginx/html && \
     chown -R 100:101 /var/lib/nginx
@@ -102,13 +102,14 @@ COPY --from=frontend-builder --chown=wisemapping:wisemapping /build/wisemapping-
 # Copy Nginx configuration
 COPY distribution/app/nginx.conf /etc/nginx/http.d/default.conf
 
-# Copy Supervisor configuration
-COPY distribution/app/supervisord.conf /etc/supervisord.conf
+# Copy startup script (launches nginx + Spring Boot under tini)
+COPY distribution/app/start.sh /app/start.sh
+RUN chmod +x /app/start.sh
 
 # Expose port 80 only (Nginx handles routing to backend)
 EXPOSE 80
 
 WORKDIR /app
 
-# Start Supervisor to manage both Nginx and Spring Boot
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["/app/start.sh"]
