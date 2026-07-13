@@ -253,6 +253,41 @@
                     <forkedProcessExitTimeoutInSeconds>120</forkedProcessExitTimeoutInSeconds>
                 </configuration>
             </plugin>
+            <!-- License Plugin: bundle a THIRD-PARTY notice into the jar and
+                 fail the build if a strong-copyleft/network-copyleft dependency
+                 (AGPL / SSPL / GPLv3-family) sneaks into the tree. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.6.0</version>
+                <configuration>
+                    <!-- The goal always copies the notice onto the compiled
+                         classpath (target/classes/THIRD-PARTY.txt), so it is
+                         packaged at BOOT-INF/classes/THIRD-PARTY.txt in the jar
+                         and readable at runtime as classpath:/THIRD-PARTY.txt. -->
+                    <thirdPartyFilename>THIRD-PARTY.txt</thirdPartyFilename>
+                    <!-- Fail the build when a dependency ships under a network-
+                         copyleft / strong-copyleft license. Matching is by exact
+                         license NAME, pipe-separated, so we enumerate the common
+                         SPDX + long-form spellings of AGPL / SSPL / GPLv3.
+                         NOTE: GPLv2-with-FOSS-exception (mysql-connector-j) and
+                         LGPL-2.1 (mariadb-java-client) are intentionally allowed
+                         and must NOT appear here. If a new AGPL/SSPL dependency
+                         declares a name not listed below, add its exact name. -->
+                    <failOnBlacklist>true</failOnBlacklist>
+                    <failOnMissing>false</failOnMissing>
+                    <excludedLicenses>GNU Affero General Public License v3.0|GNU Affero General Public License v3.0 only|GNU Affero General Public License v3.0 or later|GNU Affero General Public License, Version 3|GNU AFFERO GENERAL PUBLIC LICENSE Version 3|AGPL-3.0|AGPL-3.0-only|AGPL-3.0-or-later|AGPLv3|Server Side Public License, v1|Server Side Public License|SSPL-1.0|GNU General Public License v3.0|GNU General Public License v3.0 only|GNU General Public License v3.0 or later|GNU General Public License, version 3|GPL-3.0|GPL-3.0-only|GPL-3.0-or-later|GPLv3</excludedLicenses>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>bundle-third-party-notice</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-third-party</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Git Commit ID Plugin to add git information to build -->
             <plugin>
                 <groupId>io.github.git-commit-id</groupId>
