@@ -100,22 +100,25 @@ The following dependencies have been added to `pom.xml`:
     <artifactId>micrometer-registry-prometheus</artifactId>
 </dependency>
 
+<!-- Versions come from the OpenTelemetry BOM imported in
+     <dependencyManagement>, so the whole io.opentelemetry family stays in
+     step. Pinning a single artifact does not govern its siblings: the Spring
+     Boot parent manages the rest, which is how CVE-2026-45292 stayed live in
+     opentelemetry-api long after the exporter had been pinned to a fixed
+     release. -->
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-api</artifactId>
-    <version>1.40.0</version>
 </dependency>
 
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>1.40.0</version>
 </dependency>
 
 <dependency>
     <groupId>io.opentelemetry</groupId>
-    <artifactId>opentelemetry-exporter-prometheus</artifactId>
-    <version>1.40.0-alpha</version>
+    <artifactId>opentelemetry-exporter-otlp</artifactId>
 </dependency>
 ```
 

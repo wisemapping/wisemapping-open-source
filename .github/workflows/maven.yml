@@ -27,10 +27,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up JDK 25
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '25'
           distribution: 'zulu'
@@ -48,7 +48,7 @@ jobs:
           fi
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: jar-artifact
           path: wise-api/target/*.jar
@@ -85,7 +85,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Tag API repository with release version
         run: |
@@ -95,7 +95,7 @@ jobs:
           git push origin ${{ github.event.inputs.tag }}
 
       - name: Checkout frontend repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: wisemapping/wisemapping-frontend
           ref: ${{ github.event.inputs.frontend_branch || 'main' }}
