@@ -7,6 +7,8 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 ### 🔧 Backend (wisemapping-open-source)
 
 #### Security & Privacy
+- **CVE-2026-45292 (OpenTelemetry)**: Aligned the whole `io.opentelemetry` family on 1.62.0 via an imported BOM. `opentelemetry-api` and `opentelemetry-extension-trace-propagators` were resolving to 1.55.0 — managed by the Spring Boot parent — which is vulnerable to unbounded memory allocation when parsing oversized W3C baggage headers. The existing version on `opentelemetry-exporter-otlp` alone did not govern the rest of the family
+- **CVE-2026-71497 (jsoup)**: Updated jsoup 1.22.2 → 1.23.2. `Cleaner` could emit active markup when a custom `Safelist` permits raw-text elements. The safelist in `MindmapParser.sanitizeHtmlContent` permits no raw-text elements and flattens its result to text, so exposure was low, but the fix is a one-line pin
 - **OAuth Token Encryption**: Added encryption for OAuth tokens to prevent token leakage
 - **PII Removal from Logs**: Stripped personally identifiable information (email addresses, names) from server logs across the authentication and user management stack
 - **Email → User ID in Logs**: Replaced email addresses in log statements with internal user IDs to prevent PII exposure in log aggregation systems
@@ -25,8 +27,10 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 - **[#70](https://github.com/wisemapping/wisemapping-open-source/issues/70)**: Fixed the 6.0.8 Docker image failing at startup with `ModuleNotFoundError: No module named 'xmlrpclib'`; the container now uses `tini` as PID 1 with a small shell launcher instead of the broken Alpine supervisor + Python combination, removing Python from the runtime image entirely
 
 #### Maintenance
+- **Java 25 (LTS)**: Moved the build and both runtime images from Java 24 to Java 25. Java 24 is a non-LTS release that stopped receiving updates in September 2025 — its `eclipse-temurin:24-jre-alpine` base image had not been rebuilt since August 2025, so neither JVM nor Alpine security patches were reaching the published containers. Building from source now requires JDK 25 or higher
 - **ARM64 Docker Images**: Restored multi-architecture publishing — both `wisemapping/wisemapping` and the API image are now built for `linux/amd64` and `linux/arm64`, so 6.x runs natively on Apple Silicon, AWS Graviton and Raspberry Pi again. ARM64 had been dropped when the release pipeline moved to GitHub Actions, leaving 5.x as the last multi-arch release. The full-stack image builds each architecture on a native runner and merges them into a single manifest list; the API image cross-builds both under QEMU
-- **Dependency Bump**: Updated backend dependencies to latest stable versions (PostgreSQL JDBC, HSQLDB, Jackson, EHCache, OpenTelemetry exporter, commons-io)
+- **Dependency Bump**: Moved every dependency to its latest stable release — Spring Boot 4.0.6 → 4.1.1 (the 4.0 line reaches end of support in December 2026), PostgreSQL JDBC 42.7.13, jsoup 1.23.2, commons-validator 1.11.0, OpenTelemetry 1.65.0 and Jackson 2.22.2. The OpenTelemetry and Jackson families are now governed by imported BOMs rather than single-artifact pins, which is what let their transitive members drift onto older, vulnerable releases
+- **Toolchain & Base Images**: MySQL 8.0 → 8.4 LTS in the reference compose (8.0 reached end of life in April 2026), Qodana linter 2025.2 → 2026.2, and every GitHub Action moved to its current major (checkout v7, setup-java v6, upload-artifact v7, download-artifact v8, docker/* v4)
 - **Dead Code Removal**: Cleaned up unused code paths and legacy tracking utilities
 
 ### 🎨 Frontend (wisemapping-frontend)

@@ -6,7 +6,7 @@
 ################################################################################
 # Stage 1: Build Backend (Spring Boot API)
 ################################################################################
-FROM eclipse-temurin:24-jdk-alpine AS backend-builder
+FROM eclipse-temurin:25-jdk-alpine AS backend-builder
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 WORKDIR /build
@@ -65,7 +65,7 @@ RUN sed -i 's|<base[^>]*>||g' /build/wisemapping-frontend/packages/webapp/dist/i
 ################################################################################
 # Stage 3: Final Runtime Image (Backend + Frontend + Nginx)
 ################################################################################
-FROM eclipse-temurin:24-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 # Install Nginx, tini (PID 1 init) and su-exec (privilege drop).
