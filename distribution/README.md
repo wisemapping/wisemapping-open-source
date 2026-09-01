@@ -158,10 +158,24 @@ spring:
 
 ## CI/CD Integration
 
-The GitHub Actions workflow (`.github/workflows/docker-publish.yml`) uses the **API Only** configuration:
+Both published images are **multi-architecture** (`linux/amd64` + `linux/arm64`),
+so they run natively on Apple Silicon, AWS Graviton, Raspberry Pi and other
+ARM64 hosts without emulation.
+
+`.github/workflows/docker-api-publish.yml` builds the **API Only** configuration:
 - Builds the JAR with Maven
 - Packages it using `distribution/api/Dockerfile`
+- Cross-builds both architectures in one job under QEMU (the image only copies
+  an architecture-neutral JAR, so emulation is cheap)
 - Publishes to DigitalOcean Container Registry
+
+`.github/workflows/docker-app-publish.yml` builds the **Full Stack** image:
+- Builds each architecture natively on its own runner (`ubuntu-latest` for
+  amd64, `ubuntu-24.04-arm` for arm64), because the image compiles the backend
+  with Maven and the frontend with webpack — far too slow under emulation
+- Pushes each build by digest, then merges them into a single tagged manifest
+  list with `docker buildx imagetools create`
+- Publishes to Docker Hub as `wisemapping/wisemapping`
 
 ## Building for Production
 
@@ -175,11 +189,22 @@ docker build -f distribution/api/Dockerfile \
 
 ### Multi-Architecture Builds
 
+A multi-platform build cannot be loaded into the local Docker daemon, so it must
+be pushed straight to a registry (`--push`) or exported to a local
+OCI layout (`--output type=oci,dest=...`):
+
 ```bash
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   -f distribution/api/Dockerfile \
-  -t wisemapping-api:latest .
+  -t <registry>/wisemapping-api:latest \
+  --push .
+```
+
+To check which architectures a published tag provides:
+
+```bash
+docker buildx imagetools inspect wisemapping/wisemapping:latest
 ```
 
 ## License

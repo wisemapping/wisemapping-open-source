@@ -25,6 +25,7 @@ All notable changes to the Wisemapping Frontend project are documented in this f
 - **[#70](https://github.com/wisemapping/wisemapping-open-source/issues/70)**: Fixed the 6.0.8 Docker image failing at startup with `ModuleNotFoundError: No module named 'xmlrpclib'`; the container now uses `tini` as PID 1 with a small shell launcher instead of the broken Alpine supervisor + Python combination, removing Python from the runtime image entirely
 
 #### Maintenance
+- **ARM64 Docker Images**: Restored multi-architecture publishing — both `wisemapping/wisemapping` and the API image are now built for `linux/amd64` and `linux/arm64`, so 6.x runs natively on Apple Silicon, AWS Graviton and Raspberry Pi again. ARM64 had been dropped when the release pipeline moved to GitHub Actions, leaving 5.x as the last multi-arch release. The full-stack image builds each architecture on a native runner and merges them into a single manifest list; the API image cross-builds both under QEMU
 - **Dependency Bump**: Updated backend dependencies to latest stable versions (PostgreSQL JDBC, HSQLDB, Jackson, EHCache, OpenTelemetry exporter, commons-io)
 - **Dead Code Removal**: Cleaned up unused code paths and legacy tracking utilities
 
