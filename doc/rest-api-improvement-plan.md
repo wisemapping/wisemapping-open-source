@@ -1,10 +1,104 @@
 # REST API Improvement Plan
 
-Status: **P5a (coverage tooling) landed. Everything else proposed.**
-
 Scope: the `com.wisemapping.rest` HTTP surface, its error contract, and its test
-coverage. Each item below is self-contained and can be landed on its own. Work
-them **one at a time**, running `cd wise-api && mvn test` after each.
+coverage — plus the `com.wisemapping.dao` DB-access layer underneath it. Each
+item below is self-contained and can be landed on its own. Work them **one at a
+time**, running the full suite after each.
+
+**Keep this file current.** It is both the backlog and the record of what has
+already shipped. When you finish an item, move it in the status table and tick
+the box in its own section.
+
+---
+
+## Status
+
+Branch: `improve-rest-api-coverage` (off `develop`).
+
+| # | Item | Status |
+| :--- | :--- | :--- |
+| P5a | JaCoCo coverage reporting | ✅ **done** — `3c31908c` |
+| P5f | `UserManagerImpl` DAO integration tests | ✅ **done** — `bf7536b8`, 19 tests |
+| P5g | `InactiveMindmapManagerImpl` DAO integration tests | 🔄 in progress |
+| P5h | `MindmapManagerImpl` spam-user threshold queries | 🔄 in progress |
+| P5i | `MindmapManagerImpl` spam-ratio / spam-type queries | 🔄 in progress |
+| P5j | `MindmapManagerImpl` public-mindmap queries | 🔄 in progress |
+| P5k | `MindmapManagerImpl` admin listing / search / history | 🔄 in progress |
+| P1 | Error contract returns 500 for every client mistake | ⬜ not started |
+| P2a | List endpoints only answer on the trailing-slash path | ⬜ not started |
+| P2b | `DELETE /maps/batch` reports 403 for a malformed id | ⬜ not started |
+| P3 | Untested REST endpoints (start with `MindmapFilter`) | ⬜ not started |
+| P3b | Null `password` on registration NPEs → 500 | ⬜ not started |
+| P4a | `@EnableWebMvc` disables Boot MVC auto-configuration | ⬜ not started |
+| P4b | Untyped `Map<String,Object>` request/response bodies | ⬜ not started |
+| P4c | `GET /maps/` unpaginated, silently truncates at 500 | ⬜ not started |
+| P4d | `@RequestMapping(method=…)` → `@GetMapping` etc. | ⬜ not started |
+| P4e | Small code-quality fixes | ⬜ not started |
+| P4f | Constructor injection | ❌ **declined** — keeping `@Autowired` |
+| P5b | Hand-rolled `TestRestTemplate` shadow class | ⬜ not started |
+| P5c | `AdminControllerTest.java.broken`, one `@Disabled` test | ⬜ not started |
+| P5d | Test README contradicts `@DirtiesContext` usage | ⬜ not started |
+| P5e | Test naming / package conventions | ⬜ not started |
+| P6 | Generate the OpenAPI spec (blocked on P4a) | ⬜ not started |
+
+---
+
+## Runbook
+
+All commands from the repository root.
+
+```sh
+# Full suite. Also writes the coverage report (report is bound to the test phase).
+mvn -f wise-api/pom.xml test
+
+# Full suite without the coverage agent (faster; verifies the argLine fallback).
+mvn -f wise-api/pom.xml test -Djacoco.skip=true
+
+# One test class, no coverage — the normal inner loop while writing tests.
+mvn -f wise-api/pom.xml test -Dtest=UserManagerImplIntegrationTest \
+    -DfailIfNoSpecifiedTests=false -Djacoco.skip=true
+
+# One test method.
+mvn -f wise-api/pom.xml test -Dtest='UserManagerImplIntegrationTest#findLastLoginDateReturnsMostRecent' \
+    -DfailIfNoSpecifiedTests=false -Djacoco.skip=true
+
+# All the DAO integration tests.
+mvn -f wise-api/pom.xml test -Dtest='*IntegrationTest' \
+    -DfailIfNoSpecifiedTests=false -Djacoco.skip=true
+```
+
+### Reading the results
+
+`mvn -q` suppresses the surefire summary, so **do not trust a quiet console** —
+read the XML, which is the authoritative count:
+
+```sh
+python3 - <<'EOF'
+import glob, xml.etree.ElementTree as ET
+t = f = e = s = 0
+for p in sorted(glob.glob('wise-api/target/surefire-reports/*.xml')):
+    r = ET.parse(p).getroot()
+    t += int(r.get('tests')); f += int(r.get('failures'))
+    e += int(r.get('errors')); s += int(r.get('skipped'))
+print(f"tests={t} failures={f} errors={e} skipped={s}")
+EOF
+```
+
+### Coverage report
+
+```sh
+# HTML, for browsing
+open wise-api/target/site/jacoco/index.html
+
+# Machine-readable, for the per-package / per-class / per-method breakdowns
+# quoted throughout this document
+wise-api/target/site/jacoco/jacoco.xml
+```
+
+To reproduce the tables in this document, summarise `jacoco.xml` by package,
+by class, or by method — the counters are nested
+`<package>` → `<class>` → `<method>` → `<counter type="INSTRUCTION|BRANCH|LINE|METHOD">`
+each carrying `missed` and `covered` attributes.
 
 ---
 
@@ -360,6 +454,56 @@ Spring Boot practice is constructor injection, but `CLAUDE.md` records
 
 Suite re-verified with the agent attached: 577 tests, 0 failures, 0 errors,
 1 skipped — unchanged. Baseline numbers are recorded above.
+
+### 5f–5k. Test the DAO layer directly, not through the API
+
+**Why this is its own line of work.** `com.wisemapping.dao` is 4,436
+instructions at **46.7% instruction / 39.9% branch**, and what coverage it has
+is incidental — picked up as a side effect of REST calls. The layer is almost
+entirely hand-written JPQL strings, named-query references and Criteria API
+construction, i.e. code where a typo, a wrong join, or an unresolvable named
+query is a **runtime** failure that compiles perfectly well.
+
+The pre-existing `MindmapManagerImplTest` mocks the `EntityManager`, so it
+asserts Criteria API *call sequences*. That can never catch a malformed query —
+the mock will happily return whatever it was told to. These tests instead run
+every query through the real in-memory HSQLDB schema, bypassing the REST layer.
+
+**The established pattern** (follow it for any new DAO test):
+
+```java
+@SpringBootTest(classes = {AppConfig.class})
+@ActiveProfiles("test")
+@Transactional                      // each test rolls back
+class FooManagerImplIntegrationTest {
+    @Autowired private FooManager fooManager;        // inject the INTERFACE
+    @PersistenceContext private EntityManager entityManager;   // for fixtures
+}
+```
+
+Fixture builders live in `wise-api/src/test/java/com/wisemapping/dao/DaoTestSupport.java`
+(`persistAccount`, `persistMindmap`, `markAsSpam`, `markAsScannedClean`,
+`persistHistory`, `persistLogin`, `persistInactiveMindmap`, `daysAgo`,
+`uniqueEmail`).
+
+**The trap to know about:** the `data-hsqldb.sql` seed rows are *always*
+present, and some seed maps are public. Any assertion on an absolute row count
+or an exact result-set size is latent flakiness. Capture a baseline and assert
+the delta, or filter the result set to your own fixture ids.
+
+| Item | Target | What it covers |
+| :--- | :--- | :--- |
+| 5f ✅ | `UserManagerImpl` | listing + paging, search + count agreement, Facebook-token `IN` lookup, the three-way inactivity predicate, suspend/unsuspend incl. the INACTIVITY restore path, `MAX(loginDate)` incl. the empty-set → null case, and collaborator→account promotion |
+| 5g 🔄 | `InactiveMindmapManagerImpl` | `findCreatedBefore`, `countCreatedBefore`, `countAllInactiveMindmaps`, `deleteOlderThan` (CriteriaDelete), `findAll` ordering, inclusive cutoff boundaries |
+| 5h 🔄 | `MindmapManagerImpl` spam-user queries | the `findUsersWithSpamMindmaps` / `findUsersWithSpamMindaps` family incl. the cursor variant, `GROUP BY … HAVING >= threshold` boundaries, public-and-spam-only filtering |
+| 5i 🔄 | `MindmapManagerImpl` spam-ratio queries | `COUNT(CASE WHEN …)` ratio thresholds either side of the boundary, `…MinimumMapsAndSpam`, `…HighPublicSpamRatio`, `…AnySpamMaps`, and the dynamic `IN` clause in `…PublicSpamMapsByType` incl. its empty-array early return |
+| 5j 🔄 | `MindmapManagerImpl` public-map queries | the `Mindmap.findPublicMindmaps` / `countAllPublicMindmaps` **named queries** actually executing, `…Since` cutoffs, and all three `spamDetectionVersion` states in `…NeedingSpamDetection` (no row / stale / current) |
+| 5k 🔄 | `MindmapManagerImpl` admin queries | `getAllMindmaps` overloads incl. the `filterSpam=false` arm that must also match maps with no spam-info row, `searchMindmaps` title-or-description case-insensitive matching, the deliberately-unimplemented `filterLocked` parameter, `getMindmapLastModificationTime`, and `removeExcessHistoryByMindmapId` keeping the N *most recent* rows |
+
+Still **not** covered after 5f–5k, and worth a follow-up: `UserManagerImpl`
+has a `getUsersWithFilters` / `countUsersWithFilters` pair, and
+`MindmapManagerImpl` has further `getAllMindmaps` / `searchMindmaps` overloads
+taking a `dateFilter`, that these six items do not reach.
 
 ### 5b. The project ships a hand-rolled `TestRestTemplate`
 
