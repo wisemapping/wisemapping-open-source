@@ -19,14 +19,20 @@ Branch: `improve-rest-api-coverage` (off `develop`).
 | :--- | :--- | :--- |
 | P5a | JaCoCo coverage reporting | ✅ **done** — `3c31908c` |
 | P5f | `UserManagerImpl` DAO integration tests | ✅ **done** — `bf7536b8`, 19 tests |
-| P5g | `InactiveMindmapManagerImpl` DAO integration tests | 🔄 in progress |
-| P5h | `MindmapManagerImpl` spam-user threshold queries | 🔄 in progress |
-| P5i | `MindmapManagerImpl` spam-ratio / spam-type queries | 🔄 in progress |
-| P5j | `MindmapManagerImpl` public-mindmap queries | 🔄 in progress |
-| P5k | `MindmapManagerImpl` admin listing / search / history | 🔄 in progress |
+| P5l | DAO test naming normalized | ✅ **done** — `9ae9c180` |
+| P5g | `InactiveMindmapManagerImpl` DAO integration tests | ✅ **done** — `3025c8bb`, 17 tests |
+| P5h | `MindmapManagerImpl` spam-user threshold queries | ✅ **done** — `f7ab839a`, 12 tests |
+| P5i | `MindmapManagerImpl` spam-ratio / spam-type queries | ✅ **done** — `af881030`, 19 tests |
+| P5j | `MindmapManagerImpl` public-mindmap queries | ✅ **done** — `2c0b2829`, 10 tests |
+| P5k | `MindmapManagerImpl` admin listing / search / history | ✅ **done** — `4dbb6801`, 23 tests |
 | P1 | Error contract returns 500 for every client mistake | ⬜ not started |
 | P2a | List endpoints only answer on the trailing-slash path | ⬜ not started |
 | P2b | `DELETE /maps/batch` reports 403 for a malformed id | ⬜ not started |
+| **D1** | `?filterLocked=` is a live REST param that does nothing | ⬜ **new — found by these tests** |
+| **D2** | `…PublicSpamMapsByType` throws on every input | ⬜ **new — found by these tests** |
+| **D3** | `findPublicMindmaps` / `countAllPublicMindmaps` disagree on suspended creators | ⬜ **new — found by these tests** |
+| **D4** | `findUsersWithMinimumMapsAndSpam` off-by-one (`>` not `>=`) | ⬜ **new — found by these tests** |
+| **D5** | 11 DAO methods have no callers — delete rather than test | ⬜ **new — found by these tests** |
 | P3 | Untested REST endpoints (start with `MindmapFilter`) | ⬜ not started |
 | P3b | Null `password` on registration NPEs → 500 | ⬜ not started |
 | P4a | `@EnableWebMvc` disables Boot MVC auto-configuration | ⬜ not started |
@@ -38,7 +44,7 @@ Branch: `improve-rest-api-coverage` (off `develop`).
 | P5b | Hand-rolled `TestRestTemplate` shadow class | ⬜ not started |
 | P5c | `AdminControllerTest.java.broken`, one `@Disabled` test | ⬜ not started |
 | P5d | Test README contradicts `@DirtiesContext` usage | ⬜ not started |
-| P5e | Test naming / package conventions | ⬜ not started |
+| P5e | REST test naming / package conventions | ⬜ not started |
 | P6 | Generate the OpenAPI spec (blocked on P4a) | ⬜ not started |
 
 ---
@@ -106,12 +112,13 @@ each carrying `missed` and `covered` attributes.
 
 | Fact | Value |
 | :--- | :--- |
-| Full suite | **577 tests, 0 failures, 0 errors, 1 skipped** — green, before and after adding JaCoCo |
+| Full suite | baseline **577** → now **677 tests, 0 failures, 0 errors, 1 skipped** |
 | REST test classes | 10 (`wise-api/src/test/java/com/wisemapping/test/rest/`), ~5.6k LOC |
 | Controller LOC | 3,012 across 8 controllers (`AdminController` 1,005, `MindmapController` 1,042) |
 | Coverage tooling | JaCoCo 0.8.13, wired in P5a ✅ |
-| **Project coverage** | **54.1% instruction, 45.2% branch, 54.2% line, 55.7% method** |
-| **`com.wisemapping.rest`** | **66.9% instruction, 52.2% branch, 74.8% method** |
+| **Project coverage** | 54.1% → **60.1% instruction**, 45.2% → **47.8% branch**, 55.7% → **60.5% method** |
+| **`com.wisemapping.rest`** | **66.9% instruction, 52.2% branch, 74.8% method** (unchanged — P1/P3 still pending) |
+| **`com.wisemapping.dao`** | 46.7% → **85.1% instruction**, 39.9% → **59.0% branch**, 50.0% → **96.2% method** |
 | Endpoint count | ~55 mappings across 8 controllers |
 
 The suite is healthy and endpoint breadth is decent. The gaps are concentrated in
@@ -203,6 +210,148 @@ want follow-up work:
 - `OAuth2AuthenticationSuccessHandler` — **2.1%**, 557 instructions.
 - `com.wisemapping.view` — 18.8%, and `MindMapBean` is used by `MindmapController`.
 - `com.wisemapping.mindmap.model` — 25.6% / 14.6% branch, 935 instructions.
+
+---
+
+## Defects found by the DAO integration tests
+
+Writing P5f–P5l surfaced five problems that no amount of reading would have
+found, because four of them only manifest when the query actually reaches a
+database. Each is **pinned by a passing test that asserts current behaviour**,
+so fixing one will fail its test loudly — that is intentional. None of the
+production code was changed.
+
+### D1. `?filterLocked=` is a live REST parameter that silently does nothing
+
+`AdminController:607` declares `@RequestParam("filterLocked") Boolean
+filterLocked` and threads it through `mindmapService` into
+`MindmapManagerImpl.searchMindmaps` / `countAllMindmaps`. It appears in **six**
+DAO signatures and is bound into a predicate in **none** of them — there is an
+in-source comment conceding it is unimplemented.
+
+So `GET /api/restful/admin/maps?filterLocked=true` returns **every** map with a
+200 OK. An admin cannot tell the filter did nothing. This is the most
+user-visible defect in this document.
+
+Pinned by `MindmapManagerAdminQueryIntegrationTest.searchMindmapsIgnoresTheLockedFilter`
+(`true`/`false`/`null` all return the identical set).
+
+**Fix:** either implement it against the lock manager, or remove the parameter
+from the controller and the six DAO signatures. Leaving a parameter that lies
+is the one option to rule out.
+
+### D2. `findUsersWithPublicSpamMapsByType` throws on every possible input
+
+`MindmapManagerImpl:951` (mirrored at `:1012`) binds `String` values into
+`s.spamTypeCode IN (:spamType0, …)`, but `MindmapSpamInfo.spamTypeCode` is a
+`SpamStrategyType` behind `@Convert(converter = SpamStrategyTypeConverter.class)`
+— an `AttributeConverter<SpamStrategyType, Character>`. Hibernate rejects the
+binding before issuing any SQL:
+
+```
+org.hibernate.query.QueryArgumentException: Argument to parameter named
+'spamType0' has an incompatible type (argument [C] is not assignable to
+com.wisemapping.model.SpamStrategyType)
+```
+
+It fails for **all three** plausible spellings: the single-char code `"C"`, the
+strategy name `"ContactInfo"` that the interface javadoc actually recommends,
+and the enum name `"CONTACT_INFO"`. This is parameter validation, not SQL, so
+PostgreSQL behaves identically — it is **not** an HSQLDB artifact.
+
+Severity is limited by reachability: the only caller is
+`SpamUserSuspensionService.suspendUsersWithPublicSpamMapsByType`, which itself
+has **no callers**, so nothing in production invokes it today. It is a loaded
+gun, not a live outage.
+
+**Fix:** change the parameter to `SpamStrategyType[]`, or map the codes through
+`SpamStrategyType.fromCode` before binding.
+
+### D3. `findPublicMindmaps` and `countAllPublicMindmaps` disagree
+
+The two named queries on the `Mindmap` entity apply different filters:
+
+```java
+"Mindmap.findPublicMindmaps"    → SELECT m FROM Mindmap m JOIN m.creator c
+                                  WHERE m.isPublic = true AND c.suspended = false
+"Mindmap.countAllPublicMindmaps"→ SELECT COUNT(m) FROM Mindmap m
+                                  WHERE m.isPublic = true
+```
+
+The finder excludes suspended creators; the counter does not, and neither does
+`findAllPublicMindmaps`. Pairing the count with the finder for pagination
+over-reports the total and yields short or empty pages.
+
+Currently latent — none of the three has a caller (see D5).
+
+**Fix:** decide which filter is intended and apply it to all three. Pinned by
+`MindmapManagerPublicMapQueryIntegrationTest.findPublicMindmapsExcludesSuspendedCreators`.
+
+### D4. `findUsersWithMinimumMapsAndSpam` is off by one
+
+`HAVING COUNT(m.id) > :minTotalMaps` uses `>` where the parameter name and
+every sibling query use `>=`. A user with exactly `minTotalMaps` public maps is
+**excluded**. `countUsersWithMinimumMapsAndSpam` repeats the same `>`, so find
+and count stay consistent with each other — only the boundary is wrong.
+
+Currently latent — no callers (see D5). Pinned by
+`findUsersWithMinimumMapsAndSpamUsesExclusiveTotalMapsBound`.
+
+### D5. Eleven DAO methods have no callers at all
+
+This reframes the whole coverage gap: these were at 0% **because nothing calls
+them**, not because testing was overlooked.
+
+`findPublicMindmaps`, `findAllPublicMindmaps`, `countAllPublicMindmaps`,
+`findAllPublicMindmapsSince`, `countAllPublicMindmapsSince`,
+`findUsersWithSpamMindmaps`, `findUsersWithSpamMindapsCursor`,
+`findUsersWithHighSpamRatio`, `countUsersWithHighSpamRatio`,
+`findUsersWithMinimumMapsAndSpam`, `findLastLoginDate`
+
+Every one is hand-written JPQL carrying maintenance cost and implying a
+capability the application does not have. `findLastLoginDate` is the clearest
+case — `InactiveUserService` still carries a comment referring to it, so it
+looks refactored-away rather than never-wired.
+
+**For these the right fix is deletion, not tests.** The tests now documenting
+them are cheap insurance if any get wired up, but the coverage number should
+not be what motivates keeping them. Note that D3 and D4 both live in this dead
+set, which lowers their priority considerably.
+
+### Non-defects worth knowing
+
+- **HSQLDB truncates ratio-threshold precision.** `COUNT(…) * 1.0 / COUNT(m.id)`
+  is a one-decimal `DECIMAL` on HSQLDB, which coerces the bound threshold to
+  that scale: a 0.5 ratio matches thresholds 0.4 through 0.55 but not 0.6.
+  PostgreSQL's numeric division has far higher scale, so production likely does
+  not truncate — but **HSQLDB-based tests cannot assert sub-0.1 threshold
+  granularity**. The ratio assertions deliberately stay on a 0.1 grid.
+- **`cb.isNull(spamJoin)`** in `getAllMindmaps(Boolean filterSpam, …)` calls
+  `isNull` on a `Join` path rather than a scalar attribute. Hibernate 6 resolves
+  it to the join's FK column, which happens to give the intended "no spam-info
+  row" semantics — correct, but incidental and fragile across upgrades. The
+  companion `countAllMindmaps` writes the same predicate differently, so the two
+  can drift apart.
+- **`getAllMindmaps(Boolean filterSpam, …)`** issues both a
+  `fetch("spamInfo", LEFT)` and a separate `join("spamInfo", LEFT)` — two joins
+  on one table, redundant SQL.
+- **`countUsersWithSpamMindaps`** uses an `IN (subquery)` shape where the `find`
+  variants use `HAVING`. They agreed on every fixture built, so the extra outer
+  predicates are harmless but non-obvious.
+- **`InactiveMindmapManagerImpl`** annotates parameters with
+  `jakarta.validation.constraints.@NotNull`; `CLAUDE.md` mandates
+  `org.jetbrains.annotations`. Cosmetic — belongs in P4e.
+- **`findUsersWithSpamMindaps`** is missing an "m" ("Mindaps") across the
+  interface and every call site. Cosmetic — belongs in P4e.
+
+### Known coverage gap
+
+`removeCollaboration` is only partially covered (the `null` branch). Its
+`@Transactional(propagation = REQUIRES_NEW)` means a fixture written inside the
+rolled-back test transaction is invisible to the genuinely new transaction, and
+the alternative — deleting a committed seed row — would leak into sibling test
+classes sharing the in-memory database. Covering it properly needs a different
+transaction strategy than the rest of these tests use.
 
 ---
 
@@ -494,16 +643,27 @@ the delta, or filter the result set to your own fixture ids.
 | Item | Target | What it covers |
 | :--- | :--- | :--- |
 | 5f ✅ | `UserManagerImpl` | listing + paging, search + count agreement, Facebook-token `IN` lookup, the three-way inactivity predicate, suspend/unsuspend incl. the INACTIVITY restore path, `MAX(loginDate)` incl. the empty-set → null case, and collaborator→account promotion |
-| 5g 🔄 | `InactiveMindmapManagerImpl` | `findCreatedBefore`, `countCreatedBefore`, `countAllInactiveMindmaps`, `deleteOlderThan` (CriteriaDelete), `findAll` ordering, inclusive cutoff boundaries |
-| 5h 🔄 | `MindmapManagerImpl` spam-user queries | the `findUsersWithSpamMindmaps` / `findUsersWithSpamMindaps` family incl. the cursor variant, `GROUP BY … HAVING >= threshold` boundaries, public-and-spam-only filtering |
-| 5i 🔄 | `MindmapManagerImpl` spam-ratio queries | `COUNT(CASE WHEN …)` ratio thresholds either side of the boundary, `…MinimumMapsAndSpam`, `…HighPublicSpamRatio`, `…AnySpamMaps`, and the dynamic `IN` clause in `…PublicSpamMapsByType` incl. its empty-array early return |
-| 5j 🔄 | `MindmapManagerImpl` public-map queries | the `Mindmap.findPublicMindmaps` / `countAllPublicMindmaps` **named queries** actually executing, `…Since` cutoffs, and all three `spamDetectionVersion` states in `…NeedingSpamDetection` (no row / stale / current) |
-| 5k 🔄 | `MindmapManagerImpl` admin queries | `getAllMindmaps` overloads incl. the `filterSpam=false` arm that must also match maps with no spam-info row, `searchMindmaps` title-or-description case-insensitive matching, the deliberately-unimplemented `filterLocked` parameter, `getMindmapLastModificationTime`, and `removeExcessHistoryByMindmapId` keeping the N *most recent* rows |
+| 5g ✅ | `InactiveMindmapManagerImpl` | `findCreatedBefore`, `countCreatedBefore`, `countAllInactiveMindmaps`, `deleteOlderThan` (CriteriaDelete), `findAll` ordering, inclusive cutoff boundaries |
+| 5h ✅ | `MindmapManagerImpl` spam-user queries | the `findUsersWithSpamMindmaps` / `findUsersWithSpamMindaps` family incl. the cursor variant, `GROUP BY … HAVING >= threshold` boundaries, public-and-spam-only filtering |
+| 5i ✅ | `MindmapManagerImpl` spam-ratio queries | `COUNT(CASE WHEN …)` ratio thresholds either side of the boundary, `…MinimumMapsAndSpam`, `…HighPublicSpamRatio`, `…AnySpamMaps`, and the dynamic `IN` clause in `…PublicSpamMapsByType` incl. its empty-array early return |
+| 5j ✅ | `MindmapManagerImpl` public-map queries | the `Mindmap.findPublicMindmaps` / `countAllPublicMindmaps` **named queries** actually executing, `…Since` cutoffs, and all three `spamDetectionVersion` states in `…NeedingSpamDetection` (no row / stale / current) |
+| 5k ✅ | `MindmapManagerImpl` admin queries | `getAllMindmaps` overloads incl. the `filterSpam=false` arm that must also match maps with no spam-info row, `searchMindmaps` title-or-description case-insensitive matching, the deliberately-unimplemented `filterLocked` parameter, `getMindmapLastModificationTime`, and `removeExcessHistoryByMindmapId` keeping the N *most recent* rows |
 
-Still **not** covered after 5f–5k, and worth a follow-up: `UserManagerImpl`
-has a `getUsersWithFilters` / `countUsersWithFilters` pair, and
-`MindmapManagerImpl` has further `getAllMindmaps` / `searchMindmaps` overloads
-taking a `dateFilter`, that these six items do not reach.
+**Outcome:** 100 new tests, suite 577 → 677, and
+`com.wisemapping.dao` went 46.7% → **85.1% instruction**, 39.9% → **59.0%
+branch**, 50.0% → **96.2% method**. Five defects fell out of the exercise — see
+*Defects found by the DAO integration tests* above.
+
+Still **not** covered, and worth a follow-up:
+
+- `UserManagerImpl.getUsersWithFilters` / `countUsersWithFilters`
+- `MindmapManagerImpl.getAllMindmaps` / `searchMindmaps` / `countMindmapsBySearch`
+  overloads taking `dateFilter` and the 4-arg `filterSpam` form
+- `removeCollaboration` beyond its `null` branch (see the known gap above)
+
+The residual uncovered instructions in `InactiveMindmapManagerImpl` are almost
+entirely `assert x != null` guards, which are inert without `-ea` — treat that
+class as done.
 
 ### 5b. The project ships a hand-rolled `TestRestTemplate`
 
