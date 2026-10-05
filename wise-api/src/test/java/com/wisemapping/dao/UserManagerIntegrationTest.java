@@ -66,7 +66,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(classes = {AppConfig.class})
 @ActiveProfiles("test")
 @Transactional
-class UserManagerImplIntegrationTest {
+class UserManagerIntegrationTest {
 
     @Autowired
     private UserManager userManager;
