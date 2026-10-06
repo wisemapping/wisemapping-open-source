@@ -163,7 +163,7 @@ public class MindmapController {
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
-    @RequestMapping(method = RequestMethod.GET, value = "/", produces = { "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = { "", "/" }, produces = { "application/json" })
     public RestMindmapList retrieveList(@RequestParam(required = false) String q, HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         if (logger.isTraceEnabled()) {

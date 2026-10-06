@@ -88,7 +88,7 @@ public class UserController {
     private String domainBanExclusion;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    @RequestMapping(method = RequestMethod.POST, value = "/", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = {"", "/"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void registerUser(@RequestBody RestUserRegistration registration,
                              @NotNull HttpServletResponse response) throws WiseMappingException, BindException {

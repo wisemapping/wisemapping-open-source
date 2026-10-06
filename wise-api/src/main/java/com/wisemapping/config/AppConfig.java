@@ -116,7 +116,7 @@ public class AppConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/restful/authenticate").permitAll()
-                        .requestMatchers("/api/restful/users/").permitAll()
+                        .requestMatchers("/api/restful/users", "/api/restful/users/").permitAll()
                         .requestMatchers("/api/restful/app/config").permitAll()
                         .requestMatchers("/api/restful/maps/*/metadata").permitAll()
                         .requestMatchers("/api/restful/maps/*/document/xml").permitAll()
