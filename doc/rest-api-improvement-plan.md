@@ -25,25 +25,30 @@ Branch: `improve-rest-api-coverage` (off `develop`).
 | P5i | `MindmapManagerImpl` spam-ratio / spam-type queries | ✅ **done** — `af881030`, 19 tests |
 | P5j | `MindmapManagerImpl` public-mindmap queries | ✅ **done** — `2c0b2829`, 10 tests |
 | P5k | `MindmapManagerImpl` admin listing / search / history | ✅ **done** — `4dbb6801`, 23 tests |
-| P1 | Error contract returns 500 for every client mistake | ⬜ not started |
-| P2a | List endpoints only answer on the trailing-slash path | ⬜ not started |
-| P2b | `DELETE /maps/batch` reports 403 for a malformed id | ⬜ not started |
-| **D1** | `?filterLocked=` is a live REST param that does nothing | ⬜ **new — found by these tests** |
+| P1 | Error contract returns 500 for every client mistake | ✅ **done** — `d233fdb6` |
+| P2a | List endpoints only answer on the trailing-slash path | ✅ **done** — `911c81f3` |
+| P2b | `DELETE /maps/batch` reports 403 for a malformed id | ✅ **done** — `128c7c7f` |
+| **D1** | `?filterLocked=` is a live REST param that does nothing | ✅ **backend done** — `f6020d5e`; frontend dropdown still to remove |
 | **D2** | `…PublicSpamMapsByType` throws on every input | ⬜ **new — found by these tests** |
 | **D3** | `findPublicMindmaps` / `countAllPublicMindmaps` disagree on suspended creators | ⬜ **new — found by these tests** |
 | **D4** | `findUsersWithMinimumMapsAndSpam` off-by-one (`>` not `>=`) | ⬜ **new — found by these tests** |
 | **D5** | 11 DAO methods have no callers — delete rather than test | ⬜ **new — found by these tests** |
-| P3 | Untested REST endpoints (start with `MindmapFilter`) | ⬜ not started |
-| P3b | Null `password` on registration NPEs → 500 | ⬜ not started |
+| **D6** | `/maps/{id}/metadata` omitted `starred` and `locked` | ✅ **done** — `543a09e8` |
+| **W1** | 282 warnings per run buried real signal; 2 tests ran on prod config | ✅ **done** — `4b9b228a` |
+| **F1** | Frontend treats HTTP **405** as session expiry → spurious logout | ⬜ **needs a decision before release** |
+| **F2** | Frontend "Locked" admin dropdown + mock client mask D1 | ⬜ frontend repo |
+| **F3** | `ehcache` calls terminally-deprecated `sun.misc.Unsafe` | ⬜ dependency upgrade |
+| P3 | Untested REST endpoints (`MindmapFilter` now 100% branch) | ✅ **done** — `bfefd82f`, `6b5b6846`, `7d7cda20` |
+| P3b | Null `password` on registration NPEs → 500 | ✅ **done** — `e85149e0` |
 | P4a | `@EnableWebMvc` disables Boot MVC auto-configuration | ⬜ not started |
 | P4b | Untyped `Map<String,Object>` request/response bodies | ⬜ not started |
 | P4c | `GET /maps/` unpaginated, silently truncates at 500 | ⬜ not started |
 | P4d | `@RequestMapping(method=…)` → `@GetMapping` etc. | ⬜ not started |
-| P4e | Small code-quality fixes | ⬜ not started |
+| P4e | Small code-quality fixes | ✅ **done** — `b9738102`, `a0ebe5d0` |
 | P4f | Constructor injection | ❌ **declined** — keeping `@Autowired` |
 | P5b | Hand-rolled `TestRestTemplate` shadow class | ⬜ not started |
-| P5c | `AdminControllerTest.java.broken`, one `@Disabled` test | ⬜ not started |
-| P5d | Test README contradicts `@DirtiesContext` usage | ⬜ not started |
+| P5c | `AdminControllerTest.java.broken`, one `@Disabled` test | ✅ **done** — `ed962f6f`, `3f1004d0` |
+| P5d | Test README contradicts `@DirtiesContext` usage | ✅ **done** — `e40d3a23` |
 | P5e | REST test naming / package conventions | ⬜ not started |
 | P6 | Generate the OpenAPI spec (blocked on P4a) | ⬜ not started |
 
@@ -90,6 +95,31 @@ print(f"tests={t} failures={f} errors={e} skipped={s}")
 EOF
 ```
 
+### Checking for errors and warnings, not just failures
+
+A green suite can still be emitting stack traces and warnings. Audit both:
+
+```sh
+# The application's own log output during the run (NOT test failures)
+grep -cE '^[0-9-]{10}T.*ERROR' run.log     # must stay 0
+grep -cE 'WARN' run.log                     # currently 43
+
+# Group the warnings so a repeated one cannot hide the rest
+grep -E 'WARN' run.log \
+  | sed -E 's/^.*WARN[^]]*\] *//; s/^[^:]*: *//; s/[0-9]+/N/g' \
+  | cut -c1-82 | sort | uniq -c | sort -rn
+```
+
+Grouping matters: before `4b9b228a` the run emitted 282 warnings, **203 of them
+three messages repeated once per Spring context**, which made every real warning
+invisible. It is now 43, and the remainder are either benign SQL `01003`/`02000`
+aggregate warnings from the DAO tests or deliberately provoked by tests (spam
+detection, HTML validation, the 404/406 probes).
+
+Three `sun.misc.Unsafe` deprecation warnings come from **ehcache** and will break
+on a future JDK — that is a dependency upgrade (**F3**), not something fixable
+here.
+
 ### Coverage report
 
 ```sh
@@ -112,12 +142,12 @@ each carrying `missed` and `covered` attributes.
 
 | Fact | Value |
 | :--- | :--- |
-| Full suite | baseline **577** → now **677 tests, 0 failures, 0 errors, 1 skipped** |
+| Full suite | baseline **577** → now **733 tests, 0 failures, 0 errors, 0 skipped** |
 | REST test classes | 10 (`wise-api/src/test/java/com/wisemapping/test/rest/`), ~5.6k LOC |
 | Controller LOC | 3,012 across 8 controllers (`AdminController` 1,005, `MindmapController` 1,042) |
 | Coverage tooling | JaCoCo 0.8.13, wired in P5a ✅ |
 | **Project coverage** | 54.1% → **60.1% instruction**, 45.2% → **47.8% branch**, 55.7% → **60.5% method** |
-| **`com.wisemapping.rest`** | **66.9% instruction, 52.2% branch, 74.8% method** (unchanged — P1/P3 still pending) |
+| **`com.wisemapping.rest`** | **66.9% instruction, 52.2% branch, 74.8% method** at the P5a baseline; P1/P3 have since landed — re-measure |
 | **`com.wisemapping.dao`** | 46.7% → **85.1% instruction**, 39.9% → **59.0% branch**, 50.0% → **96.2% method** |
 | Endpoint count | ~55 mappings across 8 controllers |
 
@@ -210,6 +240,77 @@ want follow-up work:
 - `OAuth2AuthenticationSuccessHandler` — **2.1%**, 557 instructions.
 - `com.wisemapping.view` — 18.8%, and `MindMapBean` is used by `MindmapController`.
 - `com.wisemapping.mindmap.model` — 25.6% / 14.6% branch, 935 instructions.
+
+---
+
+## Cross-repo contract notes (`wisemapping-frontend`)
+
+`packages/webapp` is the **only** frontend package that calls the REST API —
+`editor`, `mindplot` and `web2d` contain no `api/restful` reference. So any
+contract check only has to cover `webapp`.
+
+### F1 — the frontend treats HTTP 405 as session expiry ⚠️ release blocker
+
+`packages/webapp/src/classes/client/rest-client/index.ts` (~line 51):
+
+```ts
+if (status === 405 || status === 403 || (status === 401 && !url.endsWith('/authenticate'))) {
+  this.sessionExpired();
+}
+```
+
+A 405 **logs the user out**. P1 now returns 405 where the API previously returned
+500, so any wrong-method request goes from "generic error" to a forced logout.
+
+405 is the correct status and the frontend mapping is the bug — most likely a
+leftover from the `wise-webapp` form-login era, when a session timeout produced a
+redirect that surfaced as 405. **Either drop `status === 405` from that check, or
+release the two repos together.** This is the one item in this document that can
+regress user-visible behaviour on deploy.
+
+The rest of P1 is safe for the frontend, and in fact better: it reads
+`globalErrors` and `fieldErrors` off `RestErrors`, which is exactly the shape
+preserved by deliberately not adopting RFC-7807 `ProblemDetail` — and
+`fieldErrors` is now populated for `@Valid` failures where it was always empty.
+
+### F2 — the admin "Locked" filter is dead on both sides, and the mock hides it
+
+D1 is worse than the backend alone suggests:
+
+- `packages/webapp/src/components/admin-console/maps-page/` renders a **Locked**
+  dropdown (All / Locked / Unlocked) wired to `filterLocked`.
+- `admin-client` sends it; `AdminRestMap` has **no locked field at all**, so
+  `mapData.isLocked` is always `undefined` and the table column is broken too.
+- `mock-admin-client` **does** implement the filter
+  (`map.isLocked === params.filterLocked`), so the feature works in dev against
+  the mock and silently fails against the real API. That is why it survived.
+
+Locks are intentionally in-memory in `LockManagerImpl` and deliberately not
+persisted, so this can never be a SQL predicate; implementing it would mean
+post-filtering results against `LockManager`, which cannot produce correct
+pagination totals without scanning every row. Removing the backend parameter was
+behaviour-preserving (Spring ignores unknown query params). **Remaining work is
+frontend-side:** remove the dropdown, the `admin-client` field, and the mock
+implementation.
+
+### Additive changes, safe to deploy alone
+
+- **D6** — `/maps/{id}/metadata` now serializes `starred` and `locked`. Purely
+  additive; the frontend was silently not receiving either.
+- **P2a** — collection endpoints now answer on the no-slash path as well as the
+  slashed one. The slashed form is unchanged.
+
+### Confirmed non-issue: PDF export
+
+There is no PDF code in the backend — no library in `pom.xml`, no export
+plumbing, no binary-producing endpoint, nothing in the specs. The old subsystem
+went out with the deleted `wise-webapp` module (`ExportController`, `Exporter`,
+`ExporterFactory`, `ExportFormat`, `XSLTExporter` are all in the deleted-file
+history). PDF export still exists but is **entirely client-side**, in
+`packages/mindplot/src/components/export/PDFExporter.ts` via `jspdf`, with no API
+call. The only `application/pdf` strings in this repo are in
+`RestErrorContractTest`, where it is an arbitrary *unsupported* media type used to
+provoke 415/406. Nothing to clean up, and no orphaned client call.
 
 ---
 
