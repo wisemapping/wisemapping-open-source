@@ -101,6 +101,10 @@ public class UserController {
             throw new WiseMappingException("You must accept the Terms of Use and Privacy Policy to register.");
         }
 
+        // Validate the registration payload first: a missing password is reported by the validator as a
+        // field error instead of blowing up with a NullPointerException on the length checks below.
+        verify(registration);
+
         if (registration.getPassword().length() < Account.MIN_PASSWORD_LENGTH_SIZE) {
             throw new PasswordTooShortException();
         }
@@ -108,8 +112,6 @@ public class UserController {
         if (registration.getPassword().length() > Account.MAX_PASSWORD_LENGTH_SIZE) {
             throw new PasswordTooLongException();
         }
-
-        verify(registration);
 
         final Account user = new Account();
         user.setEmail(registration.getEmail().trim());
