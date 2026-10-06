@@ -73,7 +73,10 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 200
-        dialect: org.hibernate.dialect.HSQLDialect
+        # No explicit hibernate.dialect: Hibernate selects it from the JDBC
+        # connection metadata, and setting it by hand triggers HHH90000025 on every
+        # startup. The PostgreSQL/MySQL/MariaDB overlays under distribution/ pin
+        # their own dialect explicitly, so nothing depends on this default.
         format_sql: true
         # Enable second-level cache (L2) for entity caching across sessions
         # IMPORTANT: Mindmap-related entities (Mindmap, MindmapSpamInfo, MindmapLabel) 
