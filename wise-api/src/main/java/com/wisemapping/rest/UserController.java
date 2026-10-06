@@ -153,7 +153,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.PUT, value = "/activation", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void activateAccount(@RequestParam long code) throws WiseMappingException {
-        logger.debug("Activating account with code: " + code);
+        logger.debug("Activating account with code: {}", code);
         // Both exceptions extend ClientException, which will be automatically handled
         // by GlobalExceptionHandler with proper i18n message lookup
         userService.activateAccount(code);

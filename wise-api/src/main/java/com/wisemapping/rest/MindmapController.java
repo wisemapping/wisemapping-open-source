@@ -57,9 +57,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/restful/maps")
 public class MindmapController {
-    private final Logger logger = LoggerFactory.getLogger(MindmapController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MindmapController.class);
 
     private static final String LATEST_HISTORY_REVISION = "latest";
+
+    // ObjectMapper is thread-safe once configured; isShowcaseModeEnabled used to
+    // build a new one on every call.
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Qualifier("mindmapService")
     @Autowired
@@ -704,7 +708,7 @@ public class MindmapController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateStarredState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
 
-        logger.debug("Update starred:" + value);
+        logger.debug("Update starred: {}", value);
         final Mindmap mindmap = findMindmapById(id);
         final Account user = Utils.getUser();
 
@@ -753,9 +757,13 @@ public class MindmapController {
                     characterCount.getRemainingChars(),
                     characterCount.isOverLimit(),
                     characterCount.getUsagePercentage());
-        } catch (Exception e) {
-            logger.warn("Error validating note content: {}", e.getMessage());
-            return new NoteValidationResponse(0, 0, false, maxNoteLength, false, 0.0);
+        } catch (RuntimeException e) {
+            // Deliberately not swallowed. The previous fallback returned a
+            // fabricated "0 characters, not over limit" response, which told the
+            // caller its note was fine when validation had in fact failed. Let it
+            // surface so the caller sees a real error.
+            logger.error("Error validating note content", e);
+            throw e;
         }
     }
 
@@ -1026,8 +1034,7 @@ public class MindmapController {
                 return false;
             }
 
-            final ObjectMapper objectMapper = new ObjectMapper();
-            final JsonNode jsonNode = objectMapper.readTree(propertiesJson);
+            final JsonNode jsonNode = OBJECT_MAPPER.readTree(propertiesJson);
             final JsonNode showcaseNode = jsonNode.get("showcase");
 
             return showcaseNode != null && showcaseNode.asBoolean(false);
