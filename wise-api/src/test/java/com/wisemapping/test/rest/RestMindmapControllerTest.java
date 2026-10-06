@@ -780,28 +780,27 @@ public class RestMindmapControllerTest {
                 "public should reflect whether the publish request was accepted");
         assertNotNull(metadata.getJsonProps(), "jsonProps should not be null");
 
-        // Known defect, pinned deliberately: RestMindmapMetadata is annotated
-        // @JsonAutoDetect(isGetterVisibility = NONE), which suppresses auto-detection of
-        // every is-prefixed boolean getter. isStarred() and isLocked() therefore never
-        // reach the wire - isPublic() only survives because it carries an explicit
-        // @JsonProperty("public"). So /metadata silently drops "starred" and "locked"
-        // even though the map is starred (asserted above via GET /starred).
-        //
-        // Fixing it means adding @JsonProperty to those two getters in
-        // src/main/java/com/wisemapping/rest/model/RestMindmapMetadata.java, which is a
-        // production change. Until then this characterises the gap so it cannot rot
-        // unnoticed: when the production fix lands, this block fails and should be
-        // replaced with assertTrue(metadata.isStarred()) / assertFalse(metadata.isLocked()).
+        // Regression guard for a fixed serialization defect. RestMindmapMetadata is
+        // annotated @JsonAutoDetect(isGetterVisibility = NONE), which suppresses
+        // auto-detection of every is-prefixed boolean getter, so isStarred() and
+        // isLocked() silently never reached the wire; isPublic() survived only because
+        // it carries an explicit @JsonProperty("public"). Both now carry one too.
+        // Assert on the raw payload as well as the deserialized object, because a
+        // missing field deserializes to the default `false` and would pass unnoticed.
+        assertTrue(metadata.isStarred(),
+                "starred should be true - the map was starred above via PUT /starred");
+        assertFalse(metadata.isLocked(), "locked should be false for an unlocked map");
+
         final ResponseEntity<String> rawMetadata = restTemplate.exchange(
                 mindmapUri + "/metadata", HttpMethod.GET, null, String.class);
         final String rawJson = rawMetadata.getBody();
         assertNotNull(rawJson, "Raw metadata payload should not be null");
-        assertFalse(rawJson.contains("\"starred\""),
-                "/metadata still omits \"starred\" (see comment above); if this fails the production "
-                        + "serialization bug is fixed - assert metadata.isStarred() is true instead");
-        assertFalse(rawJson.contains("\"locked\""),
-                "/metadata still omits \"locked\" (see comment above); if this fails the production "
-                        + "serialization bug is fixed - assert metadata.isLocked() is false instead");
+        assertTrue(rawJson.contains("\"starred\""),
+                "/metadata must serialize \"starred\"; it is dropped if @JsonProperty is removed "
+                        + "from isStarred() because isGetterVisibility is NONE");
+        assertTrue(rawJson.contains("\"locked\""),
+                "/metadata must serialize \"locked\"; it is dropped if @JsonProperty is removed "
+                        + "from isLocked() because isGetterVisibility is NONE");
         assertTrue(rawJson.contains("\"isLockedBy\""), "isLockedBy is serialized and should stay so");
     }
 

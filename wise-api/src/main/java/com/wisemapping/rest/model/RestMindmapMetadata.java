@@ -130,6 +130,7 @@ public class RestMindmapMetadata {
         this.jsonProps = jsonProps;
     }
 
+    @JsonProperty("locked")
     public boolean isLocked() {
         return locked;
     }
@@ -210,6 +211,7 @@ public class RestMindmapMetadata {
         this.lastModificationTime = lastModificationTime;
     }
 
+    @JsonProperty("starred")
     public boolean isStarred() {
         return starred;
     }
