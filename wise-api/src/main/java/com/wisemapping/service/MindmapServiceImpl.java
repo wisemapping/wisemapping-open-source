@@ -346,15 +346,14 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, int page,
-            int pageSize) {
+    public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, int page, int pageSize) {
         int offset = page * pageSize;
-        return mindmapManager.searchMindmaps(search, filterPublic, filterLocked, offset, pageSize);
+        return mindmapManager.searchMindmaps(search, filterPublic, offset, pageSize);
     }
 
     @Override
-    public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked) {
-        return mindmapManager.countMindmapsBySearch(search, filterPublic, filterLocked);
+    public long countMindmapsBySearch(String search, Boolean filterPublic) {
+        return mindmapManager.countMindmapsBySearch(search, filterPublic);
     }
 
     @Override
@@ -364,10 +363,10 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam,
-            String dateFilter, int page, int pageSize) {
+    public List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterSpam, String dateFilter,
+            int page, int pageSize) {
         int offset = page * pageSize;
-        return mindmapManager.getAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter, offset, pageSize);
+        return mindmapManager.getAllMindmaps(filterPublic, filterSpam, dateFilter, offset, pageSize);
     }
 
     @Override
@@ -376,19 +375,19 @@ public class MindmapServiceImpl
     }
 
     @Override
-    public long countAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter) {
-        return mindmapManager.countAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter);
+    public long countAllMindmaps(Boolean filterPublic, Boolean filterSpam, String dateFilter) {
+        return mindmapManager.countAllMindmaps(filterPublic, filterSpam, dateFilter);
     }
 
     @Override
-    public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam,
-            int page, int pageSize) {
+    public List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterSpam, int page,
+            int pageSize) {
         int offset = page * pageSize;
-        return mindmapManager.searchMindmaps(search, filterPublic, filterLocked, filterSpam, offset, pageSize);
+        return mindmapManager.searchMindmaps(search, filterPublic, filterSpam, offset, pageSize);
     }
 
     @Override
-    public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam) {
-        return mindmapManager.countMindmapsBySearch(search, filterPublic, filterLocked, filterSpam);
+    public long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterSpam) {
+        return mindmapManager.countMindmapsBySearch(search, filterPublic, filterSpam);
     }
 }

@@ -156,7 +156,7 @@ class MindmapManagerAdminQueryIntegrationTest {
         final Mindmap matching = persistMindmapWith(creator, "Roadmap " + token, "unrelated description", false);
         final Mindmap other = persistMindmapWith(creator, "Roadmap untouched", "unrelated description", false);
 
-        final List<Mindmap> found = mindmapManager.searchMindmaps(token, null, null, 0, ALL);
+        final List<Mindmap> found = mindmapManager.searchMindmaps(token, null, 0, ALL);
         assertEquals(Set.of(matching.getId()), idsOf(found));
         assertFalse(idsOf(found).contains(other.getId()));
     }
@@ -169,7 +169,7 @@ class MindmapManagerAdminQueryIntegrationTest {
         final Mindmap matching = persistMindmapWith(creator, "Title without the term",
                 "A description mentioning " + token, false);
 
-        final List<Mindmap> found = mindmapManager.searchMindmaps(token, null, null, 0, ALL);
+        final List<Mindmap> found = mindmapManager.searchMindmaps(token, null, 0, ALL);
         assertEquals(Set.of(matching.getId()), idsOf(found),
                 "the OR arm against m.description must match too");
     }
@@ -184,8 +184,8 @@ class MindmapManagerAdminQueryIntegrationTest {
                 "Lower " + token.toLowerCase(), false);
 
         final Set<Integer> expected = Set.of(titleMatch.getId(), descMatch.getId());
-        assertEquals(expected, idsOf(mindmapManager.searchMindmaps(token.toLowerCase(), null, null, 0, ALL)));
-        assertEquals(expected, idsOf(mindmapManager.searchMindmaps(token.toUpperCase(), null, null, 0, ALL)));
+        assertEquals(expected, idsOf(mindmapManager.searchMindmaps(token.toLowerCase(), null, 0, ALL)));
+        assertEquals(expected, idsOf(mindmapManager.searchMindmaps(token.toUpperCase(), null, 0, ALL)));
     }
 
     @Test
@@ -196,14 +196,14 @@ class MindmapManagerAdminQueryIntegrationTest {
 
         final long total = mindmapManager.countAllMindmaps();
 
-        final List<Mindmap> allViaNull = mindmapManager.searchMindmaps(null, null, null, 0, ALL);
+        final List<Mindmap> allViaNull = mindmapManager.searchMindmaps(null, null, 0, ALL);
         assertEquals(total, allViaNull.size());
         assertTrue(idsOf(allViaNull).contains(mindmap.getId()));
 
         // A blank term takes the same "no filter" branch as null.
-        assertEquals(total, mindmapManager.searchMindmaps("   ", null, null, 0, ALL).size());
-        assertEquals(total, mindmapManager.countMindmapsBySearch(null, null, null));
-        assertEquals(total, mindmapManager.countMindmapsBySearch("   ", null, null));
+        assertEquals(total, mindmapManager.searchMindmaps("   ", null, 0, ALL).size());
+        assertEquals(total, mindmapManager.countMindmapsBySearch(null, null));
+        assertEquals(total, mindmapManager.countMindmapsBySearch("   ", null));
     }
 
     @Test
@@ -215,31 +215,31 @@ class MindmapManagerAdminQueryIntegrationTest {
         final Mindmap privateMap = persistMindmapWith(creator, "Private " + token, "d", false);
 
         assertEquals(Set.of(publicMap.getId()),
-                idsOf(mindmapManager.searchMindmaps(token, Boolean.TRUE, null, 0, ALL)));
+                idsOf(mindmapManager.searchMindmaps(token, Boolean.TRUE, 0, ALL)));
         assertEquals(Set.of(privateMap.getId()),
-                idsOf(mindmapManager.searchMindmaps(token, Boolean.FALSE, null, 0, ALL)));
+                idsOf(mindmapManager.searchMindmaps(token, Boolean.FALSE, 0, ALL)));
         assertEquals(Set.of(publicMap.getId(), privateMap.getId()),
-                idsOf(mindmapManager.searchMindmaps(token, null, null, 0, ALL)));
+                idsOf(mindmapManager.searchMindmaps(token, null, 0, ALL)));
     }
 
     @Test
-    @DisplayName("searchMindmaps() filterLocked is accepted but NOT implemented - it filters nothing")
-    void searchMindmapsIgnoresTheLockedFilter() {
+    @DisplayName("searchMindmaps() agrees across the spam-aware and spam-unaware overloads")
+    void searchMindmapsOverloadsAgreeWhenNoSpamFilterIsApplied() {
         final String token = uniqueToken();
-        final Account creator = persistAccount(entityManager, "search-locked");
-        final Mindmap one = persistMindmapWith(creator, "Locked-probe " + token, "d", false);
-        final Mindmap two = persistMindmapWith(creator, "Locked-probe " + token + " again", "d", true);
+        final Account creator = persistAccount(entityManager, "search-overloads");
+        final Mindmap one = persistMindmapWith(creator, "Overload-probe " + token, "d", false);
+        final Mindmap two = persistMindmapWith(creator, "Overload-probe " + token + " again", "d", true);
 
-        final Set<Integer> unfiltered = Set.of(one.getId(), two.getId());
+        final Set<Integer> expected = Set.of(one.getId(), two.getId());
 
-        // Pinning the dead parameter: passing true or false changes nothing, because
-        // MindmapManagerImpl deliberately leaves the locked branch unimplemented.
-        assertEquals(unfiltered, idsOf(mindmapManager.searchMindmaps(token, null, Boolean.TRUE, 0, ALL)));
-        assertEquals(unfiltered, idsOf(mindmapManager.searchMindmaps(token, null, Boolean.FALSE, 0, ALL)));
-        assertEquals(unfiltered, idsOf(mindmapManager.searchMindmaps(token, null, null, 0, ALL)));
+        // The two overloads build different JPQL (the spam-aware one adds the
+        // LEFT JOIN FETCH on spamInfo), so they are worth pinning against each
+        // other: with filterSpam=null they must select exactly the same rows.
+        assertEquals(expected, idsOf(mindmapManager.searchMindmaps(token, null, 0, ALL)));
+        assertEquals(expected, idsOf(mindmapManager.searchMindmaps(token, null, null, 0, ALL)));
 
-        assertEquals(2L, mindmapManager.countMindmapsBySearch(token, null, Boolean.TRUE));
-        assertEquals(2L, mindmapManager.countMindmapsBySearch(token, null, Boolean.FALSE));
+        assertEquals(2L, mindmapManager.countMindmapsBySearch(token, null));
+        assertEquals(2L, mindmapManager.countMindmapsBySearch(token, null, null));
     }
 
     @Test
@@ -251,10 +251,10 @@ class MindmapManagerAdminQueryIntegrationTest {
         persistMindmapWith(creator, "Paged " + token + " b", "d", false);
         persistMindmapWith(creator, "Paged " + token + " c", "d", false);
 
-        assertEquals(3, mindmapManager.searchMindmaps(token, null, null, 0, ALL).size());
-        assertEquals(2, mindmapManager.searchMindmaps(token, null, null, 0, 2).size());
-        assertEquals(1, mindmapManager.searchMindmaps(token, null, null, 2, 2).size());
-        assertTrue(mindmapManager.searchMindmaps(token, null, null, 3, 2).isEmpty());
+        assertEquals(3, mindmapManager.searchMindmaps(token, null, 0, ALL).size());
+        assertEquals(2, mindmapManager.searchMindmaps(token, null, 0, 2).size());
+        assertEquals(1, mindmapManager.searchMindmaps(token, null, 2, 2).size());
+        assertTrue(mindmapManager.searchMindmaps(token, null, 3, 2).isEmpty());
     }
 
     @Test
@@ -268,15 +268,15 @@ class MindmapManagerAdminQueryIntegrationTest {
 
         for (Boolean filterPublic : new Boolean[]{null, Boolean.TRUE, Boolean.FALSE}) {
             assertEquals(
-                    mindmapManager.searchMindmaps(token, filterPublic, null, 0, ALL).size(),
-                    mindmapManager.countMindmapsBySearch(token, filterPublic, null),
+                    mindmapManager.searchMindmaps(token, filterPublic, 0, ALL).size(),
+                    mindmapManager.countMindmapsBySearch(token, filterPublic),
                     "count must match the listing size for filterPublic=" + filterPublic);
         }
 
-        assertEquals(3L, mindmapManager.countMindmapsBySearch(token, null, null));
-        assertEquals(1L, mindmapManager.countMindmapsBySearch(token, Boolean.TRUE, null));
-        assertEquals(2L, mindmapManager.countMindmapsBySearch(token, Boolean.FALSE, null));
-        assertEquals(0L, mindmapManager.countMindmapsBySearch(token + "-nope", null, null));
+        assertEquals(3L, mindmapManager.countMindmapsBySearch(token, null));
+        assertEquals(1L, mindmapManager.countMindmapsBySearch(token, Boolean.TRUE));
+        assertEquals(2L, mindmapManager.countMindmapsBySearch(token, Boolean.FALSE));
+        assertEquals(0L, mindmapManager.countMindmapsBySearch(token + "-nope", null));
     }
 
     // ------------------------------------------------------------ spam filter

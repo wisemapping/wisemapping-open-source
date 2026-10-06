@@ -604,7 +604,6 @@ public class AdminController {
             @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
             @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder,
             @RequestParam(value = "filterPublic", required = false) Boolean filterPublic,
-            @RequestParam(value = "filterLocked", required = false) Boolean filterLocked,
             @RequestParam(value = "filterSpam", required = false) Boolean filterSpam,
             @RequestParam(value = "dateFilter", defaultValue = "1") String dateFilter) {
 
@@ -614,8 +613,8 @@ public class AdminController {
         if (search != null && !search.trim().isEmpty()) {
             // Search mindmaps - using optimized AdminRestMap DTO
             final List<Mindmap> mindmaps = mindmapService.searchMindmaps(
-                    search, filterPublic, filterLocked, filterSpam, safePage, safePageSize);
-            final long totalElements = mindmapService.countMindmapsBySearch(search, filterPublic, filterLocked, filterSpam);
+                    search, filterPublic, filterSpam, safePage, safePageSize);
+            final long totalElements = mindmapService.countMindmapsBySearch(search, filterPublic, filterSpam);
             final List<com.wisemapping.rest.model.AdminRestMap> restMaps = mindmaps.stream()
                     .map(com.wisemapping.rest.model.AdminRestMap::new)
                     .collect(java.util.stream.Collectors.toList());
@@ -623,8 +622,8 @@ public class AdminController {
         } else {
             // Get all mindmaps with pagination and date filtering - using optimized AdminRestMap DTO
             final List<Mindmap> mindmaps = mindmapService.getAllMindmaps(
-                    filterPublic, filterLocked, filterSpam, dateFilter, safePage, safePageSize);
-            final long totalElements = mindmapService.countAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter);
+                    filterPublic, filterSpam, dateFilter, safePage, safePageSize);
+            final long totalElements = mindmapService.countAllMindmaps(filterPublic, filterSpam, dateFilter);
             final List<com.wisemapping.rest.model.AdminRestMap> restMaps = mindmaps.stream()
                     .map(com.wisemapping.rest.model.AdminRestMap::new)
                     .collect(java.util.stream.Collectors.toList());
