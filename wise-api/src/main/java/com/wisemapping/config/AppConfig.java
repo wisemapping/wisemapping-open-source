@@ -36,7 +36,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -51,7 +50,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
@@ -69,9 +67,16 @@ import static org.springframework.security.config.Customizer.withDefaults;
 })
 @EnableScheduling
 @EnableAsync
-@EnableWebSecurity
 @Configuration
-@EnableWebMvc
+// Deliberately NOT @EnableWebMvc. That annotation registers
+// WebMvcConfigurationSupport, which makes Spring Boot's WebMvcAutoConfiguration
+// back off entirely -- so spring.mvc.* properties were never bound (this app sets
+// spring.mvc.log-resolved-exception) and no static resource handling existed.
+// Implementing WebMvcConfigurer, as below for CORS, is the supported way to
+// customise MVC while keeping the auto-configuration.
+//
+// @EnableWebSecurity is also absent on purpose: config.common.SecurityConfig,
+// imported above, already declares it.
 public class AppConfig implements WebMvcConfigurer {
 
     @Value("${app.api.http-basic-enabled:false}")
