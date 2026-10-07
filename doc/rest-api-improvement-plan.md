@@ -40,7 +40,7 @@ Branch: `improve-rest-api-coverage` (off `develop`).
 | **F3** | `ehcache` calls terminally-deprecated `sun.misc.Unsafe` | ⬜ dependency upgrade |
 | P3 | Untested REST endpoints (`MindmapFilter` now 100% branch) | ✅ **done** — `bfefd82f`, `6b5b6846`, `7d7cda20` |
 | P3b | Null `password` on registration NPEs → 500 | ✅ **done** — `e85149e0` |
-| P4a | `@EnableWebMvc` disables Boot MVC auto-configuration | ⬜ not started |
+| P4a | `@EnableWebMvc` disables Boot MVC auto-configuration | ✅ **done** — `41b7c312` |
 | P4b | Untyped `Map<String,Object>` request/response bodies | ⬜ not started |
 | P4c | `GET /maps/` unpaginated, silently truncates at 500 | ⬜ not started |
 | P4d | `@RequestMapping(method=…)` → `@GetMapping` etc. | ⬜ not started |
@@ -50,7 +50,7 @@ Branch: `improve-rest-api-coverage` (off `develop`).
 | P5c | `AdminControllerTest.java.broken`, one `@Disabled` test | ✅ **done** — `ed962f6f`, `3f1004d0` |
 | P5d | Test README contradicts `@DirtiesContext` usage | ✅ **done** — `e40d3a23` |
 | P5e | REST test naming / package conventions | ⬜ not started |
-| P6 | Generate the OpenAPI spec (blocked on P4a) | ⬜ not started |
+| P6 | Generate the OpenAPI spec | ⬜ not started — **now unblocked** (P4a done) |
 
 ---
 
@@ -599,7 +599,57 @@ Cover with a test posting `{"email":"...","firstname":"..."}`.
 
 Ordered by value. Each is independent.
 
-### 4a. `@EnableWebMvc` disables Spring Boot's MVC auto-configuration
+### 4a. `@EnableWebMvc` disabled Boot's MVC auto-configuration — ✅ **DONE** (`41b7c312`)
+
+Removed, along with a redundant `@EnableWebSecurity` that
+`config.common.SecurityConfig` already declares.
+
+**What it cost.** The annotation registers `WebMvcConfigurationSupport`, so
+`WebMvcAutoConfiguration` backed off entirely. Confirmed at runtime with a
+throwaway diagnostic that dumped the live wiring:
+
+| Probe | with `@EnableWebMvc` | without |
+| :--- | :--- | :--- |
+| `WebMvcAutoConfiguration` bean | absent | present |
+| `WebMvcProperties` bean | absent | present, `logResolvedException=false` |
+| `resourceHandlerMapping` | none | `[/webjars/**, /**]` |
+| message converters | 8, Jackson 3 | identical 8 |
+| `GET /account` JSON | `creationDate` ISO string | byte-identical |
+
+`application.yml` sets `spring.mvc.log-resolved-exception: false`, and it was
+**never bound** because `WebMvcProperties` did not exist. Dead config. It also
+blocked P6.
+
+**What it bought: nothing.** `AppConfig` overrides exactly one
+`WebMvcConfigurer` method, `addCorsMappings`, and `WebMvcConfigurer` is the
+supported hook that works without `@EnableWebMvc`.
+
+**Risks checked rather than assumed:**
+
+- *Jackson switch* — the biggest concern, since Boot 4 ships Jackson 3
+  (`tools.jackson`) while this code uses 2.x annotations and both are on the
+  classpath. `JacksonJsonHttpMessageConverter` and the Jackson 3 mapper were
+  **already** active under `@EnableWebMvc`, so nothing switches.
+- *Date serialization* — `RestUser.getCreationDate()` returns a raw `Calendar`
+  and feeds `GET /api/restful/account`, which the frontend calls. Boot disables
+  `WRITE_DATES_AS_TIMESTAMPS`, so binding the converter to Boot's mapper could
+  have reshaped it. Raw JSON captured both ways: identical.
+- *RFC-7807* — `ProblemDetailsErrorHandlingConfiguration` ships inside
+  `WebMvcAutoConfiguration`; if it activated, every error body would change and
+  break the frontend's `RestErrors` parsing. Gated on
+  `spring.mvc.problemdetails.enabled`, nothing sets it, and
+  `RestErrorContractTest` passes 10/10.
+- *Performance* — an early run came in at 6:50 against a 2:38–2:56 band,
+  suggesting a 2.4× regression. A **control run with the annotation restored was
+  equally slow (6:07)**: the machine was loaded. The committed state measures
+  02:55. Always run the control before attributing a slowdown to the change.
+- *New attack surface* — static handling now serves `resources/public`
+  (`viewonly.css` + 7 logos). Referenced nowhere in backend code — more orphans
+  from the deleted `wise-webapp` module — and the web security chain requires
+  `hasAnyRole("USER","ADMIN")` on `/**`, so nothing is newly public. No welcome
+  page, as there is no `index.html`.
+
+#### Superseded notes on the original finding
 
 `AppConfig` is annotated `@SpringBootApplication` **and** `@EnableWebMvc`. The
 latter switches off `WebMvcAutoConfiguration` wholesale, which is why the app
