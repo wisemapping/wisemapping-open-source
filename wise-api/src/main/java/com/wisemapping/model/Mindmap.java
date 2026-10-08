@@ -441,7 +441,7 @@ public class Mindmap implements Serializable {
         // Hack: Find out of the box function.
         String result = attValue.replace("&", "&amp;");
         result = result.replace("<", "&lt;");
-        result = result.replace("gt", "&gt;");
+        result = result.replace(">", "&gt;");
         result = result.replace("\"", "&quot;");
         return result;
     }
