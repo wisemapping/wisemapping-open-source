@@ -3,6 +3,7 @@ package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.MindmapXml;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindmapLabel;
@@ -168,6 +169,53 @@ public class RestMindmapControllerTest {
         final long collabQueryExecutions = getNamedQueryExecutionCount(statistics, COLLAB_BY_USER_NAMED_QUERY);
         assertEquals(0, collabQueryExecutions,
                 "Mindmap listing should not rely on Collaboration.findByCollaboratorId per mindmap.");
+
+        // The zipped XML must stay lazy while listing (needs build-time enhancement, see pom.xml).
+        assertEquals(0, statistics.getEntityStatistics(MindmapXml.class.getName()).getLoadCount(),
+                "Listing must not load the mindmap XML");
+    }
+
+    @Test
+    public void singleMapRequestLoadsMapOnce() throws URISyntaxException {
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+        final URI resourceUri = addNewMap(restTemplate, "Single load map " + System.nanoTime());
+
+        final Statistics statistics = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
+        statistics.setStatisticsEnabled(true);
+
+        // Read endpoint that does not need the document ...
+        statistics.clear();
+        final ResponseEntity<String> collabs = restTemplate.exchange(resourceUri + "/collabs", HttpMethod.GET,
+                new HttpEntity<>(createHeaders(MediaType.APPLICATION_JSON)), String.class);
+        assertTrue(collabs.getStatusCode().is2xxSuccessful(), "Status Code:" + collabs.getStatusCode());
+        assertEquals(1, getMindmapByIdExecutionCount(statistics), "The map must be loaded once per request");
+        assertEquals(0, statistics.getEntityStatistics(MindmapXml.class.getName()).getLoadCount(),
+                "Reading collaborators must not load the mindmap XML");
+
+        // Write endpoint ...
+        statistics.clear();
+        final HttpHeaders textHeaders = new HttpHeaders();
+        textHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final ResponseEntity<String> rename = restTemplate.exchange(resourceUri + "/title", HttpMethod.PUT,
+                new HttpEntity<>("Single load map renamed " + System.nanoTime(), textHeaders), String.class);
+        assertTrue(rename.getStatusCode().is2xxSuccessful(), "Status Code:" + rename.getStatusCode());
+        assertEquals(1, getMindmapByIdExecutionCount(statistics), "The map must be loaded once per request");
+    }
+
+    @Test
+    public void unknownMapIsForbidden() {
+        final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+        final ResponseEntity<String> response = restTemplate.exchange("/api/restful/maps/" + Integer.MAX_VALUE + "/collabs", HttpMethod.GET,
+                new HttpEntity<>(createHeaders(MediaType.APPLICATION_JSON)), String.class);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Body: " + response.getBody());
+    }
+
+    private static long getMindmapByIdExecutionCount(@NotNull Statistics statistics) {
+        // MindmapManagerImpl.getMindmapById: the fetch-joined Criteria query filtered by map id.
+        return Arrays.stream(statistics.getQueries())
+                .filter(query -> query.contains(" from mindmap m1_0 ") && query.trim().endsWith("where m1_0.id=?"))
+                .mapToLong(query -> statistics.getQueryStatistics(query).getExecutionCount())
+                .sum();
     }
 
     @Test
@@ -223,6 +271,10 @@ public class RestMindmapControllerTest {
         final long collabQueryExecutions = getNamedQueryExecutionCount(statistics, COLLAB_BY_USER_NAMED_QUERY);
         assertEquals(0, collabQueryExecutions,
                 "Admin mindmap listing should not rely on Collaboration.findByCollaboratorId per mindmap.");
+
+        // The zipped XML must stay lazy while listing (needs build-time enhancement, see pom.xml).
+        assertEquals(0, statistics.getEntityStatistics(MindmapXml.class.getName()).getLoadCount(),
+                "Listing must not load the mindmap XML");
     }
 
 
