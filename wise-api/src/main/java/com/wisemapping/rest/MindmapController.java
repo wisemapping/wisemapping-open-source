@@ -369,6 +369,11 @@ public class MindmapController {
         final Mindmap mindmap = findMindmapById(id);
         final Account user = Utils.getUser(true);
 
+        // Must run before the map is modified ...
+        if (!mindmapService.hasPermissions(user, mindmap, CollaborationRole.EDITOR)) {
+            throw new AccessDeniedSecurityException("You do not have enough right access to update this map");
+        }
+
         final String xml = restMindmap.getXml();
         if (xml != null && !xml.isEmpty()) {
             mindmap.setXmlStr(xml);

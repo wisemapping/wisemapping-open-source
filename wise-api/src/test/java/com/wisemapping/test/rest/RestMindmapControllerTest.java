@@ -1087,6 +1087,37 @@ public class RestMindmapControllerTest {
         assertTrue(missing.getStatusCode().is4xxClientError(), "Status Code:" + missing.getStatusCode() + "- " + missing.getBody());
     }
 
+    @Test
+    public void updatePropertiesAsViewerLeavesMapUnchanged() throws IOException, URISyntaxException, WiseMappingException {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate ownerTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        final String title = "update properties viewer " + System.nanoTime();
+        final String ownerXml = "<map><node text='owner content'></map>";
+        final URI mapUri = addNewMap(ownerTemplate, title);
+        updateMapDocument(requestHeaders, ownerTemplate, mapUri.toString(), ownerXml);
+
+        // Share the map as viewer ...
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final RestUser viewer = createUserViaApi(this.restTemplate, "test-" + System.nanoTime() + "@example.org", "Test2", "User2", "testPassword123");
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Sharing as viewer");
+        addCollabToList(viewer.getEmail(), "viewer", collabs);
+        ownerTemplate.put(mapUri + "/collabs/", new HttpEntity<>(collabs, requestHeaders));
+
+        // A viewer cannot update the map, even when the title changes too ...
+        final RestMindmap update = new RestMindmap();
+        update.setXml("<map><node text='viewer content'></map>");
+        update.setTitle(title + " renamed");
+        final TestRestTemplate viewerTemplate = this.restTemplate.withBasicAuth(viewer.getEmail(), viewer.getPassword());
+        final ResponseEntity<String> response = viewerTemplate.exchange(mapUri.toString(), HttpMethod.PUT, new HttpEntity<>(update, requestHeaders), String.class);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode(), "Body: " + response.getBody());
+
+        final RestMindmap stored = findMap(requestHeaders, ownerTemplate, mapUri);
+        assertEquals(ownerXml, stored.getXml());
+        assertEquals(title, stored.getTitle());
+    }
+
 
     @Test
     public void addCollabWhitoutOwnerPermission() throws URISyntaxException {
