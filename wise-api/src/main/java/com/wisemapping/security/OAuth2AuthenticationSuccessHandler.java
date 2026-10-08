@@ -38,6 +38,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Map;
 
@@ -45,6 +46,7 @@ import java.util.Map;
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     
     private static final Logger logger = LoggerFactory.getLogger(OAuth2AuthenticationSuccessHandler.class);
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -289,7 +291,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         if (existingUser.getAuthenticationType() == AuthenticationType.DATABASE) {
             if (existingUser.getOauthSync() == null || !existingUser.getOauthSync()) {
                 existingUser.setOauthSync(false);
-                existingUser.setSyncCode("oauth_pending");
+                existingUser.setSyncCode(generateSyncCode());
                 userService.updateUser(existingUser);
             }
         }
@@ -297,6 +299,12 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         return existingUser;
     }
     
+    private static String generateSyncCode() {
+        final byte[] bytes = new byte[32];
+        SECURE_RANDOM.nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
+
     private AuthenticationType mapProviderToAuthType(String provider) {
         return switch (provider.toLowerCase()) {
             case "google" -> AuthenticationType.GOOGLE_OAUTH2;
