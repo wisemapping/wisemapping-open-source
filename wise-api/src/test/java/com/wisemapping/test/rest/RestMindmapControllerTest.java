@@ -1054,6 +1054,39 @@ public class RestMindmapControllerTest {
         assertEquals(latestStoredMap.getXml(), "<map><node text='this is an xml with modification to be reverted'></map>");
     }
 
+    @Test
+    public void revertMindmapWithUnrelatedHistory() throws IOException, URISyntaxException {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        final TestRestTemplate firstTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+
+        // First map, with history ...
+        final String firstXml = "<map><node text='first map content'></map>";
+        final URI firstMapUri = addNewMap(firstTemplate, "revert first map");
+        updateMapDocument(requestHeaders, firstTemplate, firstMapUri.toString(), firstXml);
+        updateMapDocument(requestHeaders, firstTemplate, firstMapUri.toString(), "<map><node text='first map newer content'></map>");
+        final ResponseEntity<RestMindmapHistoryList> firstHistory = firstTemplate.exchange(firstMapUri + "/history/", HttpMethod.GET, new HttpEntity<>(requestHeaders), RestMindmapHistoryList.class);
+        final int firstHid = Objects.requireNonNull(firstHistory.getBody()).getChanges().get(0).getId();
+
+        // Second map, owned by another user ...
+        final String secondPassword = "testPassword123";
+        final RestUser secondUser = createUserViaApi(this.restTemplate, "test-" + System.nanoTime() + "@example.org", "Test2", "User2", secondPassword);
+        final TestRestTemplate secondTemplate = this.restTemplate.withBasicAuth(secondUser.getEmail(), secondUser.getPassword());
+        final String secondXml = "<map><node text='second map content'></map>";
+        final URI secondMapUri = addNewMap(secondTemplate, "revert second map");
+        updateMapDocument(requestHeaders, secondTemplate, secondMapUri.toString(), secondXml);
+
+        // Reverting to a history entry of a different map is rejected.
+        final ResponseEntity<String> response = secondTemplate.exchange(secondMapUri + "/history/" + firstHid, HttpMethod.POST, new HttpEntity<>(requestHeaders), String.class);
+        assertTrue(response.getStatusCode().is4xxClientError(), "Status Code:" + response.getStatusCode() + "- " + response.getBody());
+
+        final RestMindmap secondMap = findMap(requestHeaders, secondTemplate, secondMapUri);
+        assertEquals(secondXml, secondMap.getXml());
+
+        // A history id that does not exist is a client error too, not a 500.
+        final ResponseEntity<String> missing = secondTemplate.exchange(secondMapUri + "/history/" + Integer.MAX_VALUE, HttpMethod.POST, new HttpEntity<>(requestHeaders), String.class);
+        assertTrue(missing.getStatusCode().is4xxClientError(), "Status Code:" + missing.getStatusCode() + "- " + missing.getBody());
+    }
+
 
     @Test
     public void addCollabWhitoutOwnerPermission() throws URISyntaxException {
