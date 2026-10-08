@@ -325,6 +325,23 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Build-time bytecode enhancement. Without it Hibernate ignores
+                 FetchType.LAZY on the inverse Mindmap.mindmapXml one-to-one and
+                 on MindMapHistory.zippedXml, so every map load also reads the
+                 zipped XML. Guarded by MindmapXmlLazyLoadingTest and the listing
+                 storm tests in RestMindmapControllerTest. -->
+            <plugin>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-maven-plugin</artifactId>
+                <version>${hibernate.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>enhance</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- License Plugin: bundle a THIRD-PARTY notice into the jar and
                  fail the build if a strong-copyleft/network-copyleft dependency
                  (AGPL / SSPL / GPLv3-family) sneaks into the tree. -->

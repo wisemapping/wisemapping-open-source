@@ -3,6 +3,7 @@ package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
 import com.wisemapping.exceptions.WiseMappingException;
+import com.wisemapping.model.MindmapXml;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.Mindmap;
 import com.wisemapping.model.MindmapLabel;
@@ -168,6 +169,10 @@ public class RestMindmapControllerTest {
         final long collabQueryExecutions = getNamedQueryExecutionCount(statistics, COLLAB_BY_USER_NAMED_QUERY);
         assertEquals(0, collabQueryExecutions,
                 "Mindmap listing should not rely on Collaboration.findByCollaboratorId per mindmap.");
+
+        // The zipped XML must stay lazy while listing (needs build-time enhancement, see pom.xml).
+        assertEquals(0, statistics.getEntityStatistics(MindmapXml.class.getName()).getLoadCount(),
+                "Listing must not load the mindmap XML");
     }
 
     @Test
@@ -223,6 +228,10 @@ public class RestMindmapControllerTest {
         final long collabQueryExecutions = getNamedQueryExecutionCount(statistics, COLLAB_BY_USER_NAMED_QUERY);
         assertEquals(0, collabQueryExecutions,
                 "Admin mindmap listing should not rely on Collaboration.findByCollaboratorId per mindmap.");
+
+        // The zipped XML must stay lazy while listing (needs build-time enhancement, see pom.xml).
+        assertEquals(0, statistics.getEntityStatistics(MindmapXml.class.getName()).getLoadCount(),
+                "Listing must not load the mindmap XML");
     }
 
 

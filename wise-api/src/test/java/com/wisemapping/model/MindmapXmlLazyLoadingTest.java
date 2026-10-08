@@ -30,7 +30,7 @@ class MindmapXmlLazyLoadingTest {
     private EntityManagerFactory entityManagerFactory;
 
     @Test
-    void xmlPayloadRemainsAccessibleAfterReload() throws Exception {
+    void xmlPayloadIsLoadedLazily() throws Exception {
         final Account creator = entityManager.find(Account.class, 1);
         assertNotNull(creator, "Seed user must exist for the test");
 
@@ -56,14 +56,13 @@ class MindmapXmlLazyLoadingTest {
 
         Mindmap reloaded = entityManager.find(Mindmap.class, mindmapId);
         EntityStatistics xmlStats = statistics.getEntityStatistics(MindmapXml.class.getName());
-        final long xmlLoadsAfterReload = xmlStats.getLoadCount();
-        // Hibernate 7 loads the inverse one-to-one row eagerly in this mapping without
-        // a matching supported build-time enhancer, but XML access must still work.
-        assertTrue(xmlLoadsAfterReload <= 1, "Mindmap reload should not require multiple MindmapXml loads");
+        // Requires build-time enhancement (hibernate-maven-plugin in pom.xml): without it
+        // Hibernate loads the inverse one-to-one row eagerly.
+        assertEquals(0, xmlStats.getLoadCount(), "XML row must not load during Mindmap fetch");
 
         String xml = reloaded.getXmlStr();
         xmlStats = statistics.getEntityStatistics(MindmapXml.class.getName());
-        assertEquals(xmlLoadsAfterReload, xmlStats.getLoadCount(), "Reading XML should reuse the loaded MindmapXml row");
+        assertEquals(1, xmlStats.getLoadCount(), "Reading XML must trigger exactly one MindmapXml load");
         assertTrue(xml.contains("Root"));
     }
 }
