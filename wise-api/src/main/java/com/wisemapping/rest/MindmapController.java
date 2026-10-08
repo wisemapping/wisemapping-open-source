@@ -440,8 +440,7 @@ public class MindmapController {
         }
 
         // Update map ...
-        final Mindmap mindmap = findMindmapById(id);
-        mindmap.setTitle(title);
+        mindMap.setTitle(title);
         mindmapService.updateMindmap(mindMap, false);
     }
 

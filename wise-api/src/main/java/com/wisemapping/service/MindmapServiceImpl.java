@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -112,7 +113,8 @@ public class MindmapServiceImpl
 
     @Override
     @Nullable
-    @PreAuthorize("hasPermission(#mapId, 'READ')")
+    // Checked on the loaded map: checking #mapId first would load the same map twice.
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public Mindmap findMindmapById(int mapId) {
         return mindmapManager.getMindmapById(mapId);
     }
