@@ -1206,6 +1206,33 @@ public class RestMindmapControllerTest {
     }
 
     @Test
+    public void lockMindmapRequiresEditor() throws URISyntaxException {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        final TestRestTemplate ownerTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+        final URI resourceUri = addNewMap(ownerTemplate, "Map to Lock as viewer");
+
+        // Share the map as viewer ...
+        final RestUser viewer = createUserViaApi(this.restTemplate, "test-" + System.nanoTime() + "@example.org", "Test2", "User2", "testPassword123");
+        final RestCollaborationList collabs = new RestCollaborationList();
+        collabs.setMessage("Sharing as viewer");
+        addCollabToList(viewer.getEmail(), "viewer", collabs);
+        ownerTemplate.put(resourceUri + "/collabs/", new HttpEntity<>(collabs, requestHeaders));
+
+        final HttpHeaders lockHeaders = new HttpHeaders();
+        lockHeaders.setContentType(MediaType.TEXT_PLAIN);
+        final HttpEntity<String> lockEntity = new HttpEntity<>("true", lockHeaders);
+
+        final TestRestTemplate viewerTemplate = this.restTemplate.withBasicAuth(viewer.getEmail(), viewer.getPassword());
+        final ResponseEntity<String> viewerLock = viewerTemplate.exchange(resourceUri + "/lock", HttpMethod.PUT, lockEntity, String.class);
+        assertEquals(HttpStatus.FORBIDDEN, viewerLock.getStatusCode(), "Body: " + viewerLock.getBody());
+
+        // The owner can still take the lock ...
+        final ResponseEntity<String> ownerLock = ownerTemplate.exchange(resourceUri + "/lock", HttpMethod.PUT, lockEntity, String.class);
+        assertTrue(ownerLock.getStatusCode().is2xxSuccessful(), "Status Code:" + ownerLock.getStatusCode() + "- " + ownerLock.getBody());
+    }
+
+    @Test
     public void updateMapXmlWithTextPlain() throws URISyntaxException {
         final TestRestTemplate restTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
 

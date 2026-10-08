@@ -38,5 +38,5 @@ public interface LockManager {
     long generateSession();
 
     @NotNull
-    LockInfo lock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException;
+    LockInfo lock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException, AccessDeniedSecurityException;
 }

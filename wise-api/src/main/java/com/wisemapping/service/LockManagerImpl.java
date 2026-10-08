@@ -42,6 +42,7 @@ class LockManagerImpl implements LockManager {
     private static final int WARN_THRESHOLD = (int) (MAX_LOCKS * 0.8); // Warn at 80% capacity
     
     private final Map<Integer, LockInfo> lockInfoByMapId;
+    private final MindmapService mindmapService;
     private final ScheduledExecutorService expirationScheduler;
     final private static Logger logger = LoggerFactory.getLogger(LockManagerImpl.class);
 
@@ -95,10 +96,8 @@ class LockManagerImpl implements LockManager {
 
     @NotNull
     @Override
-    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException {
-        if (isLocked(mindmap) && !isLockedBy(mindmap, user)) {
-            throw LockException.createLockLost(mindmap, user, this);
-        }
+    public LockInfo lock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException, AccessDeniedSecurityException {
+        verifyHasLock(mindmap, user);
 
         // Do I need to create a new lock ?
         LockInfo result = lockInfoByMapId.get(mindmap.getId());
@@ -132,7 +131,7 @@ class LockManagerImpl implements LockManager {
 
     private void verifyHasLock(@NotNull Mindmap mindmap, @NotNull Account user) throws LockException, AccessDeniedSecurityException {
         // Only editor can have lock ...
-        if (!mindmap.hasPermissions(user, CollaborationRole.EDITOR)) {
+        if (!mindmapService.hasPermissions(user, mindmap, CollaborationRole.EDITOR)) {
             throw new AccessDeniedSecurityException(mindmap.getId(), user);
         }
 
@@ -142,7 +141,8 @@ class LockManagerImpl implements LockManager {
         }
     }
 
-    public LockManagerImpl() {
+    public LockManagerImpl(@NotNull MindmapService mindmapService) {
+        this.mindmapService = mindmapService;
         lockInfoByMapId = new ConcurrentHashMap<>();
         // Use daemon thread to prevent JVM shutdown issues
         expirationScheduler = Executors.newScheduledThreadPool(1, r -> {

@@ -53,7 +53,7 @@ public class MindmapServiceImpl
     final private LockManager lockManager;
 
     public MindmapServiceImpl() {
-        this.lockManager = new LockManagerImpl();
+        this.lockManager = new LockManagerImpl(this);
     }
 
     @Override
