@@ -18,6 +18,7 @@
 package com.wisemapping.service;
 
 import com.wisemapping.dao.MindmapManager;
+import com.wisemapping.exceptions.MapCouldNotFoundException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
 import com.wisemapping.security.Utils;
@@ -264,6 +265,9 @@ public class MindmapServiceImpl
     public void revertChange(@NotNull Mindmap mindmap, int historyId)
             throws WiseMappingException {
         final MindMapHistory history = mindmapManager.getHistory(historyId);
+        if (history == null || history.getMindmapId() != mindmap.getId()) {
+            throw new MapCouldNotFoundException("History could not be found for mapid=" + mindmap.getId() + ",hid=" + historyId);
+        }
         mindmap.setZippedXml(history.getZippedXml());
         updateMindmap(mindmap, true);
     }
