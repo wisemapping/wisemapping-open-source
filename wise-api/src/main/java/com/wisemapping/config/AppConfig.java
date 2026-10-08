@@ -70,10 +70,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 // Deliberately NOT @EnableWebMvc. That annotation registers
 // WebMvcConfigurationSupport, which makes Spring Boot's WebMvcAutoConfiguration
-// back off entirely -- so spring.mvc.* properties were never bound (this app sets
-// spring.mvc.log-resolved-exception) and no static resource handling existed.
-// Implementing WebMvcConfigurer, as below for CORS, is the supported way to
-// customise MVC while keeping the auto-configuration.
+// back off entirely: no spring.mvc.* property can be bound and no static resource
+// handling is registered. Implementing WebMvcConfigurer, as below for CORS, is the
+// supported way to customise MVC while keeping the auto-configuration.
 //
 // @EnableWebSecurity is also absent on purpose: config.common.SecurityConfig,
 // imported above, already declares it.

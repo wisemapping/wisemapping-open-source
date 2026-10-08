@@ -616,8 +616,14 @@ throwaway diagnostic that dumped the live wiring:
 | message converters | 8, Jackson 3 | identical 8 |
 | `GET /account` JSON | `creationDate` ISO string | byte-identical |
 
-`application.yml` sets `spring.mvc.log-resolved-exception: false`, and it was
-**never bound** because `WebMvcProperties` did not exist. Dead config. It also
+No `spring.mvc.*` property could be bound at all, because `WebMvcProperties` did
+not exist in the context. At the time the only such property set was
+`spring.mvc.log-resolved-exception: false` — which, per Boot's own configuration
+metadata, was already the default **and** explicitly excludes
+`DefaultHandlerExceptionResolver`, the resolver that emits the one `Resolved [...]`
+warning it looked intended to silence. So nothing was actually lost; the real cost
+was that the whole namespace was unbindable, a trap for any future property. (That
+no-op property has since been deleted — see *Dead configuration*.) It also
 blocked P6.
 
 **What it bought: nothing.** `AppConfig` overrides exactly one

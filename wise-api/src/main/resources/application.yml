@@ -101,7 +101,6 @@ spring:
       enabled: always
   application:
     name: wisemapping-api
-    title: wisemapping-api
   # Spring Boot OAuth2 Client Configuration
   # Note: No default OAuth2 client registrations are defined here to avoid startup
   # validation when OAuth2 is disabled. Provide registrations in your external app.yml
