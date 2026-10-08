@@ -17,8 +17,9 @@
 
     <properties>
         <com.wisemapping.version>6.0.9-SNAPSHOT</com.wisemapping.version>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
+        <!-- Spring Boot's parent compiles with release=${java.version} (default 17), which
+             overrides maven.compiler.source/target: set the version here. -->
+        <java.version>26</java.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <build.number>dev</build.number>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,7 +29,7 @@
         <git.commit.id.abbrev>unknown</git.commit.id.abbrev>
         <git.commit.id.full>unknown</git.commit.id.full>
         <git.commit.time>unknown</git.commit.time>
-        <jacoco.version>0.8.13</jacoco.version>
+        <jacoco.version>0.8.15</jacoco.version>
         <!-- Populated by jacoco:prepare-agent; empty by default so that the
              surefire argLine below still resolves when coverage is skipped
              (e.g. -Djacoco.skip=true). -->
@@ -399,8 +400,8 @@
                             <additionalProperties>
                                 <encoding.source>${project.build.sourceEncoding}</encoding.source>
                                 <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
-                                <java.source>${maven.compiler.source}</java.source>
-                                <java.target>${maven.compiler.target}</java.target>
+                                <java.source>${maven.compiler.release}</java.source>
+                                <java.target>${maven.compiler.release}</java.target>
                                 <maven.version>${maven.version}</maven.version>
                                 <build.number>${build.number}</build.number>
                                 <build.timestamp>${maven.build.timestamp}</build.timestamp>

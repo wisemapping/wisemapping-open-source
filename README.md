@@ -76,7 +76,7 @@ The following steps are intended for local development only (not production). Fo
 
 ## Prerequisites
 
-* JDK 25 or higher
+* JDK 26 or higher
 * Maven v3.x or higher (<http://maven.apache.org/>)
 * Yarn v4 or higher
 * Node v24 or higher

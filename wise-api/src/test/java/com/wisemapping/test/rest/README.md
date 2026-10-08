@@ -131,7 +131,7 @@ mvn -f wise-api/pom.xml test -Dtest=RestUserControllerTest
 mvn -f wise-api/pom.xml test -Dtest=RestUserControllerTest#shouldRegisterNewUserSuccessfully
 ```
 
-The project targets **Java 25** (`maven.compiler.source`/`target` in
+The project targets **Java 26** (the `java.version` property in
 `wise-api/pom.xml`). No extra JVM flags need to be passed by hand — see note 2.
 
 ## Important Notes
