@@ -155,6 +155,9 @@ public class MindmapServiceImpl
             throws CollaborationException {
         // remove collaborator association
         final Mindmap mindMap = collaboration.getMindMap();
+        if (mindMap == null || mindMap.getId() != mindmap.getId()) {
+            throw new CollaborationException("Collaboration does not belong to map id:" + mindmap.getId());
+        }
         final Account creator = mindMap.getCreator();
         if (creator.identityEquality(collaboration.getCollaborator())) {
             throw new CollaborationException("User is the creator and must have ownership permissions.Creator Email:"
