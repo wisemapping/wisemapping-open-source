@@ -32,7 +32,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 200
-        dialect: org.hibernate.dialect.HSQLDialect
         enhancer:
           enableLazyInitialization: true
         format_sql: false
@@ -97,6 +96,17 @@ app:
   mindmap:
     list:
       max-size: 2000
+  # Test-only JWT secret. Without this the production default from
+  # application.yml is inherited, and JwtTokenUtil's default-secret guard logs a
+  # six-line WARNING banner in every Spring context (174 of 282 warnings in a
+  # full run). The production guard itself is deliberately left intact.
+  jwt:
+    # Must be valid Base64: JwtTokenUtil does
+    # Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret)), and the decoded value
+    # must be >= 32 bytes for HMAC-SHA256. Decodes to
+    # "wisemapping-test-only-jwt-secret-do-not-use-in-production" (57 bytes).
+    secret: d2lzZW1hcHBpbmctdGVzdC1vbmx5LWp3dC1zZWNyZXQtZG8tbm90LXVzZS1pbi1wcm9kdWN0aW9u
+    expirationMin: 10080
   registration:
     enabled: true
     email-confirmation-enabled: false

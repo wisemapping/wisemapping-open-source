@@ -31,6 +31,9 @@ import com.wisemapping.metrics.AccountListingMetricsRecorder;
 import com.wisemapping.metrics.AccountListingMetricsRecorder.QueryStatistics;
 import com.wisemapping.metrics.AccountListingMetricsRecorder.Segment;
 import com.wisemapping.metrics.MindmapListingMetricsRecorder;
+import com.wisemapping.rest.model.AdminRestMap;
+import com.wisemapping.rest.model.AdminRestUser;
+import com.wisemapping.rest.model.RestMap;
 import com.wisemapping.rest.model.RestUser;
 import com.wisemapping.rest.model.PaginatedResponse;
 import com.wisemapping.service.MindmapService;
@@ -136,7 +139,7 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users", produces = {"application/json"})
     @ResponseBody
-    public PaginatedResponse<com.wisemapping.rest.model.AdminRestUser> getAllUsers(
+    public PaginatedResponse<AdminRestUser> getAllUsers(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "search", required = false) String search,
@@ -185,8 +188,8 @@ public class AdminController {
             stopWatch.stop();
             stopWatch.start("mapResponse");
         }
-        final List<com.wisemapping.rest.model.AdminRestUser> restUsers = users.stream()
-                .map(user -> new com.wisemapping.rest.model.AdminRestUser(user, isAdmin(user.getEmail())))
+        final List<AdminRestUser> restUsers = users.stream()
+                .map(user -> new AdminRestUser(user, isAdmin(user.getEmail())))
                 .collect(java.util.stream.Collectors.toList());
         
         if (stopWatch != null) {
@@ -308,22 +311,22 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}", produces = {"application/json"})
     @ResponseBody
-    public com.wisemapping.rest.model.AdminRestUser getUserById(@PathVariable int id) {
+    public AdminRestUser getUserById(@PathVariable int id) {
         final Account userBy = userService.getUserBy(id);
         if (userBy == null) {
             throw new IllegalArgumentException("User could not be found");
         }
-        return new com.wisemapping.rest.model.AdminRestUser(userBy, isAdmin(userBy.getEmail()));
+        return new AdminRestUser(userBy, isAdmin(userBy.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/email/{email:.+}", produces = {"application/json"})
     @ResponseBody
-    public com.wisemapping.rest.model.AdminRestUser getUserByEmail(@PathVariable String email) {
+    public AdminRestUser getUserByEmail(@PathVariable String email) {
         final Account user = userService.getUserBy(email);
         if (user == null) {
             throw new IllegalArgumentException("User '" + email + "' could not be found");
         }
-        return new com.wisemapping.rest.model.AdminRestUser(user, isAdmin(user.getEmail()));
+        return new AdminRestUser(user, isAdmin(user.getEmail()));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/users", consumes = {"application/json"}, produces = {"application/json"})
@@ -581,7 +584,7 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/{id}/maps", produces = {"application/json"})
     @ResponseBody
-    public List<com.wisemapping.rest.model.AdminRestMap> getUserMaps(@PathVariable int id) {
+    public List<AdminRestMap> getUserMaps(@PathVariable int id) {
         final Account user = userService.getUserBy(id);
         if (user == null) {
             throw new IllegalArgumentException("User '" + id + "' could not be found");
@@ -590,21 +593,20 @@ public class AdminController {
         final List<Mindmap> mindmaps = mindmapService.findMindmapsByUser(user);
         return mindmaps.stream()
                 .filter(m -> m.getCreator().identityEquality(user))
-                .map(com.wisemapping.rest.model.AdminRestMap::new)
+                .map(AdminRestMap::new)
                 .collect(Collectors.toList());
     }
 
     // Maps management endpoints
     @RequestMapping(method = RequestMethod.GET, value = "/maps", produces = {"application/json"})
     @ResponseBody
-    public PaginatedResponse<com.wisemapping.rest.model.AdminRestMap> getAllMaps(
+    public PaginatedResponse<AdminRestMap> getAllMaps(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
             @RequestParam(value = "sortOrder", defaultValue = "asc") String sortOrder,
             @RequestParam(value = "filterPublic", required = false) Boolean filterPublic,
-            @RequestParam(value = "filterLocked", required = false) Boolean filterLocked,
             @RequestParam(value = "filterSpam", required = false) Boolean filterSpam,
             @RequestParam(value = "dateFilter", defaultValue = "1") String dateFilter) {
 
@@ -614,19 +616,19 @@ public class AdminController {
         if (search != null && !search.trim().isEmpty()) {
             // Search mindmaps - using optimized AdminRestMap DTO
             final List<Mindmap> mindmaps = mindmapService.searchMindmaps(
-                    search, filterPublic, filterLocked, filterSpam, safePage, safePageSize);
-            final long totalElements = mindmapService.countMindmapsBySearch(search, filterPublic, filterLocked, filterSpam);
-            final List<com.wisemapping.rest.model.AdminRestMap> restMaps = mindmaps.stream()
-                    .map(com.wisemapping.rest.model.AdminRestMap::new)
+                    search, filterPublic, filterSpam, safePage, safePageSize);
+            final long totalElements = mindmapService.countMindmapsBySearch(search, filterPublic, filterSpam);
+            final List<AdminRestMap> restMaps = mindmaps.stream()
+                    .map(AdminRestMap::new)
                     .collect(java.util.stream.Collectors.toList());
             return new PaginatedResponse<>(restMaps, safePage, safePageSize, totalElements);
         } else {
             // Get all mindmaps with pagination and date filtering - using optimized AdminRestMap DTO
             final List<Mindmap> mindmaps = mindmapService.getAllMindmaps(
-                    filterPublic, filterLocked, filterSpam, dateFilter, safePage, safePageSize);
-            final long totalElements = mindmapService.countAllMindmaps(filterPublic, filterLocked, filterSpam, dateFilter);
-            final List<com.wisemapping.rest.model.AdminRestMap> restMaps = mindmaps.stream()
-                    .map(com.wisemapping.rest.model.AdminRestMap::new)
+                    filterPublic, filterSpam, dateFilter, safePage, safePageSize);
+            final long totalElements = mindmapService.countAllMindmaps(filterPublic, filterSpam, dateFilter);
+            final List<AdminRestMap> restMaps = mindmaps.stream()
+                    .map(AdminRestMap::new)
                     .collect(java.util.stream.Collectors.toList());
             return new PaginatedResponse<>(restMaps, safePage, safePageSize, totalElements);
         }
@@ -634,17 +636,17 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/maps/{id}", produces = {"application/json"})
     @ResponseBody
-    public com.wisemapping.rest.model.RestMap getMapById(@PathVariable int id) {
+    public RestMap getMapById(@PathVariable int id) {
         final Mindmap mindmap = mindmapService.findMindmapById(id);
         if (mindmap == null) {
             throw new IllegalArgumentException("Map could not be found");
         }
-        return new com.wisemapping.rest.model.RestMap(mindmap);
+        return new RestMap(mindmap);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
-    public com.wisemapping.rest.model.RestMap updateMap(@RequestBody com.wisemapping.rest.model.RestMap mapUpdate, @PathVariable int id) throws WiseMappingException {
+    public RestMap updateMap(@RequestBody RestMap mapUpdate, @PathVariable int id) throws WiseMappingException {
         if (mapUpdate == null) {
             throw new IllegalArgumentException("Map data can not be null");
         }
@@ -671,12 +673,12 @@ public class AdminController {
         // }
 
         mindmapService.updateMindmap(existingMap, true);
-        return new com.wisemapping.rest.model.RestMap(existingMap);
+        return new RestMap(existingMap);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/maps/{id}/spam", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseBody
-    public com.wisemapping.rest.model.AdminRestMap updateMapSpamStatus(@RequestBody Map<String, Boolean> spamData, @PathVariable int id) throws WiseMappingException {
+    public AdminRestMap updateMapSpamStatus(@RequestBody Map<String, Boolean> spamData, @PathVariable int id) throws WiseMappingException {
         if (spamData == null || !spamData.containsKey("isSpam")) {
             throw new IllegalArgumentException("Spam status data is required");
         }
@@ -701,7 +703,7 @@ public class AdminController {
             mindmapService.updateMindmap(existingMap, true);
         }
 
-        return new com.wisemapping.rest.model.AdminRestMap(existingMap);
+        return new AdminRestMap(existingMap);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/maps/{id}")

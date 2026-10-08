@@ -9,6 +9,7 @@ import com.wisemapping.model.Mindmap;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.ActiveProfiles;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * 2. Application logic prevents duplicate owners on the same mindmap
  */
 @SpringBootTest(classes = { AppConfig.class })
+@ActiveProfiles("test")
 @Transactional
 class CollaborationConstraintTest {
 
