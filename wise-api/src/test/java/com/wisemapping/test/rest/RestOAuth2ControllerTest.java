@@ -19,12 +19,15 @@
 package com.wisemapping.test.rest;
 
 import com.wisemapping.config.AppConfig;
+import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestUser;
+import com.wisemapping.service.UserService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -37,12 +40,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static com.wisemapping.test.rest.RestHelper.createTestUser;
+import static com.wisemapping.test.rest.RestHelper.createUserViaApi;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -66,6 +68,9 @@ public class RestOAuth2ControllerTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private UserService userService;
 
     @BeforeEach
     void createUser() {
@@ -108,30 +113,60 @@ public class RestOAuth2ControllerTest {
     void confirmSyncRejectsAnonymousCallers() {
         final HttpHeaders headers = createHeaders(MediaType.APPLICATION_JSON);
         final ResponseEntity<String> response = restTemplate.exchange(
-                CONFIRM_SYNC_URL + "?email=" + encode(user.getEmail()) + "&code=whatever",
-                HttpMethod.PUT, new HttpEntity<>(headers), String.class);
+                CONFIRM_SYNC_URL + "?email={email}&code=whatever",
+                HttpMethod.PUT, new HttpEntity<>(headers), String.class, user.getEmail());
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode(),
                 "An unauthenticated confirmation must be rejected with 401");
+    }
+
+    @Test
+    @DisplayName("confirmaccountsync only confirms the sync of the authenticated account")
+    void confirmSyncRejectsOtherAccount() {
+        final String otherPassword = "testPassword123";
+        final RestUser other = createUserViaApi(restTemplate, "test-" + System.nanoTime() + "@example.org", "Test2", "User2", otherPassword);
+        final String code = setPendingSyncCode(other.getEmail());
+
+        final ResponseEntity<String> response = confirmSync(other.getEmail(), code, "google");
+        assertTrue(response.getStatusCode().is4xxClientError(),
+                "A confirmation for another account must be rejected, got: " + response.getStatusCode());
+
+        final Account stored = userService.getUserBy(other.getEmail());
+        assertEquals(code, stored.getSyncCode());
+        assertFalse(Boolean.TRUE.equals(stored.getOauthSync()));
+    }
+
+    @Test
+    @DisplayName("confirmaccountsync confirms the authenticated account's own pending sync")
+    void confirmSyncAcceptsOwnAccount() {
+        final String code = setPendingSyncCode(user.getEmail());
+
+        final ResponseEntity<String> response = confirmSync(user.getEmail(), code, "google");
+        assertTrue(response.getStatusCode().is2xxSuccessful(),
+                "Own pending sync must be confirmed, got: " + response.getStatusCode() + " - " + response.getBody());
+
+        final Account stored = userService.getUserBy(user.getEmail());
+        assertTrue(stored.getOauthSync());
+    }
+
+    @NotNull
+    private String setPendingSyncCode(@NotNull String email) {
+        final String code = "code-" + System.nanoTime();
+        final Account account = userService.getUserBy(email);
+        account.setOauthSync(false);
+        account.setSyncCode(code);
+        userService.updateUser(account);
+        return code;
     }
 
     @NotNull
     private ResponseEntity<String> confirmSync(@NotNull String email, @NotNull String code,
                                                @Nullable String provider) {
         final HttpHeaders headers = createHeaders(MediaType.APPLICATION_JSON);
-        final StringBuilder url = new StringBuilder(CONFIRM_SYNC_URL)
-                .append("?email=").append(encode(email))
-                .append("&code=").append(encode(code));
-        if (provider != null) {
-            url.append("&provider=").append(encode(provider));
-        }
+        // Values are passed as URI variables so they are encoded exactly once.
+        final String url = CONFIRM_SYNC_URL + "?email={email}&code={code}" + (provider != null ? "&provider={provider}" : "");
 
         return restTemplate.withBasicAuth(user.getEmail(), user.getPassword())
-                .exchange(url.toString(), HttpMethod.PUT, new HttpEntity<>(headers), String.class);
-    }
-
-    @NotNull
-    private static String encode(@NotNull String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
+                .exchange(url, HttpMethod.PUT, new HttpEntity<>(headers), String.class, email, code, provider);
     }
 }

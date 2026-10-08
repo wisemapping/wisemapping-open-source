@@ -48,10 +48,12 @@ public class RestLabel {
         this.label = label;
     }
 
+    @JsonIgnore
     public void setParent(final MindmapLabel parent) {
         this.label.setParent(parent);
     }
 
+    @JsonIgnore
     @Nullable
     public MindmapLabel getParent() {
         return this.label.getParent();

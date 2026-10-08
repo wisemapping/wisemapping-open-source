@@ -28,6 +28,7 @@ import com.wisemapping.model.*;
 import com.wisemapping.rest.model.RestResetPasswordAction;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
 import com.wisemapping.security.OAuthTokenEncryptionService;
+import com.wisemapping.security.Utils;
 import com.wisemapping.util.VelocityEngineUtils;
 import com.wisemapping.util.VelocityEngineWrapper;
 import org.slf4j.LoggerFactory;
@@ -256,13 +257,19 @@ public class UserServiceImpl
             throw new WiseMappingException("User not found / incorrect code");
         }
 
+        final Account caller = Utils.getUser(true);
+        if (caller.getId() != existingUser.getId()) {
+            logger.warn("OAuth account sync confirmation failed: caller id {} does not match user id {}", caller.getId(), existingUser.getId());
+            throw new WiseMappingException("User not found / incorrect code");
+        }
+
         final String userSyncCode = existingUser.getSyncCode();
         if (userSyncCode == null) {
             logger.warn("OAuth account sync confirmation failed: no sync code set for user id {}", existingUser.getId());
             throw new WiseMappingException("User not found / incorrect code");
         }
 
-        if (!code.equals(userSyncCode)) {
+        if (!MessageDigest.isEqual(code.getBytes(StandardCharsets.UTF_8), userSyncCode.getBytes(StandardCharsets.UTF_8))) {
             logger.warn("OAuth account sync confirmation failed: invalid code for user id {}", existingUser.getId());
             throw new WiseMappingException("User not found / incorrect code");
         }

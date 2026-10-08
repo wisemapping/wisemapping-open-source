@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -25,6 +26,7 @@ import java.util.Objects;
 import static com.wisemapping.test.rest.RestHelper.BASE_REST_URL;
 import static com.wisemapping.test.rest.RestHelper.createHeaders;
 import static com.wisemapping.test.rest.RestHelper.createTestUser;
+import static com.wisemapping.test.rest.RestHelper.createUserViaApi;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -41,6 +43,9 @@ public class RestLabelControllerTest {
     private TestRestTemplate restTemplate;
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void createUser() {
@@ -144,6 +149,30 @@ public class RestLabelControllerTest {
         boolean found1 = labelList.getLabels().stream().anyMatch(l -> title1.equals(l.getTitle()));
         boolean found2 = labelList.getLabels().stream().anyMatch(l -> title2.equals(l.getTitle()));
         assertTrue(found1 && found2, "Labels could not be found in list");
+    }
+
+    @Test
+    public void createLabelIgnoresParent() {
+        final HttpHeaders requestHeaders = createHeaders(MediaType.APPLICATION_JSON);
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        final TestRestTemplate firstTemplate = this.restTemplate.withBasicAuth(user.getEmail(), user.getPassword());
+        final URI firstLabel = addNewLabel(requestHeaders, firstTemplate, "First user label", COLOR);
+        final int firstLabelId = labelId(firstLabel);
+
+        final RestUser other = createUserViaApi(this.restTemplate, "test-" + System.nanoTime() + "@example.org", "Test2", "User2", "testPassword123");
+        final TestRestTemplate otherTemplate = this.restTemplate.withBasicAuth(other.getEmail(), other.getPassword());
+        final String body = "{\"title\":\"Other user label\",\"color\":\"" + COLOR + "\",\"parent\":{\"id\":" + firstLabelId + "}}";
+        final ResponseEntity<String> result = otherTemplate.exchange("/api/restful/labels", HttpMethod.POST, new HttpEntity<>(body, requestHeaders), String.class);
+        assertTrue(result.getStatusCode().is2xxSuccessful(), result.toString());
+
+        final Integer parentId = jdbcTemplate.queryForObject("SELECT parent_label_id FROM mindmap_label WHERE id = ?", Integer.class, labelId(result.getHeaders().getLocation()));
+        assertNull(parentId);
+    }
+
+    private static int labelId(@Nullable URI location) {
+        final String path = Objects.requireNonNull(location).getPath();
+        return Integer.parseInt(path.substring(path.lastIndexOf('/') + 1));
     }
 
     static URI addNewLabel(@NotNull HttpHeaders requestHeaders, @NotNull TestRestTemplate template, @Nullable String title, @Nullable String color) {
