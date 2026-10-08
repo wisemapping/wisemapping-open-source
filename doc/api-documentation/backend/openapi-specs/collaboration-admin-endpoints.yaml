@@ -460,12 +460,6 @@ paths:
           schema:
             type: boolean
           description: Filter by public status
-        - name: filterLocked
-          in: query
-          required: false
-          schema:
-            type: boolean
-          description: Filter by locked status
         - name: filterSpam
           in: query
           required: false

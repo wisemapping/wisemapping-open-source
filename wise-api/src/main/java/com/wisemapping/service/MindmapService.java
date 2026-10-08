@@ -94,7 +94,7 @@ public interface MindmapService {
      * @param pageSize number of mindmaps per page
      * @return list of mindmaps for the given page
      */
-    List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter, int page, int pageSize);
+    List<Mindmap> getAllMindmaps(Boolean filterPublic, Boolean filterSpam, String dateFilter, int page, int pageSize);
 
     /**
      * Count total number of mindmaps (admin only)
@@ -115,47 +115,43 @@ public interface MindmapService {
      * @param dateFilter filter by creation date ("1" = last 1 month, "3" = last 3 months, "6" = last 6 months, "all" = no filter)
      * @return total count of mindmaps
      */
-    long countAllMindmaps(Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, String dateFilter);
+    long countAllMindmaps(Boolean filterPublic, Boolean filterSpam, String dateFilter);
 
     /**
      * Search mindmaps with filtering and pagination (admin only)
      * @param search search term for title or description
      * @param filterPublic filter by public status (null for all)
-     * @param filterLocked filter by locked status (null for all)
      * @param page page number (0-based)
      * @param pageSize number of mindmaps per page
      * @return list of filtered mindmaps for the given page
      */
-    List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, int page, int pageSize);
+    List<Mindmap> searchMindmaps(String search, Boolean filterPublic, int page, int pageSize);
 
     /**
      * Search mindmaps with filtering and pagination including spam filter (admin only)
      * @param search search term for title or description
      * @param filterPublic filter by public status (null for all)
-     * @param filterLocked filter by locked status (null for all)
      * @param filterSpam filter by spam status (null for all, true for spam only, false for non-spam only)
      * @param page page number (0-based)
      * @param pageSize number of mindmaps per page
      * @return list of filtered mindmaps for the given page
      */
-    List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam, int page, int pageSize);
+    List<Mindmap> searchMindmaps(String search, Boolean filterPublic, Boolean filterSpam, int page, int pageSize);
 
     /**
      * Count mindmaps matching search criteria (admin only)
      * @param search search term for title or description
      * @param filterPublic filter by public status (null for all)
-     * @param filterLocked filter by locked status (null for all)
      * @return total count of matching mindmaps
      */
-    long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked);
+    long countMindmapsBySearch(String search, Boolean filterPublic);
 
     /**
      * Count mindmaps matching search criteria including spam filter (admin only)
      * @param search search term for title or description
      * @param filterPublic filter by public status (null for all)
-     * @param filterLocked filter by locked status (null for all)
      * @param filterSpam filter by spam status (null for all, true for spam only, false for non-spam only)
      * @return total count of matching mindmaps
      */
-    long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterLocked, Boolean filterSpam);
+    long countMindmapsBySearch(String search, Boolean filterPublic, Boolean filterSpam);
 }

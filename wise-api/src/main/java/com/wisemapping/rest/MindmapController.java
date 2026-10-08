@@ -35,6 +35,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,9 +57,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/restful/maps")
 public class MindmapController {
-    private final Logger logger = LoggerFactory.getLogger(MindmapController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MindmapController.class);
 
     private static final String LATEST_HISTORY_REVISION = "latest";
+
+    // ObjectMapper is thread-safe once configured; isShowcaseModeEnabled used to
+    // build a new one on every call.
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Qualifier("mindmapService")
     @Autowired
@@ -163,7 +168,7 @@ public class MindmapController {
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
-    @RequestMapping(method = RequestMethod.GET, value = "/", produces = { "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = { "", "/" }, produces = { "application/json" })
     public RestMindmapList retrieveList(@RequestParam(required = false) String q, HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         if (logger.isTraceEnabled()) {
@@ -703,7 +708,7 @@ public class MindmapController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateStarredState(@RequestBody String value, @PathVariable int id) throws WiseMappingException {
 
-        logger.debug("Update starred:" + value);
+        logger.debug("Update starred: {}", value);
         final Mindmap mindmap = findMindmapById(id);
         final Account user = Utils.getUser();
 
@@ -752,9 +757,13 @@ public class MindmapController {
                     characterCount.getRemainingChars(),
                     characterCount.isOverLimit(),
                     characterCount.getUsagePercentage());
-        } catch (Exception e) {
-            logger.warn("Error validating note content: {}", e.getMessage());
-            return new NoteValidationResponse(0, 0, false, maxNoteLength, false, 0.0);
+        } catch (RuntimeException e) {
+            // Deliberately not swallowed. The previous fallback returned a
+            // fabricated "0 characters, not over limit" response, which told the
+            // caller its note was fine when validation had in fact failed. Let it
+            // surface so the caller sees a real error.
+            logger.error("Error validating note content", e);
+            throw e;
         }
     }
 
@@ -763,18 +772,44 @@ public class MindmapController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void batchDelete(@RequestParam() String ids) throws WiseMappingException {
         final Account user = Utils.getUser();
-        final String[] mapsIds = ids.split(",");
-        try {
-            for (final String mapId : mapsIds) {
-                final Mindmap mindmap = findMindmapById(Integer.parseInt(mapId));
-                mindmapService.removeMindmap(mindmap, user);
-            }
-        } catch (Exception e) {
-            final AccessDeniedSecurityException accessDenied = new AccessDeniedSecurityException(
-                    "Map could not be deleted. Maps to be deleted:" + ids);
-            accessDenied.initCause(e);
-            throw accessDenied;
+
+        // Parse and validate the whole id list up-front. A malformed id is a client error (400) and
+        // must not be reported as a permission problem (403).
+        final List<Integer> mapIds = parseMapIds(ids);
+
+        for (final Integer mapId : mapIds) {
+            final Mindmap mindmap = findMindmapById(mapId);
+            mindmapService.removeMindmap(mindmap, user);
         }
+    }
+
+    /**
+     * Parses a comma separated list of mindmap identifiers.
+     *
+     * @param ids the raw request parameter.
+     * @return the parsed identifiers, in the order they were supplied.
+     * @throws IllegalArgumentException if the list is empty or contains a non numeric identifier.
+     */
+    @NotNull
+    private List<Integer> parseMapIds(@Nullable final String ids) {
+        if (ids == null || ids.isBlank()) {
+            throw new IllegalArgumentException("No map identifier has been supplied. Maps to be deleted:" + ids);
+        }
+
+        final List<Integer> result = new ArrayList<>();
+        for (final String mapId : ids.split(",", -1)) {
+            final String candidate = mapId.trim();
+            if (candidate.isEmpty()) {
+                throw new IllegalArgumentException("Map identifier can not be empty. Maps to be deleted:" + ids);
+            }
+            try {
+                result.add(Integer.valueOf(candidate));
+            } catch (final NumberFormatException e) {
+                logger.warn("Invalid map identifier supplied on batch delete: {}", candidate);
+                throw new IllegalArgumentException("Map identifier must be numeric. Invalid value:" + candidate);
+            }
+        }
+        return result;
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
@@ -999,8 +1034,7 @@ public class MindmapController {
                 return false;
             }
 
-            final ObjectMapper objectMapper = new ObjectMapper();
-            final JsonNode jsonNode = objectMapper.readTree(propertiesJson);
+            final JsonNode jsonNode = OBJECT_MAPPER.readTree(propertiesJson);
             final JsonNode showcaseNode = jsonNode.get("showcase");
 
             return showcaseNode != null && showcaseNode.asBoolean(false);

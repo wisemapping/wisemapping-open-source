@@ -1,4 +1,4 @@
-FROM eclipse-temurin:25-jre-alpine
+FROM eclipse-temurin:26-jre-alpine
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 # Build argument to optionally download New Relic

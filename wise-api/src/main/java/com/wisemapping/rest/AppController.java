@@ -93,36 +93,4 @@ public class AppController {
         return clientId != null && !clientId.trim().isEmpty();
     }
 
-
-    public Boolean getRegistrationEnabled() {
-        return isRegistrationEnabled;
-    }
-
-    public void setRegistrationEnabled(Boolean registrationEnabled) {
-        isRegistrationEnabled = registrationEnabled;
-    }
-
-    public Boolean getCaptchaEnabled() {
-        return isCaptchaEnabled;
-    }
-
-    public void setCaptchaEnabled(Boolean captchaEnabled) {
-        isCaptchaEnabled = captchaEnabled;
-    }
-
-    public String getCaptchaSiteKey() {
-        return captchaSiteKey;
-    }
-
-    public void setCaptchaSiteKey(String captchaSiteKey) {
-        this.captchaSiteKey = captchaSiteKey;
-    }
-
-    public String getApiBaseUrl() {
-        return apiBaseUrl;
-    }
-
-    public void setApiBaseUrl(String apiBaseUrl) {
-        this.apiBaseUrl = apiBaseUrl;
-    }
 }

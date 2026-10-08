@@ -50,7 +50,11 @@ public class Collaboration implements Serializable {
     @JoinColumn(name = "collaborator_id", nullable = false)
     private Collaborator collaborator;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    // EAGER, not LAZY: Hibernate forces @ManyToOne/@OneToOne associations annotated
+    // with @NotFound to eager fetching and warns (HHH160133) when LAZY is declared
+    // alongside it. Declaring EAGER changes nothing at runtime -- it just stops the
+    // mapping from claiming a laziness it never had.
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "properties_id", nullable = true, unique = true)
     private CollaborationProperties collaborationProperties = new CollaborationProperties();

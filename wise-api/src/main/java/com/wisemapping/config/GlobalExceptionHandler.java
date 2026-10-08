@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -40,10 +41,19 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import org.springframework.security.core.AuthenticationException;
 
@@ -56,12 +66,31 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    private static final String REQUEST_VALIDATION_ERROR_KEY = "REQUEST_VALIDATION_ERROR";
+    private static final String REQUEST_VALIDATION_ERROR_DEFAULT = "The request contains invalid values. Please correct them and try again.";
+    private static final String RESOURCE_NOT_FOUND_KEY = "RESOURCE_NOT_FOUND";
+    private static final String RESOURCE_NOT_FOUND_DEFAULT = "The requested resource could not be found.";
+
     @Qualifier("messageSource")
     @Autowired(required = false)
     private ResourceBundleMessageSource messageSource;
 
     @Value("${app.site.ui-base-url:}")
     private String uiBaseUrl;
+
+    /**
+     * Resolves {@code key} through the message bundle for the request locale,
+     * falling back to {@code defaultMessage} when the key is missing or no
+     * {@link ResourceBundleMessageSource} is available.
+     */
+    @NotNull
+    private String localizedMessage(@NotNull final String key, @Nullable final Object[] args,
+            @NotNull final String defaultMessage) {
+        final Locale locale = LocaleContextHolder.getLocale();
+        return messageSource != null
+                ? messageSource.getMessage(key, args, defaultMessage, locale)
+                : defaultMessage;
+    }
 
     private boolean isApiRequest(@NotNull HttpServletRequest request) {
         final String uri = request.getRequestURI();
@@ -414,6 +443,115 @@ public class GlobalExceptionHandler {
         }
         redirectToUi(response, "/c/login?error=oauth_failed");
         return null;
+    }
+
+    // ------------------------------------------------------------------
+    // Spring MVC request-binding exceptions.
+    //
+    // Without these explicit handlers the catch-all
+    // @ExceptionHandler(Exception.class) below was the closest match for every
+    // one of them, so malformed client requests were answered with HTTP 500 and
+    // logged at ERROR level. They are client errors: map them onto the proper
+    // 4xx status and log at DEBUG.
+    //
+    // NOTE: this class deliberately does NOT extend
+    // ResponseEntityExceptionHandler. That base class renders RFC-7807
+    // ProblemDetail bodies, which would change the response shape of every
+    // error the API already returns and break the RestErrors contract the
+    // frontend parses. Explicit handlers only.
+    // ------------------------------------------------------------------
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestErrors handleMethodArgumentNotValidException(@NotNull final MethodArgumentNotValidException ex) {
+        logger.debug("Request body validation failed on {}: {}", ex.getObjectName(), ex.getMessage());
+        if (messageSource != null) {
+            // Rendered exactly like handleValidationErrors(ValidationException):
+            // the per-field messages travel in RestErrors.fieldErrors.
+            return new RestErrors(ex.getBindingResult(), messageSource);
+        }
+        return new RestErrors(localizedMessage(REQUEST_VALIDATION_ERROR_KEY, null, REQUEST_VALIDATION_ERROR_DEFAULT),
+                Severity.WARNING);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestErrors handleHandlerMethodValidationException(@NotNull final HandlerMethodValidationException ex) {
+        logger.debug("Handler method validation failed: {}", ex.getMessage());
+        return new RestErrors(localizedMessage(REQUEST_VALIDATION_ERROR_KEY, null, REQUEST_VALIDATION_ERROR_DEFAULT),
+                Severity.WARNING);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestErrors handleMissingServletRequestParameterException(
+            @NotNull final MissingServletRequestParameterException ex) {
+        logger.debug("Missing request parameter {}: {}", ex.getParameterName(), ex.getMessage());
+        final Object[] args = new Object[] { ex.getParameterName() };
+        return new RestErrors(localizedMessage("MISSING_REQUEST_PARAMETER", args,
+                "Required request parameter {0} is missing."), Severity.WARNING);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestErrors handleMethodArgumentTypeMismatchException(
+            @NotNull final MethodArgumentTypeMismatchException ex) {
+        logger.debug("Type mismatch on request parameter {}: {}", ex.getName(), ex.getMessage());
+        final Object[] args = new Object[] { ex.getName() };
+        return new RestErrors(localizedMessage("INVALID_PARAMETER_VALUE", args,
+                "The value supplied for the request parameter {0} is not valid."), Severity.WARNING);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ResponseBody
+    public RestErrors handleHttpRequestMethodNotSupportedException(
+            @NotNull final HttpRequestMethodNotSupportedException ex) {
+        logger.debug("HTTP method not supported: {}", ex.getMessage());
+        final Object[] args = new Object[] { ex.getMethod() };
+        return new RestErrors(localizedMessage("METHOD_NOT_SUPPORTED", args,
+                "The HTTP method {0} is not supported by this resource."), Severity.WARNING);
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ResponseBody
+    public RestErrors handleHttpMediaTypeNotSupportedException(@NotNull final HttpMediaTypeNotSupportedException ex) {
+        logger.debug("Unsupported request media type: {}", ex.getMessage());
+        return new RestErrors(localizedMessage("MEDIA_TYPE_NOT_SUPPORTED", null,
+                "The content type of the request is not supported by this resource."), Severity.WARNING);
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseBody
+    public RestErrors handleHttpMediaTypeNotAcceptableException(@NotNull final HttpMediaTypeNotAcceptableException ex) {
+        logger.debug("Not acceptable response media type: {}", ex.getMessage());
+        return new RestErrors(localizedMessage("MEDIA_TYPE_NOT_ACCEPTABLE", null,
+                "None of the response formats accepted by the client is supported by this resource."),
+                Severity.WARNING);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public RestErrors handleNoHandlerFoundException(@NotNull final NoHandlerFoundException ex) {
+        logger.debug("No handler found: {}", ex.getMessage());
+        return new RestErrors(localizedMessage(RESOURCE_NOT_FOUND_KEY, null, RESOURCE_NOT_FOUND_DEFAULT),
+                Severity.WARNING);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public RestErrors handleNoResourceFoundException(@NotNull final NoResourceFoundException ex) {
+        logger.debug("No resource found: {}", ex.getMessage());
+        return new RestErrors(localizedMessage(RESOURCE_NOT_FOUND_KEY, null, RESOURCE_NOT_FOUND_DEFAULT),
+                Severity.WARNING);
     }
 
     @ExceptionHandler(Exception.class)

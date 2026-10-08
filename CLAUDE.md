@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-The Spring Boot backend for WiseMapping — a REST API + persistence + auth layer that the separately-versioned frontend (`wisemapping-frontend`) consumes. Single-module Maven project under `wise-api/`. Java 25, Spring Boot 4.0.x, JPA/Hibernate.
+The Spring Boot backend for WiseMapping — a REST API + persistence + auth layer that the separately-versioned frontend (`wisemapping-frontend`) consumes. Single-module Maven project under `wise-api/`. Java 26, Spring Boot 4.1.x, JPA/Hibernate.
 
 The frontend is **not** in this repo. Local dev requires checking out `https://github.com/wisemapping/wisemapping-frontend` separately and pointing it at this API (see README "Option 2").
 

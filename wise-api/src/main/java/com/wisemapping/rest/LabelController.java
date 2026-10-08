@@ -66,7 +66,7 @@ public class LabelController {
         response.setHeader("ResourceId", Long.toString(label.getId()));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, value = {"", "/"}, produces = {"application/json"})
     public RestLabelList retrieveList() {
         final Account user = Utils.getUser();
         assert user != null;

@@ -88,7 +88,7 @@ public class UserController {
     private String domainBanExclusion;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    @RequestMapping(method = RequestMethod.POST, value = "/", produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, value = {"", "/"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.CREATED)
     public void registerUser(@RequestBody RestUserRegistration registration,
                              @NotNull HttpServletResponse response) throws WiseMappingException, BindException {
@@ -101,6 +101,10 @@ public class UserController {
             throw new WiseMappingException("You must accept the Terms of Use and Privacy Policy to register.");
         }
 
+        // Validate the registration payload first: a missing password is reported by the validator as a
+        // field error instead of blowing up with a NullPointerException on the length checks below.
+        verify(registration);
+
         if (registration.getPassword().length() < Account.MIN_PASSWORD_LENGTH_SIZE) {
             throw new PasswordTooShortException();
         }
@@ -108,8 +112,6 @@ public class UserController {
         if (registration.getPassword().length() > Account.MAX_PASSWORD_LENGTH_SIZE) {
             throw new PasswordTooLongException();
         }
-
-        verify(registration);
 
         final Account user = new Account();
         user.setEmail(registration.getEmail().trim());
@@ -151,7 +153,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.PUT, value = "/activation", produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void activateAccount(@RequestParam long code) throws WiseMappingException {
-        logger.debug("Activating account with code: " + code);
+        logger.debug("Activating account with code: {}", code);
         // Both exceptions extend ClientException, which will be automatically handled
         // by GlobalExceptionHandler with proper i18n message lookup
         userService.activateAccount(code);
