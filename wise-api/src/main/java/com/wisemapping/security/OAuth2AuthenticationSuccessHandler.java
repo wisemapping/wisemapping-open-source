@@ -156,7 +156,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                 String baseUrl = (uiBaseUrl != null && !uiBaseUrl.isEmpty()) ? uiBaseUrl : "";
                 String queryParams = "?jwtToken=" + URLEncoder.encode(jwt, "UTF-8") +
                                     "&email=" + URLEncoder.encode(account.getEmail(), "UTF-8") +
-                                    "&oauthSync=" + account.getOauthSync();
+                                    "&oauthSync=" + account.getOauthSync() +
+                                    // The frontend needs the provider to confirm an account link with the right type.
+                                    "&provider=" + URLEncoder.encode(provider, "UTF-8");
                 
                 if (account.getSyncCode() != null) {
                     queryParams += "&syncCode=" + URLEncoder.encode(account.getSyncCode(), "UTF-8");
@@ -309,6 +311,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         return switch (provider.toLowerCase()) {
             case "google" -> AuthenticationType.GOOGLE_OAUTH2;
             case "facebook" -> AuthenticationType.FACEBOOK_OAUTH2;
+            case "oidc" -> AuthenticationType.OIDC;
             default -> throw new IllegalArgumentException("Unsupported OAuth provider: " + provider);
         };
     }
@@ -317,6 +320,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         return switch (provider.toLowerCase()) {
             case "google" -> "google_oauth";
             case "facebook" -> "facebook_oauth";
+            case "oidc" -> "oidc_oauth";
             default -> throw new IllegalArgumentException("Unsupported OAuth provider: " + provider);
         };
     }

@@ -126,7 +126,9 @@ public class UserManagerImpl
     @Transactional
     public void createUser(Account user) {
         assert user != null : "Trying to store a null user";
-        if (!AuthenticationType.GOOGLE_OAUTH2.equals(user.getAuthenticationType())) {
+        // Accounts backed by an external identity provider have no local password.
+        if (!AuthenticationType.GOOGLE_OAUTH2.equals(user.getAuthenticationType())
+                && !AuthenticationType.OIDC.equals(user.getAuthenticationType())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         } else {
             user.setPassword("");

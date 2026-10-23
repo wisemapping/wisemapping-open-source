@@ -93,6 +93,17 @@ class RestAppControllerTest {
     }
 
     @Test
+    @Order(4)
+    @DisplayName("Should not expose the generic OIDC provider when it is not configured")
+    void shouldNotExposeOidcWhenNotConfigured() throws Exception {
+        mockMvc.perform(get("/api/restful/app/config"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.oidcOauth2Enabled").value(false))
+                .andExpect(jsonPath("$.oidcOauth2Url").doesNotExist())
+                .andExpect(jsonPath("$.oidcOauth2Label").doesNotExist());
+    }
+
+    @Test
     @Order(3)
     @DisplayName("Should validate response structure")
     void shouldValidateResponseStructure() throws Exception {
