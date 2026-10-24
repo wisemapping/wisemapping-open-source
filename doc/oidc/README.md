@@ -23,9 +23,26 @@ The provider is configured with standard Spring Security properties under the re
 > **verified** e-mail addresses. If its users can sign up or change their e-mail without
 > verifying it, they can sign in as any WiseMapping user with that address, the admin included.
 
-Provisioning on first login does **not** depend on `app.registration.enabled`: an instance that
-lets only its identity provider in can close the public sign-up form
-(`app.registration.enabled: false`) and still create accounts on first OIDC login.
+## Local login is disabled
+
+Once the `oidc` registration is configured, the identity provider is **the** way to sign in.
+This is the expected behaviour, not an option, so the provider's policies (MFA, password rules,
+account lockout…) apply to every login:
+
+- **Email/password login is disabled** for local (`DATABASE`) accounts, through the login form
+  and through HTTP Basic (`app.api.http-basic-enabled`). The login page hides the form
+  (`/api/restful/app/config` returns `localLoginEnabled: false`).
+- **Self-registration is disabled**, whatever `app.registration.enabled` says. Accounts are
+  created on each user's first OIDC login instead.
+- **Password reset sends no e-mail**; the user is told to sign in with the external provider.
+- **Existing local accounts keep their maps.** Their owners sign in with the identity provider
+  using the same e-mail and confirm the link once (see step 3 above). This includes the admin:
+  the account named by `app.admin.user` must exist in the identity provider with that e-mail.
+- Google and Facebook login, when configured, keep working. LDAP is not affected.
+- Sessions opened with a password before OIDC was configured stay valid until their token
+  expires (`app.jwt.expirationMin`, 7 days by default).
+
+To go back to email/password login, remove the `oidc` registration.
 
 ## Configuration
 

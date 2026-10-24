@@ -41,6 +41,7 @@ public class RestAppConfig {
     private String oidcOauth2Url;
     private boolean oidcOauth2Enabled;
     private String oidcOauth2Label;
+    private boolean localLoginEnabled;
     private boolean registrationEnabled;
     private boolean recaptcha2Enabled;
     private String recaptcha2SiteKey;
@@ -116,6 +117,14 @@ public class RestAppConfig {
         this.oidcOauth2Label = oidcOauth2Label;
     }
 
+    public boolean isLocalLoginEnabled() {
+        return localLoginEnabled;
+    }
+
+    public void setLocalLoginEnabled(boolean localLoginEnabled) {
+        this.localLoginEnabled = localLoginEnabled;
+    }
+
     public boolean isRegistrationEnabled() {
         return registrationEnabled;
     }
@@ -174,6 +183,7 @@ public class RestAppConfig {
         private String oidcOauth2Url;
         private boolean oidcOauth2Enabled;
         private String oidcOauth2Label;
+        private boolean localLoginEnabled = true;
         private boolean registrationEnabled;
         private boolean isCatchaEnabled = false;
         private String captchaSiteKey;
@@ -240,6 +250,11 @@ public class RestAppConfig {
             return this;
         }
 
+        public RestAppConfigBuilder setLocalLoginEnabled(boolean localLoginEnabled) {
+            this.localLoginEnabled = localLoginEnabled;
+            return this;
+        }
+
         public RestAppConfigBuilder setRegistrationEnabled(@NotNull boolean registrationEnabled) {
             this.registrationEnabled = registrationEnabled;
             return this;
@@ -260,6 +275,7 @@ public class RestAppConfig {
             result.oidcOauth2Url = oidcOauth2Url;
             result.oidcOauth2Enabled = oidcOauth2Enabled;
             result.oidcOauth2Label = oidcOauth2Label;
+            result.localLoginEnabled = localLoginEnabled;
             result.recaptcha2SiteKey = captchaSiteKey;
             result.recaptcha2Enabled = isCatchaEnabled;
             result.uiBaseUrl = uiBaseUrl;

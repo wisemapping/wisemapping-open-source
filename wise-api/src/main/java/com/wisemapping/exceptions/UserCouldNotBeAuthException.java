@@ -26,6 +26,7 @@ public class UserCouldNotBeAuthException extends ClientException {
     private static final String MSG_ACCOUNT_SUSPENDED = "ACCOUNT_SUSPENDED";
     private static final String MSG_ACCOUNT_SUSPENDED_INACTIVITY = "ACCOUNT_SUSPENDED_INACTIVITY";
     private static final String MSG_ACCOUNT_DISABLED = "ACCOUNT_DISABLED";
+    private static final String MSG_LOCAL_LOGIN_DISABLED = "LOCAL_LOGIN_DISABLED";
 
     private final String msgKey;
 
@@ -67,6 +68,10 @@ public class UserCouldNotBeAuthException extends ClientException {
 
     public static UserCouldNotBeAuthException accountDisabled(Throwable cause) {
         return new UserCouldNotBeAuthException(MSG_ACCOUNT_DISABLED, "Account disabled: " + cause.getMessage(), cause);
+    }
+
+    public static UserCouldNotBeAuthException localLoginDisabled(Throwable cause) {
+        return new UserCouldNotBeAuthException(MSG_LOCAL_LOGIN_DISABLED, "Local login disabled: " + cause.getMessage(), cause);
     }
 
     @NotNull

@@ -42,7 +42,7 @@ Default seed credentials in dev: `test@wisemapping.org` / `test`.
 
 Key namespaces (read `application.yml` before changing behavior):
 - `spring.datasource` — defaults to embedded HSQLDB. Switch to `postgresql`/`mysql`/`mariadb` by overriding driver/url/username/password; the matching `schema-*.sql` and `data-*.sql` under `src/main/resources/` are auto-applied. Reference overlays live under `distribution/app-{postgresql,mysql,mariadb}/app.yml`.
-- `spring.security.oauth2.client` — Google/Facebook OAuth2, plus a generic OpenID Connect provider under the registration id `oidc` (see `doc/oidc/README.md`); client IDs/secrets are expected to be supplied via overlay.
+- `spring.security.oauth2.client` — Google/Facebook OAuth2, plus a generic OpenID Connect provider under the registration id `oidc` (see `doc/oidc/README.md`); client IDs/secrets are expected to be supplied via overlay. Configuring `oidc` disables database email/password login, self-registration and password reset by design (`LocalLoginPolicy`), so every login goes through the identity provider.
 - `spring.ldap` + `app.security.ldap` — LDAP auth (see `doc/ldap/README.md`). Disabled by default.
 - `app.jwt` — JWT signing key + expiration (used by `JwtTokenUtil`, `JwtAuthController`).
 - `app.site.*` — base URLs the API embeds in emails and OAuth redirects.

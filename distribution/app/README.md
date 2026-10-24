@@ -222,7 +222,7 @@ docker run -d --name wisemapping -p 80:80 \
 
 Users can sign in through your own identity provider (Keycloak, Authentik, Authelia, Okta, Microsoft Entra ID, ...) or with Google or Facebook. These logins are off until you configure them with the standard `spring.security.oauth2.client` settings, either in the mounted `application.yml` or as environment variables.
 
-- **OpenID Connect**: follow the [setup guide](https://github.com/wisemapping/wisemapping-open-source/blob/main/doc/oidc/README.md). It covers configuration, how to check that it works, and troubleshooting.
+- **OpenID Connect**: follow the [setup guide](https://github.com/wisemapping/wisemapping-open-source/blob/main/doc/oidc/README.md). It covers configuration, how to check that it works, and troubleshooting. Once it is configured, users can only sign in through your identity provider: email/password login and sign-up are disabled.
 - **Google and Facebook**: copy the commented `spring.security.oauth2.client` block from [application.yml](https://github.com/wisemapping/wisemapping-open-source/blob/main/wise-api/src/main/resources/application.yml) into your configuration.
 
 Behind HTTPS, these logins need the reverse-proxy settings below.

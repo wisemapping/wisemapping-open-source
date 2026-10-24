@@ -19,6 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.rest.model.RestAppConfig;
+import com.wisemapping.security.LocalLoginPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -59,6 +60,9 @@ public class AppController {
     @Value("${app.oauth.oidc.label:Single Sign-On}")
     private String oidcLabel;
 
+    @Autowired
+    private LocalLoginPolicy localLoginPolicy;
+
     @RequestMapping(method = RequestMethod.GET, value = "/config")
     @ResponseStatus(value = HttpStatus.OK)
     public RestAppConfig appConfig() {
@@ -76,7 +80,9 @@ public class AppController {
                 .setFacebookOauth2Enabled(facebookEnabled)
                 .setOidcOauth2Enabled(oidcEnabled)
                 .setAnalyticsAccount(analyticsAccount)
-                .setRegistrationEnabled(isRegistrationEnabled)
+                // Local login and registration are off while OpenID Connect is configured.
+                .setLocalLoginEnabled(localLoginPolicy.isLocalLoginEnabled())
+                .setRegistrationEnabled(isRegistrationEnabled && localLoginPolicy.isLocalLoginEnabled())
                 .setJwtExpirationMin(jwtExpirationMin);
         
         // Only set OAuth2 URLs if providers are configured

@@ -125,6 +125,8 @@ spring:
         #     redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
         #   # Generic OpenID Connect provider (Keycloak, Authentik, Authelia, Okta, Entra ID...).
         #   # The registration id MUST be "oidc". Pair it with provider.oidc.issuer-uri below.
+        #   # Once configured it becomes the way users sign in: email/password login, self-registration
+        #   # and password reset are disabled for local (database) accounts. See doc/oidc/README.md.
         #   oidc:
         #     client-id: your-oidc-client-id
         #     client-secret: your-oidc-client-secret

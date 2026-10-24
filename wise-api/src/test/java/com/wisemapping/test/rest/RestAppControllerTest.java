@@ -100,7 +100,9 @@ class RestAppControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.oidcOauth2Enabled").value(false))
                 .andExpect(jsonPath("$.oidcOauth2Url").doesNotExist())
-                .andExpect(jsonPath("$.oidcOauth2Label").doesNotExist());
+                .andExpect(jsonPath("$.oidcOauth2Label").doesNotExist())
+                .andExpect(jsonPath("$.localLoginEnabled").value(true))
+                .andExpect(jsonPath("$.registrationEnabled").value(true));
     }
 
     @Test

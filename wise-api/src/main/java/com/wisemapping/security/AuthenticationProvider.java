@@ -21,6 +21,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.exceptions.AccountSuspendedException;
+import com.wisemapping.exceptions.LocalLoginDisabledException;
 import com.wisemapping.exceptions.WrongAuthenticationTypeException;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.AuthenticationType;
@@ -41,9 +42,16 @@ public class AuthenticationProvider implements org.springframework.security.auth
     private UserDetailsService userDetailsService;
     private PasswordEncoder encoder;
     private MetricsService metricsService;
+    private LocalLoginPolicy localLoginPolicy;
 
     @Override()
     public Authentication authenticate(@NotNull final Authentication auth) throws AuthenticationException {
+
+        // With OpenID Connect configured, local accounts sign in only through the identity provider.
+        // Checked here rather than in the controller so HTTP Basic is covered too.
+        if (!localLoginPolicy.isLocalLoginEnabled()) {
+            throw new LocalLoginDisabledException("Local login is disabled while OpenID Connect is configured");
+        }
 
         // All your user authentication needs
         final String email = auth.getName();
@@ -110,5 +118,9 @@ public class AuthenticationProvider implements org.springframework.security.auth
 
     public void setMetricsService(MetricsService metricsService) {
         this.metricsService = metricsService;
+    }
+
+    public void setLocalLoginPolicy(@NotNull LocalLoginPolicy localLoginPolicy) {
+        this.localLoginPolicy = localLoginPolicy;
     }
 }
