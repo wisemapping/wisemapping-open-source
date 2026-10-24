@@ -44,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -96,6 +97,18 @@ public class UserManagerImpl
             return users.get(0);
         }
         return null;
+    }
+
+    @Override
+    @NotNull
+    public List<Account> getUsersByEmailIgnoreCase(@NotNull final String email) {
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Account> cq = cb.createQuery(Account.class);
+        final Root<Account> root = cq.from(Account.class);
+
+        cq.select(root).where(cb.equal(cb.lower(root.get("email")), email.toLowerCase(Locale.ROOT)));
+
+        return entityManager.createQuery(cq).getResultList();
     }
 
     @Override

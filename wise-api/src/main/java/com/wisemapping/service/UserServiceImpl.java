@@ -341,6 +341,12 @@ public class UserServiceImpl
     }
 
     @Override
+    @NotNull
+    public List<Account> getUsersByEmailIgnoreCase(@NotNull String email) {
+        return userManager.getUsersByEmailIgnoreCase(email);
+    }
+
+    @Override
     @Nullable
     public Account getUserBy(int id) {
         return userManager.getUserBy(id);

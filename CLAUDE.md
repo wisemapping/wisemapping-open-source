@@ -129,6 +129,11 @@ To ensure cross-platform consistency and resolve encoding/case-sensitivity issue
 
 **Tests** — JUnit 5 (`junit-vintage-engine` is excluded; don't import JUnit 4). Spring Boot test slices preferred over full-context tests when possible. Test class naming mirrors the SUT: `FooService` → `FooServiceTest`.
 
+**Documenting changes** — a change is not done until it is documented.
+- **Changelog**: every functional change (feature, bug fix, security fix, breaking change, behavior or configuration change an operator would notice) adds an entry under `## [Unreleased]` → `### 🔧 Backend (wisemapping-open-source)` in `CHANGELOG.md`, in the matching `Security & Privacy` / `Features` / `Bug Fixes` / `Maintenance` subsection. Follow the existing style: a bold title, then what changed and why it matters to users or operators. Pure refactors and test-only changes need no entry. Use the `update-changelog` skill to regenerate the section before a release.
+- **Docs**: a change to configuration, deployment or authentication updates the doc that owns the topic (`doc/<topic>/README.md`, `distribution/<variant>/README.md`, the comments in `application.yml`). Keep one source per topic and link to it rather than copying it. `distribution/app/README.md` is the Docker Hub page: keep it short, link to the repo with absolute GitHub URLs, and paste it to Docker Hub by hand at release (no workflow syncs it).
+- **Breaking changes** (removed features, config keys, data migrations) also need upgrade instructions in the changelog entry.
+
 ## Documentation pointers
 
 - `doc/api-documentation/` — REST API reference + backend specifics (telemetry, OpenAPI).

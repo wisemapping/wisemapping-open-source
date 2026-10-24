@@ -43,8 +43,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -169,6 +172,62 @@ class OidcProvisioningTest {
         assertNull(linked.getSyncCode());
     }
 
+    @Test
+    @DisplayName("An email that differs only in case links to the existing account instead of creating a second one")
+    void mixedCaseEmailMatchesExistingAccount() throws Exception {
+        final String email = "oidc-case-" + System.nanoTime() + "@example.org";
+        createLocalAccount(email);
+        final String providerEmail = email.toUpperCase(Locale.ROOT);
+
+        final MockHttpServletResponse response = login(providerEmail, "sub-case");
+
+        assertNull(userService.getUserBy(providerEmail), "no second account must be created for the same mailbox");
+        final Account pending = userService.getUserBy(email);
+        assertNotNull(pending.getSyncCode(), "the existing account must be offered for linking");
+        assertTrue(response.getRedirectedUrl().contains("email=" + URLEncoder.encode(email, StandardCharsets.UTF_8)),
+                "the session must belong to the existing account: " + response.getRedirectedUrl());
+    }
+
+    @Test
+    @DisplayName("An email matching several accounts ignoring case is refused")
+    void ambiguousEmailIsRejected() throws Exception {
+        final String suffix = System.nanoTime() + "@example.org";
+        createLocalAccount("oidc-dup-" + suffix);
+        createLocalAccount("OIDC-DUP-" + suffix);
+
+        final MockHttpServletResponse response = login("Oidc-Dup-" + suffix, "sub-dup");
+
+        assertTrue(response.getRedirectedUrl().contains("error=oauth_failed"),
+                "unexpected redirect: " + response.getRedirectedUrl());
+        assertNull(userService.getUserBy("Oidc-Dup-" + suffix), "no account must be created");
+    }
+
+    @Test
+    @DisplayName("A provider that releases no email claim is refused with a clear error")
+    void missingEmailClaimIsRejected() throws Exception {
+        final OAuth2AuthenticationToken authentication = token(Map.of("sub", "sub-no-email",
+                "iss", "https://sso.example.com"));
+        authenticate(authentication);
+
+        final MockHttpServletRequest request = new MockHttpServletRequest("GET", "/login/oauth2/code/oidc");
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+        successHandler.onAuthenticationSuccess(request, response, authentication);
+
+        assertTrue(response.getRedirectedUrl().contains("/c/login?error=oauth_failed"),
+                "unexpected redirect: " + response.getRedirectedUrl());
+    }
+
+    private void createLocalAccount(String email) throws Exception {
+        final Account local = new Account();
+        local.setEmail(email);
+        local.setFirstname("Jane");
+        local.setLastname("Doe");
+        local.setPassword("LocalPassword123");
+        local.setAuthenticationType(AuthenticationType.DATABASE);
+        authenticate(token(email, "sub-local"));
+        userService.createUser(local, false, false);
+    }
+
     private MockHttpServletResponse login(String email, String subject) throws Exception {
         final OAuth2AuthenticationToken authentication = token(email, subject);
         // Spring Security stores the authentication in the SecurityContext before it
@@ -188,9 +247,12 @@ class OidcProvisioningTest {
     }
 
     private static OAuth2AuthenticationToken token(String email, String subject) {
-        final OidcIdToken idToken = new OidcIdToken("id-token", Instant.now(), Instant.now().plusSeconds(300),
-                Map.of("sub", subject, "email", email, "given_name", "Jane", "family_name", "Doe",
-                        "iss", "https://sso.example.com"));
+        return token(Map.of("sub", subject, "email", email, "given_name", "Jane", "family_name", "Doe",
+                "iss", "https://sso.example.com"));
+    }
+
+    private static OAuth2AuthenticationToken token(Map<String, Object> claims) {
+        final OidcIdToken idToken = new OidcIdToken("id-token", Instant.now(), Instant.now().plusSeconds(300), claims);
         final var authorities = List.of(new SimpleGrantedAuthority("OIDC_USER"));
         final DefaultOidcUser user = new DefaultOidcUser(authorities, idToken, "sub");
         return new OAuth2AuthenticationToken(user, authorities, "oidc");

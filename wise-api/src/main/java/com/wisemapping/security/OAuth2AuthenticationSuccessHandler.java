@@ -40,6 +40,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -90,6 +91,15 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         String lastName = extractLastName(oauth2User);
         String provider = extractProvider(request);
         String providerId = extractProviderId(oauth2User);
+
+        // Accounts are matched by email, so a provider that does not release the claim cannot sign in.
+        if (email == null || email.isBlank()) {
+            logger.warn("OAuth2 login via {} rejected: the provider returned no email claim. "
+                    + "Request the 'email' scope and make sure the provider releases the claim.", provider);
+            response.sendRedirect(uiBaseUrl + "/c/login?error=oauth_failed");
+            return;
+        }
+        email = email.trim();
 
         try {
             // Find or create WiseMapping account
@@ -237,7 +247,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         AuthenticationType authType = mapProviderToAuthType(provider);
 
         // Check if user exists
-        Account existingUser = userService.getUserBy(email);
+        Account existingUser = findUserByEmail(email);
 
         if (existingUser == null) {
             // Create new OAuth user
@@ -246,6 +256,23 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             // Handle existing user — also refresh stored provider ID
             return handleExistingUser(existingUser, authType, providerId);
         }
+    }
+
+    private Account findUserByEmail(String email) throws Exception {
+        // Exact match first: it is index-backed and covers the common case.
+        final Account exact = userService.getUserBy(email);
+        if (exact != null) {
+            return exact;
+        }
+
+        // Providers do not preserve the casing the user registered with (e.g. Entra ID returns
+        // "John.Doe@Example.com"); without this fallback a second account would be created.
+        final List<Account> candidates = userService.getUsersByEmailIgnoreCase(email);
+        if (candidates.size() > 1) {
+            logger.warn("OAuth2 login rejected: {} accounts match the provider email ignoring case", candidates.size());
+            throw new Exception("Ambiguous account email");
+        }
+        return candidates.isEmpty() ? null : candidates.get(0);
     }
 
     private Account createNewOAuthUser(String email, String firstName, String lastName, AuthenticationType authType, String providerId) throws Exception {
