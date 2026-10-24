@@ -296,6 +296,9 @@ public class UserServiceImpl
             if ("google".equals(normalized)) {
                 return AuthenticationType.GOOGLE_OAUTH2;
             }
+            if ("oidc".equals(normalized)) {
+                return AuthenticationType.OIDC;
+            }
             logger.warn("Unknown provider {} received during account sync confirmation. Defaulting to GOOGLE.", provider);
         }
 
@@ -335,6 +338,12 @@ public class UserServiceImpl
     @Override
     public Account getUserBy(String email) {
         return userManager.getUserBy(email);
+    }
+
+    @Override
+    @NotNull
+    public List<Account> getUsersByEmailIgnoreCase(@NotNull String email) {
+        return userManager.getUsersByEmailIgnoreCase(email);
     }
 
     @Override

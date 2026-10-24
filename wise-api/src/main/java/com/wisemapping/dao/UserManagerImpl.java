@@ -44,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -99,6 +100,18 @@ public class UserManagerImpl
     }
 
     @Override
+    @NotNull
+    public List<Account> getUsersByEmailIgnoreCase(@NotNull final String email) {
+        final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<Account> cq = cb.createQuery(Account.class);
+        final Root<Account> root = cq.from(Account.class);
+
+        cq.select(root).where(cb.equal(cb.lower(root.get("email")), email.toLowerCase(Locale.ROOT)));
+
+        return entityManager.createQuery(cq).getResultList();
+    }
+
+    @Override
     public Collaborator getCollaboratorBy(final String email) {
         // Use Criteria API for type-safe query that handles inheritance properly
         final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -126,7 +139,9 @@ public class UserManagerImpl
     @Transactional
     public void createUser(Account user) {
         assert user != null : "Trying to store a null user";
-        if (!AuthenticationType.GOOGLE_OAUTH2.equals(user.getAuthenticationType())) {
+        // Accounts backed by an external identity provider have no local password.
+        if (!AuthenticationType.GOOGLE_OAUTH2.equals(user.getAuthenticationType())
+                && !AuthenticationType.OIDC.equals(user.getAuthenticationType())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         } else {
             user.setPassword("");

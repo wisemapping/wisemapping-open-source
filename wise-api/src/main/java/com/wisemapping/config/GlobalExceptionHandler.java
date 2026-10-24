@@ -374,6 +374,10 @@ public class GlobalExceptionHandler {
                 messageKey = "ACCOUNT_USES_FACEBOOK_OAUTH";
                 defaultMessage = "This account is registered with Facebook. Please use the 'Sign in with Facebook' button to login.";
                 break;
+            case OIDC:
+                messageKey = "ACCOUNT_USES_OIDC_OAUTH";
+                defaultMessage = "This account is registered with Single Sign-On. Please use the Single Sign-On button to login.";
+                break;
             case LDAP:
                 messageKey = "ACCOUNT_USES_EXTERNAL_AUTH";
                 defaultMessage = "This account uses external authentication. Please use the appropriate sign-in method.";

@@ -34,6 +34,28 @@ class RestAppConfigTest {
     }
 
     @Test
+    void testBuilder_ExposesGenericOidcProvider() {
+        RestAppConfig config = new RestAppConfig.RestAppConfigBuilder()
+                .setOidcOauth2Enabled(true)
+                .setOidcOauth2Url("https://wm.example.com/oauth2/authorization/oidc")
+                .setOidcOauth2Label("Company SSO")
+                .build();
+
+        assertTrue(config.isOidcOauth2Enabled());
+        assertEquals("https://wm.example.com/oauth2/authorization/oidc", config.getOidcOauth2Url());
+        assertEquals("Company SSO", config.getOidcOauth2Label());
+    }
+
+    @Test
+    void testBuilder_GenericOidcProviderDisabledByDefault() {
+        RestAppConfig config = new RestAppConfig.RestAppConfigBuilder().build();
+
+        assertFalse(config.isOidcOauth2Enabled());
+        assertNull(config.getOidcOauth2Url());
+        assertNull(config.getOidcOauth2Label());
+    }
+
+    @Test
     void testBuilder_DefaultsJwtExpirationToOneWeek() {
         RestAppConfig config = new RestAppConfig.RestAppConfigBuilder().build();
 

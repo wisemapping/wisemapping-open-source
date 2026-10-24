@@ -38,6 +38,9 @@ public class RestAppConfig {
     private boolean googleOauth2Enabled;
     private String facebookOauth2Url;
     private boolean facebookOauth2Enabled;
+    private String oidcOauth2Url;
+    private boolean oidcOauth2Enabled;
+    private String oidcOauth2Label;
     private boolean registrationEnabled;
     private boolean recaptcha2Enabled;
     private String recaptcha2SiteKey;
@@ -87,6 +90,30 @@ public class RestAppConfig {
 
     public void setFacebookOauth2Enabled(boolean facebookOauth2Enabled) {
         this.facebookOauth2Enabled = facebookOauth2Enabled;
+    }
+
+    public String getOidcOauth2Url() {
+        return oidcOauth2Url;
+    }
+
+    public void setOidcOauth2Url(String oidcOauth2Url) {
+        this.oidcOauth2Url = oidcOauth2Url;
+    }
+
+    public boolean isOidcOauth2Enabled() {
+        return oidcOauth2Enabled;
+    }
+
+    public void setOidcOauth2Enabled(boolean oidcOauth2Enabled) {
+        this.oidcOauth2Enabled = oidcOauth2Enabled;
+    }
+
+    public String getOidcOauth2Label() {
+        return oidcOauth2Label;
+    }
+
+    public void setOidcOauth2Label(String oidcOauth2Label) {
+        this.oidcOauth2Label = oidcOauth2Label;
     }
 
     public boolean isRegistrationEnabled() {
@@ -144,6 +171,9 @@ public class RestAppConfig {
         private boolean googleOauth2Enabled;
         private String facebookOauth2Url;
         private boolean facebookOauth2Enabled;
+        private String oidcOauth2Url;
+        private boolean oidcOauth2Enabled;
+        private String oidcOauth2Label;
         private boolean registrationEnabled;
         private boolean isCatchaEnabled = false;
         private String captchaSiteKey;
@@ -195,6 +225,21 @@ public class RestAppConfig {
             return this;
         }
 
+        public RestAppConfigBuilder setOidcOauth2Url(String oidcOauth2Url) {
+            this.oidcOauth2Url = oidcOauth2Url;
+            return this;
+        }
+
+        public RestAppConfigBuilder setOidcOauth2Enabled(boolean oidcOauth2Enabled) {
+            this.oidcOauth2Enabled = oidcOauth2Enabled;
+            return this;
+        }
+
+        public RestAppConfigBuilder setOidcOauth2Label(String oidcOauth2Label) {
+            this.oidcOauth2Label = oidcOauth2Label;
+            return this;
+        }
+
         public RestAppConfigBuilder setRegistrationEnabled(@NotNull boolean registrationEnabled) {
             this.registrationEnabled = registrationEnabled;
             return this;
@@ -212,6 +257,9 @@ public class RestAppConfig {
             result.googleOauth2Enabled = googleOauth2Enabled;
             result.facebookOauth2Url = facebookOauth2Url;
             result.facebookOauth2Enabled = facebookOauth2Enabled;
+            result.oidcOauth2Url = oidcOauth2Url;
+            result.oidcOauth2Enabled = oidcOauth2Enabled;
+            result.oidcOauth2Label = oidcOauth2Label;
             result.recaptcha2SiteKey = captchaSiteKey;
             result.recaptcha2Enabled = isCatchaEnabled;
             result.uiBaseUrl = uiBaseUrl;

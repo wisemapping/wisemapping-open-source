@@ -36,6 +36,13 @@ public interface UserManager {
 
     Account getUserBy(String email);
 
+    /**
+     * Accounts whose email matches ignoring case. Not index-backed: prefer {@link #getUserBy(String)}
+     * and use this only as a fallback when the exact lookup finds nothing.
+     */
+    @NotNull
+    List<Account> getUsersByEmailIgnoreCase(@NotNull String email);
+
     Account getUserBy(int id);
 
     void createUser(Account user);
