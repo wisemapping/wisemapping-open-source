@@ -49,7 +49,7 @@ WiseMapping provides a comprehensive set of features for creating, managing and 
 
 ### 🔐 Accounts & administration
 
-- **Authentication**: Database accounts, Google and Facebook OAuth2, and LDAP, with JWT-based sessions
+- **Authentication**: Database accounts, Google and Facebook OAuth2, any OpenID Connect provider ([doc/oidc](doc/oidc/README.md)), and LDAP, with JWT-based sessions
 - **Account self-service**: Registration with optional reCAPTCHA, email activation, link-based password reset, and account deletion
 - **Admin console**: Account management and system status pages for administrators
 - **Spam & abuse controls**: Spam detection on write and as a scheduled batch, with automatic user suspension

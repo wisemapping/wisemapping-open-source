@@ -123,6 +123,16 @@ spring:
         #     client-secret: your-facebook-client-secret
         #     scope: email,public_profile
         #     redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
+        #   # Generic OpenID Connect provider (Keycloak, Authentik, Authelia, Okta, Entra ID...).
+        #   # The registration id MUST be "oidc". Pair it with provider.oidc.issuer-uri below.
+        #   # Once configured it becomes the way users sign in: email/password login, self-registration
+        #   # and password reset are disabled for local (database) accounts. See doc/oidc/README.md.
+        #   oidc:
+        #     client-id: your-oidc-client-id
+        #     client-secret: your-oidc-client-secret
+        #     authorization-grant-type: authorization_code   # required: no default for custom ids
+        #     scope: openid,profile,email
+        #     redirect-uri: "${app.site.api-base-url}/login/oauth2/code/{registrationId}"
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
@@ -134,6 +144,12 @@ spring:
             token-uri: https://graph.facebook.com/v18.0/oauth/access_token
             user-info-uri: https://graph.facebook.com/me?fields=id,email,first_name,last_name
             user-name-attribute: id
+          # Generic OpenID Connect provider: endpoints are discovered from the issuer
+          # (<issuer-uri>/.well-known/openid-configuration). Only used when the "oidc"
+          # registration above is configured. See doc/oidc/README.md.
+          # oidc:
+          #   issuer-uri: https://sso.example.com/realms/example
+          #   user-name-attribute: sub
   # ============================================================================
   # Spring LDAP Configuration (Standard Spring Boot Properties)
   # ============================================================================
@@ -221,6 +237,10 @@ app:
   # (legacy behaviour). New values will be prefixed with {enc}; old plaintext rows
   # continue to work unchanged (backward-compatible).
   oauth:
+    # Label of the login button shown for the generic OpenID Connect provider
+    # (spring.security.oauth2.client.registration.oidc). Ignored when it is not configured.
+    oidc:
+      label: Single Sign-On
     token:
       secret: dlqxKAg685SaKhsQXIMeM$JWCw3bkl3Ei3Tb7LMlnd19oMd66xxxPNlJ0Po1qguyjgpakQTk2CN3
   # Admin account with super admin permissions on the API.

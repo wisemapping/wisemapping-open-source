@@ -2,6 +2,7 @@ package com.wisemapping.security;
 
 import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.exceptions.AccountSuspendedException;
+import com.wisemapping.exceptions.LocalLoginDisabledException;
 import com.wisemapping.model.Account;
 import com.wisemapping.model.AuthenticationType;
 import com.wisemapping.service.MetricsService;
@@ -42,6 +43,21 @@ class AuthenticationProviderTest {
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setEncoder(encoder);
         authenticationProvider.setMetricsService(metricsService);
+        // No OpenID Connect registration: local login enabled
+        authenticationProvider.setLocalLoginPolicy(new LocalLoginPolicy());
+    }
+
+    @Test
+    void testAuthenticateWithOidcConfigured_ShouldThrowLocalLoginDisabledException() {
+        final LocalLoginPolicy oidcConfigured = mock(LocalLoginPolicy.class);
+        when(oidcConfigured.isLocalLoginEnabled()).thenReturn(false);
+        authenticationProvider.setLocalLoginPolicy(oidcConfigured);
+
+        final UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken("test@example.com", "password");
+
+        assertThrows(LocalLoginDisabledException.class, () -> authenticationProvider.authenticate(auth));
+        verifyNoInteractions(userDetailsService, encoder);
     }
 
     @Test

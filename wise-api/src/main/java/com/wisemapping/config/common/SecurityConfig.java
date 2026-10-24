@@ -31,7 +31,7 @@ import java.util.List;
  * This configuration sets up authentication providers for the application.
  * It supports multiple authentication methods:
  *
- * 1. DATABASE Authentication (always enabled)
+ * 1. DATABASE Authentication (disabled when OpenID Connect is configured, see LocalLoginPolicy)
  *    - Traditional username/password authentication against WiseMapping's database
  *    - Users with AuthenticationType.DATABASE
  *
@@ -80,6 +80,9 @@ public class SecurityConfig {
     private LdapProperties ldapProperties;
 
     @Autowired
+    private LocalLoginPolicy localLoginPolicy;
+
+    @Autowired
     @Lazy
     private UserService userService;
 
@@ -120,6 +123,7 @@ public class SecurityConfig {
         provider.setEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService);
         provider.setMetricsService(metricsService);
+        provider.setLocalLoginPolicy(localLoginPolicy);
 
         logger.info("DATABASE authentication provider initialized");
         return provider;

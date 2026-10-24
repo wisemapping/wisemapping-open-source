@@ -21,6 +21,7 @@ package com.wisemapping.rest;
 import com.wisemapping.exceptions.AccountDisabledException;
 import com.wisemapping.exceptions.AccountSuspendedException;
 import com.wisemapping.exceptions.AccountSuspendedInactivityException;
+import com.wisemapping.exceptions.LocalLoginDisabledException;
 import com.wisemapping.exceptions.UserCouldNotBeAuthException;
 import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.Account;
@@ -128,6 +129,9 @@ public class JwtAuthController {
         } catch (AccountSuspendedException e) {
             // Account is suspended
             throw UserCouldNotBeAuthException.accountSuspended(e);
+        } catch (LocalLoginDisabledException e) {
+            // OpenID Connect is configured: local accounts must use the Single Sign-On button
+            throw UserCouldNotBeAuthException.localLoginDisabled(e);
         } catch (AccountDisabledException e) {
             // Account is disabled/not activated (email not confirmed for DATABASE users)
             throw UserCouldNotBeAuthException.accountDisabled(e);

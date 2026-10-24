@@ -19,6 +19,7 @@
 package com.wisemapping.rest;
 
 import com.wisemapping.rest.model.RestAppConfig;
+import com.wisemapping.security.LocalLoginPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -56,12 +57,19 @@ public class AppController {
     @Value("${app.jwt.expirationMin:10080}")
     private int jwtExpirationMin;
 
+    @Value("${app.oauth.oidc.label:Single Sign-On}")
+    private String oidcLabel;
+
+    @Autowired
+    private LocalLoginPolicy localLoginPolicy;
+
     @RequestMapping(method = RequestMethod.GET, value = "/config")
     @ResponseStatus(value = HttpStatus.OK)
     public RestAppConfig appConfig() {
         // Detect enabled OAuth2 providers based on existing client registrations
         boolean googleEnabled = isRegistrationPresent("google");
         boolean facebookEnabled = isRegistrationPresent("facebook");
+        boolean oidcEnabled = isRegistrationPresent("oidc");
         
         RestAppConfig.RestAppConfigBuilder builder = new RestAppConfig.RestAppConfigBuilder()
                 .setApiUrl(apiBaseUrl)
@@ -70,8 +78,11 @@ public class AppController {
                 .setCaptchaEnabled(isCaptchaEnabled)
                 .setGoogleOauth2Enabled(googleEnabled)
                 .setFacebookOauth2Enabled(facebookEnabled)
+                .setOidcOauth2Enabled(oidcEnabled)
                 .setAnalyticsAccount(analyticsAccount)
-                .setRegistrationEnabled(isRegistrationEnabled)
+                // Local login and registration are off while OpenID Connect is configured.
+                .setLocalLoginEnabled(localLoginPolicy.isLocalLoginEnabled())
+                .setRegistrationEnabled(isRegistrationEnabled && localLoginPolicy.isLocalLoginEnabled())
                 .setJwtExpirationMin(jwtExpirationMin);
         
         // Only set OAuth2 URLs if providers are configured
@@ -80,6 +91,10 @@ public class AppController {
         }
         if (facebookEnabled) {
             builder.setFacebookOauth2Url(apiBaseUrl + "/oauth2/authorization/facebook");
+        }
+        if (oidcEnabled) {
+            builder.setOidcOauth2Url(apiBaseUrl + "/oauth2/authorization/oidc");
+            builder.setOidcOauth2Label(oidcLabel);
         }
         
         return builder.build();

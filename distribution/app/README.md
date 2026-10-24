@@ -207,12 +207,6 @@ app:
     port: 587
     username: your_email@example.com
     password: your_password
-  security:
-    oauth2:
-      google:
-        enabled: true
-        clientId: YOUR_CLIENT_ID
-        clientSecret: YOUR_CLIENT_SECRET
   site:
     ui-base-url: https://your-domain.com
     api-base-url: https://your-domain.com
@@ -224,9 +218,21 @@ docker run -d --name wisemapping -p 80:80 \
   wisemapping/wisemapping:latest
 ```
 
+### Login with OpenID Connect, Google or Facebook
+
+Users can sign in through your own identity provider (Keycloak, Authentik, Authelia, Okta, Microsoft Entra ID, ...) or with Google or Facebook. These logins are off until you configure them with the standard `spring.security.oauth2.client` settings, either in the mounted `application.yml` or as environment variables.
+
+- **OpenID Connect**: follow the [setup guide](https://github.com/wisemapping/wisemapping-open-source/blob/main/doc/oidc/README.md). It covers configuration, how to check that it works, and troubleshooting. Once it is configured, users can only sign in through your identity provider: email/password login and sign-up are disabled.
+- **Google and Facebook**: copy the commented `spring.security.oauth2.client` block from [application.yml](https://github.com/wisemapping/wisemapping-open-source/blob/main/wise-api/src/main/resources/application.yml) into your configuration.
+
+Behind HTTPS, these logins need the reverse-proxy settings below.
+
 ### SSL/HTTPS with Reverse Proxy
 
-Place WiseMapping behind a reverse proxy (Traefik, Nginx, etc.) for SSL/HTTPS termination. Ensure the reverse proxy forwards the original `Host` header (including port) to the container.
+Place WiseMapping behind a reverse proxy (Traefik, Nginx, etc.) for SSL/HTTPS termination. The reverse proxy must forward:
+
+- the original `Host` header (including port);
+- `X-Forwarded-Proto: https`. Without it, WiseMapping builds `http://` redirect URIs and OpenID Connect, Google and Facebook logins fail with a `redirect_uri` mismatch. Traefik and Caddy send it by default; with Nginx add `proxy_set_header X-Forwarded-Proto $scheme;`.
 
 ## Troubleshooting
 

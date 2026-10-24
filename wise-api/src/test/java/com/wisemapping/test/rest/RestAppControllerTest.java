@@ -44,7 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(
         classes = {AppConfig.class},
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        // Non-default value, so the test fails if the builder falls back to its own default.
+        properties = "app.jwt.expirationMin=1440")
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -70,7 +72,7 @@ class RestAppControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.jwtExpirationMin").value(10080))
+                .andExpect(jsonPath("$.jwtExpirationMin").value(1440))
                 .andExpect(jsonPath("$.jwtExpirationMin").isNumber())
                 .andExpect(jsonPath("$").isMap())
                 .andReturn();
@@ -91,6 +93,19 @@ class RestAppControllerTest {
     }
 
     @Test
+    @Order(4)
+    @DisplayName("Should not expose the generic OIDC provider when it is not configured")
+    void shouldNotExposeOidcWhenNotConfigured() throws Exception {
+        mockMvc.perform(get("/api/restful/app/config"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.oidcOauth2Enabled").value(false))
+                .andExpect(jsonPath("$.oidcOauth2Url").doesNotExist())
+                .andExpect(jsonPath("$.oidcOauth2Label").doesNotExist())
+                .andExpect(jsonPath("$.localLoginEnabled").value(true))
+                .andExpect(jsonPath("$.registrationEnabled").value(true));
+    }
+
+    @Test
     @Order(3)
     @DisplayName("Should validate response structure")
     void shouldValidateResponseStructure() throws Exception {
@@ -98,6 +113,6 @@ class RestAppControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.jwtExpirationMin").exists())
                 .andExpect(jsonPath("$.jwtExpirationMin").isNumber())
-                .andExpect(jsonPath("$.jwtExpirationMin").value(10080));
+                .andExpect(jsonPath("$.jwtExpirationMin").value(1440));
     }
 }

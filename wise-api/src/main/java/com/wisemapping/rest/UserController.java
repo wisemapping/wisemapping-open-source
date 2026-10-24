@@ -28,6 +28,7 @@ import com.wisemapping.model.Account;
 import com.wisemapping.rest.model.RestPasswordResetRequest;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
 import com.wisemapping.rest.model.RestUserRegistration;
+import com.wisemapping.security.LocalLoginPolicy;
 import com.wisemapping.service.DisposableEmailService;
 import com.wisemapping.service.InvalidUserEmailException;
 import com.wisemapping.service.MetricsService;
@@ -78,6 +79,9 @@ public class UserController {
     @Value("${app.registration.enabled:true}")
     private Boolean registrationEnabled;
 
+    @Autowired
+    private LocalLoginPolicy localLoginPolicy;
+
     @Value("${app.registration.email-confirmation-enabled:true}")
     private Boolean emailConfirmationEnabled;
 
@@ -95,6 +99,9 @@ public class UserController {
         logger.debug("Register new user.");
         if (!registrationEnabled) {
             throw new WiseMappingException("Registration is disabled. You can enable it using app.registration.enabled");
+        }
+        if (!localLoginPolicy.isLocalLoginEnabled()) {
+            throw new WiseMappingException("Registration is disabled: users sign in through OpenID Connect");
         }
 
         if (!registration.isAcceptedTerms()) {

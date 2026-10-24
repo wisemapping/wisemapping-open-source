@@ -42,7 +42,7 @@ Default seed credentials in dev: `test@wisemapping.org` / `test`.
 
 Key namespaces (read `application.yml` before changing behavior):
 - `spring.datasource` — defaults to embedded HSQLDB. Switch to `postgresql`/`mysql`/`mariadb` by overriding driver/url/username/password; the matching `schema-*.sql` and `data-*.sql` under `src/main/resources/` are auto-applied. Reference overlays live under `distribution/app-{postgresql,mysql,mariadb}/app.yml`.
-- `spring.security.oauth2.client` — Google/Facebook OAuth2; client IDs/secrets are expected to be supplied via overlay.
+- `spring.security.oauth2.client` — Google/Facebook OAuth2, plus a generic OpenID Connect provider under the registration id `oidc` (see `doc/oidc/README.md`); client IDs/secrets are expected to be supplied via overlay. Configuring `oidc` disables database email/password login, self-registration and password reset by design (`LocalLoginPolicy`), so every login goes through the identity provider.
 - `spring.ldap` + `app.security.ldap` — LDAP auth (see `doc/ldap/README.md`). Disabled by default.
 - `app.jwt` — JWT signing key + expiration (used by `JwtTokenUtil`, `JwtAuthController`).
 - `app.site.*` — base URLs the API embeds in emails and OAuth redirects.
@@ -129,7 +129,13 @@ To ensure cross-platform consistency and resolve encoding/case-sensitivity issue
 
 **Tests** — JUnit 5 (`junit-vintage-engine` is excluded; don't import JUnit 4). Spring Boot test slices preferred over full-context tests when possible. Test class naming mirrors the SUT: `FooService` → `FooServiceTest`.
 
+**Documenting changes** — a change is not done until it is documented.
+- **Changelog**: every functional change (feature, bug fix, security fix, breaking change, behavior or configuration change an operator would notice) adds an entry under `## [Unreleased]` → `### 🔧 Backend (wisemapping-open-source)` in `CHANGELOG.md`, in the matching `Security & Privacy` / `Features` / `Bug Fixes` / `Maintenance` subsection. Follow the existing style: a bold title, then what changed and why it matters to users or operators. Pure refactors and test-only changes need no entry. Use the `update-changelog` skill to regenerate the section before a release.
+- **Docs**: a change to configuration, deployment or authentication updates the doc that owns the topic (`doc/<topic>/README.md`, `distribution/<variant>/README.md`, the comments in `application.yml`). Keep one source per topic and link to it rather than copying it. `distribution/app/README.md` is the Docker Hub page: keep it short, link to the repo with absolute GitHub URLs, and paste it to Docker Hub by hand at release (no workflow syncs it).
+- **Breaking changes** (removed features, config keys, data migrations) also need upgrade instructions in the changelog entry.
+
 ## Documentation pointers
 
 - `doc/api-documentation/` — REST API reference + backend specifics (telemetry, OpenAPI).
+- `doc/oidc/README.md` — generic OpenID Connect login (Keycloak, Authentik, Okta...).
 - `doc/ldap/README.md` — LDAP setup. The `app.security.ldap` block in `application.yml` is heavily commented and is the source of truth.

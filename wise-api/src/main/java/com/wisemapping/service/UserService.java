@@ -37,6 +37,9 @@ public interface UserService {
 
     Account getUserBy(String email);
 
+    @NotNull
+    java.util.List<Account> getUsersByEmailIgnoreCase(@NotNull String email);
+
     Account getUserBy(int id);
 
     java.util.List<Account> getAllUsers();

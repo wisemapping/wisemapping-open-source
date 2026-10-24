@@ -27,6 +27,7 @@ import com.wisemapping.exceptions.WiseMappingException;
 import com.wisemapping.model.*;
 import com.wisemapping.rest.model.RestResetPasswordAction;
 import com.wisemapping.rest.model.RestResetPasswordResponse;
+import com.wisemapping.security.LocalLoginPolicy;
 import com.wisemapping.security.OAuthTokenEncryptionService;
 import com.wisemapping.security.Utils;
 import com.wisemapping.util.VelocityEngineUtils;
@@ -69,6 +70,9 @@ public class UserServiceImpl
     @Autowired
     private OAuthTokenEncryptionService oauthTokenEncryptionService;
 
+    @Autowired
+    private LocalLoginPolicy localLoginPolicy;
+
     final private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -95,7 +99,9 @@ public class UserServiceImpl
         final Account user = userManager.getUserBy(email);
         if (user != null) {
             final RestResetPasswordResponse response = new RestResetPasswordResponse();
-            if (user.getAuthenticationType() != AuthenticationType.DATABASE) {
+            // With OpenID Connect configured local accounts cannot sign in with a password,
+            // so no reset link is sent: they are told to use the external provider instead.
+            if (user.getAuthenticationType() != AuthenticationType.DATABASE || !localLoginPolicy.isLocalLoginEnabled()) {
                 response.setAction(RestResetPasswordAction.OAUTH2_USER);
                 return response;
             }
@@ -296,6 +302,9 @@ public class UserServiceImpl
             if ("google".equals(normalized)) {
                 return AuthenticationType.GOOGLE_OAUTH2;
             }
+            if ("oidc".equals(normalized)) {
+                return AuthenticationType.OIDC;
+            }
             logger.warn("Unknown provider {} received during account sync confirmation. Defaulting to GOOGLE.", provider);
         }
 
@@ -335,6 +344,12 @@ public class UserServiceImpl
     @Override
     public Account getUserBy(String email) {
         return userManager.getUserBy(email);
+    }
+
+    @Override
+    @NotNull
+    public List<Account> getUsersByEmailIgnoreCase(@NotNull String email) {
+        return userManager.getUsersByEmailIgnoreCase(email);
     }
 
     @Override
