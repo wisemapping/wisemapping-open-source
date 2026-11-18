@@ -1,4 +1,4 @@
-FROM eclipse-temurin:26-jre-alpine
+FROM eclipse-temurin:27-jre-alpine
 LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 
 # Build argument to optionally download New Relic
@@ -27,4 +27,6 @@ USER wisemapping
 
 ENV JAVA_OPTS="-XX:InitialRAMPercentage=60 -XX:MaxRAMPercentage=60"
 
-ENTRYPOINT ["sh", "-c", "/app/config-gen.sh && java ${JAVA_OPTS} ${NEW_RELIC_OPTS} -Dspring.config.additional-location=optional:file:/app/config/ -jar wisemapping-api.jar"]
+# -XX:-UseBASE64Intrinsics mitigates CVE-2026-114938 ("Java4Shell") on JDKs older
+# than 27.0.1.1. Kept outside JAVA_OPTS so overriding JAVA_OPTS cannot drop it.
+ENTRYPOINT ["sh", "-c", "/app/config-gen.sh && java -XX:-UseBASE64Intrinsics ${JAVA_OPTS} ${NEW_RELIC_OPTS} -Dspring.config.additional-location=optional:file:/app/config/ -jar wisemapping-api.jar"]
