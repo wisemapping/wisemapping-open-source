@@ -19,7 +19,7 @@
         <com.wisemapping.version>6.0.9-SNAPSHOT</com.wisemapping.version>
         <!-- Spring Boot's parent compiles with release=${java.version} (default 17), which
              overrides maven.compiler.source/target: set the version here. -->
-        <java.version>26</java.version>
+        <java.version>27</java.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <build.number>dev</build.number>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,7 +29,7 @@
         <git.commit.id.abbrev>unknown</git.commit.id.abbrev>
         <git.commit.id.full>unknown</git.commit.id.full>
         <git.commit.time>unknown</git.commit.time>
-        <jacoco.version>0.8.15</jacoco.version>
+        <jacoco.version>0.8.16</jacoco.version>
         <!-- Populated by jacoco:prepare-agent; empty by default so that the
              surefire argLine below still resolves when coverage is skipped
              (e.g. -Djacoco.skip=true). -->

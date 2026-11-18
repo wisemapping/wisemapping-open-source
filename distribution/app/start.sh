@@ -6,6 +6,8 @@ set -e
 
 nginx -g 'daemon off;' &
 
-exec su-exec wisemapping:wisemapping sh -c "java ${JAVA_OPTS} \
+# -XX:-UseBASE64Intrinsics mitigates CVE-2026-114938 ("Java4Shell") on JDKs older
+# than 27.0.1.1. Kept outside JAVA_OPTS so overriding JAVA_OPTS cannot drop it.
+exec su-exec wisemapping:wisemapping sh -c "java -XX:-UseBASE64Intrinsics ${JAVA_OPTS} \
   -Dspring.config.additional-location=optional:file:/app/config/ \
   -jar /app/wisemapping-api.jar"
