@@ -71,7 +71,10 @@ LABEL maintainer="Paulo Gustavo Veiga <pveiga@wisemapping.com>"
 # Install Nginx, tini (PID 1 init) and su-exec (privilege drop).
 # Supervisor is intentionally NOT installed: its Python dependency on
 # Alpine breaks at runtime due to a libexpat/python skew (see issue #70).
-RUN apk add --no-cache nginx tini su-exec
+# nginx >= 1.30.7 carries the NGINX2Root fixes (CVE-2026-123007 and others);
+# the floor makes a stale mirror or cached layer fail the build rather than
+# ship a vulnerable nginx.
+RUN apk add --no-cache 'nginx>=1.30.7' tini su-exec
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S wisemapping && \
